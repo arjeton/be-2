@@ -1,0 +1,56 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://epo.org/submission.schema.json",
+  "definitions": {
+  },
+  "type": "object",
+  "properties": {
+    "basicFilingInfo": {
+      "type": "object",
+      "title": "",
+      "properties": {
+        "userReference": {
+          "title": "i18n(basic-filing.user-reference)",
+          "type": "string",
+          "maxLength": 25,
+          "pattern": "^[\\d\\w\\s\\\\.,<>=_\\-()/'\"À-ž\u0600-\u06FF]*$"
+        },
+        "requestType": {
+          "title": "i18n(submission.spc.createDialog.select.type.of.request)",
+          "type": "string",
+          "enum": [
+            "PLANT_PROTECTION_PRODUCT",
+            "MEDICINAL_PRODUCT",
+            "REQUEST_EXTENSION_PEDIATRIC_USE"
+          ],
+          "enumNames": [
+            "i18n(submission.spc.createDialog.plant.protection.product)",
+            "i18n(submission.spc.createDialog.medicinal.product)",
+            "i18n(submission.spc.createDialog.extension.for.pediatric.use)"
+          ]
+        },
+        "pediatricExtension": {
+          "title": "i18n(submission.spc.createDialog.extension.pediatric.medicinal.product)",
+          "$comment": "Use [true, false] instead of 'boolean'. Because uiSchema properties don't work with boolean field.",
+          "enum": [true, false],
+          "default": false
+        }
+      }
+    },
+    "procedure": {
+      "$comment": "The 'procedure' field must be set to the SPC procedure id by replacing the enum and default values.",
+      "title": "",
+      "type": [
+        "null",
+        "string"
+      ],
+      "enum": [
+        "ESCCP"
+      ],
+      "enumNames": [
+        ""
+      ],
+      "default": "ESCCP"
+    }
+  }
+}

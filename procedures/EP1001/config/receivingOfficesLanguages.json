@@ -1,0 +1,19 @@
+{
+  "receivingOfficesLanguages": [
+      {
+        "itemId": "EN",
+        "itemLabel": "enum.languages.english",
+        "type": "EP"
+      },
+      {
+        "itemId": "DE",
+        "itemLabel": "enum.languages.german",
+        "type": "EP"
+      },
+    {
+      "itemId": "NL",
+      "itemLabel": "enum.languages.dutch",
+      "type": "EP"
+    }
+  ]
+}

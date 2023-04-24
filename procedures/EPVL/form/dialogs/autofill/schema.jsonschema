@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://epo.org/EP_VAL/autofill/public/schema.jsonschema",
+  "type": "object",
+  "properties": {
+    "basicFilingInfo": {
+      "type": "object",
+      "title": "",
+      "properties": {
+        "userReference": {
+          "title": "i18n(basic-filing.user-reference)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 25,
+          "pattern": "^[\\d\\w\\s\\\\.,<>=_\\-()/'\"À-ž\u0600-\u06FF]*$"
+        },
+        "typeOfProtection": {
+          "title": "i18n(basic-filing.type-of-protection)",
+          "$ref": "#/definitions/typeOfProtection"
+        },
+        "definitiveProtectionSelection": {
+          "title": "i18n(basic-filing.definitiveProtectionSelection)",
+          "$ref": "#/definitions/definitiveProtectionSelection"
+        },
+        "applicationNumberContainer": {
+          "type": "object",
+          "title": "",
+          "description": "i18n(draft.epvl.application-number.description)",
+          "properties": {
+            "applicationNumber": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "title": "i18n(draft.epvl.application-number)",
+              "maxLength": 10
+            },
+            "or": {
+              "type": "null",
+              "description": "i18n(draft.epvl.or)"
+            },
+            "publicationNumber": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "title": "i18n(draft.epvl.publication-number)",
+              "maxLength": 9
+            }
+          },
+          "required": [
+            "applicationNumber",
+            "publicationNumber"
+          ]
+        }
+      },
+      "required": [
+        "userReference",
+        "definitiveProtectionSelection",
+        "typeOfProtection"
+      ]
+    }
+  },
+  "definitions": {
+    "typeOfProtection": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "provisional",
+        "definitive"
+      ],
+      "enumNames": [
+        "i18n(basic-filing.type-of-protection.provisional)",
+        "i18n(basic-filing.type-of-protection.definitive)"
+      ],
+      "default": "definitive"
+    },
+    "definitiveProtectionSelection": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [ "B1","B2","B3"],
+      "enumNames": [
+        "i18n(enum.definitiveProtectionSelection.B1)",
+        "i18n(enum.definitiveProtectionSelection.B2)",
+        "i18n(enum.definitiveProtectionSelection.B3)"
+      ],
+      "default": "B1"
+    }
+  }
+}

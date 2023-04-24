@@ -1,0 +1,345 @@
+{
+  "definitions": {
+    "parties": {
+      "ui:field": "FormSectionField",
+      "ui:title": "i18n(parties)",
+      "ui:icon": "account_box",
+      "ui:disabled": true,
+      "scrollSection": true
+    },
+    "ui:config-arrayItemsPopupConfig": {
+      "popup": {
+        "enabled": true,
+        "type": "warning",
+        "useCustomTexts": true,
+        "customRuleName": "custom-parties-updated"
+      }
+    },
+    "applicants": {
+      "confirmButton": {
+        "ui:disabled": false
+      },
+      "ui:title": "i18n(parties.applicants)",
+      "ui:titleSingular": "i18n(APPLICANT)",
+      "ui:tooltip": "i18n(parties.applicants.tooltip.one-or-more-added)",
+      "kind": "party",
+      "ui:componentEditable": true
+    },
+    "ui:summary-applicant": {
+      "titles": [
+        {
+          "case": {
+            "role": "APPLICANT_NATURAL_PERSON"
+          },
+          "value": "item(personalDetails.firstName) item(personalDetails.lastName)"
+        },
+        {
+          "case": {
+            "role": "APPLICANT_LEGAL_ENTITY"
+          },
+          "value": "item(companyDetails.company)"
+        }
+      ]
+    },
+    "ui:summaryItem-applicant": {
+      "titles": [
+        {
+          "case": {
+            "role": "APPLICANT_NATURAL_PERSON"
+          },
+          "icon": "account_box",
+          "value": "item(order). item(personalDetails.firstName) item(personalDetails.lastName)"
+        },
+        {
+          "case": {
+            "role": "APPLICANT_LEGAL_ENTITY"
+          },
+          "icon": "business",
+          "value": "item(order). item(companyDetails.company)"
+        }
+      ],
+      "entries": [
+        {
+          "title": "i18n(Type)",
+          "value": "itemI18n(role)"
+        },
+        {
+          "case": {
+            "role": "APPLICANT_NATURAL_PERSON"
+          },
+          "title": "i18n(parties.name)",
+          "value": "item(personalDetails.firstName) item(personalDetails.lastName)"
+        },
+        {
+          "case": {
+            "role": "APPLICANT_LEGAL_ENTITY"
+          },
+          "title": "i18n(parties.company)",
+          "value": "item(companyDetails.company)"
+        },
+        {
+          "title": "i18n(Address)",
+          "value": "item(contactDetails.residenceAddress.streetAddress) - item(contactDetails.residenceAddress.postalCode) - item(contactDetails.residenceAddress.poBox) - item(contactDetails.residenceAddress.city) - item(contactDetails.residenceAddress.country)"
+        }
+      ]
+    },
+    "residenceAddress": {
+      "ui:options": {
+        "style": {
+          "& > div > div": {
+            "&:nth-child(2), &:nth-child(3)": {
+              "max-width": "14rem"
+            }
+          }
+        }
+      },
+      "streetAddress": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+      },
+      "postalCode": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/halfTextFieldWidget"
+      },
+      "poBox": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/halfTextFieldWidget"
+      },
+      "city": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+      },
+      "country": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+      }
+    },
+    "applicantAdditionalDetails": {
+      "waiver": {
+        "ui:options": {
+          "style": {
+            "margin-top": "-3rem",
+            "margin-left": "2rem"
+          }
+        }
+      }
+    },
+    "inventors": {
+      "ui:title": "i18n(parties.inventors)",
+      "ui:titleSingular": "i18n(INVENTOR)",
+      "kind": "party",
+      "ui:tooltip": "i18n(parties.inventors.tooltip.one-or-more-added)"
+    },
+    "ui:summary-fullName": {
+      "titles": [
+        {
+          "value": "item(personalDetails.firstName) item(personalDetails.lastName)"
+        }
+      ]
+    },
+    "ui:summary-inventor": {
+      "icon": "emoji_objects",
+      "titles": [
+        {
+          "value": "item(order). item(personalDetails.firstName) item(personalDetails.lastName)"
+        }
+      ],
+      "entries": [
+        {
+          "title": "i18n(parties.first-name)",
+          "value": "item(personalDetails.firstName)"
+        },
+        {
+          "title": "i18n(parties.last-name)",
+          "value": "item(personalDetails.lastName)"
+        },
+        {
+          "case": {
+            "applicantId": "*"
+          },
+          "title": "i18n(parties.inventor-is-also-applicant)",
+          "value": "",
+          "type": "miscellaneous"
+        },
+        {
+          "case": {
+            "isDeceased": true
+          },
+          "title": "i18n(parties.inventor-is-deceased)",
+          "value": "",
+          "type": "miscellaneous"
+        },
+        {
+          "title": "i18n(parties.other)",
+          "value": "",
+          "type": "miscellaneousAggregation"
+        }
+      ]
+    },
+    "representatives": {
+      "ui:title": "i18n(parties.representatives)",
+      "ui:titleSingular": "i18n(REPRESENTATIVE)",
+      "kind": "party",
+      "ui:tooltip": "i18n(parties.representatives.tooltip.one-or-more-added)",
+      "ui:componentEditable": true
+    },
+    "communicationAddress": {
+      "kind": "party",
+      "ui:title": "i18n(spc.parties.communicationAddress)",
+      "ui:titleSingular": "i18n(spc.parties.communicationAddress)",
+      "ui:tooltip": "i18n(spc.parties.tooltip.communicationAddress)",
+      "showInfoMessage": true,
+      "showErrorMessage": false,
+      "ui:infoMessage": "spc.parties.info.communicationAddress",
+      "ui:errorMessage": "spc.parties.error.communicationAddress",
+      "ui:hideAddButton": true,
+      "ui:hideAddAddressBookButton": true,
+      "ui:hideDeleteButton": true
+    },
+    "communicationAddressItem": {
+      "id": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/hiddenWidget"
+      },
+      "state": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/hiddenWidget"
+      },
+      "sequenceNumber": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/hiddenWidget"
+      },
+      "manuallyEdited": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/hiddenWidget"
+      },
+      "role": {
+        "ui:widget": "radio"
+      },
+      "firstName": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+      },
+      "lastName": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+      },
+      "company": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+      },
+      "correspondenceAddress": {
+        "$ref": "#/definitions/correspondenceAddress"
+      },
+      "preferredMeansOfNotification": {
+        "ui:widget": "radio"
+      }
+    },
+    "ui:summary-commAddress": {
+      "titles": [
+        {
+          "title": "Address",
+          "value": "item(correspondenceAddress.streetAddress) - item(correspondenceAddress.postalCode) - item(correspondenceAddress.poBox) - item(correspondenceAddress.city)"
+        }
+      ]
+    },
+    "ui:summaryItem-commAddress": {
+      "titles": [
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+          },
+          "value": "item(firstName) item(lastName)",
+          "icon": "mail"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+          },
+          "value": "item(company)",
+          "icon": "mail"
+        }
+      ],
+      "entries": [
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+          },
+          "title": "i18n(parties.name)",
+          "value": "item(firstName) item(lastName)"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+          },
+          "title": "i18n(parties.address)",
+          "value": "item(correspondenceAddress.streetAddress), item(correspondenceAddress.postalCode)"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+          },
+          "title": "i18n(parties.city)",
+          "value": "item(correspondenceAddress.city)"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+          },
+          "title": "i18n(parties.country)",
+          "value": "itemNameI18n(correspondenceAddress.country, procedures-common-form-geo.jsonschema-definitions-country)"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+          },
+          "title": "i18n(spc.parties.communicationAddress.company)",
+          "value": "item(company)"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+          },
+          "title": "i18n(parties.address)",
+          "value": "item(correspondenceAddress.streetAddress) - item(correspondenceAddress.postalCode)"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+          },
+          "title": "i18n(parties.city)",
+          "value": "item(correspondenceAddress.city)"
+        },
+        {
+          "case": {
+            "role": "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+          },
+          "title": "i18n(parties.country)",
+          "value": "itemNameI18n(correspondenceAddress.country, procedures-common-form-geo.jsonschema-definitions-country)"
+        }
+      ]
+    },
+    "correspondenceAddress": {
+      "ui:tooltip": "i18n(parties.tooltip.enter-correspondence-details)",
+      "ui:options": {
+        "style": {
+          "& > div > div": {
+            "&:nth-child(2), &:nth-child(3)": {
+              "max-width": "14rem"
+            }
+          }
+        }
+      },
+      "streetAddress": {
+        "ui:widget": "typicalText",
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+      },
+      "postalCode": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/extraSmallTextFieldWidget"
+      },
+      "poBox": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/extraSmallTextFieldWidget"
+      },
+      "city": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+      },
+      "country": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+      },
+      "telephone": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/extraSmallWidth"
+      },
+      "email": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+      }
+    }
+  }
+}

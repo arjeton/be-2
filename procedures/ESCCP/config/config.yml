@@ -1,0 +1,62 @@
+#For now SPC for core version is targeting Spanish receiver
+annexF:
+  blob:
+    fee:
+      dtd: "es-ccp-fee-sheet.dtd"
+      name: "es-ccp-fee-sheet.xml"
+      path: "ESCCP/annexf/dtd/spc/es-ccp-fee-sheet.dtd"
+      version: "1.0"
+      xslt: "ESCCP/annexf/xslt/fee-xml.xslt"
+      annexFDocumentName: "FEESHEETXML"
+      feesParam: true
+    packageData:
+      dtd: "package-data-v1-7.dtd"
+      name: "package-data.xml"
+      path: "procedures/common/annexf/dtd/WIPO-1.16/package-data-v1-7.dtd"
+      version: "1.7"
+      xslt: "procedures/common/annexf/xslt/package-data-xml-v1-7.xslt"
+      annexFDocumentName: "PACKDATAXML"
+    request:
+      dtd: "es-ccp-request-v1-2.dtd"
+      name: "es-ccp-request.xml"
+      path: "ESCCP/annexf/dtd/spc/es-ccp-request-v1-2.dtd"
+      version: "1"
+      xslt: "ESCCP/annexf/xslt/request-xml.xslt"
+      annexFDocumentName: "REQXML_3104"
+    request-pdf:
+      name: "spc-request.pdf"
+      xslt: "ESCCP/annexf/xslt/request-pdf.xslt"
+      annexFDocumentName: "REQPDF_3104"
+      template: "html"
+      pdfOverview: true
+      customDpi: 2800
+      feesParam: true
+  filing:
+  header:
+    header:
+      dtd: "pkgheader-v1-4.dtd"
+      name: "pkgheader.xml"
+      path: "procedures/common/annexf/dtd/WIPO-1.16/pkgheader-v1-4.dtd"
+      version: "1.0"
+      xslt: "procedures/common/annexf/xslt/package-header-xml-v1-4.xslt"
+      annexFDocumentName: "HEADERXML"
+  payment:
+  receipt:
+
+header:
+  language: "en"
+  ip-type: "patent"
+  form-type: "ESCCP"
+  software-name: "ITC Front Office"
+
+xslt:
+  params:
+    produced-by: "applicant"
+    status: "new"
+    date: "10/10/2010"
+    name-type: "natural"
+    place-signed: "place"
+
+internal-filing:
+  enabled: false
+  send-to-backend: false

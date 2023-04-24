@@ -1,0 +1,223 @@
+{
+  "attachmentTypes": [
+    {
+      "type": "DESCRIPTION",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 0
+    },
+    {
+      "type": "CLAIMS",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 1
+    },
+    {
+      "type": "ABSTRACT",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 2
+    },
+    {
+      "type": "DRAWINGS",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 3
+    },
+    {
+      "type": "COMBINED",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 4
+    },
+    {
+      "type": "GENERAL",
+      "systemFileName": "GENAUTH",
+      "docTypeLabel": "1004",
+      "description": "General authorisation",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 0
+    },
+    {
+      "type": "SPECIFIC",
+      "systemFileName": "SPECAUTH",
+      "docTypeLabel": "1003",
+      "description": "Specific authorisation",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 1
+    },
+    {
+      "type": "ELECTRONIC_PRIORITY",
+      "systemFileName": "PRIODOC",
+      "docTypeLabel": "PRIODOC",
+      "description": "Electronic priority documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 2
+    },
+    {
+      "type": "TRANSLATIONS_OF_PRIORITY_DOCUMENTS",
+      "systemFileName": "PRIOTRAN",
+      "docTypeLabel": "PRIOTRAN",
+      "description": "Translations of priority documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 3
+    },
+    {
+      "type": "TRANSLATIONS_OF_TECHNICAL_DOCUMENTS",
+      "systemFileName": "OTHERPDF",
+      "docTypeLabel": "OTHERPDF",
+      "description": "Translations of technical documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 4
+    },
+    {
+      "type": "INVENTOR_WAIVER",
+      "systemFileName": "INVT",
+      "docTypeLabel": "INVT",
+      "description": "Inventor Waiver",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 5
+    },
+    {
+      "type": "EXHIBITION",
+      "systemFileName": "EXHIBITION",
+      "docTypeLabel": "EXHIBITION",
+      "description": "Exhibition certificate",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 6
+    },
+    {
+      "type": "INVENTORSHIP",
+      "systemFileName": "INVENTORSHIP",
+      "docTypeLabel": "INVENTORSHIP",
+      "description": "Declaration regarding inventorship",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 7
+    },
+    {
+      "type": "SEARCH_REPORT",
+      "systemFileName": "SEARCH_REPORT",
+      "docTypeLabel": "SEARCH_REPORT",
+      "description": "Search report",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 8
+    },
+    {
+      "type": "POWER_OF_ATTORNEY",
+      "systemFileName": "POWATT",
+      "docTypeLabel": "1004",
+      "description": "Power of Attorney",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 9
+    },
+    {
+      "type": "PROOF_OF_PAYMENT",
+      "systemFileName": "FEERCPT",
+      "docTypeLabel": "FEERCPT",
+      "description": "Proof of payment",
+      "subType": "PAYMENT",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 10
+    },
+    {
+      "type": "POWER_OF_REPRESENTATION",
+      "systemFileName": "POWATT",
+      "noSystemFileNameIndexing": true,
+      "docTypeLabel": "POWATT",
+      "description": "Power of representation",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 11
+    },
+    {
+      "type": "OTHER",
+      "systemFileName": "OTHER",
+      "docTypeLabel": "OTHERPDF",
+      "description": "Assignment documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 12
+    },
+    {
+      "type": "BIO_MATERIAL",
+      "systemFileName": "BIO_MATERIAL",
+      "docTypeLabel": "BIORCPT",
+      "description": "Bio Material Data",
+      "subType": "BIO_MATERIAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf","image/jpeg","image/png","application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document"],
+      "acceptedFileExtensions": ["pdf","doc","docx","jpg","jpeg","png"]
+    },
+    {
+      "type": "SEQ_LIST",
+      "systemFileName": "SEQ_LIST",
+      "docTypeLabel": "SEQL",
+      "description": "Sequece listing",
+      "subType": "SEQ",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["text/xml"],
+      "acceptedFileExtensions": ["xml"]
+    }
+  ]
+}

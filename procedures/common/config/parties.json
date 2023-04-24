@@ -1,0 +1,94 @@
+{
+  "partyTypes": {
+    "APPLICANT": {
+      "type": "APPLICANT",
+      "path": "applicants",
+      "canSign": true,
+      "subtypes": {
+        "NATURAL_PERSON" : {
+          "entityType": "NATURAL_PERSON",
+          "role": "APPLICANT_NATURAL_PERSON",
+          "signatureCapacity": "APPLICANT"
+        },
+        "LEGAL_ENTITY": {
+          "entityType": "LEGAL_ENTITY",
+          "role": "APPLICANT_LEGAL_ENTITY",
+          "signatureCapacity": "OTHER"
+        }
+      }
+    },
+    "REPRESENTATIVE": {
+      "type":" REPRESENTATIVE",
+      "path": "representatives",
+      "canSign": true,
+      "subtypes": {
+        "PROFESSIONAL_REPRESENTATIVE": {
+          "entityType": "NATURAL_PERSON",
+          "role": "PROFESSIONAL_REPRESENTATIVE",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "LEGAL_PRACTITIONER": {
+          "entityType": "NATURAL_PERSON",
+          "role": "LEGAL_PRACTITIONER",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "PATENT_ATTORNEY": {
+          "entityType": "NATURAL_PERSON",
+          "role": "PATENT_ATTORNEY",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "REPRESENTATIVE_EMPLOYEE": {
+          "entityType": "NATURAL_PERSON",
+          "role": "REPRESENTATIVE_EMPLOYEE",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "ASSOCIATION": {
+          "entityType": "LEGAL_ENTITY",
+          "role": "ASSOCIATION",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "AGENT_LEGAL_ENTITY": {
+          "entityType": "LEGAL_ENTITY",
+          "role": "AGENT_LEGAL_ENTITY",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "AGENT_NATURAL_PERSON": {
+          "entityType": "NATURAL_PERSON",
+          "role": "AGENT_NATURAL_PERSON",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "REPRESENTATIVE_LEGAL_ENTITY": {
+          "entityType": "LEGAL_ENTITY",
+          "role": "REPRESENTATIVE_LEGAL_ENTITY",
+          "signatureCapacity": "REPRESENTATIVE"
+        },
+        "REPRESENTATIVE_NATURAL_PERSON": {
+          "entityType": "NATURAL_PERSON",
+          "role": "REPRESENTATIVE_NATURAL_PERSON",
+          "signatureCapacity": "REPRESENTATIVE"
+        }
+      }
+    },
+    "INVENTOR": {
+      "type":" INVENTOR",
+      "path": "inventors",
+      "entityType": "NATURAL_PERSON",
+      "role": "INVENTOR",
+      "signatureCapacity": "INVENTOR",
+      "canSign": false
+    },
+    "EMPLOYEE": {
+      "type":" EMPLOYEE",
+      "path": "employees",
+      "entityType": "NATURAL_PERSON",
+      "role": "EMPLOYEE",
+      "signatureCapacity": "EMPLOYEE",
+      "canSign": true
+    },
+    "COMMUNICATION_ADDRESS": {
+      "type":" COMMUNICATION_ADDRESS",
+      "path": "communicationAddress"
+    }
+  }
+}
+

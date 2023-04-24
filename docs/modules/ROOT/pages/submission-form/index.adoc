@@ -1,0 +1,3 @@
+= Submission form
+
+The submission form is at the core of Front Office app, as it has the role of displaying a configurable web component _(in terms of structure, content and validation rules)_ that should collect all the submission details for each specific country procedure.

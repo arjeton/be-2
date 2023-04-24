@@ -1,0 +1,204 @@
+{
+  "attachmentTypes": [
+    {
+      "type": "SPC_1",
+      "systemFileName": "SPC_1",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 0
+    },
+    {
+      "type": "SPC_2",
+      "systemFileName": "SPC_2",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "countriesDefinition": "country",
+      "order": 1
+    },
+    {
+      "type": "SPC_3",
+      "systemFileName": "SPC_3",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "countriesDefinition": "country",
+      "order": 2
+    },
+    {
+      "type": "SPC_4",
+      "systemFileName": "SPC_4",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 3
+    },
+    {
+      "type": "SPC_5",
+      "systemFileName": "SPC_5",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 4
+    },
+    {
+      "type": "SPC_6",
+      "systemFileName": "SPC_6",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 5
+    },
+    {
+      "type": "SPC_7",
+      "systemFileName": "SPC_7",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "countriesDefinition": "country",
+      "order": 6
+    },
+    {
+      "type": "SPC_8",
+      "systemFileName": "SPC_8",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "countriesDefinition": "country",
+      "order": 7
+    },
+    {
+      "type": "SPC_9",
+      "systemFileName": "SPC_9",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 8
+    },
+    {
+      "type": "SPC_10",
+      "systemFileName": "SPC_10",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 9
+    },
+    {
+      "type": "SPC_11",
+      "systemFileName": "SPC_11",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 10
+    },
+    {
+      "type": "SPC_12",
+      "systemFileName": "SPC_12",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 11
+    },
+    {
+      "type": "SPC_13",
+      "systemFileName": "SPC_13",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 12
+    },
+    {
+      "type": "SPC_14",
+      "systemFileName": "SPC_14",
+      "docTypeLabel": "OTHERPDF",
+      "subType": "SPC",
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ],
+      "order": 13
+    },
+    {
+      "type": "PROOF_OF_PAYMENT",
+      "systemFileName": "FEERCPT",
+      "docTypeLabel": "FEERCPT",
+      "description": "Proof of payment",
+      "subType": "PAYMENT",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": [
+        "application/pdf"
+      ],
+      "acceptedFileExtensions": [
+        "pdf"
+      ]
+    }
+  ]
+}

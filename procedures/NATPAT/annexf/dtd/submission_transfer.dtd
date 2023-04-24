@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!--
+    The  "epoline (r) Online Filing software (eOLF) software" which you may
+    download is a software that supports the online electronic filing of
+    intellectual property documents and hereinafter is referred to as
+    "the Program".
+
+    Copyright (r) 2005 European Patent Organisation
+
+    The European Patent Organisation has made available the source code to pave
+    the way for the system to become a world standard for Intellectual Property
+    document archiving and to facilitate document exchange between offices,
+    which will reduce costs for applicants and increase efficiencies within the
+    offices.
+
+    To accomplish this goal a Release Board has been formed to ensure the
+    maximum possible international uniformity in this area. The members of this
+    Release Board are various governmental and intergovernmental
+    administrations: EPO, USPTO, JPO, WIPO and several other interested
+    organisations. For details about the Release Board and how to become a
+    member thereof see http://eolf.sourceforge.net.
+
+    You are requested to provide your modifications and contributions on the
+    Program to the eOLF Open Source community on
+    http://eolf.sourceforge.net, so as to make it possible for the Release
+    Board to assess them and incorporate them into a new certified release of
+    the Program.
+
+    You can redistribute this Program and/or modify it in accordance with the
+    terms of the European Patent Organisation Open Source Licence No. 2005/1.
+
+    This Program is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE. See the European Patent Organisation Open
+    Source Licence No. 2005/1 for more details.
+
+    You should have received a copy of the European Patent Organisation Open
+    Source Licence No. 2005/1 along with this Program; if not write to
+    epoline (r), European Patent Office - P.O. Box 5818 - 2280HV Rijswijk (ZH) -
+    Netherlands or email to the Administrator of the ePHOENIX project at
+    SourceForge (see: http://sourceforge.net/project/eolf.
+
+    If the program is interactive, make it output a short notice like this when
+    it starts in an interactive mode:
+
+    epoline (r) Online Filing, Copyright (c) 2005 European Patent Organisation,
+    comes with ABSOLUTELY NO WARRANTY; for details see the European Patent
+    Organisation Open Source Licence No. 2005/1 at
+    http://eolf.sourceforge.net. You are welcome to redistribute it under
+    certain conditions; for details see the European Patent Organisation Open
+    Source Licence No. 2005/1 at http://eolf.sourceforge.net.
+  -->
+
+<!ELEMENT APPLNR          (#PCDATA)>
+<!ELEMENT CN_LOADER       (#PCDATA)>
+<!ELEMENT CN_SENDER       (#PCDATA)>
+<!ELEMENT CN_SIGNER       (#PCDATA)>
+<!ELEMENT EPOLINE_ID      (#PCDATA)>
+<!ELEMENT FORM_TYPE       (#PCDATA)>
+<!ELEMENT FORM_VERSION    (#PCDATA)>
+<!ELEMENT HASHCODE        (#PCDATA)>
+<!ELEMENT ORIGINAL_SUBMID (#PCDATA)>
+<!ELEMENT RECEIPT_TS      (#PCDATA)>
+<!ELEMENT RO_DESIGNATION  (#PCDATA)>
+<!ELEMENT RO_INITIAL      (#PCDATA)>
+<!ELEMENT START_TS        (#PCDATA)>
+<!ELEMENT STATE_CODE      (#PCDATA)>
+<!ELEMENT STATE_TS        (#PCDATA)>
+<!ELEMENT SUBMISSIONID    (#PCDATA)>
+<!ELEMENT USER_NAME       (#PCDATA)>
+<!ELEMENT WASP_SIZE       (#PCDATA)>
+
+<!ELEMENT SUBMISSION_WAD (SUBMISSIONINFO, STATEHISTORY, ADDITIONALDATA, SUBMISSIONFILES)>
+<!ATTLIST SUBMISSION_WAD
+  creationtimestamp CDATA #REQUIRED
+  submissionid      CDATA #REQUIRED
+  version           CDATA #REQUIRED
+>
+
+<!ELEMENT SUBMISSIONINFO (SUBMISSIONID, APPLNR, CN_LOADER, CN_SENDER, CN_SIGNER, EPOLINE_ID,
+                          FORM_TYPE, FORM_VERSION, HASHCODE, ORIGINAL_SUBMID, RECEIPT_TS,
+                          RO_DESIGNATION, RO_INITIAL, START_TS, STATE_CODE, STATE_TS, USER_NAME,
+                          WASP_SIZE)>
+
+<!ELEMENT ADDITIONALDATA (ADDITIONALDATAOCCURENCE*)>
+<!ATTLIST ADDITIONALDATA
+	count CDATA #REQUIRED
+>
+
+<!ELEMENT ADDITIONALDATAOCCURENCE EMPTY>
+<!ATTLIST ADDITIONALDATAOCCURENCE
+	attributename   CDATA #REQUIRED
+	attributedomain CDATA #REQUIRED
+	attributevalue  CDATA #REQUIRED
+	username        CDATA #REQUIRED
+	change_ts       CDATA #REQUIRED
+>
+
+<!ELEMENT SUBMISSIONFILES (FILE*)>
+<!ATTLIST SUBMISSIONFILES
+	count CDATA #REQUIRED
+>
+
+<!ELEMENT FILE EMPTY>
+<!ATTLIST FILE
+	backenddoccode  CDATA #REQUIRED
+	format          CDATA #REQUIRED
+	name            CDATA #REQUIRED
+	size            CDATA #REQUIRED
+	typecode        CDATA #REQUIRED
+	typedescription CDATA #REQUIRED
+>
+
+<!ELEMENT STATEHISTORY (STATEOCCURENCE*)>
+<!ATTLIST STATEHISTORY
+	count CDATA #REQUIRED
+>
+
+<!ELEMENT STATEOCCURENCE EMPTY>
+<!ATTLIST STATEOCCURENCE
+	change_ts  CDATA #REQUIRED
+	code       CDATA #REQUIRED
+	comment    CDATA #REQUIRED
+	user_name  CDATA #REQUIRED
+>
+
+
+

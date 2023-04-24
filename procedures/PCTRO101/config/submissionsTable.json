@@ -1,0 +1,53 @@
+[
+  {
+    "type": "selectAll",
+    "ariaLabel": "actions.select.all.submissions",
+    "activeAriaLabel": "messages.all.submissions.selected"
+  },
+  {
+    "type": "default",
+    "label": "basic-filing.user-reference",
+    "field": "basicFilingInfo.userReference",
+    "sortId": "filter.userReference",
+    "filterId": "userReference",
+    "filterType": "textField"
+  },
+  {
+    "type": "default",
+    "label": "parties.applicant",
+    "sortId": "filter.applicant",
+    "computedValue": "firstApplicantName",
+    "filterId": "firstApplicant",
+    "filterType": "textField"
+  },
+  {
+    "type": "default",
+    "label": "basic-filing.title-of-invention",
+    "field": "basicFilingInfo.titleOfInvention",
+    "sortId": "filter.titleOfInvention",
+    "filterId": "titleOfInvention",
+    "filterType": "textField"
+  },
+  {
+    "type": "default",
+    "label": "basic-filing.last-modified.sort",
+    "sortId": "modifiedDate",
+    "computedValue": "modifiedDate",
+    "filterId": "lastModifiedDate",
+    "filterType": "datePicker"
+  },
+  {
+    "type": "status",
+    "sortId": "filter.statusOrder",
+    "filterId": "status",
+    "filterType": "status",
+    "filterCondition" : "equals"
+  },
+  {
+    "type": "combinedCell",
+    "showOnNonXLDevice": false
+  },
+  {
+    "type": "actionCell"
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "receivingOfficesLanguages": [
+      {
+        "itemId": "EN",
+        "itemLabel": "enum.languages.english",
+        "type": "EP"
+      },
+      {
+        "itemId": "FR",
+        "itemLabel": "enum.languages.french",
+        "type": "EP"
+      },
+      {
+        "itemId": "DE",
+        "itemLabel": "enum.languages.german",
+        "type": "EP"
+      },
+      {
+        "itemId": "AR",
+        "itemLabel": "enum.languages.arabic",
+        "type": "IB"
+      },
+      {
+        "itemId": "ZH",
+        "itemLabel": "enum.languages.chinese",
+        "type": "IB"
+      },
+      {
+        "itemId": "EN",
+        "itemLabel": "enum.languages.english",
+        "type": "IB"
+      },
+      {
+        "itemId": "FR",
+        "itemLabel": "enum.languages.french",
+        "type": "IB"
+      },
+      {
+        "itemId": "DE",
+        "itemLabel": "enum.languages.german",
+        "type": "IB"
+      },
+      {
+        "itemId": "JA",
+        "itemLabel": "enum.languages.japanese",
+        "type": "IB"
+      },
+      {
+        "itemId": "KO",
+        "itemLabel": "enum.languages.korean",
+        "type": "IB"
+      },
+      {
+        "itemId": "PT",
+        "itemLabel": "enum.languages.portuguese",
+        "type": "IB"
+      },
+      {
+        "itemId": "RU",
+        "itemLabel": "enum.languages.russian",
+        "type": "IB"
+      },
+      {
+        "itemId": "ES",
+        "itemLabel": "enum.languages.spanish",
+        "type": "IB"
+      },
+      {
+        "itemId": "EN",
+        "itemLabel": "enum.languages.english",
+        "type": "NP"
+      }
+  ]
+}

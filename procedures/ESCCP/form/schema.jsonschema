@@ -1,0 +1,458 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://epo.org/SPC/public/schema.jsonschema",
+  "type": "object",
+  "properties": {
+    "basicFilingInfo": {
+      "type": "object",
+      "title": "i18n(basic-filing.info)",
+      "description": "i18n(basic_filing_info.description)",
+      "properties": {
+        "userReference": {
+          "title": "i18n(basic-filing.user-reference)",
+          "type": "string",
+          "maxLength": 25,
+          "pattern": "^[\\d\\w\\s\\\\.,<>=_\\-()/'\"À-ž\u0600-\u06FF]*$"
+        },
+        "requestType": {
+          "title": "i18n(basic-filing.request-type)",
+          "type": "string",
+          "enum": [
+            "PLANT_PROTECTION_PRODUCT",
+            "MEDICINAL_PRODUCT",
+            "REQUEST_EXTENSION_PEDIATRIC_USE"
+          ],
+          "enumNames": [
+            "i18n(submission.spc.createDialog.plant.protection.product)",
+            "i18n(submission.spc.createDialog.medicinal.product)",
+            "i18n(submission.spc.createDialog.extension.for.pediatric.use)"
+          ]
+        },
+        "pediatricExtension": {
+          "title": "i18n(submission.spc.createDialog.extension.pediatric.medicinal.product)",
+          "type": "boolean"
+        },
+        "titleOfInvention": {
+          "title": "i18n(basic-filing.title-of-invention)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 512
+        },
+        "productName": {
+          "title": "i18n(basic-filing.product-name)",
+          "type": "string"
+        }
+      },
+      "dependencies": {
+        "requestType": {
+          "oneOf": [
+            {
+              "properties": {
+                "requestType": {
+                  "enum": [
+                    "MEDICINAL_PRODUCT"
+                  ]
+                },
+                "applicationNumberContainer": {
+                  "type": "object",
+                  "title": "",
+                  "properties": {
+                    "applicationNumber": {
+                      "type": ["string", "null"],
+                      "title": "i18n(draft.epvl.application-number)",
+                      "pattern": "^[0-9]{3}[0-9]*.{1}[0-9]{1}$",
+                      "maxLength": 10
+                    },
+                    "publicationNumber": {
+                      "type": ["string", "null"],
+                      "title": "i18n(draft.epvl.publication-number)",
+                      "pattern": "^EP[0-9]{1,7}$",
+                      "maxLength": 9
+                    }
+                  },
+                  "required": [ "applicationNumber", "publicationNumber" ]
+                },
+                "patentType": {
+                  "title": "i18n(basic-filing.patent-type)",
+                  "type": "string",
+                  "enum": [
+                    "PATENT_TYPE_NATIONAL",
+                    "PATENT_TYPE_EUROPEAN"
+                  ],
+                  "enumNames": [
+                    "i18n(PATENT_TYPE_NATIONAL)",
+                    "i18n(PATENT_TYPE_EUROPEAN)"
+                  ]
+                },
+                "grantDate": {
+                  "title": "i18n(basic-filing.grant-date)",
+                  "type": "string"
+                },
+                "filingDate": {
+                  "title": "i18n(basic-filing.filing-date)",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "properties": {
+                "requestType": {
+                  "enum": [
+                    "PLANT_PROTECTION_PRODUCT"
+                  ]
+                },
+                "applicationNumberContainer": {
+                  "type": "object",
+                  "title": "",
+                  "properties": {
+                    "applicationNumber": {
+                      "type": ["string", "null"],
+                      "title": "i18n(draft.epvl.application-number)",
+                      "pattern": "^[0-9]{3}[0-9]*.*[0-9]{1}$",
+                      "maxLength": 10
+                    },
+                    "publicationNumber": {
+                      "type": ["string", "null"],
+                      "title": "i18n(draft.epvl.publication-number)",
+                      "pattern": "^EP[0-9]{1,7}$",
+                      "maxLength": 9
+                    }
+                  },
+                  "required": [ "applicationNumber", "publicationNumber" ]
+                },
+                "patentType": {
+                  "title": "i18n(basic-filing.patent-type)",
+                  "type": "string",
+                  "enum": [
+                    "PATENT_TYPE_NATIONAL",
+                    "PATENT_TYPE_EUROPEAN"
+                  ],
+                  "enumNames": [
+                    "i18n(PATENT_TYPE_NATIONAL)",
+                    "i18n(PATENT_TYPE_EUROPEAN)"
+                  ]
+                },
+                "grantDate": {
+                  "title": "i18n(basic-filing.grant-date)",
+                  "type": "string"
+                },
+                "filingDate": {
+                  "title": "i18n(basic-filing.filing-date)",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "properties": {
+                "requestType": {
+                  "enum": [
+                    "REQUEST_EXTENSION_PEDIATRIC_USE"
+                  ]
+                },
+                "spcApplicationNumber": {
+                    "type": ["string", "null"],
+                    "title": "i18n(draft.spc.application-number)",
+                    "pattern": "^C[0-9]{1,9}$",
+                    "maxLength": 10
+                },
+                "spcCertificateNumber": {
+                    "type": ["string", "null"],
+                    "title": "i18n(draft.spc.certificate-number)",
+                    "pattern": "^C[0-9]{1,9}$",
+                    "maxLength": 10
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "userReference",
+        "titleOfInvention"
+      ]
+    },
+    "parties": {
+      "title": "Parties",
+      "type": "object",
+      "properties": {
+        "applicants": {
+          "title": "i18n(parties.applicants)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/applicantEPVal"
+          }
+        },
+        "representatives": {
+          "title": "i18n(parties.representatives)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/representative"
+          }
+        },
+        "communicationAddress": {
+          "title": "i18n(spc.parties.communicationAddress)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/communicationAddress"
+          }
+        }
+      }
+    },
+    "declaration": {
+      "title": "i18n(Declaration)",
+      "type": "object",
+      "properties" : {
+        "marketingDeclarations": {
+          "title": "i18n(declaration.marketing)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/marketingDeclaration"
+          }
+        }
+      }
+    },
+    "attachments": {
+      "title": "i18n(attachments.title)",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object"
+      }
+    },
+    "fees": {
+      "type": "object",
+      "properties": {
+        "sectionInformation": {
+          "type": "null",
+          "text": "i18n(fees.section.information.spc)"
+        },
+        "methodOfPayment": {
+          "title": "i18n(fees.payment-method.select)",
+          "$ref": "#/definitions/methodOfPayment"
+        },
+        "feesSelection": {
+          "title": "i18n(fees.selection)",
+          "type": "object",
+          "properties": {
+            "selectedFees": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "IE16",
+                      "PE16"
+                    ]
+                  },
+                  "price": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+                  },
+                  "subtotal": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+                  }
+                }
+              }
+            },
+            "total": {
+              "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+            },
+            "currency": {
+              "enum": [
+                "EUR"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "methodOfPayment",
+        "feesSelection"
+      ],
+      "dependencies": {
+        "methodOfPayment": {
+          "oneOf": [
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "alreadyPaid"
+                  ]
+                },
+                "paymentAttachments": {
+                  "title": "i18n(fees.payment.attachments.title)",
+                  "type": [
+                    "array"
+                  ],
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "payLater"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "additionalNotes": {
+      "type": "object",
+      "title": "i18n(spc.additional.notes)",
+      "properties": {
+        "additionalNotes": {
+        "title": "i18n(spc.notes)",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  },
+  "definitions" : {
+    "methodOfPayment": {
+      "title": "i18n(fees.payment-method.select)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "alreadyPaid",
+        "payLater"
+      ],
+      "enumNames": [
+        "i18n(fees.already.paid)",
+        "i18n(fees.pay.later)"
+      ]
+    },
+    "marketingDeclaration": {
+      "title": "i18n(declaration.marketing.title)",
+      "type": "object",
+      "properties": {
+        "authority": {
+          "title": "i18n(declaration.marketing.authority)",
+          "type": "string",
+          "enum": [
+            "AUTHORITY_NATIONAL",
+            "AUTHORITY_EUROPEAN"
+          ],
+          "enumNames": [
+            "i18n(AUTHORITY_NATIONAL)",
+            "i18n(AUTHORITY_EUROPEAN)"
+          ]
+        },
+        "authorizationNumber": {
+          "title": "i18n(declaration.marketing.authorization-number)",
+          "type": "string"
+        },
+        "authorizationDate": {
+          "title": "i18n(declaration.marketing.authorization-date)",
+          "type": "string"
+        },
+        "publicationDate": {
+          "title": "i18n(declaration.marketing.publication-date) (Optional)",
+          "type": "string"
+        },
+        "productName": {
+          "title": "i18n(basic-filing.product-name)",
+          "type": "string"
+        },
+        "firstMarketingAuthorisation": {
+          "title": "i18n(declaration.marketing.firstMarketingAuthorisation)",
+          "type": "string",
+          "enum": [
+            "FIRST_MARKETING_AUTHORISATION_YES",
+            "FIRST_MARKETING_AUTHORISATION_NO"
+          ],
+          "enumNames": [
+            "i18n(FIRST_MARKETING_AUTHORISATION_YES)",
+            "i18n(FIRST_MARKETING_AUTHORISATION_NO)"
+          ]
+        }
+      },
+      "dependencies": {
+        "firstMarketingAuthorisation": {
+          "oneOf": [
+            {
+              "properties": {
+                "firstMarketingAuthorisation": {
+                  "enum": [
+                    "FIRST_MARKETING_AUTHORISATION_YES"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "firstMarketingAuthorisation": {
+                  "enum": [
+                    "FIRST_MARKETING_AUTHORISATION_NO"
+                  ]
+                },
+                "firstMarketingAuthorisationContainer": {
+                  "type": "object",
+                  "title": "i18n(declaration.marketing.firstMarketingAuthorisationContainer)",
+                  "description": "",
+                  "properties": {
+                    "country": {
+                      "$ref": "/procedures/common/form/geo.jsonschema/definitions/country"
+                    },
+                    "authorizationNumber": {
+                      "title": "i18n(declaration.marketing.authorization-number)",
+                      "type": "string"
+                    },
+                    "authorizationDate": {
+                      "title": "i18n(declaration.marketing.authorization-date)",
+                      "type": "string"
+                    },
+                    "notificationDate": {
+                      "title": "i18n(declaration.marketing.notification-date) (Optional)",
+                      "type": "string"
+                    },
+                    "productName": {
+                      "title": "i18n(basic-filing.product-name)",
+                      "type": "string"
+                    },
+                    "legalBases": {
+                      "title": "i18n(declaration.marketing.legal.bases)",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "country",
+                    "authorizationNumber",
+                    "authorizationDate",
+                    "productName",
+                    "legalBases"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "authority",
+        "authorizationNumber",
+        "authorizationDate",
+        "productName",
+        "firstMarketingAuthorisation"
+      ]
+    }
+  }
+}

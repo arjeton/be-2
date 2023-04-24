@@ -1,0 +1,615 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!--application-info
+This tag provides a container for any general information concerning an
+application.
+-->
+<!ELEMENT application-info  (file-reference-id?,application-reference,
+               date-of-earliest-priority?,applicant-name,classifications-ipcr, classification-national*) >
+
+<!--Applicant's or agent's file reference, if desired,
+-->
+<!ELEMENT file-reference-id  (#PCDATA) >
+
+<!--********************************
+Application reference information: application number, country
+(INID 21, ST.32:B210)
+In case of a filing refererence, the kind code is empty and the date refers to
+the filing date
+-->
+<!ELEMENT application-reference  (document-id) >
+
+<!ATTLIST application-reference
+               id  ID    #IMPLIED 
+               appl-type  CDATA    #IMPLIED  >
+
+<!--Where the international application claims the priority of several earlier
+applications, the filing date of the earliest application whose priority is
+claimed must be indicated as the priority date.
+-->
+<!ELEMENT date-of-earliest-priority  (date) >
+
+<!--+++++++++++++++++++++++++++++++++++++++
+** EPO - Old Form 1507; new layout:
+
+<application-reference> <document-id> - application number
+followed by:
+The name of the applicant (without address information)
+(ST.32:B711)
+
+Example:
+<applicant-name><name>IVECO S.P.A.</name></applicant-name>
+-->
+<!ELEMENT applicant-name  ((name | (prefix?,(last-name | orgname),first-name?,
+               middle-name?,first-last-name?,second-last-name?,suffix?,iid?,role?,
+               orgname?,department?,synonym*)),registered-number?) >
+
+<!--***********
+Classification IPCR - NEW IPCR8
+(INID 53, ST.32:B530)
+-->
+<!ELEMENT classifications-ipcr  (classification-ipcr+) >
+
+<!ATTLIST classifications-ipcr
+               id  ID    #IMPLIED  >
+
+
+<!--
+  Domestic or national classification.
+    (INID 52,  ST.32:B520)
+
+@scheme-name:
+This attribute is used when it is necessary to distinguish between different classification schemes 
+which may be in use at the same Office.  In general, abbreviated forms should be used where they 
+are widely recognized, for example scheme-name="CPC" for the Cooperative Patent Classification.
+ 
+-->
+<!ELEMENT classification-national (country , edition? , main-classification , further-classification* , (additional-info | linked-indexing-code-group | unlinked-indexing-code)* , text?)>
+
+<!ATTLIST classification-national  id ID  #IMPLIED 
+                                scheme-name CDATA #IMPLIED>
+
+<!--Document identification refers to patents (and patent applications) only. See WIPO ST.14-->
+<!ELEMENT document-id  (country,doc-number,kind?,name?,date?) >
+
+<!ATTLIST document-id
+               lang  CDATA    #IMPLIED  >
+
+<!--Date: components of a date. Format: YYYYMMDD-->
+<!ELEMENT date  (#PCDATA) >
+
+<!--Name: If no distinction or detail can be given. Also to be used for: personal (natural person) and corporate (legal entity) names-->
+<!ELEMENT name  (#PCDATA) >
+
+<!ATTLIST name
+               name-type (legal | natural)   #IMPLIED  >
+
+<!--Title: e.g., Mr., Mrs., Dr. etc-->
+<!ELEMENT prefix  (#PCDATA) >
+
+<!--Last, family, surname-->
+<!ELEMENT last-name  (#PCDATA) >
+
+<!--Organisation name or company name-->
+<!ELEMENT orgname  (#PCDATA) >
+
+<!--First or given name(s), initial(s)-->
+<!ELEMENT first-name  (#PCDATA) >
+
+<!--Middle name(s) or initial(s)-->
+<!ELEMENT middle-name  (#PCDATA) >
+
+<!--First last name (father's family surname), for some countries (such as Spain) is legally mandatory.
+-->
+<!ELEMENT first-last-name  (#PCDATA) >
+
+<!--Second last name (mother's family surname), for some countries (such as Spain) is legally mandatory.
+-->
+<!ELEMENT second-last-name  (#PCDATA) >
+
+<!--Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)-->
+<!ELEMENT suffix  (#PCDATA) >
+
+<!--SDOBI : Individual id-->
+<!ELEMENT iid  (#PCDATA) >
+
+<!--Role; e.g., President, Chairman, etc.-->
+<!ELEMENT role  (#PCDATA) >
+
+<!--Department, division, section, etc. name-->
+<!ELEMENT department  (#PCDATA) >
+
+<!--Synonym-->
+<!ELEMENT synonym  (#PCDATA) >
+
+<!--Registered number-->
+<!ELEMENT registered-number  (#PCDATA) >
+
+<!--*******************************
+* IPC DATA - NEW IPC8
+*******************************
+International Patent Classification (IPC) data;
+- to be implemented in 2006
+- use B510 for until week 52, 2005
+- see: http://www.wipo.int/scit/en/standards/pdf/03-08-01.pdf:
+
+Industrial property offices are asked to implement this new version of Standard ST.8 for
+all patent documents with a publication date from January 1, 2006, onwards. For patent
+documents published prior to that date, the previous version of the Standard should
+continue to be used.
+. . .
+This recording convention provides that symbols of the International Patent
+Classification (IPC) should be
+presented on machine-readable records for the exchange of information in
+machine-readable form in a fixed-length field in 50 positions, each part of
+the Int. Cl. symbol being recorded in specific positions and in the manner prescribed.
+- this can be recorded within the <text> tag.
+
+Position(s) Content Values
+
+1 Section A-H
+2 to 3 Class 01-99
+4 Subclass A-Z
+5 to 8 Main Group (right aligned) 1-9999, blank
+9 Separating character / ("Slash")
+10 to 15 Subgroup (left aligned) 00-999999 blank
+16 to 19 For future use 4 blanks
+20 to 27 Version indicator YYYYMMDD date format
+28 Classification level C, A, S
+29 First or later position of symbol F, L
+30 Classification value (inventive or non-inventive) I, N
+31 to 38 Action date YYYYMMDD date format
+39 Original or reclassified data BRVD
+40 Source of classification data H M G
+41-42 Generating office AA ZZ (ST.3)
+43-50 For future use 8 blanks
+
+EPO usage:
+- we will NOT use the detailed element markup as listed below (it is far too heavy)
+- we will use "a fixed-length field in 50 positions" as specified above
+
+EPO layout:
+- for the title page to be determined
+
+Example:
+
+<B510EP>
+<classification-ipcr sequence="1">
+<text>B28B...5/00........20060101AFI20070601BHEP........</text>
+</classification-ipcr>
+</B510EP>
+
+-->
+<!ELEMENT classification-ipcr  ((ipc-version-indicator,classification-level?,
+               section,class,subclass,main-group?,subgroup?,symbol-position?,
+               classification-value?,action-date?,generating-office?,
+               classification-status?,classification-data-source?) | text) >
+
+<!ATTLIST classification-ipcr
+               id  ID    #IMPLIED 
+               sequence  CDATA    #IMPLIED  >
+
+<!--
+  International Patent Classification (IPC) data;
+    (INID 51,  ST.32:B510)
+
+-->
+<!ELEMENT classification-ipc (edition , main-classification , further-classification* , (additional-info | linked-indexing-code-group | unlinked-indexing-code)* , text?)>
+
+<!ATTLIST classification-ipc  id ID  #IMPLIED >
+
+
+<!--Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc. Also includes EP, WROP-->
+<!ELEMENT country  (#PCDATA) >
+
+<!--The number of the referenced patent (or application) document-->
+<!ELEMENT doc-number  (#PCDATA) >
+
+<!--Document kind code; e.g., A1 (INID 13, ST.32:B130)-->
+<!ELEMENT kind  (#PCDATA) >
+
+<!--Positions 20 to 27: Version indicator
+Although in the paper publications a version indicator may contain
+four or six digits, the version indicator in machinereadable
+records contains eight digits, namely YYYYMMDD with Y for year, M for month and D for day.
+-->
+<!ELEMENT ipc-version-indicator  (date) >
+
+<!--Position 28 : Classification level
+Offices are expected to classify each subject matter only in one level (core or advanced).
+However, both levels need to be completely represented in the master classification database
+and thus a level indicator is needed. The level indicator is also useful for indicating
+situations where an office does not classify in either the core or the advanced level
+classification, i.e., when an office only assigns classifications to the subclass level.
+The level indicator enables to make the difference between core, advanced and subclass levels.
+The letters C (Core), A (Advanced) and S (Subclass) are
+used for this one-digit field.
+
+Levels: ipcr-advanced, ipcr-core
+-->
+<!ELEMENT classification-level  (#PCDATA) >
+
+<!--Positions 1 to 19: Recording of the parts of the IPC symbols
+IPC symbols are defined in Part 5 of the WIPO Handbook on
+Industrial Property Information and Documentation and in
+the latest version of the Guide to the IPC.
+-->
+<!ELEMENT section  (#PCDATA) >
+
+<!--Classification code; e.g., ipc, dewey etc.-->
+<!ELEMENT class  (#PCDATA) >
+
+<!ATTLIST class
+               class-type  CDATA    #IMPLIED  >
+
+<!ELEMENT subclass  (#PCDATA) >
+
+<!ELEMENT main-group  (#PCDATA) >
+
+<!ELEMENT subgroup  (#PCDATA) >
+
+<!--Position 29: First or later position of symbols
+The position of the first invention information classification
+can be recognized by this field. The letters F and L are used
+for first and later position, respectively.
+-->
+<!ELEMENT symbol-position  (#PCDATA) >
+
+<!--Position 30: Classification value (inventive or non-inventive)
+The difference between invention information and other information
+is important for the retrieval of the information. The
+letters I and N are used for the invention and non-invention
+information, respectively.
+-->
+<!ELEMENT classification-value  (#PCDATA) >
+
+<!--Positions 31-38: Action date
+The date of assigning the classification symbol (action date)
+is represented by eight digits, namely YYYYMMDD. This
+date can be used to check if a classification needs to be
+reviewed after revision of the scheme, e.g., in case of creating
+new subdivisions.
+-->
+<!ELEMENT action-date  (date) >
+
+<!--Positions 41-42: Generating Office
+Since part of the original data in the advanced level and
+the reclassified data can be delivered by offices other than the
+publishing office, the information source of such data is
+recorded by a field of two characters. The country or office
+code CC, as defined by WIPO Standard ST.3, must be used.
+-->
+<!ELEMENT generating-office  (country) >
+
+<!--Position 39: Original and reclassified data
+Original data is the first data assigned to the document.
+In case of a publishing office assigning classification symbols at
+the core level, another office may also assign symbols at
+the advanced level as original data.
+Reclassified data is data changed due to a change in the classification schemes.
+Various data is data changed due to an incidental reclassification
+of an individual document, such as the correction of a mistake.
+Deleted data is data which has to be deleted from the
+Master Classification Database, due to a change in assigning of
+classification symbols to a document.
+
+The indication of the different types of data is marked by the letters B for the basic or original data,
+R for reclassified data, V for various incidental changes, and D for data to be deleted.
+Possible status: original-classification, reclassified, various-classification, deleted-classification
+-->
+<!ELEMENT classification-status  (#PCDATA) >
+
+<!--Position 40: Source of classification data
+The following sources of classification data are foreseen:
+- Intellectual classification by persons,
+value H for human generated data.
+- Machine classification by the propagation of earlier
+intellectual classification through the use of common
+priorities in the patent application.
+The value M is used in this case and will facilitate later corrections.
+- Classification symbols generated by software using automatic
+analysis of the content of the patent document.
+The letter G is used to indicate this source of generated data.
+-->
+<!ELEMENT classification-data-source  (#PCDATA) >
+
+<!--If no structure is possible, enter text (without markup)-->
+<!ELEMENT text  (#PCDATA) >
+
+<!--Address components: Address formats differ from country to country If no structure possible use text-->
+<!ELEMENT address  ((address-1?,address-2?,address-3?,address-4?,address-5?,
+               mailcode?,pobox?,room?,address-floor?,building?,street?,city?,county?,
+               state?,postcode?,country) | text) >
+
+<!--Address, first line-->
+<!ELEMENT address-1  (#PCDATA) >
+
+<!--Address, second line-->
+<!ELEMENT address-2  (#PCDATA) >
+
+<!--Address, third line-->
+<!ELEMENT address-3  (#PCDATA) >
+
+<!--Address, fourth line-->
+<!ELEMENT address-4  (#PCDATA) >
+
+<!--Address, fifth line-->
+<!ELEMENT address-5  (#PCDATA) >
+
+<!--Address floor; e.g., 10th-->
+<!ELEMENT address-floor  (#PCDATA) >
+
+<!--ADDRESSBOOK GROUP: Holds name and contact information for individuals/organizations The LANG attribute is REQUIRED for certain document types, e.g., the JPO PCT Request where names and addresses may be repeated in two different languages. If no structure possible use text.-->
+<!ELEMENT addressbook  ((((name | (prefix?,(last-name | orgname),first-name?,
+               middle-name?,first-last-name?,second-last-name?,suffix?,iid?,role?,
+               orgname?,department?,synonym*)),registered-number?),address,phone*,
+               fax*,email*,url*,ead*,dtext?) | text) >
+
+<!ATTLIST addressbook
+               id  ID    #IMPLIED 
+               lang  CDATA    #IMPLIED  >
+
+<!--Assistant Examiner.
+(ST.32:B747)
+-->
+<!ELEMENT assistant-examiner  (((name | (prefix?,(last-name | orgname),first-name?,
+               middle-name?,first-last-name?,second-last-name?,suffix?,iid?,role?,
+               orgname?,department?,synonym*)),registered-number?),phone?,fax?,
+               email?,electronic-signature?) >
+
+<!--Authorized Officer.
+-->
+<!ELEMENT authorized-officer  (((name | (prefix?,(last-name | orgname),first-name?,
+               middle-name?,first-last-name?,second-last-name?,suffix?,iid?,role?,
+               orgname?,department?,synonym*)),registered-number?),phone?,fax?,
+               email?,electronic-signature?) >
+
+<!--A non-PKI electronic signature
+-->
+<!ELEMENT basic-signature  (fax-image | text-string | click-wrap) >
+
+<!--Building information in address; e.g., Hoffman building-->
+<!ELEMENT building  (#PCDATA) >
+
+<!--City or town name-->
+<!ELEMENT city  (#PCDATA) >
+
+<!--A simple 'signature';
+e.g., clicking a button labeled 'accept' or 'I agree'
+-->
+<!ELEMENT click-wrap   EMPTY  >
+
+<!--communication-info
+Information about the communication of data
+-->
+<!ELEMENT communication-info  (completion-date?,date-of-mailing,office-admin,
+               type-of-notification,examiners?,list-of-copies?) >
+
+<!--completion-date
+-->
+<!ELEMENT completion-date  (date) >
+
+<!--copy-to
+The copy of the document was sent to another office in the following roles:
+- ib : International Bureau
+- ro : Receiving Office (PCT)
+- isa : International Search Authority
+- sisa : Supplementary International Search Authority
+- ipea : International Preliminary Examination Authority
+- do : Designated Office (PCT Chapter I)
+- eo : Elected Office (PCT - Chapter II)
+- other : to be specified in role-other, intended for national use
+-->
+<!ELEMENT copy-to  (correspondence-address) >
+
+<!ATTLIST copy-to
+               copy-to-role (ib | ro | isa | sisa | ipea | do | eo | other)  
+                #REQUIRED 
+               role-other  CDATA    #IMPLIED  >
+
+<!--Address used for general correspondence-->
+<!ELEMENT correspondence-address  (customer-number | addressbook+) >
+
+<!--County, parish, department, etc (mainly UK, USA)-->
+<!ELEMENT county  (#PCDATA) >
+
+<!--Customer number for agents by office-->
+<!ELEMENT customer-number  (#PCDATA) >
+
+<!--Date of mailing:
+
+-->
+<!ELEMENT date-of-mailing  (date) >
+
+<!--Descriptive text-->
+<!ELEMENT dtext  (#PCDATA) >
+
+<!--Electronic address use for other than email-->
+<!ELEMENT ead  (#PCDATA) >
+
+<!--***
+A signature represented by electronic means
+-->
+<!ELEMENT electronic-signature  (basic-signature | enhanced-signature) >
+
+<!ATTLIST electronic-signature
+               date  CDATA    #REQUIRED 
+               place-signed  CDATA    #IMPLIED  >
+
+<!--Email address Attribute: email-purpose reason for which email address is included: informal for informal contact only general for any type of communication confirmation any type of communication, but formal messages followed up by conventional mailing (to the extent offered) main where applicant desires this address to be used as primary means of contact as a replacement of the use of conventional post (to the extent that an Office offers this) the default value depends on e-mail policies of the relevant Office. For PCT purposes as at 1 July 2008, no attribute being included is equivalent to 'informal'-->
+<!ELEMENT email  (#PCDATA) >
+
+<!ATTLIST email
+               email-purpose (informal | general | advance | main)   #IMPLIED  >
+
+<!--A PKI / PKCS #7 digital signature data type
+-->
+<!ELEMENT enhanced-signature  (pkcs7) >
+
+<!--Persons acting on the document.
+(ST.32:B745)
+-->
+<!ELEMENT examiners  (primary-examiner?,assistant-examiner?,senior-examiner?,
+               legal-member?,authorized-officer?,address?) >
+
+<!--Fax number-->
+<!ELEMENT fax  (#PCDATA) >
+
+<!--A TIFF image of a signature
+-->
+<!ELEMENT fax-image   EMPTY  >
+
+<!ATTLIST fax-image
+               file  CDATA    #REQUIRED  >
+
+<!ELEMENT important   EMPTY  >
+
+<!ELEMENT information   EMPTY  >
+
+<!--Legal Member
+EPO: chairman of the examining division
+-->
+<!ELEMENT legal-member  (((name | (prefix?,(last-name | orgname),first-name?,
+               middle-name?,first-last-name?,second-last-name?,suffix?,iid?,role?,
+               orgname?,department?,synonym*)),registered-number?),phone?,fax?,
+               email?,electronic-signature?) >
+
+<!--list-of-copies
+List of all addresees to which copies are sent.
+The correspondance-address is for the main addressee, the copy-to elements
+are used for additional copies sent.
+-->
+<!ELEMENT list-of-copies  (correspondence-address,copy-to*) >
+
+<!--Organizational mail code-->
+<!ELEMENT mailcode  (#PCDATA) >
+
+<!--office-admin
+Provides the correspondence address of the drafting office.
+-->
+<!ELEMENT office-admin  (addressbook) >
+
+<!--payment due
+According the type limit, payment due within a period or by a certain date.
+-->
+<!ELEMENT payment-due  (time-limit) >
+
+<!--Telephone number-->
+<!ELEMENT phone  (#PCDATA) >
+
+<!--PKCS7 digital signature
+-->
+<!ELEMENT pkcs7   EMPTY  >
+
+<!--Post Office Box number-->
+<!ELEMENT pobox  (#PCDATA) >
+
+<!--Postal code or zip code-->
+<!ELEMENT postcode  (#PCDATA) >
+
+<!--Primary Examiner.
+(ST.32:B746)
+-->
+<!ELEMENT primary-examiner  (((name | (prefix?,(last-name | orgname),first-name?,
+               middle-name?,first-last-name?,second-last-name?,suffix?,iid?,role?,
+               orgname?,department?,synonym*)),registered-number?),phone?,fax?,
+               email?,electronic-signature?) >
+
+<!--reply due
+According the type limit, reply due within a period or by a certain date.
+-->
+<!ELEMENT reply-due  (time-limit) >
+
+<!ATTLIST reply-due
+               reply-to (ib | ro | isa | sisa | ipea | do | eo | other)   #IMPLIED 
+               reply-to-other  CDATA    #IMPLIED  >
+
+<!--for-further-action
+The next action depends on the procedural context.
+Text might be added to refer to an item in the text, in the forms or other forms.
+-->
+<!ELEMENT for-further-action  (#PCDATA) >
+
+<!--Address room; e.g., Room 55B-->
+<!ELEMENT room  (#PCDATA) >
+
+<!--Senior Examiner.
+EPO: chairman of the examining division
+-->
+<!ELEMENT senior-examiner  (((name | (prefix?,(last-name | orgname),first-name?,
+               middle-name?,first-last-name?,second-last-name?,suffix?,iid?,role?,
+               orgname?,department?,synonym*)),registered-number?),phone?,fax?,
+               email?,electronic-signature?) >
+
+<!--Region of country; e.g., state, province, etc.-->
+<!ELEMENT state  (#PCDATA) >
+
+<!--Street may contain house number or name-->
+<!ELEMENT street  (#PCDATA) >
+
+<!--A simple text string is to be used as the basic electronic signature;
+e.g., John Doe <text-string>/jd/</text-string>
+-->
+<!ELEMENT text-string  (#PCDATA) >
+
+<!ELEMENT time-limit  (#PCDATA) >
+
+<!ATTLIST time-limit
+               period (date | months | weeks | days)   #IMPLIED  >
+
+<!--type-of-nofication
+Indicates the type of notification for the applicant.
+-->
+<!ELEMENT type-of-notification  (information | important | for-further-action | 
+               reply-due | payment-due) >
+
+<!--Universal Resource Locator; e.g. www.wipo.int-->
+<!ELEMENT url  (#PCDATA) >
+
+<!--
+  Main classification.
+    (ST.32:B511/B521)
+
+-->
+<!ELEMENT main-classification (#PCDATA)>
+
+<!--
+  Further/secondary classification
+    (ST.32:B512/B522)
+
+-->
+<!ELEMENT further-classification (#PCDATA)>
+
+<!ATTLIST further-classification  id       ID     #IMPLIED
+                                    sequence CDATA  #IMPLIED >
+
+<!--
+  Linked indexing code.
+    (ST.32:B514/B524)
+
+-->
+<!ELEMENT linked-indexing-code-group (main-linked-indexing-code , sub-linked-indexing-code+)>
+
+
+<!--
+  Sub/further Linked Indexing Code.
+
+-->
+<!ELEMENT sub-linked-indexing-code (#PCDATA)>
+
+
+<!--
+  Main Linked Indexing Code.
+
+-->
+<!ELEMENT main-linked-indexing-code (#PCDATA)>
+
+<!--
+  Unlinked indexing code.
+    (ST.32:B515/B525)
+
+-->
+<!ELEMENT unlinked-indexing-code (#PCDATA)>
+
+
+

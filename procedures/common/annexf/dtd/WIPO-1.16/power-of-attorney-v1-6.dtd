@@ -1,0 +1,685 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  power-of-attorney v1.6     2017  JULY                                       *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD POWER OF ATTORNEY 1.6//EN" "power-of-attorney-v1-6.dtd"*
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/power-of-attorney-v1-6.dtd  *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Asahi HASEBE : 01/07/17 incorporated changes from PFC
+..changed version number from v1.5 to v1.6
+..added an attribute "id" to signatory
+MO: 01/07/08 incorporated changes from PFCs:
+..changed version number from v1.4 to v1.5
+..multiple addressbook allowed in attorney-or-agent (PFC08/001)
+..added attribute 'email-purpose' to email (PFC08/006)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.3 to v1.4
+..implementation of PFC06/001
+..added element 'sup' to u (PFC06/003)
+..added element 'sup' to i (PFC06/003)
+..added element 'sup' to b (PFC06/003)
+..added element 'sub' to u (PFC06/003)
+..added element 'sub' to i (PFC06/003)
+..added element 'sub' to b (PFC06/003)
+..added element 'o' to invention-title, b, i, sup, sup2, sub, sub2, heading, claim-text,
+  p, small-caps, dt, dd, li, crossref, figref, othercit, statement (PFC06/003)
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+HT: 14/12/04 incorporated changes from PFCs:
+..changed attribute he, wi of doc-page from 'NMTOKEN' to 'CDATA'
+..added attribute 'id' to addressbook, application-reference
+..added attribute 'ocr' to doc-page
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.3
+..added value 'national-office', 'regional-office' to attribute produced-by of root element
+HT: 16/12/03 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..added element 'sup2' and 'sub2' to sup and sub
+JD: 03/02/03 Incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added attribute 'orientation' to doc-page
+..added (last-name | orgname) option in %name_group;
+..made postcode optional within address
+..removed br from b, i, smallcaps
+2001/12/01
+..released version number as v1.0
+********************************************************************************
+
+This DTD is based on PCT-EASY power of attorney
+
+Attributes:
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+  date-produced = YYYYMMDD e.g, 20011230  if desired, 12 characters maximum
+
+-->
+<!ELEMENT power-of-attorney (((customer-number? , attorney-or-agent*) , represent-before , (invention-title | file-reference-id | application-reference)* , ro , payor , signatories) | doc-page+)>
+
+<!ATTLIST power-of-attorney  lang          CDATA  #REQUIRED
+                               dtd-version   CDATA  #IMPLIED
+                               file          CDATA  #IMPLIED
+                               date-produced CDATA  #IMPLIED
+                               title                (power-of-attorney | general-power-of-attorney )  #REQUIRED
+                               status        CDATA  #IMPLIED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+  Attorney or agent has the power to make or receive payments on behalf of the
+  applicant (yes| no)                             
+
+-->
+<!ELEMENT payor EMPTY>
+
+<!ATTLIST payor  role   (yes | no )  #REQUIRED >
+
+<!--
+  doc-page - DOCument or PAGE
+
+  This is primarily to be used when data for the whole or major sections of an
+  application are in image format OR other formats such as pdf.
+
+  Page range attributes are given when required
+    pp  - page range
+    ppf - first page 
+    ppl - last page (for pdf).
+  The 'img' may also be used for complete pages, e.g. in drawings 
+
+  Recommended id = docp0001, docp0002, etc.
+  Attributes "he" and "wi" mean height and width. 
+
+
+-->
+<!ELEMENT doc-page EMPTY>
+
+<!ATTLIST doc-page  id          ID     #IMPLIED
+                      he          CDATA  #REQUIRED
+                      wi          CDATA  #REQUIRED
+                      type               (jpg | pdf | tif )  #REQUIRED
+                      alt         CDATA  #IMPLIED
+                      pp          CDATA  #IMPLIED
+                      ppf         CDATA  #IMPLIED
+                      ppl         CDATA  #IMPLIED
+                      file        CDATA  #REQUIRED
+                      ocr         CDATA  #IMPLIED
+                      color              (color | bw )  #IMPLIED
+                      orientation        (portrait | landscape )  'portrait' >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Title of the Invention:
+    (INID 54, ST.32:B540/B542)
+
+  Preferably two to seven words when in English or translated into English and
+  precise. (Rule 4.3)
+
+  Recommended id = 'invt'
+
+-->
+<!ELEMENT invention-title (#PCDATA | b | i | u | o | sup | sub)*>
+
+<!ATTLIST invention-title  id   ID     #IMPLIED
+                             lang CDATA  #IMPLIED >
+
+<!--
+  Underscore: style - single is default
+
+-->
+<!ELEMENT u (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST u  style   (single | double | dash | dots )  'single' >
+
+<!--
+  Overscore: style - single is default
+
+-->
+<!ELEMENT o (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST o  style   (single | 
+                       double | 
+                       dash | 
+                       dots | 
+                       leftarrow | 
+                       rightarrow | 
+                       leftrightarrow )  'single' >
+
+<!--
+  Applicant's legal representative
+    (INID 74, ST.32:B740)
+
+-->
+<!ELEMENT attorney-or-agent (addressbook+ , range-of-authority*)>
+
+<!ATTLIST attorney-or-agent  rep-type   (agent | attorney | common-representative )  #REQUIRED >
+
+<!--
+  ADDRESSBOOK GROUP: 
+  Holds name and contact information for individuals/organizations
+
+  The LANG attribute is REQUIRED for certain document types,
+  e.g., the JPO PCT Request where names and addresses may be repeated in two
+    different languages. If no structure possible use text.
+
+-->
+<!ELEMENT addressbook ((%name_group; , address , phone* , fax* , email* , url* , ead* , dtext?) | text)>
+
+<!ATTLIST addressbook  id   ID     #IMPLIED
+                         lang CDATA  #IMPLIED >
+
+<!--
+	Email address
+
+	Attribute:
+		email-purpose    reason for which email address is included:
+informal     for informal contact only
+general      for any type of communication
+confirmation any type of communication, but formal messages followed up
+             by conventional mailing (to the extent offered)
+main         where applicant desires this address to be used as primary
+             means of contact as a replacement of the use of conventional
+             post (to the extent that an Office offers this)
+		the default value depends on e-mail policies of the relevant Office. 
+		For PCT purposes as at 1 July 2008, no attribute being included is 
+		equivalent to 'informal'
+
+-->
+<!ELEMENT email (#PCDATA)>
+
+<!ATTLIST email  email-purpose   (informal | general | advance | main )  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Signatories
+
+-->
+<!ELEMENT signatories (signatory+)>
+
+
+<!--
+  PCT/RO/101 Box No. X:
+  The signature must be that of the applicant (if there are several applicants, all
+  must sign); however, the signature may be that of the agent, or the common
+  representative, where a separate power of attorney appointing the agent or the
+  common representative, respectively, or a copy of a general power of attorney is
+  already in possession of the receiving Office, is furnished...
+  (PCT Rules 4.1(d), 4.15, and 90)
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+
+-->
+<!ELEMENT signatory (%name_group; , address? , electronic-signature , signatory-capacity?)>
+
+<!ATTLIST signatory
+                  id ID #IMPLIED>
+
+
+<!--
+  The capacity in which the person signs
+
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  Receiving Office
+
+-->
+<!ELEMENT ro (country)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+
+<!--
+  Bold formatting for text
+
+-->
+<!ELEMENT b (#PCDATA | i | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Italic formatting for text
+
+-->
+<!ELEMENT i (#PCDATA | b | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Small capitals
+
+-->
+<!ELEMENT smallcaps (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  The body(ies) which the attorney or agent is appointed to represent the applicant
+  before
+
+-->
+<!ELEMENT represent-before (all-authorities | isa-only | ipea-only)>
+
+
+<!--
+  Representative has power to represent before International Preliminary
+  Examination Authority only
+
+-->
+<!ELEMENT ipea-only EMPTY>
+
+
+<!--
+  Representative has power to represent before International Search Authority only
+
+-->
+<!ELEMENT isa-only EMPTY>
+
+
+<!--
+  Attorney or agent may represent before all authorities
+
+-->
+<!ELEMENT all-authorities EMPTY>
+
+
+<!--
+  The type of authority held by the attorney or agent
+
+-->
+<!ELEMENT range-of-authority (#PCDATA)>
+
+
+<!--
+  Descriptive text
+
+-->
+<!ELEMENT dtext (#PCDATA)>
+
+
+<!--
+  Universal Resource Locator; e.g. www.wipo.int
+
+-->
+<!ELEMENT url (#PCDATA)>
+
+
+<!--
+  Fax number
+
+-->
+<!ELEMENT fax (#PCDATA)>
+
+
+<!--
+  Telephone number
+
+-->
+<!ELEMENT phone (#PCDATA)>
+
+
+<!--
+  Electronic address use for other than email
+
+-->
+<!ELEMENT ead (#PCDATA)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Customer number for agents by office
+
+-->
+<!ELEMENT customer-number (#PCDATA)>
+
+

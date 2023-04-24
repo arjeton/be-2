@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="workflows" name="workflows" namespace="http://camunda.org/schema/1.0/dmn" expressionLanguage="groovy" exporter="Camunda Modeler" exporterVersion="5.0.0">
+  <decision id="import-common-decisions" name="import common decisions">
+    <variable id="import-common-decisions-result" name="result" />
+    <literalExpression id="import-common-decisions-expr" expressionLanguage="groovy">
+      <text>
+        [
+          "definitions": ['communication-address-utils-definition'],
+          "migration": ['postprocess-migration-event-communication-address'],
+          "basic": [ "deletable-check-status", "isCheckDigitCorrect-definition"],
+          "parties": [
+                    "uischema-parties-communication-address-info", "uischema-parties-communication-address-error",
+                    "postprocess-parties-update-communication-address", "uischema-parties-communication-address-coupled",
+                     "custom-parties-updated", "workflow-parties-communication-address-required",
+                     ],
+          "fees": [ "createFeeObject-definition" ]
+        ]
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-userReference" name="Workflow&#10;User Reference">
+    <variable id="basicFilingInfo-userReference" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-userReference">
+      <text>
+        if (submission?.basicFilingInfo?.userReference == null) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.required"]
+        } else if (!(submission.basicFilingInfo.userReference ==~ /^[\d\w\s\-_\.,"'=&lt;&gt;\(\)\\\/À-ž\u0600-\u06FF]*$/)) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.invalid"]
+        } else if (submission.basicFilingInfo.userReference.length() &gt; 25) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.max-characters"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-applicationNumberRequired" name="Workflow&#10; Application number required">
+    <variable id="basicFilingInfo-applicationNumberRequired" name="result" />
+    <literalExpression id="workflow-basicFilingInfo-applicationNumberRequired-exp">
+      <text>
+        if (submission?.basicFilingInfo?.requestType != 'REQUEST_EXTENSION_PEDIATRIC_USE') {
+          if (submission?.basicFilingInfo?.applicationNumberContainer?.applicationNumber == null) {
+            result = [error: "submission.basicfiliginfo.businessrule.application-number-container.application-number.required"]
+          }
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-publicationNumberRequired" name="Workflow&#10; Publication number required">
+    <variable id="basicFilingInfo-publicationNumberRequired" name="result" />
+    <literalExpression id="workflow-basicFilingInfo-publicationNumberRequired-exp">
+      <text>
+        if (submission?.basicFilingInfo?.requestType != 'REQUEST_EXTENSION_PEDIATRIC_USE') {
+          if (submission?.basicFilingInfo?.applicationNumberContainer?.publicationNumber == null) {
+            result = [error: "submission.basicfiliginfo.businessrule.application-number-container.publication-number.required"]
+          }
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-extra-basicFilingInfoPublicationNumber" name="Workflow&#10; Publication number format">
+    <variable id="basicFilingInfo-publicationNumber-variable" name="result" />
+    <literalExpression id="workflow-basicFilingInfo-publication-number">
+      <text>
+        if (submission?.basicFilingInfo?.applicationNumberContainer?.publicationNumber != null) {
+          if (!(submission?.basicFilingInfo?.applicationNumberContainer?.publicationNumber ==~ /^EP[0-9]{1,7}$/) ||
+                        submission?.basicFilingInfo?.applicationNumberContainer?.publicationNumber?.length() &gt; 9) {
+            result = [ error: "validation.publicationNumber.pattern", path: "basicFilingInfo.applicationNumberContainer.publicationNumber"]
+          }
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-extra-basicFilingInfoCheckDigit" name="Workflow&#10;Application number format">
+    <variable id="basicFilingInfo-applicationNumber" name="result" />
+    <literalExpression id="iteralExpression-basicFilingInfo-applicationNumber">
+      <text>
+        if (submission.basicFilingInfo?.applicationNumberContainer?.applicationNumber != null) {
+          def result = [:]
+          def applicationNumber =  submission.basicFilingInfo?.applicationNumberContainer?.applicationNumber
+
+          if (!(applicationNumber ==~ /^[0-9]{3}[0-9]*.{1}[0-9]{1}$/) ||
+              submission?.basicFilingInfo?.applicationNumberContainer?.applicationNumber?.length() &gt; 10) {
+            result = [ error: "validation.applicationNumber.pattern", path: "basicFilingInfo.applicationNumberContainer.applicationNumber"]
+            return result
+          } else if (!isCheckDigitCorrect(applicationNumber)) {
+            result = [error: "validation.applicationNumber.check.digit", path:"basicFilingInfo.applicationNumberContainer.applicationNumber"]
+            return result
+          }
+          return result
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-user-reference" name="UISchema&#10;Disable action bar when user reference is not valid">
+    <variable id="uischema-user-reference-result" name="result" />
+    <literalExpression id="uischema-user-reference-expr" expressionLanguage="groovy">
+      <text>
+        if (submission.basicFilingInfo?.userReference == null) {
+          result = [[ property: "ui:actionBar", "ui:disabled": true ]]
+        } else if (submission.basicFilingInfo?.userReference?.length() &gt; 25) {
+          result = [[ property: "ui:actionBar", "ui:disabled": true ]]
+        } else if (!(submission.basicFilingInfo?.userReference ==~ /^[\d\w\s\-_\.,"'=&lt;&gt;\(\)\\\/À-ž\u0600-\u06FF]*$/)) {
+          result = [[ property: "ui:actionBar", "ui:disabled": true ]]
+        } else {
+          result = [[ property: "ui:actionBar", "ui:disabled": false ]]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-titleOfInvention" name="Workflow&#10;Title of invention">
+    <variable id="basicFilingInfo-titleOfInvention" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-titleOfInvention">
+      <text>
+        if (submission?.basicFilingInfo?.titleOfInvention == null) {
+          result = [error: "submission.basicfiliginfo.businessrule.titleofinvention.required"]
+        } else if (submission.basicFilingInfo.titleOfInvention.length() &gt; 512) {
+          result = [ error: "submission.basicfiliginfo.businessrule.titleofinvention.max-characters"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-productName" name="Workflow&#10;Product name">
+    <variable id="basicFilingInfo-productName" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-productName">
+      <text>
+        if (submission?.basicFilingInfo?.productName == null) {
+          result = [ error: "submission.basicfiliginfo.businessrule.productname.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-filingDate" name="Workflow&#10;Filing date">
+    <variable id="basicFilingInfo-filingDate" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-filingDate">
+      <text>
+        if (submission?.basicFilingInfo?.filingDate == null  &amp;&amp; (submission?.basicFilingInfo?.requestType == 'PLANT_PROTECTION_PRODUCT' || submission?.basicFilingInfo?.requestType == 'MEDICINAL_PRODUCT')) {
+          result = [ error: "submission.basicfiliginfo.businessrule.filingdate.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-grantDate" name="Workflow&#10;Grant date">
+    <variable id="basicFilingInfo-grantDate" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-grantDate">
+      <text>
+        if (submission?.basicFilingInfo?.grantDate == null &amp;&amp; (submission?.basicFilingInfo?.requestType == 'PLANT_PROTECTION_PRODUCT' || submission?.basicFilingInfo?.requestType == 'MEDICINAL_PRODUCT')) {
+          result = [ error: "submission.basicfiliginfo.businessrule.grantdate.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-patentType" name="Workflow&#10;Patent type">
+    <variable id="basicFilingInfo-patentType" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-patentType">
+      <text>
+         if (submission?.basicFilingInfo?.patentType == null &amp;&amp; (submission?.basicFilingInfo?.requestType == 'PLANT_PROTECTION_PRODUCT' || submission?.basicFilingInfo?.requestType == 'MEDICINAL_PRODUCT')) {
+          result = [ error: "submission.basicfiliginfo.businessrule.patenttype.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-spcApplicationNumber" name="Workflow&#10;SPC application number">
+    <variable id="basicFilingInfo-spcApplicationNumber" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-spcApplicationNumber">
+      <text>
+         if (submission?.basicFilingInfo?.spcApplicationNumber == null &amp;&amp; submission?.basicFilingInfo?.requestType == 'REQUEST_EXTENSION_PEDIATRIC_USE') {
+          result = [ error: "submission.basicfiliginfo.businessrule.spcApplicationNumber.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-spcCertificateNumber" name="Workflow&#10;SPC certificate number">
+    <variable id="basicFilingInfo-spcCertificateNumber" name="result" />
+    <literalExpression id="literalExpression-basicFilingInfo-spcCertificateNumber">
+      <text>
+         if (submission?.basicFilingInfo?.spcCertificateNumber == null &amp;&amp; submission?.basicFilingInfo?.requestType == 'REQUEST_EXTENSION_PEDIATRIC_USE') {
+          result = [ error: "submission.basicfiliginfo.businessrule.spcCertificateNumber.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-parties-1" name="Workflow&#10;At least one party">
+    <variable id="parties-1-variable" name="result" />
+    <literalExpression id="literalExpression-parties-1">
+      <text>
+        if (submission.parties == null) {
+          result = [error: "submission.parties.businessrule.required"]
+        } else if (!submission.parties?.applicants?.any{applicant -&gt; applicant.state == "CONFIRMED"}) {
+          result = [error: "submission.parties.businessrule.confirmed-party-required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-parties-editing" name="Workflow&#10;Party being edit">
+    <variable id="parties-editing-variable" name="result" />
+    <informationRequirement id="InformationRequirement_parties-3">
+      <requiredDecision href="#workflow-parties-1" />
+    </informationRequirement>
+    <literalExpression id="literalExpression-parties-editing">
+      <text>
+        if (submission.parties?.applicants?.any{applicant -&gt; applicant.state != "CONFIRMED"}) {
+          result = [error: "submission.businessrule.editing-form"]
+        } else if (submission.parties?.representatives?.any{representative -&gt; representative.state != "CONFIRMED"}) {
+          result = [error: "submission.businessrule.editing-form"]
+        } else if(submission.parties?.communicationAddress?.any{ca -&gt; ca.state != "CONFIRMED"}) {
+          result = [error: "submission.businessrule.editing-form"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-marketingDeclarations" name="Workflow&#10;Declaration required">
+    <variable id="declaration-marketingDeclarations" name="result" />
+    <literalExpression id="literalExpression-declaration-marketingDeclarations">
+      <text>
+        if ((submission?.declaration?.marketingDeclarations == null || submission?.declaration?.marketingDeclarations?.size() != 1) &amp;&amp; (submission?.basicFilingInfo?.requestType == 'PLANT_PROTECTION_PRODUCT' || submission?.basicFilingInfo?.requestType == 'MEDICINAL_PRODUCT')) {
+          result = [ error: "submission.declaration.marketing-declarations.required"]
+        } 
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-marketingDeclarations-firstDeclaration-country" name="Workflow&#10;First declaration - country">
+    <variable id="declaration-marketingDeclarations-firstDeclaration-country-variable" name="result" />
+    <literalExpression id="literalExpression-declaration-marketingDeclarations-firstDeclaration-country">
+      <text>
+        if (submission?.declaration?.marketingDeclarations != null &amp;&amp; submission?.declaration?.marketingDeclarations.firstMarketingAuthorisation == 'FIRST_MARKETING_AUTHORISATION_NO') {
+          if (submission?.declaration?.marketingDeclarations[0].firstMarketingAuthorisationContainer.country == null) {
+            result = [ error: "submission.declaration.marketing-declarations.country.required"]
+          }
+        } 
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-marketingDeclarations-firstDeclaration-authNumber" name="Workflow&#10;First declaration - authorization number">
+    <variable id="declaration-marketingDeclarations-firstDeclaration-authNumber-variable" name="result" />
+    <literalExpression id="literalExpression-declaration-marketingDeclarations-firstDeclaration-authNumber">
+      <text>
+        if (submission?.declaration?.marketingDeclarations != null &amp;&amp; submission?.declaration?.marketingDeclarations.firstMarketingAuthorisation == 'FIRST_MARKETING_AUTHORISATION_NO') {
+          if (submission?.declaration?.marketingDeclarations[0].firstMarketingAuthorisationContainer.authorizationNumber == null) {
+            result = [ error: "submission.declaration.marketing-declarations.authorizationNumber.required"]
+          }
+        } 
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-marketingDeclarations-firstDeclaration-date" name="Workflow&#10;First declaration - authorization date">
+    <variable id="declaration-marketingDeclarations-firstDeclaration-date-variable" name="result" />
+    <literalExpression id="literalExpression-declaration-marketingDeclarations-firstDeclaration-date">
+      <text>
+        if (submission?.declaration?.marketingDeclarations != null &amp;&amp; submission?.declaration?.marketingDeclarations.firstMarketingAuthorisation == 'FIRST_MARKETING_AUTHORISATION_NO') {
+          if (submission?.declaration?.marketingDeclarations[0].firstMarketingAuthorisationContainer.authorizationDate == null) {
+            result = [ error: "submission.declaration.marketing-declarations.authorizationDate.required"]
+          }
+        } 
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-marketingDeclarations-firstDeclaration-productName" name="Workflow&#10;First declaration - product name">
+    <variable id="declaration-marketingDeclarations-firstDeclaration-productName-variable" name="result" />
+    <literalExpression id="literalExpression-declaration-marketingDeclarations-firstDeclaration-productName">
+      <text>
+        if (submission?.declaration?.marketingDeclarations != null &amp;&amp; submission?.declaration?.marketingDeclarations.firstMarketingAuthorisation == 'FIRST_MARKETING_AUTHORISATION_NO') {
+          if (submission?.declaration?.marketingDeclarations[0].firstMarketingAuthorisationContainer.productName == null) {
+            result = [ error: "submission.declaration.marketing-declarations.productName.required"]
+          }
+        } 
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-marketingDeclarations-firstDeclaration-legalBases" name="Workflow&#10;First declaration - legal bases">
+    <variable id="declaration-marketingDeclarations-firstDeclaration-variable" name="result" />
+    <literalExpression id="literalExpression-declaration-marketingDeclarations-firstDeclaration-legalBases">
+      <text>
+        if (submission?.declaration?.marketingDeclarations != null &amp;&amp; submission?.declaration?.marketingDeclarations.firstMarketingAuthorisation == 'FIRST_MARKETING_AUTHORISATION_NO') {
+          if (submission?.declaration?.marketingDeclarations[0].firstMarketingAuthorisationContainer.legalBases == null) {
+            result = [ error: "submission.declaration.marketing-declarations.legalBases.required"]
+          }
+        } 
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-marketingDeclarationsEdited" name="Workflow&#10;Declaration being edited">
+    <variable id="declaration-marketingDeclarations-edited" name="result" />
+    <literalExpression id="literalExpression-declaration-marketingDeclarationsEdited">
+      <text>
+        if (submission.declaration?.marketingDeclarations?.any{marketingDeclaration -&gt; marketingDeclaration.state != "CONFIRMED"}) {
+          result = [error: "submission.businessrule.editing-form"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-fees-method" name="Workflow&#10;Method of payment required">
+    <variable id="fees-method-variable" name="result" />
+    <literalExpression id="literalExpression-fees-required" expressionLanguage="groovy">
+      <text>
+        // one payment method has to be selected
+        if (submission.fees == null || submission.fees.methodOfPayment == null) {
+          result = [ error: "submission.payment.businessrule.method.required"];
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-fees-alreadyPaidAttachment" name="Workflow&#10;Already paid requires attachment">
+    <variable id="fees-alreadyPaid-attachment-variable" name="result" />
+    <literalExpression id="literalExpression-fees-alreadyPaid-attachment" expressionLanguage="groovy">
+      <text>
+        // for already paid, at least one proof of payment is required
+        if (submission.fees != null &amp;&amp; submission.fees.methodOfPayment == "alreadyPaid") {
+          if (!submission.attachments?.any{attachment -&gt; attachment?.attachmentType == "PROOF_OF_PAYMENT"}) {
+            result = [error: "submission.attachments.payment.needed"]
+          }
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-hide-form" name="UISchema&#10;Hide form when draft hasn&#39;t been created yet">
+    <variable id="uischema-hide-form-result" name="result" />
+    <literalExpression id="uischema-hide-form-expr" expressionLanguage="groovy">
+      <text>
+        if (submission.id == null) {
+          result = [
+            [ property: "basicFilingInfo.titleOfInvention", "ui:disabled": true ],
+            [ property: "basicFilingInfo.productName", "ui:disabled": true ],
+            [ property: "basicFilingInfo.filingDate", "ui:disabled": true ],
+            [ property: "basicFilingInfo.spcApplicationNumber", "ui:disabled": true ],
+            [ property: "basicFilingInfo.spcCertificateNumber", "ui:disabled": true ],
+            [ property: "basicFilingInfo.grantDate", "ui:disabled": true ],
+            [ property: "basicFilingInfo.patentType", "ui:disabled": true ],
+            [ property: "parties", "ui:disabled": true ],
+            [ property: "declaration", "ui:disabled": true ],
+            [ property: "attachments", "ui:disabled": true ],
+            [ property: "fees", "ui:disabled": true ],
+            [ property: "additionalNotes.additionalNotes", "ui:disabled": true ]
+          ]
+        } else {
+          result = [
+            [ property: "basicFilingInfo.titleOfInvention", "ui:disabled": false ],
+            [ property: "basicFilingInfo.productName", "ui:disabled": false ],
+            [ property: "basicFilingInfo.spcApplicationNumber", "ui:disabled": false ],
+            [ property: "basicFilingInfo.spcCertificateNumber", "ui:disabled": false ],
+            [ property: "basicFilingInfo.filingDate", "ui:disabled": false ],
+            [ property: "basicFilingInfo.grantDate", "ui:disabled": false ],
+            [ property: "basicFilingInfo.patentType", "ui:disabled": false ],
+            [ property: "parties", "ui:disabled": false ],
+            [ property: "declaration", "ui:disabled": false ],
+            [ property: "attachments", "ui:disabled": false ],
+            [ property: "fees", "ui:disabled": false ],
+            [ property: "additionalNotes.additionalNotes", "ui:disabled": false ]
+          ]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-add-representative" name="UISchema&#10;Add representative">
+    <variable id="uischema-add-representative-result" name="result" />
+    <literalExpression id="uischema-add-representative-expr" expressionLanguage="groovy">
+      <text>
+        if (submission.parties?.representatives?.size() &lt; 1) {
+          result = [property: "parties.representatives", "canAdd": true]
+        } else {
+          result = [property: "parties.representatives", "canAdd": false]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-duplicate-company-warning" name="UISchema&#10;Company name duplicated warning">
+    <variable id="uischema-duplicate-company-warning-result" name="result" />
+    <literalExpression id="uischema-duplicate-company-warning-expr" expressionLanguage="groovy">
+      <text>
+        def currentApplicant = submission.parties?.applicants?.find{a -&gt; a.state != "CONFIRMED"}
+        def newMap = [:]
+        if (currentApplicant) {
+          for (applicant in submission.parties?.applicants) {
+            if (applicant.companyDetails?.company?.toLowerCase()?.replaceAll(/ |-/, '') == currentApplicant.companyDetails?.company?.toLowerCase()?.replaceAll(/ |-/, '')
+            &amp;&amp; applicant.state == "CONFIRMED" &amp;&amp; applicant.role == "APPLICANT_LEGAL_ENTITY") {
+              def message = "submission.parties.businessrule.company-applicant-name-collision"
+              newMap = [
+                [ property: "parties.applicants.items.companyDetails.company", "ui:help": message ],
+                [ property: "parties.applicants.items.companyDetails.company", "ui:help:severity": "warning" ],
+              ]
+            }
+          }
+          result = newMap.clone()
+        }
+        </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-declaration-marketingDeclarations" name="UISchema&#10;declaration validations">
+    <variable id="uischema-declaration-marketingDeclarations-var" name="result" />
+    <literalExpression id="uischema-literalExpression-declaration-marketingDeclarations">
+      <text>
+        if (submission?.declaration?.marketingDeclarations?.size() == 1) {
+          result = [ property: "declaration.marketingDeclarations", "canAdd": false]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-attachments-by-request-type" name="UISchema&#10;attachments filtered by request type">
+    <variable id="uischema-attachments-by-request-type-var" name="result" />
+    <literalExpression id="uischema-literalExpression-attachments-by-request-type" expressionLanguage="groovy">
+      <text>
+        def unsupportedAttTypes = [];
+        if (submission?.basicFilingInfo?.requestType == 'PLANT_PROTECTION_PRODUCT'
+              || (submission?.basicFilingInfo?.requestType == 'MEDICINAL_PRODUCT'
+                   &amp;&amp; (submission?.basicFilingInfo?.pediatricExtension == null || !submission?.basicFilingInfo?.pediatricExtension))) {
+          unsupportedAttTypes = [ "SPC_6", "SPC_7", "SPC_8", "SPC_13" ]
+        }
+        if (submission?.basicFilingInfo?.requestType == 'REQUEST_EXTENSION_PEDIATRIC_USE') {
+          unsupportedAttTypes = [ "SPC_1", "SPC_2", "SPC_3", "SPC_4", "SPC_5", "SPC_9", "SPC_10", "SPC_11", "SPC_12" ]
+        }
+
+        result = [[property: "attachments", "ui:options" : ["unsupportedAttachmentTypes": unsupportedAttTypes]]];</text>
+    </literalExpression>
+  </decision>
+  <decision id="postprocess" name="Post process">
+    <variable id="postprocess-result" name="result" />
+    <literalExpression id="postprocess-expr" expressionLanguage="groovy">
+      <text>
+        result = submission
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-fees-disabled-by-request-type" name="UISchema&#10;Fees disabled by request type">
+    <variable id="uischema-fees-disabled-by-request-type-var" name="result" />
+    <literalExpression id="uischema-fees-disabled-by-request-type-expr" expressionLanguage="groovy">
+      <text>
+        if (submission?.basicFilingInfo?.requestType == 'PLANT_PROTECTION_PRODUCT'
+              || (submission?.basicFilingInfo?.requestType == 'MEDICINAL_PRODUCT'
+                    &amp;&amp; (submission?.basicFilingInfo?.pediatricExtension == null || !submission?.basicFilingInfo?.pediatricExtension))) {
+          result = [property: "fees.feesSelection", "ui:options" : ["hiddenFeeCodes": ["PE16"]]]
+        } else if (submission?.basicFilingInfo?.requestType == 'REQUEST_EXTENSION_PEDIATRIC_USE') {
+          result = [property: "fees.feesSelection", "ui:options" : ["hiddenFeeCodes": ["IE16"]]]
+        }
+        </text>
+    </literalExpression>
+  </decision>
+  <decision id="postprocess-fees-selection-by-request-type" name="Post process&#10;Fees selection by request type">
+    <variable id="postprocess-fees-selection-by-request-type-var" name="result" />
+    <literalExpression id="postprocess-fees-selection-by-request-type-expr" expressionLanguage="groovy">
+      <text>
+        if (event == 'event_new_draft_created') {
+          def selectedFees = []
+
+          if (submission?.basicFilingInfo?.requestType == 'PLANT_PROTECTION_PRODUCT'
+                || (submission?.basicFilingInfo?.requestType == 'MEDICINAL_PRODUCT'
+                      &amp;&amp; (submission?.basicFilingInfo?.pediatricExtension == null || !submission?.basicFilingInfo?.pediatricExtension))) {
+            selectedFees.add(createFeeObject('IE16'))
+          } else if (submission?.basicFilingInfo?.requestType == 'REQUEST_EXTENSION_PEDIATRIC_USE') {
+            selectedFees.add(createFeeObject('PE16'))
+          } else {
+            selectedFees.add(createFeeObject('IE16'))
+            selectedFees.add(createFeeObject('PE16'))
+          }
+
+          def slurper = new groovy.json.JsonSlurper()
+          if (submission?.fees == null) {
+            submission?.fees = slurper.parseText('{}')
+          }
+          if (submission?.fees?.feesSelection == null) {
+            submission?.fees?.feesSelection = slurper.parseText('{ "currency": "EUR" }')
+          }
+
+          submission?.fees?.feesSelection?.selectedFees = selectedFees
+          submission?.fees?.feesSelection?.total = selectedFees?.sum { it.subtotal }
+          submission?.fees?.feesSelection?.currencySymbol = "EUR"
+        }
+        result = submission
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="create-spc-workflow-user-reference-mandatory" name="Workflow&#10;SPC CREATION DIALOG&#10;User reference mandatory">
+    <variable id="create-spc-workflow-user-reference-mandatory-result" name="result" />
+    <literalExpression id="create-spc-workflow-user-reference-mandatory-expr">
+      <text>
+        // Example of business rule that's only for the SPC CREATION DIALOG
+        // Implement the userReference mandatoriness based on the country's own user reference implementation.
+        // Use common definitions where applicable: 'return validateUserReference(submission)'
+        if (submission?.basicFilingInfo?.userReference == null) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.required"]
+        } else if (!(submission.basicFilingInfo.userReference ==~ /^[\d\w\s\-_\.,"'=&lt;&gt;\(\)\\\/À-ž\u0600-\u06FF]*$/)) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.invalid"]
+        } else if (submission.basicFilingInfo.userReference.length() &gt; 25) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.max-characters"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="create-spc-workflow-request-type-mandatory" name="Workflow&#10;SPC CREATION DIALOG&#10;Request type validations">
+    <variable id="create-spc-workflow-request-type-mandatory-result" name="result" />
+    <literalExpression id="create-spc-workflow-request-type-mandatory-expr">
+      <text>
+        // Example of business rule that's only for the SPC CREATION DIALOG
+        // Request type is mandatory when creating an SPC submission.
+        if(submission?.basicFilingInfo?.requestType == null) {
+          result = [error: "submission.basicFilingInfo.businessrule.requestType.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="create-spc-uischema-request-type-pediatricExtension" name="UISchema&#10;SPC CREATION DIALOG&#10;Pediatric Extension hiding">
+    <variable id="create-spc-uischema-request-type-pediatricExtension-result" name="result" />
+    <literalExpression id="create-spc-uischema-request-type-pediatricExtension-expr">
+      <text>
+        // Example of business rule that's only for the SPC CREATION DIALOG
+        // Show/Hide Pediatric Extension checkbox.
+        result = [[
+              property: "basicFilingInfo.pediatricExtension",
+              "ui:hidden": submission?.basicFilingInfo?.requestType != "MEDICINAL_PRODUCT"
+        ]]
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="postprocess-create-spc-dialog-request-type-changed" name="Postprocess&#10;SPC CREATION DIALOG&#10;Pediatric Extension handling">
+    <variable id="postprocess-create-spc-dialog-request-type-changed-result" name="result" />
+    <literalExpression id="postprocess-create-spc-dialog-request-type-changed-expr">
+      <text>
+        // Example of business rule that's only for the SPC CREATION DIALOG
+        // Set Pediatric Extension to false when user selects non-MEDICINAL_PRODUCT.
+        if (event == 'create-spc_basicFilingInfo_requestType_change') {
+          if(submission?.basicFilingInfo?.requestType != 'MEDICINAL_PRODUCT') {
+            submission?.basicFilingInfo?.pediatricExtension = false;
+          }
+          result = submission
+        }
+      </text>
+    </literalExpression>
+  </decision>
+
+<decision id="informationRequirement_power_of_representation_spc__checked" name="Workflow&#10;Additional attachments power of representation">
+      <variable id="power_of_representation-spc-variable" name="result" />
+      <literalExpression id="power_of_representation-spc-expression" expressionLanguage="groovy">
+        <text>
+            if(!submission.parties?.representatives?.any{representative -&gt; representative?.powerOfRepresentationDetails?.isPowerRepresentationAttached} ) {
+                result = [error: "isPowerRepresentationAttached"]
+            }
+          </text>
+      </literalExpression>
+  </decision>
+
+  <decision id="workflow-attachments-powerOfRepresentationSPC" name="Workflow&#10;Additional attachments power representation">
+      <variable id="workflow-attachments-power-of-representation-spc-variable" name="result" />
+      <informationRequirement id="InformationRequirement_11t43g9">
+        <requiredDecision href="#informationRequirement_power_of_representation_spc__checked" />
+      </informationRequirement>
+      <literalExpression id="workflow-attachments-power-of-representation-expression" expressionLanguage="groovy">
+        <text>
+                if(!submission.attachments?.any{attachment -&gt; attachment?.attachmentType == "SPC_9"} ) {
+                    result = [error: "submission.attachments.businessrule.power-representation-needed"]
+                }
+              </text>
+      </literalExpression>
+   </decision>
+
+  <textAnnotation id="TextAnnotation_0ytncgz">
+    <text>
+      Rules to follow on DMN file updates:
+      1. Do not add rules without visual representation
+      2. Add each rule on the line that corresponds to its form section
+      3. Maintain the following ordering for the type of rules per line: WORKFLOW, UISCHEMA, POSTPROCESS
+      4. Follow the naming conventions: first word with the type of rule, then a suggestive title for the rule content
+      5. Follow the id conventions: type or rule-section-any differentiator
+    </text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_18rroq1">
+    <text>SUBMISSION</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_0yg47s1">
+    <text>BASIC FILING</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_18ycb3h">
+    <text>PARTIES</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_1ansiry">
+    <text>DECLARATIONS</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_0k1zkri">
+    <text>ATTACHMENTS</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_0kfkfo7">
+    <text>FEES</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_0kfkfo3">
+    <text>DIALOGS</text>
+  </textAnnotation>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_0ngddr9">
+      <dmndi:DMNShape id="DMNShape_1jjap5n" dmnElementRef="TextAnnotation_0ytncgz">
+        <dc:Bounds height="100" width="710" x="290" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0we03xg" dmnElementRef="TextAnnotation_18rroq1">
+        <dc:Bounds height="80" width="100" x="160" y="240" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0gceoc3" dmnElementRef="TextAnnotation_0yg47s1">
+        <dc:Bounds height="190" width="120" x="160" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_185zwte" dmnElementRef="TextAnnotation_18ycb3h">
+        <dc:Bounds height="190" width="70" x="160" y="570" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1wrnrzg" dmnElementRef="TextAnnotation_1ansiry">
+        <dc:Bounds height="80" width="120" x="160" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1oy68om" dmnElementRef="TextAnnotation_0k1zkri">
+        <dc:Bounds height="80" width="100" x="160" y="900" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_15y42vf" dmnElementRef="TextAnnotation_0kfkfo7">
+        <dc:Bounds height="80" width="55" x="160" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_15y42vg" dmnElementRef="TextAnnotation_0kfkfo3">
+        <dc:Bounds height="80" width="90" x="160" y="1120" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0acljyw" dmnElementRef="uischema-hide-form">
+        <dc:Bounds height="80" width="180" x="510" y="240" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0570e9t" dmnElementRef="postprocess">
+        <dc:Bounds height="80" width="180" x="720" y="240" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc83v" dmnElementRef="workflow-basicFilingInfo-userReference">
+        <dc:Bounds height="80" width="180" x="300" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0mwqg8j" dmnElementRef="workflow-basicFilingInfo-titleOfInvention">
+        <dc:Bounds height="80" width="180" x="510" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1pvv0bz" dmnElementRef="workflow-basicFilingInfo-productName">
+        <dc:Bounds height="80" width="180" x="720" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1n5g621" dmnElementRef="workflow-basicFilingInfo-filingDate">
+        <dc:Bounds height="80" width="180" x="930" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0b52cy8" dmnElementRef="workflow-basicFilingInfo-grantDate">
+        <dc:Bounds height="80" width="180" x="1140" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1d335n9" dmnElementRef="workflow-basicFilingInfo-patentType">
+        <dc:Bounds height="80" width="180" x="1350" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0d9e6cv" dmnElementRef="workflow-basicFilingInfo-spcApplicationNumber">
+        <dc:Bounds height="80" width="180" x="1560" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1p1mxyh" dmnElementRef="workflow-basicFilingInfo-spcCertificateNumber">
+        <dc:Bounds height="80" width="180" x="1770" y="350" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0ogd944" dmnElementRef="workflow-extra-basicFilingInfoCheckDigit">
+        <dc:Bounds height="80" width="180" x="720" y="460" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0xhqjmn" dmnElementRef="uischema-user-reference">
+        <dc:Bounds height="80" width="180" x="1140" y="460" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1888mpg" dmnElementRef="workflow-parties-1">
+        <dc:Bounds height="80" width="180" x="300" y="570" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13h9uxl" dmnElementRef="workflow-parties-2">
+        <dc:Bounds height="80" width="180" x="720" y="570" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0hpqoig" dmnElementRef="uischema-add-representative">
+        <dc:Bounds height="80" width="180" x="1560" y="570" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_08ozami" dmnElementRef="uischema-duplicate-company-warning">
+        <dc:Bounds height="80" width="180" x="1770" y="570" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0ms7jal" dmnElementRef="workflow-declaration-marketingDeclarations">
+        <dc:Bounds height="80" width="180" x="300" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_10fp854" dmnElementRef="workflow-declaration-marketingDeclarations-firstDeclaration-country">
+        <dc:Bounds height="80" width="180" x="510" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0xlbuwl" dmnElementRef="workflow-declaration-marketingDeclarations-firstDeclaration-authNumber">
+        <dc:Bounds height="80" width="180" x="720" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_091jkwa" dmnElementRef="workflow-declaration-marketingDeclarations-firstDeclaration-productName">
+        <dc:Bounds height="80" width="180" x="930" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1ol7owc" dmnElementRef="workflow-declaration-marketingDeclarations-firstDeclaration-date">
+        <dc:Bounds height="80" width="180" x="1140" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1fzbd7v" dmnElementRef="workflow-declaration-marketingDeclarations-firstDeclaration-legalBases">
+        <dc:Bounds height="80" width="180" x="1350" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_09z88qf" dmnElementRef="workflow-declaration-marketingDeclarationsEdited">
+        <dc:Bounds height="80" width="180" x="1560" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0mbboqs" dmnElementRef="uischema-declaration-marketingDeclarations">
+        <dc:Bounds height="80" width="180" x="1770" y="790" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_08c4767" dmnElementRef="uischema-attachments-by-request-type">
+        <dc:Bounds height="80" width="180" x="300" y="900" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1akko4r" dmnElementRef="workflow-fees-method">
+        <dc:Bounds height="80" width="180" x="300" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0m9p6gs" dmnElementRef="workflow-fees-alreadyPaidAttachment">
+        <dc:Bounds height="80" width="180" x="510" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0xaznf7" dmnElementRef="workflow-extra-basicFilingInfoPublicationNumber">
+        <dc:Bounds height="80" width="180" x="930" y="460" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1ebks1h" dmnElementRef="InformationRequirement_parties-3">
+        <di:waypoint x="480" y="610" />
+        <di:waypoint x="490" y="610" />
+        <di:waypoint x="510" y="610" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0fj3dyg" dmnElementRef="InformationRequirement_parties-2">
+        <di:waypoint x="480" y="650" />
+        <di:waypoint x="480" y="670" />
+        <di:waypoint x="720" y="670" />
+        <di:waypoint x="720" y="650" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0klf4ib" dmnElementRef="uischema-fees-disabled-by-request-type">
+        <dc:Bounds height="80" width="180" x="720" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1k651zg" dmnElementRef="postprocess-fees-selection-by-request-type">
+        <dc:Bounds height="80" width="180" x="930" y="1010" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1pvk5gq" dmnElementRef="workflow-basicFilingInfo-applicationNumberRequired">
+        <dc:Bounds height="80" width="180" x="300" y="460" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0d70ecd" dmnElementRef="workflow-basicFilingInfo-publicationNumberRequired">
+        <dc:Bounds height="80" width="180" x="510" y="460" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0d70ece" dmnElementRef="create-spc-workflow-user-reference-mandatory">
+        <dc:Bounds height="80" width="180" x="300" y="1120" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0d70ecf" dmnElementRef="create-spc-workflow-request-type-mandatory">
+        <dc:Bounds height="80" width="180" x="510" y="1120" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0d70ecg" dmnElementRef="create-spc-uischema-request-type-pediatricExtension">
+        <dc:Bounds height="80" width="180" x="930" y="1120" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0d70ech" dmnElementRef="postprocess-create-spc-dialog-request-type-changed">
+        <dc:Bounds height="80" width="180" x="720" y="1120" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

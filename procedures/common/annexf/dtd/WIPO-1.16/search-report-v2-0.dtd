@@ -1,0 +1,2921 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , first-last-name? , second-last-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+
+<!--
+********************************************************************************
+*  search-report (International Search Report) v2.0     JULY 2017              *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD SEARCH REPORT 2.0//EN" "search-report-v2-0.dtd"        *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/search-report-v2-0.dtd      *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Asahi HASEBE: 01/07/17 incorporated changes from PFCs:
+.. changed version number from v1.2 to 2.0
+.. updated elements/attributes for ISR and ISA203
+SY: 26/08/10 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.21
+..For test only (PFC10/002, PFC10/003)
+MO: 01/07/08 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..added element 'earlier-search' to srep-for-pub (PFC08/003)
+..added attribute 'email-purpose' to email (PFC08/006)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..implementation of PFC06/001
+..added element 'sup' to u (PFC06/003)
+..added element 'sup' to i (PFC06/003)
+..added element 'sup' to b (PFC06/003)
+..added element 'sub' to u (PFC06/003)
+..added element 'sub' to i (PFC06/003)
+..added element 'sub' to b (PFC06/003)
+..added element 'o' to invention-title, b, i, sup, sup2, sub, sub2, heading, claim-text,
+  p, small-caps, dt, dd, li, crossref, figref, othercit, statement (PFC06/003)
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+January 2005
+..released version number as v1.0
+********************************************************************************
+
+  ****************************************************************************
+  * SECTION I - DECLARATION, ENT. REFs, ISO sets, etc                        *
+  ****************************************************************************
+-->
+<!--
+  import character entity set.  Download from:
+  http://pcteasy.wipo.int/efiling_standards/schemaDocs/wipo.ent
+  
+  Note that nsgmls-based parsers (SP, Near and Far Designer, etc.)
+  may not be able to process this file for reasons described below 
+  in MathML comments.
+ -->
+<!--ENTITY % wipo PUBLIC "-//WIPO//ENTITIES WIPO 1.0//EN" "wipo.ent">
+%wipo;-->
+
+<!--
+  ****************************************************************************
+  * INCLUDE COMPONENT DTDS (MATHML, OASIS EXCHANGE TABLE MODEL               *
+  ****************************************************************************
+-->
+<!-- DTD MathML2: maintained by W3C.  Download from:
+     http://www.w3.org/TR/MathML2/DTD-MathML-20010221.zip
+
+     If using nsgmls-based parser (SP, Near and Far Designer, etc.)
+     uncomment 'mathml-charent-module' switch below or replace the 
+     referenced MathML2 DTD with the version downloadable from:
+     http://www.w3.org/Math/DTD/dtd-sp.zip
+
+	 This notice copied from: http://www.w3.org/Math/DTD/
+     
+     "DTD for nsgmls
+	  Some systems (including the popular nsgmls parser) may not be able 
+	  to process files using 'plane 1' characters which have Unicode 
+	  numbers higher than #xFFFF. The versions of the DTD provided here
+	  incoprorate the modifications mentioned above, but the high 
+	  characters are replaced by the equivalent mchar construct 
+	  <mchar name="..." /> this allows the DTD to be read and for MathML
+	  files to be validated using such sytems."
+-->
+
+<!--ENTITY % mathml-charent.module "IGNORE" -->
+<!ENTITY % MATHML.prefixed "IGNORE">
+<!ENTITY % MATHML.xmlns "">
+
+<!-- import MathML2 dtd -->
+<!ENTITY % mathml2 PUBLIC "-//W3C//DTD MathML 2.0//EN" "mathml2.dtd">
+%mathml2;
+
+<!-- DTD OASIS Open XML Exchange Table Model.  
+       Maintained by OASIS; download from:
+       http://www.oasis-open.org/specs/soextblx.dtd
+       Note that the FPI in soextblx.dtd refers to itself as 'calstblx'.  
+       That convention has been followed here.
+-->
+<!--  create content for title element in table  -->
+<!ENTITY % title "<!ELEMENT title (#PCDATA | b | i | u | sup | sub | smallcaps)* > ">
+%title;
+
+<!-- override OASIS Exchange <entry> model -->
+<!ENTITY % tbl.entry.mdl "(#PCDATA | b | i | u | sup | sub | smallcaps | br 
+                 | patcit | nplcit | bio-deposit | crossref | img 
+                 | dl | ul | ol | chemistry | maths)* ">
+
+<!-- import OASIS Exchange model -->
+<!ENTITY % calstblx PUBLIC "-//OASIS//DTD XML Exchange Table Model 19990315//EN" 
+                           "soextblx.dtd">
+%calstblx;
+
+<!--
+  ****************************************************************************
+  * SECTION II - DTD                                                         *
+  ****************************************************************************
+
+  Notes:
+
+  This DTD is intended to process stand-alone search reports (SR) sent to the
+  applicant - use search-report-data when included in patent-doc.: xx-patent-
+  document.dtd
+  Namely the ISR (PCT) and the EPO SR.
+
+  This DTD is based on:
+  Form PCT/ISA/201 Jan. 2004 (International-type SR)
+  Form PCT/ISA/210 Jan. 2004 (main SR)
+  Form PCT/ISA/220 Jan. 2004 (transmittal)
+  Form PCT/ISA/237 Jan. 2004 (written opinion)
+
+  Some stylesheet info. has been put in in most places according to the NEW ISR
+  layout - it needs more detailed instructions and will need changing for the
+  published ISR as part of the PCT pamphlet.
+
+  It is recommended to use the new layout and not the "box" layout of current paper
+  forms.
+
+Attributes:
+  id =
+  file          = filename of the whole application
+  lang          = language of application - use ISO639 language code
+  status        = status of the application; values: new = new application
+  date-produced = YYYYMMDD e.g, 20011230 if desired, 12 characters maximum
+  search-type   = type of search expected values are: 
+                   isr for International Search Report 
+                   sisr for Supplementary International Search Report
+                   international-type for international type search report
+                   national for national search-reports
+                   national-supplementary for supplementary national search reports
+  srep-type     = type of search with detailed office specific values allowed
+  srep-office   = Searching office, country code ST.3
+  dtd-version   = dtd version number
+  form-version = form version number. e.g. "201501"
+
+-->
+<!ELEMENT search-report (doc-page+ | (srep-info? , srep-for-pub? , office-specific-srep-data*))>
+
+<!ATTLIST search-report  id            ID     #REQUIRED
+                           file          CDATA  #REQUIRED
+                           lang          CDATA  #IMPLIED
+                           status        CDATA  #IMPLIED
+                           date-produced CDATA  #REQUIRED
+                           search-type          (international-type | 
+                                           isr | 
+                                           sisr | 
+                                           national | 
+                                           national-supplementary )  #IMPLIED
+                           srep-type     CDATA  #IMPLIED
+                           srep-office   CDATA  #REQUIRED
+                           dtd-version   CDATA  #IMPLIED 
+                           form-version   CDATA  #IMPLIED >
+
+<!--
+  Office is the ST.3 country code, including the regional authorities.
+  Office-dtd is the file which contains the DTD for the office-specific
+  bibliographic elements.
+  ALTERNATIVELY elemnt names may be grouped directly under this element. 
+  - add the two letter ST.3 code.
+
+-->
+<!ELEMENT office-specific-srep-data EMPTY>
+
+<!ATTLIST office-specific-srep-data  office     CDATA  #REQUIRED
+                                       office-dtd CDATA  #REQUIRED
+                                       file       CDATA  #REQUIRED
+                                       id         ID     #IMPLIED
+                                       lang       CDATA  #IMPLIED
+                                       status     CDATA  #IMPLIED >
+<!--
+-->
+<!--
+
+  Earlier search document referenced in search report
+
+  
+-->
+<!ELEMENT srep-earlier-search (document-id)>
+
+<!ATTLIST srep-earlier-search  id ID  #IMPLIED >
+
+<!--
+  Patent family member.
+    (ST.32:B345)
+
+-->
+<!ELEMENT patent-family (priority-application , (family-member+ | text))>
+
+<!ATTLIST patent-family  id ID  #IMPLIED >
+
+<!--
+  Form PCT/ISA/2003 (April 2005)
+
+  If no search is to be carried out the search examiner will complete Form PCT/ISA/203 
+  (Declaration of Non-Establishment of International Search Report), 
+  see PCT INTERNATIONAL SEARCH AND PRELIMINARY EXAMINATION GUIDELINES, 9.03.
+  
+  Where the subject matter of all claims constitutes a subject excluded from the search 
+  where no meaningful search is possible for all of the claimed subject matter, a declaration 
+  of non-establishment of the international search report is issued pursuant to Article 17(2)(a) on Form PCT/ISA/203, 
+  see PCT INTERNATIONAL SEARCH AND PRELIMINARY EXAMINATION GUIDELINES, paragraph 9.40.
+  The phase attribute contains the code of the procedure, e.g. PCT, EP, US, ... 
+  and permits the reuse of the present DTD in national phases. Its values has been defaulted to PCT.
+
+-->
+<!ELEMENT srep-declaration ((srep-earlier-declaration* , srep-declaration-subject-matter? , srep-declaration-compliance? , srep-declaration-sequence-listing? , additional-info?) | (heading? , p+)+)>
+
+<!ATTLIST srep-declaration  phase CDATA  'PCT' >
+
+<!--
+  Form PCT/ISA/203 (April 2005)
+  Points 3. and 4. of Form PCT/ISA/203 (April 2005) indicate deficiencies 
+  of the international application related to sequence listings which are 
+  subject to the issuance of the declaration under Article 17(2)(a) for 
+  non compliance with Rules 13ter.1(c) and (d), namely:
+  * The late furnishing or the non compliance with Annex C of the 
+  Administrative Instruction of a paper or an electronic sequence-listing is 
+  indicated by the paper and electronic attribute respectively;
+  * The late furnishing or the non compliance with Annex C-bis of the 
+  Administrative Instruction of tables related to a sequence-listing is 
+  indicated by the table attribute;
+  * The late payment of the furnishing fees is indicated with the late-furnishing-fee attribute.
+ 
+-->
+<!ELEMENT srep-declaration-sequence-listing EMPTY>
+
+<!ATTLIST srep-declaration-sequence-listing  paper                 (yes | no )  #IMPLIED
+                                               electronic            (yes | no )  #IMPLIED
+                                               late-furnishing-fee   (yes | no )  #IMPLIED
+                                               table                 (yes | no )  #IMPLIED >
+
+<!--
+  Form PCT/ISA/203 (April 2005)
+  Point 2. of Form PCT/ISA/203 (April 2005) indicates which part(s) of the international application 
+  are subject to the issuance of the declaration under Article 17(2)(a).
+
+-->
+<!ELEMENT srep-declaration-compliance EMPTY>
+
+<!ATTLIST srep-declaration-compliance  description   (yes | no )  #IMPLIED
+                                         claims        (yes | no )  #IMPLIED
+                                         drawings      (yes | no )  #IMPLIED >
+
+<!--
+Form PCT/ISA/203 (April 2005)
+When it has been established that the subject-matter of the international application falls 
+into one of the exceptions set out in Rule 39, point 1. of Form PCT/ISA/203 (April 2005) is 
+completed by selecting the exception.
+Each attribute refers to a specific type of subject-matter excluded in Rule 39 
+(PCT International Search and Preliminary Examination Guidelines, chapter 9).
+ 
+-->
+<!ELEMENT srep-declaration-subject-matter EMPTY>
+
+<!ATTLIST srep-declaration-subject-matter  scientific-theories        (yes | no )  #IMPLIED
+                                             mathematic-theories        (yes | no )  #IMPLIED
+                                             plant-varieties            (yes | no )  #IMPLIED
+                                             animal-varieties           (yes | no )  #IMPLIED
+                                             bio-processes              (yes | no )  #IMPLIED
+                                             business                   (yes | no )  #IMPLIED
+                                             mental-act                 (yes | no )  #IMPLIED
+                                             games                      (yes | no )  #IMPLIED
+                                             treatment-human            (yes | no )  #IMPLIED
+                                             treatment-animal           (yes | no )  #IMPLIED
+                                             diagnostic-methods         (yes | no )  #IMPLIED
+                                             presentation-information   (yes | no )  #IMPLIED
+                                             computer-program           (yes | no )  #IMPLIED >
+
+<!-- 
+  The International Searching Authority (ISA/_______)
+  has made a declaration under Article 17(2)(a) and has
+  not established an international search report 
+  (see Form PCT/ISA/203 dated _________________________________
+  (day/month/year)), (Rule 45bis.5(e)).
+
+-->
+<!ELEMENT srep-earlier-declaration EMPTY>
+
+<!ATTLIST srep-earlier-declaration  taken-into-account        (yes | no | not-available )  'yes'
+                                      idref              IDREF  #IMPLIED >
+
+<!--
+
+-->
+<!ELEMENT limitation-of-search (text? , claims-searched* , claims-searched-incompletely* , claims-not-searched* , reason-limited-search*)>
+
+<!ATTLIST limitation-of-search  sequence    CDATA  #IMPLIED
+                                  reason-type CDATA  #IMPLIED >
+
+<!--
+  Heading text identifying the parts of the description (see PCT Rule 5.1(c), PCT/AI section 204). Recommended id = h0001, h0002, etc. The attribute level defines a hierarchic level and may be associated with a style. Otherwise the formatting tags may be used to highlight the heading text. 
+
+-->
+<!ELEMENT heading (#PCDATA | b | i | u | o | sup | sub | smallcaps)*>
+
+<!ATTLIST heading  level     (1 | 2 | 3 )  #IMPLIED
+                     id    ID  #IMPLIED >
+
+<!--*******************************
+CITATIONS
+*******************************
+Grouping tag for patent literature (patcit)
+or non-patent literature (nplcit) plus data related to those citations.
+
+Recommended id='cit0001', 'cit0002', etc.
+For the SR: id='sr-cit0001', 'sr-cit0002'
+For the WO: id='wo-cit0001"
+
+@reference
+Identification given by the party to the document, e.g. A1.
+
+@exam-reference
+Identification given by the search or examining division to the document,
+e.g. D1.
+
+@has-equivalent :
+The expected usage of this attribute is that it will only be present in the circumstances where the examiner explicitly 
+chooses to express the fact that the cited document has no equivalent document / patent family members in the 
+rendered search report citation; in other words the attribute when present and having the value "no" will result in the text 
+"No patent family" or "No equivalent documents" in the relevant language being displayed on the search report.
+
+-->
+<!ELEMENT citation ((patcit | nplcit) , (rel-passage* , category* , rel-claims*)* , 
+                    corresponding-docs*, classification-ipc? , classifications-ipcr? , classification-national? , doi?)>
+
+<!ATTLIST citation  id          ID  #IMPLIED
+                      cited-phase     (application | 
+                                    search | 
+                                    international-search-report | 
+                                    supplementary-international-search-report | 
+                                    international-type-search-report | 
+                                    national-search-report | 
+                                    supplementary-national-search-report | 
+                                    examination | 
+                                    international-examination | 
+                                    national-examination | 
+                                    opposition | 
+                                    limitation )  #IMPLIED
+                      cited-by        (applicant | examiner | opponent | third-party )  #IMPLIED 
+                      reference  CDATA    #IMPLIED 
+                      exam-reference  CDATA    #IMPLIED 
+                      has-equivalent        (yes | no)  #IMPLIED >
+
+<!--
+  Domestic or national classification.
+    (INID 52,  ST.32:B520)
+
+@scheme-name:
+This attribute is used when it is necessary to distinguish between different classification schemes 
+which may be in use at the same Office.  In general, abbreviated forms should be used where they 
+are widely recognized, for example scheme-name="CPC" for the Cooperative Patent Classification.
+
+-->
+<!ELEMENT classification-national (country , edition? , main-classification , further-classification* , (additional-info | linked-indexing-code-group | unlinked-indexing-code)* , text?)>
+
+<!ATTLIST classification-national  id ID  #IMPLIED 
+                                scheme-name CDATA #IMPLIED>
+
+<!ELEMENT classifications-ipcr (classification-ipcr+)>
+
+<!ATTLIST classifications-ipcr  id ID  #IMPLIED >
+
+<!--
+  International Patent Classification (IPC) data;
+
+-->
+<!ELEMENT classification-ipcr ((ipc-version-indicator , classification-level? , section , class , subclass , main-group? , subgroup? , symbol-position? , classification-value? , action-date? , generating-office? , classification-status? , classification-data-source?) | text)>
+
+<!ATTLIST classification-ipcr  id       ID     #IMPLIED
+                                 sequence CDATA  #IMPLIED >
+
+<!--
+  International Patent Classification (IPC) data;
+    (INID 51,  ST.32:B510)
+
+-->
+<!ELEMENT classification-ipc (edition , main-classification , further-classification* , (additional-info | linked-indexing-code-group | unlinked-indexing-code)* , text?)>
+
+<!ATTLIST classification-ipc  id ID  #IMPLIED >
+
+<!--
+  Further/secondary classification
+    (ST.32:B512/B522)
+
+-->
+<!ELEMENT further-classification (#PCDATA)>
+
+<!ATTLIST further-classification  id       ID     #IMPLIED
+                                    sequence CDATA  #IMPLIED >
+
+<!--
+  Stylesheet (for new layout) generates (for PCT) at the beginning:
+
+  PATENT COOPERATION TREATY (PCT)
+  INTERNATIONAL SEARCH REPORT (ISR) - PART 1 (PCT Articles 18 and Rules 43 and 44).
+  SUPPLEMENTARY INTERNATIONAL SEARCH REPORT (SISR) - PART 1 (PCT Rule 45bis)
+
+  FOR FURTHER ACTION see Notification of Transmittal of ISR (Form PCT/ISA/220)
+  as well as, where applicable, abstract information below.
+  **This will need modifying depending on stytesheet and output required **
+
+  SREP - INFO DETAILS
+  This is a repetition of data found elsewhere but we put it here also for
+  convenience, formatting, etc
+  The order has changed from the paper form.
+
+  PCT covers Forms: 201, 210, 220
+  EPO - covers Form 1507
+
+-->
+<!ELEMENT srep-info (doc-page+ | (correspondence-address? , file-reference-id? , application-reference+ , date-of-earliest-priority? , applicant-name , srep-established? , srep-protest-fees? , srep-request-date? , srep-request-number? , srep-prior-art-docs* , srep-basis? , srep-claims-info? , srep-unity-of-invention? , srep-invention-title? , srep-abstract? , srep-figure-to-publish? , srep-info-admin , srep-other-info? , srep-request-received-date? , earlier-searches? , text*))>
+
+<!ATTLIST srep-info  total-page-count CDATA  #IMPLIED >
+
+<!--
+
+  Information relevant to a previous search-report on which is referred to by the present search-report.
+
+-->
+<!ELEMENT earlier-search (application-reference? , date-search-completed?)>
+
+<!ATTLIST earlier-search  id                       ID     #IMPLIED
+                            office                   CDATA  #REQUIRED
+                            srep-type                       (international-type | 
+                                                       isr | 
+                                                       sisr | 
+                                                       national | 
+                                                       national-supplementary )  #REQUIRED
+                            declaration-of-no-search        (yes | no | not-determined )  #REQUIRED >
+
+<!ELEMENT srep-information (#PCDATA)>
+
+<!ATTLIST srep-information  srep-code CDATA  #IMPLIED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+    Abstract Drawing
+   
+    The figure of the drawings to be published with the abstract is: 
+    Figure No. 
+    followed by text of attribute value: 
+    by-applicant = as suggested by the applicant. 
+    none-suggested = selected by the examiner because the applicant failed to suggest a figure.
+    by-examiner = selected by the examiner because this figure better characterizes the invention.
+    
+    or: 
+    
+    none = None of the figures is to be published with the abstract 
+    (Old PCT/ISA/210- 6 a and b)
+
+-->
+<!ELEMENT srep-figure-to-publish (figure-to-publish?)>
+
+<!ATTLIST srep-figure-to-publish  figinfo   (by-applicant | 
+                                              none-suggested | 
+                                              by-examiner | 
+                                              none )  #REQUIRED >
+
+<!--
+  Abstract
+  (followed by:)
+  The text is approved as submitted by the applicant [attribut]e "yes" (default)]
+  (or)
+  The text has been established according to Rule 38.2(b), ]by this ISA as it
+  appears below.  The applicant may, within one month from the date of mailing of
+  this ISR, submit comments to this ISA.
+
+  a revised abstract if present [attribute "no"] (Old PCT/ISA/210 - 5)
+
+-->
+<!ELEMENT srep-abstract (abstract?)>
+
+<!ATTLIST srep-abstract  abs-approval   (yes | no )  'yes' >
+
+<!--
+  ABSTRACT: PCT Rule 8
+    (INID 57, ST.32:B570)
+  A concise summary of the disclosure, 50-150 words.
+
+  Recommended id = 'abst' or 'abst0001' for multiple abstracts
+
+-->
+<!ELEMENT abstract (doc-page+ | (abst-problem , abst-solution) | p+)>
+
+<!ATTLIST abstract  id     ID     #IMPLIED
+                      lang   CDATA  #IMPLIED
+                      status CDATA  #IMPLIED >
+
+<!--
+  The solution to the alleged problem that the invention  purports to solve.
+
+  Recommended id = 'abss'
+
+-->
+<!ELEMENT abst-solution (p+)>
+
+<!ATTLIST abst-solution  id ID  #IMPLIED >
+
+<!--
+  The alleged problem that the invention purports to solve
+
+  Recommended id = 'absp'
+
+-->
+<!ELEMENT abst-problem (p+)>
+
+<!ATTLIST abst-problem  id ID  #IMPLIED >
+
+<!--
+  Title
+  followed by:
+  The text is approved as submitted by the applicant -  [attribute "yes" (default)]
+  or
+  The text has been established by this ISA to read as follows:
+
+  [a revised title if present - attribute "no")] (Old PCT/ISA/210 - 4)
+
+-->
+<!ELEMENT srep-invention-title (invention-title?)>
+
+<!ATTLIST srep-invention-title  title-approval   (yes | no )  'yes' >
+
+<!--
+  Title of the Invention:
+    (INID 54, ST.32:B540/B542)
+
+  Preferably two to seven words when in English or translated into English and
+  precise. (Rule 4.3)
+
+  Recommended id = 'invt'
+
+-->
+<!ELEMENT invention-title (#PCDATA | b | i | u | o | sup | sub)*>
+
+<!ATTLIST invention-title  id   ID     #IMPLIED
+                             lang CDATA  #IMPLIED >
+
+<!--
+  (Old PCT/ISA/210 - Box No. III)
+    Observations where unity of invention is lacking
+    This ISA found multiple inventions in this international application, as
+    follows: (use text data)
+
+   The attribute number-of-inventions indicates the number of inventions identified by the (S)ISA.
+
+-->
+<!ELEMENT srep-unity-of-invention (p* , srep-search-fees , srep-protest-remark? , srep-earlier-lack-of-unity* , sisr-limited-to-invention? , sisr-review-fee?)>
+
+<!ATTLIST srep-unity-of-invention  number-of-inventions CDATA  #IMPLIED >
+
+<!--
+  Where the applicant requests the Authority to review this opinion, 
+  the applicant is hereby invited, within one month from the date of 
+  mailing of this report, to pay a review fee (Rule 45bis.6(c)) 
+  in the amount of ________________ (currency/amount).
+
+-->
+<!ELEMENT sisr-review-fee (amount-total)>
+
+<!ATTLIST sisr-review-fee  currency CDATA  #REQUIRED >
+
+<!--
+  At the request of the applicant, this supplementary international search report is
+  limited to the invention specified by the applicant under Rule 45bis.1(d) and
+  those parts of the international application which relate to that invention (Rule 45bis.5(b)).
+
+-->
+<!ELEMENT sisr-limited-to-invention (#PCDATA)>
+
+<!ATTLIST sisr-limited-to-invention  limited-to-invention   (yes | no )  #REQUIRED >
+
+<!-- 
+  This Authority specified for supplementary search agrees with
+  the conclusions of the International Searching Authority
+  regarding the issue of unity of invention
+  (see Forms PCT/ISA/210 and 237 dated _____________________ )
+  and refers the applicant to these documents for further details.
+  The idref attribute refers to the corresponding earlier-search element.
+
+-->
+<!ELEMENT srep-earlier-lack-of-unity EMPTY>
+
+<!ATTLIST srep-earlier-lack-of-unity  conclusion-agreed        (yes | no | not-available )  'yes'
+                                        idref             IDREF  #IMPLIED >
+
+<!--
+	Remark on protest Attribute values: 
+	
+	no-protest = No protest accompanied the payment of additional search fees; 
+	protest-fee-paid = The additional search fees were accompanied by the applicant's protest and, where applicable, the payment of a protest fee. 
+	protest-fee-not-paid = The additional search fees were accompanied by the applicant's protest but the applicable protest fee was not paid within the time limit specified by the invitation.
+
+-->
+<!ELEMENT srep-protest-remark EMPTY>
+
+<!ATTLIST srep-protest-remark  protest-remark   (no-protest | 
+                                                  protest-fee-paid | 
+                                                  protest-fee-not-paid )  #REQUIRED >
+
+<!--
+  The attribute "reason" defines the reason for which certain claims have not been searched.
+
+-->
+<!ELEMENT srep-claims-not-searched (claim-num* , claim-remark?)>
+
+<!ATTLIST srep-claims-not-searched  reason   (subject-matter-not-searched-by-isa | 
+                                               no-meaningful-search | 
+                                               dependent-claims-incorrectly-drafted | 
+                                               limited-to-claim-fees-paid | 
+                                               limited-to-first-claims | 
+                                               not-subject-of-isr )  #REQUIRED >
+
+<!-- 
+  This supplementary international search report has been established
+  taking due account of the international search report,
+  or the delaration under Article 17(2)(a) that no international search report
+  will be established, and the written opinion established under Rule 43bis.1.
+  The idref attribute refers to the corresponding earliersearch element,
+
+-->
+<!ELEMENT srep-earlier-search-or-declaration-considered EMPTY>
+
+<!ATTLIST srep-earlier-search-or-declaration-considered  taken-into-account        (yes | 
+                                                                                no | 
+                                                                                not-available )  'yes'
+                                                           idref              IDREF  #IMPLIED >
+
+<!--
+  c. time of filing/furnishing
+
+-->
+<!ELEMENT sequence-listing-filing-time (#PCDATA)>
+
+<!ATTLIST sequence-listing-filing-time  in-application              (yes | no )  #REQUIRED
+                                          together-with-application   (yes | no )  #REQUIRED
+                                          furnished-for-search        (yes | no )  #REQUIRED
+                                          amendment                   (yes | no )  #IMPLIED >
+
+<!--
+  b. format of material
+
+-->
+<!ELEMENT sequence-listing-material-format EMPTY>
+
+<!ATTLIST sequence-listing-material-format  paper        (yes | no )  #REQUIRED
+                                              electronic   (yes | no )  'yes' >
+
+<!--
+  a. type of material
+
+-->
+<!ELEMENT sequence-listing-material-type EMPTY>
+
+<!ATTLIST sequence-listing-material-type  sequence-listing   (yes | no )  'yes'
+                                            table              (yes | no )  #REQUIRED >
+
+<!--
+  Paragraph
+
+  Recommended id  = p0001, p0002, etc.  num = 0001, 0002, etc.
+
+  Note: paragraphs may occur in sections other than the description and at
+  different times  eg. for the abstract, in this case use for example "p0001a";
+  amended claims: "p0001ac", etc. 
+
+-->
+<!ELEMENT p (#PCDATA | b | i | u | o | sup | sub | smallcaps | br | pre | dl | ul | ol | crossref | figref | patcit | nplcit | bio-deposit | img | chemistry | maths | tables | table-external-doc)*>
+
+<!ATTLIST p  id  ID     #IMPLIED
+               num CDATA  #REQUIRED >
+
+<!--
+   References a stand-alone table authored with the table-external DTD.
+
+-->
+<!ELEMENT table-external-doc (#PCDATA)>
+
+<!ATTLIST table-external-doc  id            ID     #IMPLIED
+                                file          CDATA  #REQUIRED
+                                lang          CDATA  #IMPLIED
+                                carriers             (internal-electronic | 
+                                                external-electronic | 
+                                                paper )  #IMPLIED
+                                external-type        (math | 
+                                                chemistry | 
+                                                program-listing | 
+                                                other )  #IMPLIED
+                                status        CDATA  #IMPLIED >
+
+<!--
+  TABLES
+  This is image data or coded according to OASIS Exchange model with modified cell
+  'entry' content.
+ 
+  Recommended id = tabl0001, tabl0002, etc.
+
+-->
+<!ELEMENT tables (img | table)>
+
+<!ATTLIST tables  id  ID     #IMPLIED
+                    num CDATA  #REQUIRED >
+
+<!--
+  Definition list
+
+  Recommended id = dlis0001, dlis0002, etc.
+
+-->
+<!ELEMENT dl (dt , dd)+>
+
+<!ATTLIST dl  tsize   CDATA  #IMPLIED
+                compact        (compact )  #IMPLIED
+                id      ID     #IMPLIED >
+
+<!--
+  Term to be defined
+
+  Recommended id = dtrm0001, dtrm0002, etc.
+
+-->
+<!ELEMENT dt (#PCDATA | b | i | u | o | sup | sub | smallcaps)*>
+
+<!ATTLIST dt  id ID  #IMPLIED >
+
+<!--
+  Unordered Lists
+    list-style may be empty for lists with no bullet or other symbol default
+    list-style is 'bullets'
+
+  Recommended id = ulis0001, ulis0002, etc.
+
+-->
+<!ELEMENT ul (li+)>
+
+<!ATTLIST ul  id         ID  #IMPLIED
+                list-style     (bullet | dash | none )  'bullet'
+                compact        (compact )  #IMPLIED >
+
+<!--
+  List item
+
+  Recommended id = list0001, list0002, etc.
+
+-->
+<!ELEMENT li (#PCDATA | b | i | u | o | sup | sub | smallcaps | br | pre | patcit | nplcit | bio-deposit | crossref | figref | img | dl | ul | ol | chemistry | maths)*>
+
+<!ATTLIST li  id  ID     #IMPLIED
+                num CDATA  #IMPLIED >
+
+<!--
+  MATHEMATICS 
+  This is image data or coded according to mathml, version 2
+
+  Recommended id = math0001, math0002, etc.
+
+-->
+<!ELEMENT maths (img | formula-text | (math , img?))>
+
+<!ATTLIST maths  id  ID     #IMPLIED
+                   num CDATA  #REQUIRED >
+
+<!--
+  Chemistry
+  Chemical formulae, ring structures, Markush structures, etc.
+
+  For now treat as image data.
+  Depending on industry support we may use, e.g., chemML, CML later
+
+  Recommended id = chem0001, chem0002, etc
+
+-->
+<!ELEMENT chemistry (img | formula-text | (chem , img?))>
+
+<!ATTLIST chemistry  id  ID     #IMPLIED
+                       num CDATA  #REQUIRED >
+
+<!--
+  This is a pointer to an external DTD for chemical markup - to be determined.
+  For EPO probably CML; http://www.xml-cml.org/
+
+-->
+<!ELEMENT chem EMPTY>
+
+<!ATTLIST chem  id        ID     #IMPLIED
+                  file      CDATA  #REQUIRED
+                  chem-type CDATA  #IMPLIED >
+
+<!--
+  Ordered Lists: 
+  attribute 'ol-style'
+
+  Recommded use:
+    1   arablic numbers     1, 2, 3, ...
+    a   lower alpha         a, b, c, ...
+    A   upper alpha         A, B, C, ...
+    i   lower roman         i, ii, iii, ...
+    I   upper roman         I, II, III, ...
+
+-->
+<!ELEMENT ol (li+)>
+
+<!ATTLIST ol  id       ID     #IMPLIED
+                compact         (compact )  #IMPLIED
+                ol-style CDATA  #IMPLIED >
+
+<!--
+  Image data
+  Image is used for any kind of image: art work, figures,  complex work units
+  (math, tables, chemistry), etc.
+
+  Recommended:
+    id          = i0001, i0002, etc.
+    he, wi      = "11" - milimeters - height, width;
+    file        = file name,location; label - not used;
+    alt         = alternate text if image not shown;
+    img-content = drawing is the default;
+    img-format  = common will be tiff, st33 and st35 in for backward compatibilty
+                  and, later, publication.
+    orientation = orientation of the image (portrait | landscape).
+                  Default is portrait
+    inline      = (yes | no).
+                  Whether the image is to be presented inline or separated by line
+                  breaks.  Default is no.
+
+-->
+<!ELEMENT img EMPTY>
+
+<!ATTLIST img  id          ID     #IMPLIED
+                 he          CDATA  #REQUIRED
+                 wi          CDATA  #REQUIRED
+                 file        CDATA  #REQUIRED
+                 alt         CDATA  #IMPLIED
+                 img-content        (drawing | 
+                               photograph | 
+                               character | 
+                               dna | 
+                               undefined | 
+                               chem | 
+                               table | 
+                               math | 
+                               program-listing | 
+                               flowchart | 
+                               graph )  'drawing'
+                 img-format         (jpg | tif | st33 | st35 )  #REQUIRED
+                 orientation        (portrait | landscape )  'portrait'
+                 inline             (yes | no )  'no' >
+
+<!--
+  A reference to a figure;
+  e.g., "...as shown in <figref idref='f0001'>figure<b>1</b></figref>..."
+
+-->
+<!ELEMENT figref (#PCDATA | b | i | u | o | sup | sub | smallcaps)*>
+
+<!ATTLIST figref  idref IDREFS  #IMPLIED
+                    num   CDATA   #IMPLIED >
+
+<!--
+  Cross reference to any other element with an identifier (id)
+
+-->
+<!ELEMENT crossref (#PCDATA | b | i | u | o | sup | sub | smallcaps)*>
+
+<!ATTLIST crossref  idref IDREF  #REQUIRED >
+
+<!--
+  Biological deposit citation (US EFS: biological-deposit)
+    (INID 83, ST.32:B830)
+  According to PCT Rule 13bis, EPC Rule 28
+  This covers all bio data references long and short within the description and/or
+  claims
+
+  Recommended id = biod0001, biod0002, etc.
+
+-->
+<!ELEMENT bio-deposit (depositary , bio-accno , date? , term? , dtext?)>
+
+<!ATTLIST bio-deposit  id   ID     #IMPLIED
+                         num  CDATA  #REQUIRED
+                         url  CDATA  #IMPLIED
+                         dnum CDATA  #IMPLIED >
+
+<!--
+  Non-Patent Literature (NPL) CITation;
+
+  Notes:
+    This can be free text data without any structure (#PCDATA) which is NOT
+    recommended 
+    or it can be highly structured data which is marked up according to ST.14 and
+    ISO 690 layout;
+
+    This part of the DTD has used many different sources for element names and DTD
+    structure and reference:
+    AACR2 / MARC
+    ISO 12083 - Electronic manuscript prep. and markup. DTD
+    Association of American Publishers (AAP) Z39.59 DTD
+    European Working Group for SGML (EWS) MAJOUR DTD
+    SuperJournal Full Article DTD
+      www.superjournal.ac.uk/sj
+    Elsevier DTD
+    Medline DTD (NLM)            
+
+  Attributes (recommended):
+    id - ncit0001, ncit0002, etc
+    num - 0001, 0002
+    npltype - The TYPE of citation is office specific (recommended):;
+      A - Abstract citation of no specific kind
+      B - Book citation
+      I - Bilogical abstract citation
+      C - Chemical abstracts citation
+      E - Database citation
+      D - Derwent citation
+      P - Patent cited within NPL group
+      J - Patent Abstracts of Japan citation (REC 067)
+      S - Serial / Journal / Periodical citation
+      W - World Wide Web / Internet search citation
+    medium - the type of medium
+      e.g., CD (CD-ROM), MT (Magnetic Tape), DISK, ONLINE
+    file - file name on local systems eg. XP number in EPO
+    url  - where possible give full web link to document
+
+-->
+<!ELEMENT nplcit ((text | article | book | online | othercit) , rel-passage*)>
+
+<!ATTLIST nplcit  id       ID     #IMPLIED
+                    num      CDATA  #IMPLIED
+                    lang     CDATA  #IMPLIED
+                    file     CDATA  #IMPLIED
+                    npl-type CDATA  #IMPLIED
+                    medium   CDATA  #IMPLIED
+                    url      CDATA  #IMPLIED >
+
+<!--
+  Reference number (general); for the EPO this is the XP number
+
+-->
+<!ELEMENT refno (#PCDATA)>
+
+<!ATTLIST refno  id ID  #IMPLIED >
+
+<!--
+  Classification code; e.g., ipc, dewey etc.
+
+-->
+<!ELEMENT class (#PCDATA)>
+
+<!ATTLIST class  class-type CDATA  #IMPLIED >
+
+<!--
+  Subordinate responsibility;  e.g., editor, translator, etc.
+
+-->
+<!ELEMENT subname (%name_group; | addressbook)>
+
+<!ATTLIST subname  subname-type   (editor | translator | other-subname-type )  'editor' >
+
+<!--
+  Author
+
+  Prime responsibility for the work
+  there is no distinguishing between personal and corporate authors
+  <author> followed by name or addressbook information
+  use the ID attribute if, for example, there is a need to distinguish between
+  multiple authors.
+  Can also include affiliation details
+
+  Recommended id = auth0001, auth0002, etc.
+
+-->
+<!ELEMENT author (%name_group; | addressbook)>
+
+<!ATTLIST author  id ID  #IMPLIED >
+
+<!--
+  PATENT CITATIONS:
+    (ST.32:B561)
+  Patent Citation within abstract, description or claims.
+  For patent citations within Search Report see Search Report DTD
+
+  Notes:
+    Tags arranged according to WIPO ST.14 order.
+    This can be free text data without any structure (text).
+
+  Example:
+    <patcit id='pcit0001' dnum='US4793675A' dnum-type='publication number'>
+      <document-id>
+        <country>US</country>
+        <doc-number>4793675</doc-number>
+        <kind>A</kind>
+        <name>Handa</name>
+        <date>19881227</date>
+      </document-id>
+    </patcit>
+
+  Note:
+    It is NOT expected that the applicant will create the tagged data
+    - it could be generated from a 'pull down' data entry form
+    or generated from internal SR databases
+
+  Attributes (recommended):
+    id   - pcit0001, pcit0002, etc.
+    num  - 0001, 0002, etc.
+    dnum - use full number as one string, eg, "US5401234A";
+    url  - where possible give full web link to patent
+    file - file name eg. if stored on local systems
+    dnum-type - type of document number
+      (e.g., application number, publication number)
+
+-->
+<!ELEMENT patcit (text | (document-id , rel-passage*))>
+
+<!ATTLIST patcit  id        ID     #IMPLIED
+                    num       CDATA  #IMPLIED
+                    dnum      CDATA  #IMPLIED
+                    dnum-type CDATA  #IMPLIED
+                    file      CDATA  #IMPLIED
+                    url       CDATA  #IMPLIED >
+
+<!--
+  This element is one method to identify content consisting of text objects that
+  require preservation (pre) of their whitespace in order to preserve internal
+  logical relationships.
+  (e.g., sequence listing fragments, computer program listings)
+
+-->
+<!ELEMENT pre (#PCDATA)>
+
+<!ATTLIST pre  id           ID  #IMPLIED
+                 space            (preserve | default )  #IMPLIED
+                 listing-type     (sequence | program-listing | other )  #REQUIRED >
+
+<!--
+  Underscore: style - single is default
+
+-->
+<!ELEMENT u (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST u  style   (single | double | dash | dots )  'single' >
+
+<!--
+  Overscore: ostyle - single is default
+
+-->
+<!ELEMENT o (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST o  ostyle   (single | 
+                        double | 
+                        dash | 
+                        dots | 
+                        leftarrow | 
+                        rightarrow | 
+                        leftrightarrow )  'single' >
+
+<!--
+  1. With regard to the language, this opinion has been established on the basis of
+    the international application in the language in which it was filed, unless
+    otherwise indicated under this item.
+
+  This opinion has been established on the basis of a translation from the original
+  language into the following language________________ , which is the language of
+  a translation furnished for the purposes of international search
+  (under Rules 12.3 and 23.1(b)).
+
+-->
+<!ELEMENT translation-of-appl EMPTY>
+
+<!ATTLIST translation-of-appl  translation                (yes | no )  'no'
+                                 translation-purpose        (international-search | 
+                                                       international-publication | 
+                                                       supplementary-international-search | 
+                                                       international-type-search | 
+                                                       international-preliminary-examination | 
+                                                       entry-regional-phase | 
+                                                       priority-document | 
+                                                       national-search | 
+                                                       national-examination | 
+                                                       opposition )  #IMPLIED
+                                 lang                CDATA  #IMPLIED >
+
+<!--
+  This part preceded by - on old PCT/ISA/210 :
+  This international search report has been prepared by this ISA and is transmitted
+  to the applicant according to Article 18.
+  A copy is being transmitted to the International Bureau.
+
+  This international search report consists of a total of ______ sheets.
+  It is also accompanied by a copy of each prior art document cited in this report.
+  (This text will need modification for electronic transmission of the SR).
+
+  If the attribute value is "yes" then the prior art may accompany the SR as paper,
+  image data, or xml (application-body) data
+
+-->
+<!ELEMENT srep-prior-art-docs (doc-page | prior-art-xml-doc)*>
+
+<!ATTLIST srep-prior-art-docs  prior-art   (yes | no )  #REQUIRED >
+
+<!--
+  XML version prior art document, if any
+  To be checked may be application-body.
+
+-->
+<!ELEMENT prior-art-xml-doc EMPTY>
+
+<!ATTLIST prior-art-xml-doc  id       ID     #IMPLIED
+                               file     CDATA  #REQUIRED
+                               lang     CDATA  #IMPLIED
+                               carriers        (internal-electronic | 
+                                          external-electronic | 
+                                          paper )  #IMPLIED
+                               status   CDATA  #IMPLIED >
+
+<!--
+  With regard to the protest against payment of (an) additional fee(s)
+  under Rule 40.2, the applicant is notified that:
+
+  if yes:
+    the protest together with the decision thereon has been transmitted to the
+    International Bureau together with the applicant s request to forward the texts
+    of both the protest and the decision thereon to the designated Offices.
+
+  if no:
+    no decision has been made yet on the protest; the applicant will be notified
+    as soon as a decision is made.
+  - 
+  Sytlesheet note: this data is followed by Reminders and Notes (if printed)
+  otherwise put a link in to the relevant text.
+
+-->
+<!ELEMENT srep-protest-fees EMPTY>
+
+<!ATTLIST srep-protest-fees  srep-protest   (yes | no )  'yes' >
+
+<!--
+  Form PCT/ISA/220 (January 2004)
+
+  If yes:
+    The applicant is hereby notified that the international search report and the
+    written opinion of the International Searching Authority have been established
+    and are transmitted herewith.
+
+    Filing of amendments and statement under Article 19:
+    The applicant is entitled, if he so wishes, to amend the claims of the
+    international application (see Rule 46):
+    When? The time limit for filing such amendments is normally two months from the
+    date of transmittal of the international search report.
+    Where? Directly to the International Bureau of WIPO, 34 chemin des Colombettes
+    1211 Geneva 20, Switzerland, Facsimile No.: +41 22 740 14 35
+
+  if no:
+    The applicant is hereby notified that no international search report will be
+    established and that the declaration under Article 17(2)(a) to that effect and
+    the written opinion of the International Searching Authority are transmitted
+    herewith.
+
+-->
+<!ELEMENT srep-established EMPTY>
+
+<!ATTLIST srep-established  srep-established   (yes | no )  'yes' >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  ADDRESSBOOK GROUP: 
+  Holds name and contact information for individuals/organizations
+
+  The LANG attribute is REQUIRED for certain document types,
+  e.g., the JPO PCT Request where names and addresses may be repeated in two
+    different languages. If no structure possible use text.
+
+-->
+<!ELEMENT addressbook ((%name_group; , address , phone* , fax* , email* , url* , ead* , dtext?) | text)>
+
+<!ATTLIST addressbook  id   ID     #IMPLIED
+                         lang CDATA  #IMPLIED >
+
+<!--
+	Email address
+
+	Attribute:
+		email-purpose    reason for which email address is included:
+informal     for informal contact only
+general      for any type of communication
+confirmation any type of communication, but formal messages followed up
+             by conventional mailing (to the extent offered)
+main         where applicant desires this address to be used as primary
+             means of contact as a replacement of the use of conventional
+             post (to the extent that an Office offers this)
+		the default value depends on e-mail policies of the relevant Office. 
+		For PCT purposes as at 1 July 2008, no attribute being included is 
+		equivalent to 'informal'
+
+-->
+<!ELEMENT email (#PCDATA)>
+
+<!ATTLIST email  email-purpose   (informal | general | advance | main )  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  doc-page - DOCument or PAGE
+
+  This is primarily to be used when data for the whole or major sections of an
+  application are in image format OR other formats such as pdf.
+
+  Page range attributes are given when required
+    pp  - page range
+    ppf - first page 
+    ppl - last page (for pdf).
+  The 'img' may also be used for complete pages, e.g. in drawings 
+
+  Recommended id = docp0001, docp0002, etc.
+  Attributes "he" and "wi" mean height and width. 
+
+
+-->
+<!ELEMENT doc-page EMPTY>
+
+<!ATTLIST doc-page  id          ID     #IMPLIED
+                      he          CDATA  #REQUIRED
+                      wi          CDATA  #REQUIRED
+                      type               (jpg | pdf | tif )  #REQUIRED
+                      alt         CDATA  #IMPLIED
+                      pp          CDATA  #IMPLIED
+                      ppf         CDATA  #IMPLIED
+                      ppl         CDATA  #IMPLIED
+                      file        CDATA  #REQUIRED
+                      ocr         CDATA  #IMPLIED
+                      color              (color | bw )  #IMPLIED
+                      orientation        (portrait | landscape )  'portrait' >
+
+<!--
+  SECTION III OF DTD
+  The actual search report - start a new page
+
+  The Heading is:
+    <B>INTERNATIONAL SEARCH REPORT (ISR) - PART 2</B>
+    <HR></HR>
+  Repeat international application number (?)
+    IPC, FIELDS and DATABASES SEARCHED
+    CLASSIFICATION OF SUBJECT MATTER
+
+-->
+<!ELEMENT srep-for-pub (doc-page+ | (classification-ipc? , classifications-ipcr? , classification-national? , srep-fields-searched , srep-citations , srep-incomplete-search? , srep-declaration? , srep-admin? , srep-patent-family? , srep-earlier-search* , sisr-scope?))>
+
+
+<!--
+
+  Explanations with regard to the citations and/or the scope of the search (Rule 45bis.7(e)(ii))
+
+-->
+<!ELEMENT sisr-scope (heading* , p+)+>
+
+
+<!--
+  This is the old 210 (patent family annex)
+  Patent family information according to WIPO ST.14
+  For EP SR can be used for Annex to the EP SR.(Form P0459)
+
+-->
+<!ELEMENT srep-patent-family (text? , patent-family+)>
+
+
+<!--
+  Patent family.
+    (ST.32:B345)
+
+-->
+<!ELEMENT family-member (document-id, rel-passage?)>
+
+
+<!--
+  Priority application number.
+    (INID 31, ST.32:B310)
+
+This element normally represents a priority application.  
+However, under <patent-family> this element may be used to represent a patent document 
+which is cited in the search report, which may not necessarily be a priority application which 
+links the family members.
+
+-->
+<!ELEMENT priority-application (document-id)>
+
+
+<!--
+  SR - ADMINISTRATIVE DETAILS
+  example layout:
+
+  ISA/Examiner: EPO
+  DE LAERE, Ann
+  PB 5818, Patentlaan 2
+  NL 2280 HV Rijswijk
+  Tel. +31 - 70 340 2040
+  Fax. +31 - 70 340 3016
+  Search completed: 10 August 1992
+  ISR mailed: 24 August 1992
+
+  ** End of ISR **
+
+-->
+<!ELEMENT srep-admin (examiners? , srep-office? , date-search-completed , date-search-report-mailed?)>
+
+
+<!--
+  Persons acting on the document.
+    (ST.32:B745)
+
+-->
+<!ELEMENT examiners (primary-examiner? , assistant-examiner? , authorized-officer?)>
+
+
+<!--
+  Assistant Examiner.
+    (ST.32:B747)
+
+-->
+<!ELEMENT assistant-examiner (%name_group; , electronic-signature?)>
+
+
+<!--
+  Primary Examiner.
+    (ST.32:B746)
+
+-->
+<!ELEMENT primary-examiner (%name_group; , electronic-signature?)>
+
+
+<!--
+  The element is to process EPO SR FORM 1503 - partial SR.
+  e.g., EP 99305342
+
+-->
+<!ELEMENT srep-incomplete-search (text | limitation-of-search+)>
+
+
+<!ELEMENT reason-limited-search (heading? , p+)>
+
+
+<!ELEMENT claims-not-searched (#PCDATA)>
+
+
+<!ELEMENT claims-searched-incompletely (#PCDATA)>
+
+
+<!ELEMENT claims-searched (#PCDATA)>
+
+
+<!--
+  CITATIONS GROUP
+
+  Stylesheet:DOCUMENTS CONSIDERED TO BE RELEVANT
+  (Citation, any relevant passage (*), followed by category and claim number(s))
+
+-->
+<!ELEMENT srep-citations (text | citation+)>
+
+
+<!--
+  Patent family and corresponding-docs
+
+-->
+<!ELEMENT corresponding-docs ((patcit | nplcit) , (rel-passage* , category* , rel-claims*)*)>
+
+
+<!--
+  FIELDS SEARCHED (old B. box)
+
+-->
+<!ELEMENT srep-fields-searched (minimum-documentation , other-documentation* , database-searched?)>
+
+
+<!--
+  Database(s) searched
+
+-->
+<!ELEMENT database-searched (text | nplcit)>
+
+
+<!--
+  Documentation searched other than minimum documentation
+
+-->
+<!ELEMENT other-documentation (#PCDATA)>
+
+
+<!--
+  Minimum documentation searched
+
+-->
+<!ELEMENT minimum-documentation (classification-ipc? , classifications-ipcr? , classification-national?)>
+
+
+<!--
+  Possible sources: human-generated-classification,
+  machine-propagated-classification, software-analysis-generated-classification
+
+-->
+<!ELEMENT classification-data-source (#PCDATA)>
+
+
+<!--
+  Possible status: original-classification, reclassified, various-classification,
+  deleted-classification
+
+-->
+<!ELEMENT classification-status (#PCDATA)>
+
+
+<!--
+
+
+-->
+<!ELEMENT generating-office (country)>
+
+
+<!--
+
+
+-->
+<!ELEMENT action-date (date)>
+
+
+<!--
+  Possible values: invention, non-invention
+
+-->
+<!ELEMENT classification-value (#PCDATA)>
+
+
+<!--
+  Possible positions: first-symbol-position, later-symbol-position.
+
+-->
+<!ELEMENT symbol-position (#PCDATA)>
+
+
+<!--
+
+
+-->
+<!ELEMENT subgroup (#PCDATA)>
+
+
+<!--
+
+
+-->
+<!ELEMENT main-group (#PCDATA)>
+
+
+<!--
+
+
+-->
+<!ELEMENT subclass (#PCDATA)>
+
+
+<!--
+
+
+-->
+<!ELEMENT section (#PCDATA)>
+
+
+<!--
+  Levels: ipcr-advanced, ipcr-core
+
+-->
+<!ELEMENT classification-level (#PCDATA)>
+
+
+<!--
+
+
+-->
+<!ELEMENT ipc-version-indicator (date)>
+
+
+<!--
+  Unlinked indexing code.
+    (ST.32:B515/B525)
+
+-->
+<!ELEMENT unlinked-indexing-code (#PCDATA)>
+
+
+<!--
+  Linked indexing code.
+    (ST.32:B514/B524)
+
+-->
+<!ELEMENT linked-indexing-code-group (main-linked-indexing-code , sub-linked-indexing-code+)>
+
+
+<!--
+  Sub/further Linked Indexing Code.
+
+-->
+<!ELEMENT sub-linked-indexing-code (#PCDATA)>
+
+
+<!--
+  Main Linked Indexing Code.
+
+-->
+<!ELEMENT main-linked-indexing-code (#PCDATA)>
+
+
+<!--
+  Main classification.
+    (ST.32:B511/B521)
+
+-->
+<!ELEMENT main-classification (#PCDATA)>
+
+
+<!--
+  Grouping tag referencing all previous to which a (supplementary) international search report refers to.
+
+-->
+<!ELEMENT earlier-searches (earlier-search+)>
+
+
+<!--
+  Date of completion of search report.
+    (ST.32:B565)
+
+-->
+<!ELEMENT date-search-completed (date)>
+
+
+<!--
+  Date of reception of the request for (supplementary) search
+
+-->
+<!ELEMENT srep-request-received-date (date)>
+
+
+<!--
+  This is a place marker since there may be other information added at a later
+  stage which has not been forseen.
+
+-->
+<!ELEMENT srep-other-info (srep-information+)>
+
+
+<!ELEMENT srep-info-admin (authorized-officer? , srep-office? , date-search-report-mailed? , date-opinion-completed?)>
+
+
+<!--
+
+
+-->
+<!ELEMENT date-opinion-completed (date)>
+
+
+<!--
+  Date of mailing of search report.
+    (ST.32:B566)
+
+-->
+<!ELEMENT date-search-report-mailed (date)>
+
+
+<!--
+  International Search Authority; international search to be carried out by
+
+-->
+<!ELEMENT srep-office (addressbook)>
+
+
+<!--
+  Authorized Officer.
+
+-->
+<!ELEMENT authorized-officer (%name_group; , phone? , fax? , email? , electronic-signature?)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  The total amount due for each fee group;
+  e.g., search fees, transmittal fees, etc.
+
+-->
+<!ELEMENT amount-total (#PCDATA)>
+
+
+<!--
+  Figure of the drawings which should accompany the abstract
+
+-->
+<!ELEMENT figure-to-publish (fig-number+)>
+
+
+<!--
+  PCT/RO/101 Box IX: the number of the figure which should accompany the abstract.
+    (ST.32:B598)
+
+-->
+<!ELEMENT fig-number (#PCDATA)>
+
+
+<!ELEMENT srep-search-fees (srep-fee-1? , srep-fee-2? , srep-fee-3? , srep-fee-4?)>
+
+
+<!--
+  No required additional search fees were timely paid by the applicant.
+  Consequently, this ISR is restricted to the invention first mentioned in the
+  claims; it is covered by claim number(s):
+
+-->
+<!ELEMENT srep-fee-4 (claim-num+)>
+
+
+<!--
+  As only some of the required additional search fees were timely paid by the
+  applicant, this ISR covers only those claims for which fees were paid,
+  specifically claim number(s):
+
+-->
+<!ELEMENT srep-fee-3 (claim-num+)>
+
+
+<!--
+  As all searchable claims could be searched without effort justifying an
+  additional fee, this ISA did not invite payment of any additional fees.
+
+-->
+<!ELEMENT srep-fee-2 EMPTY>
+
+
+<!--
+  As all required additional search fees were timely paid by the applicant,
+  this ISR covers all searchable claims.
+
+-->
+<!ELEMENT srep-fee-1 EMPTY>
+
+
+<!--
+  (Old PCT/ISA/210 - Box No. II)
+   Observations where certain claims were found unsearchable
+
+  This ISR has not been established in respect of certain claims
+  under Article 17(2)(a) for the following reasons. 
+  The reasons for which sets of claims where not searched will be provided with an element srep-claims-not-searched for each set.
+  
+
+-->
+<!ELEMENT srep-claims-info (srep-claims-not-searched*)>
+
+
+<!--
+  Remarks on these claims
+
+-->
+<!ELEMENT claim-remark (p+)>
+
+
+<!--
+  Claim numbers
+
+-->
+<!ELEMENT claim-num (#PCDATA)>
+
+
+<!--
+  PCT/ISA/210 Box 1::Basis of the Report
+
+-->
+<!ELEMENT srep-basis (translation-of-appl , sequence-list-basis? , srep-rectification-of-obvious-mistake? , srep-earlier-search-or-declaration-considered*)>
+
+
+<!--
+  This supplementary international search report has
+  been established taking into account the rectification
+  of an obvious mistake notified to this Authority under Rule 91
+  (Rules 43.6bis(a) and 45bis.7(c)).
+
+-->
+<!ELEMENT srep-rectification-of-obvious-mistake EMPTY>
+
+
+<!--
+  A sequence listing and/or any related table(s) - see Supplemental Box Relating
+  to Sequence Listing.
+
+-->
+<!ELEMENT sequence-list-basis (material-of-sequence-list , presentation-of-statements? , additional-info?)>
+
+
+<!--
+  (PCT/ISA/210 Box No. I Nucleotide and/or amino acid sequence(s)
+
+  (Continuation of item1.b of the first sheet))
+    1. With regard to any nucleotide and/or amino acid sequence disclosed in the
+       international application and necessary to the claimed invention,
+       the international search was carried out on the basis of:
+
+  (PCT/ISA/237 Box No. I Basis of this opinion)
+    2. With regard to any nucleotide and/or amino acid sequence disclosed in the
+       international application and necessary to the claimed invention,
+       this opinion has been established on the basis of:
+
+  (PCT/IPEA/409 Supplemental Box Relating to Sequence Listing)
+    1. With regard to any nucleotide and/or amino acid sequence disclosed in the
+       international application and necessary to the claimed invention,
+       this report was established on the basis of:
+
+  (PCT/IPEA/408 Supplemental Box Relating to Sequence Listing)
+    1. With regard to any nucleotide and/or amino acid sequence disclosed in the
+       international application and necessary to the claimed invention,
+       this opinion was established on the basis of:
+
+-->
+<!ELEMENT material-of-sequence-list (sequence-listing-material-type , sequence-listing-material-format , sequence-listing-filing-time)>
+
+
+<!--
+  Additional information.
+    (ST.32:B513)
+
+-->
+<!ELEMENT additional-info (p+)>
+
+
+<!--
+  Definition description
+
+-->
+<!ELEMENT dd (#PCDATA | b | i | u | o | sup | sub | smallcaps | br | pre | patcit | nplcit | bio-deposit | crossref | figref | img | ul | ol | chemistry | maths)*>
+
+
+<!--
+  This is for a simple mathematical or chemical formulae.
+
+-->
+<!ELEMENT formula-text (#PCDATA | b | i | u | o | sup | sub | smallcaps)*>
+
+
+<!--
+  Identifies the period of time during which the depository must be able to furnish
+  samples of the biological material.
+
+-->
+<!ELEMENT term (#PCDATA)>
+
+
+<!--
+  Biological accession number:
+    (ST.32:B831)
+  The identification assigned to the biological material by the depository
+ 
+-->
+<!ELEMENT bio-accno (#PCDATA)>
+
+
+<!--
+  Information regarding the facility storing the biological deposit.
+    (ST.32:B832)
+
+-->
+<!ELEMENT depositary (#PCDATA | address)*>
+
+
+<!--
+  Other citations - free form
+
+-->
+<!ELEMENT othercit (#PCDATA | b | i | u | o | sup | sub)*>
+
+
+<!--
+  Online citation
+    Revised according to ISO-690-2 - Electronic documents and parts thereof.
+    Please refer to this standard for definitions and examples.
+    See: http://www.nlc-bnc.ca/iso/tc46sc9/standard/690-2e.htm#Contents
+    The tagging in fact is a mixture of article and book tags together with
+    specific electronic source tags.
+    'Online' is taken to mean any kind of electronic documentation:
+      databases, internet, CD-Roms, DVD, email, etc
+ 
+  EXAMPLES:;
+
+    Kirk-Othmer Encyclopedia of Chemical Technology [online].
+    3rd ed. New York : John Wiley, 1984 [cited 3 January 1990].
+    Available from: DIALOG Information Services, Palo Alto (Calif.).
+ 
+      <nplcit id='ncit1' num='0001' type='E' medium='online'>
+        <online>
+          <online-title>Kirk-Othmer Encyclopedia of Chemical Technology
+          </online-title>
+          <edition>3rd ed.</edition>
+          <imprint>
+            <address>
+              <text>New York</text>
+            </address>
+            <name>John Wiley</name>
+            <pubdate>19840000</pubdate>
+          </imprint>
+          <avail>dialog information services, palo alto (calif.).</avail>
+          <datecit>
+            <date>19900103</date>
+          </datecit>
+        </online>
+      </nplcit>
+
+  * Article on Internet:
+    Clark, Carol. On the Threshold of a Brave New World.
+    In Blueprint of the Body [online].
+    CNN.com, 2000. [cited 24 August 2000;10:25 EST]. In-depth specials.
+    Available from: [http://www.cnn.com/SPECIALS/2000/genome/story/overview/]
+
+      <nplcit id='ncit1' num='0002' type='E' medium='online'>
+        <online>
+          <author>
+            <name>Clark, Carol</name>
+          </author>
+          <online-title>On the Threshold of a Brave New World</online-title>
+          <imprint>
+            <name>CNN.com, 2000</name>
+          </imprint>
+          <series>
+            <text>In-depth specials</text>
+          </series>
+          <avail>http://www.cnn.com/SPECIALS/2000/genome/story/</avail>
+          <datecit>
+            <date>20000824; 10:25 est</date>
+          </datecit>
+        </online>
+      </nplcit>
+
+  * Personal communication (e-mail)
+ 
+    Thacker, Jane. MPEG-21 project stream on digital item identification [online].
+    Message to: [iso.tc46.sc9@nlc-bnc.ca]. 3 October 2000; 13:33 EST [cited 6
+    October 2000; 13:10 EST].
+    Message-ID: [002f01c02d60$051a64a0$22a2580c@vaio]. Personal communication.
+
+      <nplcit id='ncit3' num='0003' type='E' medium='online'>
+        <online>
+          <author>
+            <name>Thacker, Jane</name>
+          </author>
+          <online-title>MPEG-21 project stream on digital item identification
+          </online-title>
+          <subname>
+            <name>Message to: <iso.tc46.sc9@nlc-bnc.ca></name>
+          </subname>
+          <pubdate>3 October 2000; 13:33 EST</pubdate>
+          <notes>Personal communication</notes>
+          <avail>Message-ID: <002f01c02d60$051a64a0$22a2580c@vaio></avail>
+          <datecit><date>6 october 2000; 13:10 EST</date></datecit>
+        </online>
+      </nplcit>
+
+-->
+<!ELEMENT online (text | (author* , online-title* , hosttitle? , subname* , edition? , (serial | book)? , imprint? , pubdate? , vid? , ino? , history? , series? , hostno? , absno? , location? , notes? , avail* , class* , keyword* , cpyrt? , doi? , issn? , isbn? , datecit? , srchterm* , srchdate? , refno*))>
+
+
+<!--
+  Date of search/retrieval  YYYYMMDD
+
+-->
+<!ELEMENT srchdate (date)>
+
+
+<!--
+  Search terms
+
+-->
+<!ELEMENT srchterm (#PCDATA)>
+
+
+<!--
+  Date cited - date on which the citation was cited.
+  May be different from srchdate below
+
+-->
+<!ELEMENT datecit (date)>
+
+
+<!--
+  Availability and access - REQUIRED use for URL, online database, ftp address,
+  email, etc.;
+  e.g., Available from Internet: http://www.epoline.org
+    Available from DIALOG Information Systems, Palo Alto (Calif.)
+
+-->
+<!ELEMENT avail (#PCDATA)>
+
+
+<!--
+  Numeration within host document
+
+-->
+<!ELEMENT hostno (#PCDATA)>
+
+
+<!--
+  History of the article (not serial)
+
+-->
+<!ELEMENT history (text | (received | accepted | revised | misc))>
+
+
+<!--
+  Miscellaneous information relating to the history of the article; see ISO 12083
+
+-->
+<!ELEMENT misc (#PCDATA | date)*>
+
+
+<!--
+  Date article was revised
+
+-->
+<!ELEMENT revised (date)>
+
+
+<!--
+  Date article was accepted
+
+-->
+<!ELEMENT accepted (date)>
+
+
+<!--
+  Date article was received
+
+-->
+<!ELEMENT received (date)>
+
+
+<!--
+  Title of the host document/database
+
+-->
+<!ELEMENT hosttitle (#PCDATA)>
+
+
+<!--
+  The title of the electronic resource
+
+-->
+<!ELEMENT online-title (#PCDATA)>
+
+
+<!--
+  Article citations within a 'host' document
+
+  After patent citations the most common citations are articles within serials
+  (periodicals, magazines), books and electronic (eg. internet) sources.
+  This is a very complex and varied area to standardise. The tag set below is drawn
+  from a number of sources as is the order of the tags (which in any case can be
+  changed depending on the stylesheet used).;
+
+  The order of tags is that of WIPO ST.14 / ISO 690 layout.
+    DROP, J.G.  Integrated Circuit Personalization at the Module Level. IBM Tech.
+    Dis. Bull.  October 1974, Vol. 17, No. 5, p. 1344 and 1345.
+    [XPnnnnnnnnnnn].
+
+      <nplcit id='ncit1' num='0012' type='S' file='XP1234456'>
+        <article>
+          <author>
+            <name>DROP, J.G.</name>
+          </author>
+          <atl>Integrated Circuit Personalization at the Module Level</atl>
+          <serial>
+          <sertitle>IBM Tech. Dis. Bull.</sertitle>
+          <pubdate>19741000</pubdate>
+          <vid>17</vid>
+          <ino>5</ino>
+          </serial>
+          <location>
+            <pp>1344 and 1345</pp>
+          </location>
+          <refno id='XP1'>XP1234456</refno>
+        </article>
+      </nplcit>
+
+  Note: it is NOT expected that the applicant will create the tagged data
+  - it can be generated from a 'pull down' data entry form (eg. in Word) or
+    generated from internal SR databases
+
+-->
+<!ELEMENT article (text | (author* , atl? , subname* , (serial | book) , absno? , location? , class* , keyword* , cpyrt? , artid? , refno*))>
+
+
+<!--
+  Article unique ID - assigned by a publisher to an article
+
+-->
+<!ELEMENT artid (#PCDATA)>
+
+
+<!--
+  Book citation 
+  In the order specified by WIPO ST.14 and ISO 690 and AACR2 rules for layout
+
+  WALTON, Herrmann. Microwave quantum theory.
+  London : Sweet and Maxwell, 1973. ISBN 0123456789.
+  Vol.2, p. 138 to 192.
+
+    <nplcit id='ncit12' num='0013' type='b'>
+      <book>
+        <author>
+          <name>WALTON, Herrman</name>
+        </author>
+        <book-title>Microwave quantum theory</book-title>
+        <imprint>
+          <address>
+            <text>London</text>
+          </address>
+          <name>Sweet and Maxwell</name>
+          <pubdate>19730000</pubdate>
+        </imprint>
+        <location>
+          <pp>138 to 192</pp>
+        </location>
+        <isbn>0-1234-568-9</isbn>
+      </book>
+    </nplcit>
+
+-->
+<!ELEMENT book (text | (author* , (book-title+ | conference) , (subtitle? , subname* , edition? , imprint? , vid? , ino? , descrip? , series? , notes? , absno? , location* , pubid? , bookno? , class* , keyword* , cpyrt? , doi? , issn? , isbn* , refno*)))>
+
+
+<!--
+  Keyword; e.g., from a Thesaurus or class. scheme
+    (ST.32:B550)
+
+-->
+<!ELEMENT keyword (#PCDATA)>
+
+
+<!--
+  Book number
+
+-->
+<!ELEMENT bookno (#PCDATA)>
+
+
+<!--
+  Location within the cited work
+
+-->
+<!ELEMENT location (text | (serpart? , sersect? , chapter? , pp? , column? , para? , line?))>
+
+
+<!--
+  Referenced line within cited work
+
+-->
+<!ELEMENT line (#PCDATA | linef | linel)*>
+
+
+<!--
+  Cited document line, last
+
+-->
+<!ELEMENT linel (#PCDATA)>
+
+
+<!--
+  Cited document line, first
+
+-->
+<!ELEMENT linef (#PCDATA)>
+
+
+<!--
+  Referenced paragraph within cited work
+
+-->
+<!ELEMENT para (#PCDATA | paraf | paral)*>
+
+
+<!--
+  Cited paragraph, last
+
+-->
+<!ELEMENT paral (#PCDATA)>
+
+
+<!--
+  Cited paragraph, first
+
+-->
+<!ELEMENT paraf (#PCDATA)>
+
+
+<!--
+  Cited document column numbers
+
+-->
+<!ELEMENT column (#PCDATA | colf | coll)*>
+
+
+<!--
+  Cited document column, last
+
+-->
+<!ELEMENT coll (#PCDATA)>
+
+
+<!--
+  Cited document column, first
+
+-->
+<!ELEMENT colf (#PCDATA)>
+
+
+<!--
+  Cited document page numbers
+
+-->
+<!ELEMENT pp (#PCDATA | ppf | ppl)*>
+
+
+<!--
+  Cited document page, last
+
+-->
+<!ELEMENT ppl (#PCDATA)>
+
+
+<!--
+  Cited  document page , first
+
+-->
+<!ELEMENT ppf (#PCDATA)>
+
+
+<!--
+  Chapter; e.g., in a book.  Example: Chapter 2
+
+-->
+<!ELEMENT chapter (#PCDATA)>
+
+
+<!--
+  Serial section
+
+-->
+<!ELEMENT sersect (#PCDATA)>
+
+
+<!--
+  Part within a serial
+
+-->
+<!ELEMENT serpart (#PCDATA)>
+
+
+<!--
+  Abstract number
+
+-->
+<!ELEMENT absno (#PCDATA)>
+
+
+<!--
+  Series statement
+
+-->
+<!ELEMENT series (text | (mst , msn? , issn?))>
+
+
+<!--
+  Monographic series number
+
+-->
+<!ELEMENT msn (#PCDATA)>
+
+
+<!--
+  Monographic series title
+
+-->
+<!ELEMENT mst (#PCDATA)>
+
+
+<!--
+  Edition statement
+    (ST.32:B516)
+
+-->
+<!ELEMENT edition (#PCDATA)>
+
+
+<!--
+  Book subtitle
+
+-->
+<!ELEMENT subtitle (#PCDATA)>
+
+
+<!--
+  CONFERENCE GROUP / CITATION
+  There is no standard way of citing conference proceedings; date of the conf. may
+  come before or after place, for example. The tags are specified in a set order
+  where it is not possible or correct then simply use <text>
+
+-->
+<!ELEMENT conference (text | (conftitle , confdate? , confno? , confplace? , confsponsor*))>
+
+
+<!--
+
+
+-->
+<!ELEMENT confdate (date | (sdate , edate))>
+
+
+<!--
+  Conference sponsor
+
+-->
+<!ELEMENT confsponsor (#PCDATA | addressbook)*>
+
+
+<!--
+  Conference place
+
+-->
+<!ELEMENT confplace (#PCDATA | address)*>
+
+
+<!--
+  Conference number
+
+-->
+<!ELEMENT confno (#PCDATA)>
+
+
+<!--
+  Conference title
+
+-->
+<!ELEMENT conftitle (#PCDATA)>
+
+
+<!--
+  The title of the cited book
+
+-->
+<!ELEMENT book-title (#PCDATA)>
+
+
+<!--
+  Serial citation data:
+  This describes the volume or issue as a whole and not a particular article within
+  it.
+
+-->
+<!ELEMENT serial (sertitle , alttitle? , subname* , issue? , imprint? , pubdate? , descrip? , notes? , pubid? , vid? , ino? , doi? , issn? , isbn? , cpyrt?)>
+
+
+<!--
+  Copyright info.  Copyright of publisher of serial
+
+-->
+<!ELEMENT cpyrt (#PCDATA)>
+
+
+<!--
+  International Standard Book Number
+
+-->
+<!ELEMENT isbn (#PCDATA)>
+
+
+<!--
+  International Standard Serial Number
+
+-->
+<!ELEMENT issn (#PCDATA)>
+
+
+<!--
+
+
+-->
+<!ELEMENT doi (#PCDATA)>
+
+
+<!--
+  Issue number
+
+-->
+<!ELEMENT ino (#PCDATA)>
+
+
+<!--
+  Volume id/number
+
+-->
+<!ELEMENT vid (#PCDATA)>
+
+
+<!--
+  Publisher's unique id
+
+-->
+<!ELEMENT pubid (#PCDATA)>
+
+
+<!--
+  Notes about the journal; e.g. Continues Journal of XYZ 1910-1998, published in
+  French and English, etc.
+
+-->
+<!ELEMENT notes (#PCDATA)>
+
+
+<!--
+  Physical description - generally NOT used in citations in pats; e.g., v., 27cm
+
+-->
+<!ELEMENT descrip (#PCDATA)>
+
+
+<!--
+  Imprint:
+  Publication / creation data
+  Place of publication : publisher, date(s) of publication usually only date of
+  publication is used for journal citations
+
+-->
+<!ELEMENT imprint (text | (address? , name , pubdate*))>
+
+
+<!--
+  Publication date used in npl citations
+
+-->
+<!ELEMENT pubdate (#PCDATA | sdate | edate | time)*>
+
+
+<!--
+  Time; format HHMM
+
+-->
+<!ELEMENT time (#PCDATA)>
+
+
+<!--
+  End date used in pubdate
+
+-->
+<!ELEMENT edate (#PCDATA)>
+
+
+<!--
+  Start date used in pubdate
+
+-->
+<!ELEMENT sdate (#PCDATA)>
+
+
+<!--
+  Issue designation; e.g., Annual, 1971-, 1890-1972
+
+-->
+<!ELEMENT issue (#PCDATA)>
+
+
+<!--
+  Alternate title for serial; e.g. BMJ = British Medical Journal
+
+-->
+<!ELEMENT alttitle (#PCDATA)>
+
+
+<!--
+  Serial title
+
+-->
+<!ELEMENT sertitle (#PCDATA)>
+
+
+<!--
+  Article title
+
+-->
+<!ELEMENT atl (#PCDATA)>
+
+
+<!--
+  Relevant passage group within patent; most used in search  reports
+  - use text in abstract, description and claims
+
+-->
+<!ELEMENT rel-passage (text | (passage+ , (category , rel-claims?)*))>
+
+
+<!--
+  Relevant claims
+
+-->
+<!ELEMENT rel-claims (#PCDATA)>
+
+
+<!--
+  Category
+    (ST.32:B563)
+
+-->
+<!ELEMENT category (#PCDATA)>
+
+
+<!--
+  Passage within the cited patent literature
+
+-->
+<!ELEMENT passage (#PCDATA)>
+
+
+<!--
+  br - break, line break within a paragraph
+
+-->
+<!ELEMENT br EMPTY>
+
+
+<!--
+  Bold formatting for text
+
+-->
+<!ELEMENT b (#PCDATA | i | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Italic formatting for text
+
+-->
+<!ELEMENT i (#PCDATA | b | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Small capitals
+
+-->
+<!ELEMENT smallcaps (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  (PCT/ISA/210 and PCT/ISA/237 )
+    In addition, in the case that more than one version or copy of a sequence
+    listing and/or table relating thereto has been filed or furnished,
+    the required statements that the information in the subsequent or additional
+    copies is identical to that in the application as filed or does not go beyond
+    the application as filed, as appropriate, were furnished.
+
+  (PCT/IPEA/409 and PCT/IPEA/408 )
+    In addition, in the case that more than one version or copy of a sequence
+    listing and/or table(s) relating thereto has been filed or furnished,
+    the required statements that the information in the subsequent or additional
+    copies is identical to that in the application as filed or does not go beyon
+    the application as filed, as appropriate, were furnished.
+
+-->
+<!ELEMENT presentation-of-statements EMPTY>
+
+
+<!--
+  Search request number eg. on PCT Form 201.
+
+-->
+<!ELEMENT srep-request-number (#PCDATA)>
+
+
+<!--
+  Date of request for search eg. on PCT Form 201
+
+-->
+<!ELEMENT srep-request-date (date)>
+
+
+<!--
+  The name of the applicant (without address information)
+    (ST.32:B711)
+
+-->
+<!ELEMENT applicant-name (%name_group;)>
+
+
+<!--
+  Where the international application claims the priority of several earlier
+  applications, the filing date of the earliest application whose priority is
+  claimed must be indicated as the priority date.
+
+-->
+<!ELEMENT date-of-earliest-priority (date)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+
+<!--
+  Address used for general correspondence
+
+-->
+<!ELEMENT correspondence-address (customer-number | addressbook+)>
+
+
+<!--
+  Customer number for agents by office
+
+-->
+<!ELEMENT customer-number (#PCDATA)>
+
+
+<!--
+  Descriptive text
+
+-->
+<!ELEMENT dtext (#PCDATA)>
+
+
+<!--
+  Universal Resource Locator; e.g. www.wipo.int
+
+-->
+<!ELEMENT url (#PCDATA)>
+
+
+<!--
+  Fax number
+
+-->
+<!ELEMENT fax (#PCDATA)>
+
+
+<!--
+  Telephone number
+
+-->
+<!ELEMENT phone (#PCDATA)>
+
+
+<!--
+  Electronic address use for other than email
+
+-->
+<!ELEMENT ead (#PCDATA)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Second last name (mother's family surname), for some countries (such as Spain) is legally mandatory.
+
+-->
+<!ELEMENT second-last-name (#PCDATA)>
+
+
+<!--
+  First last name (father's family surname), for some countries (such as Spain) is legally mandatory.
+
+-->
+<!ELEMENT first-last-name (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+

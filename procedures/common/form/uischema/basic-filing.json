@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "basicFilingInfo": {
+      "scrollSection": true,
+      "kind": "basic",
+      "ui:field": "FormSectionField",
+      "ui:title": "i18n(basic-filing.info)",
+      "ui:icon": "assignment"
+    },
+    "userReferenceDialog": {
+      "titleField": true,
+      "ui:widget": "userReferenceWidget",
+      "ui:tooltip": "i18n(basic-filing.enter.user-reference)",
+      "ui:validation": {
+        "pattern": "validation.userReference.pattern",
+        "required": "validation.default.required"
+      }
+    },
+    "userReference": {
+      "$comment": "This does not work correctly",
+      "$ref": "#/definitions/userReferenceDialog",
+      "ui:options": {
+        "style": {
+          "$ref": "/procedures/common/form/uischema/styles.json/definitions/width23rem",
+          "& > div > div": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/width23rem"
+          }
+        }
+      }
+    },
+    "caseId": {
+      "ui:disabled": true,
+      "ui:tooltip": "i18n(basic-filing.caseId-tooltip)",
+      "ui:options": {
+        "style": {
+          "& > div > div": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/width23rem"
+          }
+        }
+      }
+    },
+    "titleOfInvention": {
+      "ui:widget": "textarea",
+      "ui:disabled": true,
+      "ui:options": {
+        "rows": 4,
+        "style": {
+          "$ref": "/procedures/common/form/uischema/styles.json/definitions/width23rem",
+          "& > div > div": {
+            "resize": "vertical"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "definitions": {
+    "ui:summary-declaration": {
+      "titles": [
+        {
+          "case": {
+            "applicationNumber": "*"
+          },
+          "value": "item(applicationNumber)"
+        },
+        {
+          "case": {},
+          "value": "item(office)"
+        }
+      ]
+    },
+    "ui:summaryItem-declaration": {
+      "icon": "today",
+      "titles": [
+        {
+          "case": {
+            "applicationNumber": "*"
+          },
+          "value": "item(order). item(applicationNumber)"
+        },
+        {
+          "case": {},
+          "value": "item(order). itemNameI18n(office, priorityOffice), itemShortDate(filingDate)"
+        }
+      ],
+      "entries": [
+        {
+          "case": {
+            "officeType": "*"
+          },
+          "title": "i18n(declaration.priority.type-of-office)",
+          "value": "itemNameI18n(officeType, officeType)"
+        },
+        {
+          "case": {
+            "office": "*"
+          },
+          "title": "i18n(declaration.priority.office)",
+          "value": "itemNameI18n(office, priorityOffice)"
+        },
+        {
+          "case": {
+            "applicationKind": "*"
+          },
+          "title": "i18n(declaration.priority.modality)",
+          "value": "itemNameI18n(applicationKind, applicationKind)"
+        },
+        {
+          "case": {
+            "filingDate": "*"
+          },
+          "title": "i18n(declaration.priority.filing-date)",
+          "value": "itemShortDate(filingDate)"
+        }
+      ]
+    },
+    "filingByReferenceItem": {
+      "ui:variantTitle": "h2",
+      "officeType": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/mediumWidth"
+      },
+      "office": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/mediumWidth"
+      },
+      "applicationKind": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/mediumWidth"
+      },
+      "applicationNumber": {
+        "$ref": "/procedures/common/form/uischema/styles.json/definitions/mediumWidth"
+      },
+      "filingDate": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/pastDateWidget"
+      }
+    }
+  }
+}

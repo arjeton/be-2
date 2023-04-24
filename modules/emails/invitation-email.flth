@@ -1,0 +1,12 @@
+<html>
+    <head></head>
+    <body>
+        <p>Hello,</p>
+        <p></p>
+        You have been invited by ${SENDER} to use the Front Office system for ${ORG}.
+        <p></p>
+        In order to register please click <a href='${INVITE_LINK}'>here</a>.
+        <p></p>
+        See you soon.
+    </body>
+</html>

@@ -1,0 +1,4178 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "country": {
+      "title": "i18n(parties.country)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AF",
+        "AX",
+        "AL",
+        "DZ",
+        "AS",
+        "AD",
+        "AO",
+        "AI",
+        "AQ",
+        "AG",
+        "AR",
+        "AM",
+        "AW",
+        "AU",
+        "AT",
+        "AZ",
+        "BS",
+        "BH",
+        "BD",
+        "BB",
+        "BY",
+        "BE",
+        "BZ",
+        "BJ",
+        "BM",
+        "BT",
+        "BO",
+        "BQ",
+        "BA",
+        "BW",
+        "BV",
+        "BR",
+        "IO",
+        "VG",
+        "BN",
+        "BG",
+        "BF",
+        "BI",
+        "KH",
+        "CM",
+        "CA",
+        "CV",
+        "KY",
+        "CF",
+        "TD",
+        "CL",
+        "CN",
+        "CX",
+        "CC",
+        "CO",
+        "KM",
+        "CD",
+        "CG",
+        "CK",
+        "CR",
+        "HR",
+        "CU",
+        "CW",
+        "CY",
+        "CZ",
+        "DK",
+        "DJ",
+        "DM",
+        "DO",
+        "TL",
+        "EC",
+        "EG",
+        "SV",
+        "GQ",
+        "ER",
+        "EE",
+        "ET",
+        "FO",
+        "FK",
+        "FJ",
+        "FI",
+        "FR",
+        "GF",
+        "PF",
+        "TF",
+        "GA",
+        "GM",
+        "GE",
+        "DE",
+        "GH",
+        "GI",
+        "GR",
+        "GL",
+        "GD",
+        "GP",
+        "GU",
+        "GT",
+        "GG",
+        "GN",
+        "GW",
+        "GY",
+        "HT",
+        "HM",
+        "VA",
+        "HN",
+        "HK",
+        "HU",
+        "IS",
+        "IN",
+        "ID",
+        "IR",
+        "IQ",
+        "IE",
+        "IM",
+        "IL",
+        "IT",
+        "JM",
+        "JP",
+        "JE",
+        "JO",
+        "CI",
+        "KZ",
+        "KE",
+        "KI",
+        "KW",
+        "KG",
+        "LA",
+        "LV",
+        "LB",
+        "LS",
+        "LR",
+        "LY",
+        "LI",
+        "LT",
+        "LU",
+        "MO",
+        "MG",
+        "MW",
+        "MY",
+        "MV",
+        "ML",
+        "MT",
+        "MH",
+        "MQ",
+        "MR",
+        "MU",
+        "YT",
+        "MX",
+        "FM",
+        "MD",
+        "MC",
+        "MN",
+        "ME",
+        "MS",
+        "MA",
+        "MZ",
+        "MM",
+        "NA",
+        "NR",
+        "NP",
+        "NL",
+        "NC",
+        "NZ",
+        "NI",
+        "NE",
+        "NG",
+        "NU",
+        "NF",
+        "KP",
+        "MK",
+        "MP",
+        "NO",
+        "OM",
+        "PK",
+        "PW",
+        "PS",
+        "PA",
+        "PG",
+        "PY",
+        "PE",
+        "PH",
+        "PN",
+        "PL",
+        "PT",
+        "PR",
+        "QA",
+        "RE",
+        "RO",
+        "RU",
+        "RW",
+        "BL",
+        "SH",
+        "KN",
+        "LC",
+        "MF",
+        "PM",
+        "VC",
+        "WS",
+        "SM",
+        "ST",
+        "SA",
+        "SN",
+        "RS",
+        "SC",
+        "SL",
+        "SG",
+        "SX",
+        "SK",
+        "SI",
+        "SB",
+        "SO",
+        "ZA",
+        "GS",
+        "KR",
+        "SS",
+        "ES",
+        "LK",
+        "SD",
+        "SR",
+        "SJ",
+        "SZ",
+        "SE",
+        "CH",
+        "SY",
+        "TW",
+        "TJ",
+        "TZ",
+        "TH",
+        "TG",
+        "TK",
+        "TO",
+        "TT",
+        "TN",
+        "TR",
+        "TM",
+        "TC",
+        "TV",
+        "UG",
+        "UA",
+        "AE",
+        "GB",
+        "US",
+        "UM",
+        "VI",
+        "UY",
+        "UZ",
+        "VU",
+        "VE",
+        "VN",
+        "WF",
+        "EH",
+        "YE",
+        "ZM",
+        "ZW"
+      ],
+      "enumNames": [
+        "i18n(enum.countries.Afghanistan)",
+        "i18n(enum.countries.Aland-Islands)",
+        "i18n(enum.countries.Albania)",
+        "i18n(enum.countries.Algeria)",
+        "i18n(enum.countries.American-Samoa)",
+        "i18n(enum.countries.Andorra)",
+        "i18n(enum.countries.Angola)",
+        "i18n(enum.countries.Anguilla)",
+        "i18n(enum.countries.Antarctica)",
+        "i18n(enum.countries.Antigua-and-Barbuda)",
+        "i18n(enum.countries.Argentina)",
+        "i18n(enum.countries.Armenia)",
+        "i18n(enum.countries.Aruba)",
+        "i18n(enum.countries.Australia)",
+        "i18n(enum.countries.Austria)",
+        "i18n(enum.countries.Azerbaijan)",
+        "i18n(enum.countries.Bahamas)",
+        "i18n(enum.countries.Bahrain)",
+        "i18n(enum.countries.Bangladesh)",
+        "i18n(enum.countries.Barbados)",
+        "i18n(enum.countries.Belarus)",
+        "i18n(enum.countries.Belgium)",
+        "i18n(enum.countries.Belize)",
+        "i18n(enum.countries.Benin)",
+        "i18n(enum.countries.Bermuda)",
+        "i18n(enum.countries.Bhutan)",
+        "i18n(enum.countries.Bolivia)",
+        "i18n(enum.countries.Bonaire)",
+        "i18n(enum.countries.Bosnia-Hercegovina)",
+        "i18n(enum.countries.Botswana)",
+        "i18n(enum.countries.Bouvet-island)",
+        "i18n(enum.countries.Brazil)",
+        "i18n(enum.countries.British-Indian-Ocean-Territory)",
+        "i18n(enum.countries.British-Virgin-Islands)",
+        "i18n(enum.countries.Brunei-Darussalam)",
+        "i18n(enum.countries.Bulgaria)",
+        "i18n(enum.countries.Burkina-Faso)",
+        "i18n(enum.countries.Burundi)",
+        "i18n(enum.countries.Cambodia)",
+        "i18n(enum.countries.Cameroon)",
+        "i18n(enum.countries.Canada)",
+        "i18n(enum.countries.Cape-Verde)",
+        "i18n(enum.countries.Cayman-Islands)",
+        "i18n(enum.countries.Central-African-Republic)",
+        "i18n(enum.countries.Chad)",
+        "i18n(enum.countries.Chile)",
+        "i18n(enum.countries.China)",
+        "i18n(enum.countries.Christmas-Island)",
+        "i18n(enum.countries.Cocos-Keeling-Islands)",
+        "i18n(enum.countries.Colombia)",
+        "i18n(enum.countries.Comoros)",
+        "i18n(enum.countries.Congo-Democratic-Republic-of)",
+        "i18n(enum.countries.Congo-Republic-of)",
+        "i18n(enum.countries.Cook-Islands)",
+        "i18n(enum.countries.Costa-Rica)",
+        "i18n(enum.countries.Croatia)",
+        "i18n(enum.countries.Cuba)",
+        "i18n(enum.countries.Curacao)",
+        "i18n(enum.countries.Cyprus)",
+        "i18n(enum.countries.Czechia)",
+        "i18n(enum.countries.Denmark)",
+        "i18n(enum.countries.Djibouti)",
+        "i18n(enum.countries.Dominica)",
+        "i18n(enum.countries.Dominican-Republic)",
+        "i18n(enum.countries.East-Timor)",
+        "i18n(enum.countries.Ecuador)",
+        "i18n(enum.countries.Egypt)",
+        "i18n(enum.countries.El-Salvador)",
+        "i18n(enum.countries.Equatorial-Guinea)",
+        "i18n(enum.countries.Eritrea)",
+        "i18n(enum.countries.Estonia)",
+        "i18n(enum.countries.Ethiopia)",
+        "i18n(enum.countries.Faeroe-Islands)",
+        "i18n(enum.countries.Falkland-Islands)",
+        "i18n(enum.countries.Fiji)",
+        "i18n(enum.countries.Finland)",
+        "i18n(enum.countries.France)",
+        "i18n(enum.countries.French-Guiana)",
+        "i18n(enum.countries.French-Polynesia)",
+        "i18n(enum.countries.French-Southern-Territories)",
+        "i18n(enum.countries.Gabon)",
+        "i18n(enum.countries.Gambia)",
+        "i18n(enum.countries.Georgia)",
+        "i18n(enum.countries.Germany)",
+        "i18n(enum.countries.Ghana)",
+        "i18n(enum.countries.Gibraltar)",
+        "i18n(enum.countries.Greece)",
+        "i18n(enum.countries.Greenland)",
+        "i18n(enum.countries.Grenada)",
+        "i18n(enum.countries.Guadeloupe)",
+        "i18n(enum.countries.Guam)",
+        "i18n(enum.countries.Guatemala)",
+        "i18n(enum.countries.Guernsey)",
+        "i18n(enum.countries.Guinea)",
+        "i18n(enum.countries.Guinea-Bissau)",
+        "i18n(enum.countries.Guyana)",
+        "i18n(enum.countries.Haiti)",
+        "i18n(enum.countries.Heard-McDonald-islands)",
+        "i18n(enum.countries.Holy-See)",
+        "i18n(enum.countries.Honduras)",
+        "i18n(enum.countries.Hong-Kong)",
+        "i18n(enum.countries.Hungary)",
+        "i18n(enum.countries.Iceland)",
+        "i18n(enum.countries.India)",
+        "i18n(enum.countries.Indonesia)",
+        "i18n(enum.countries.Iran)",
+        "i18n(enum.countries.Iraq)",
+        "i18n(enum.countries.Ireland)",
+        "i18n(enum.countries.Isle-of-Man)",
+        "i18n(enum.countries.Israel)",
+        "i18n(enum.countries.Italy)",
+        "i18n(enum.countries.Jamaica)",
+        "i18n(enum.countries.Japan)",
+        "i18n(enum.countries.Jersey)",
+        "i18n(enum.countries.Jordan)",
+        "i18n(enum.countries.Ivory-Coast)",
+        "i18n(enum.countries.Kazakhstan)",
+        "i18n(enum.countries.Kenya)",
+        "i18n(enum.countries.Kiribati)",
+        "i18n(enum.countries.Kuwait)",
+        "i18n(enum.countries.Kyrgyzstan)",
+        "i18n(enum.countries.Laos)",
+        "i18n(enum.countries.Latvia)",
+        "i18n(enum.countries.Lebanon)",
+        "i18n(enum.countries.Lesotho)",
+        "i18n(enum.countries.Liberia)",
+        "i18n(enum.countries.Libya)",
+        "i18n(enum.countries.Liechtenstein)",
+        "i18n(enum.countries.Lithuania)",
+        "i18n(enum.countries.Luxembourg)",
+        "i18n(enum.countries.Macao)",
+        "i18n(enum.countries.Madagascar)",
+        "i18n(enum.countries.Malawi)",
+        "i18n(enum.countries.Malaysia)",
+        "i18n(enum.countries.Maldives)",
+        "i18n(enum.countries.Mali)",
+        "i18n(enum.countries.Malta)",
+        "i18n(enum.countries.Marshall-Islands)",
+        "i18n(enum.countries.Martinique)",
+        "i18n(enum.countries.Mauritania)",
+        "i18n(enum.countries.Mauritius)",
+        "i18n(enum.countries.Mayotte)",
+        "i18n(enum.countries.Mexico)",
+        "i18n(enum.countries.Micronesia)",
+        "i18n(enum.countries.Moldova)",
+        "i18n(enum.countries.Monaco)",
+        "i18n(enum.countries.Mongolia)",
+        "i18n(enum.countries.Montenegro)",
+        "i18n(enum.countries.Montserrat)",
+        "i18n(enum.countries.Morocco)",
+        "i18n(enum.countries.Mozambique)",
+        "i18n(enum.countries.Myanmar)",
+        "i18n(enum.countries.Namibia)",
+        "i18n(enum.countries.Nauru)",
+        "i18n(enum.countries.Nepal)",
+        "i18n(enum.countries.Netherlands)",
+        "i18n(enum.countries.New-Caledonia)",
+        "i18n(enum.countries.New-Zealand)",
+        "i18n(enum.countries.Nicaragua)",
+        "i18n(enum.countries.Niger)",
+        "i18n(enum.countries.Nigeria)",
+        "i18n(enum.countries.Niue)",
+        "i18n(enum.countries.Norfolk-Island)",
+        "i18n(enum.countries.North-Korea)",
+        "i18n(enum.countries.North-Macedonia)",
+        "i18n(enum.countries.Northern-Mariana-Islands)",
+        "i18n(enum.countries.Norway)",
+        "i18n(enum.countries.Oman)",
+        "i18n(enum.countries.Pakistan)",
+        "i18n(enum.countries.Palau)",
+        "i18n(enum.countries.Palestinian-Authority)",
+        "i18n(enum.countries.Panama)",
+        "i18n(enum.countries.Papua-New-Guinea)",
+        "i18n(enum.countries.Paraguay)",
+        "i18n(enum.countries.Peru)",
+        "i18n(enum.countries.Philippines)",
+        "i18n(enum.countries.Pitcairn-Islands)",
+        "i18n(enum.countries.Poland)",
+        "i18n(enum.countries.Portugal)",
+        "i18n(enum.countries.Puerto-Rico)",
+        "i18n(enum.countries.Qatar)",
+        "i18n(enum.countries.Reunion)",
+        "i18n(enum.countries.Romania)",
+        "i18n(enum.countries.Russia)",
+        "i18n(enum.countries.Rwanda)",
+        "i18n(enum.countries.Saint-Barthelemy)",
+        "i18n(enum.countries.Saint-Helena)",
+        "i18n(enum.countries.Saint-Kitts-and-Nevis)",
+        "i18n(enum.countries.Saint-Lucia)",
+        "i18n(enum.countries.Saint-Martin)",
+        "i18n(enum.countries.Saint-Pierre-and-Miquelon)",
+        "i18n(enum.countries.Saint-Vincent-and-the-Grenadines)",
+        "i18n(enum.countries.Samoa)",
+        "i18n(enum.countries.San-Marino)",
+        "i18n(enum.countries.Sao-Tome-and-Principe)",
+        "i18n(enum.countries.Saudi-Arabia)",
+        "i18n(enum.countries.Senegal)",
+        "i18n(enum.countries.Serbia)",
+        "i18n(enum.countries.Seychelles)",
+        "i18n(enum.countries.Sierra-Leone)",
+        "i18n(enum.countries.Singapore)",
+        "i18n(enum.countries.Sint-Maarten)",
+        "i18n(enum.countries.Slovakia)",
+        "i18n(enum.countries.Slovenia)",
+        "i18n(enum.countries.Solomon-Islands)",
+        "i18n(enum.countries.Somalia)",
+        "i18n(enum.countries.South-Africa)",
+        "i18n(enum.countries.South-Georgia-and-the-South-Sandwich-Islands)",
+        "i18n(enum.countries.South-Korea)",
+        "i18n(enum.countries.South-Sudan)",
+        "i18n(enum.countries.Spain)",
+        "i18n(enum.countries.Sri-Lanka)",
+        "i18n(enum.countries.Sudan)",
+        "i18n(enum.countries.Suriname)",
+        "i18n(enum.countries.Svalbard-and-Jan-Mayen-Islands)",
+        "i18n(enum.countries.Swaziland)",
+        "i18n(enum.countries.Sweden)",
+        "i18n(enum.countries.Switzerland)",
+        "i18n(enum.countries.Syria)",
+        "i18n(enum.countries.Taiwan)",
+        "i18n(enum.countries.Tajikistan)",
+        "i18n(enum.countries.Tanzania)",
+        "i18n(enum.countries.Thailand)",
+        "i18n(enum.countries.Togo)",
+        "i18n(enum.countries.Tokelau)",
+        "i18n(enum.countries.Tonga)",
+        "i18n(enum.countries.Trinidad-and-Tobago)",
+        "i18n(enum.countries.Tunisia)",
+        "i18n(enum.countries.Turkey)",
+        "i18n(enum.countries.Turkmenistan)",
+        "i18n(enum.countries.Turks-and-Caicos-Islands)",
+        "i18n(enum.countries.Tuvalu)",
+        "i18n(enum.countries.Uganda)",
+        "i18n(enum.countries.Ukraine)",
+        "i18n(enum.countries.United-Arab-Emirates)",
+        "i18n(enum.countries.United-Kingdom)",
+        "i18n(enum.countries.United-States-of-America)",
+        "i18n(enum.countries.United-States-Minor-Outlying-islands)",
+        "i18n(enum.countries.United-States-Virgin-Islands)",
+        "i18n(enum.countries.Uruguay)",
+        "i18n(enum.countries.Uzbekistan)",
+        "i18n(enum.countries.Vanuatu)",
+        "i18n(enum.countries.Venezuela)",
+        "i18n(enum.countries.Vietnam)",
+        "i18n(enum.countries.Wallis-and-Futuna)",
+        "i18n(enum.countries.Western-Sahara)",
+        "i18n(enum.countries.Yemen)",
+        "i18n(enum.countries.Zambia)",
+        "i18n(enum.countries.Zimbabwe)"
+      ]
+    },
+    "regionAR": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "AR1",
+        "AR2",
+        "AR3",
+        "AR4",
+        "AR5",
+        "AR6",
+        "AR7",
+        "AR8",
+        "AR9",
+        "AR10",
+        "AR11",
+        "AR12",
+        "AR13",
+        "AR14",
+        "AR15",
+        "AR16",
+        "AR17",
+        "AR18",
+        "AR19",
+        "AR20",
+        "AR21",
+        "AR22",
+        "AR23",
+        "AR24"
+      ],
+      "enumNames": [
+        "Buenos Aires",
+        "Catamarca",
+        "Chaco",
+        "Chubut",
+        "Córdoba",
+        "Corrientes",
+        "Distrito Federal",
+        "Entre Ríos",
+        "Formosa",
+        "Jujuy",
+        "La Pampa",
+        "La Rioja",
+        "Mendoza",
+        "Misiones",
+        "Neuquén",
+        "Río Negro",
+        "Salta",
+        "San Juan",
+        "San Luis",
+        "Santa Cruz",
+        "Santa Fe",
+        "Santiago del Estero",
+        "Tierra del Fuego",
+        "Tucumán"
+      ]
+    },
+    "regionAU": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "State",
+      "enum": [
+        "AU1",
+        "AU2",
+        "AU3",
+        "AU4",
+        "AU5",
+        "AU6",
+        "AU7",
+        "AU8",
+        "AU9"
+      ],
+      "enumNames": [
+        "Australian Antarctic Territory",
+        "Australian Capital Territory",
+        "New South Wales",
+        "Northern Territory",
+        "Queensland",
+        "South Australia",
+        "Tasmania",
+        "Victoria",
+        "Western Australia"
+      ]
+    },
+    "regionAT": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "AT1",
+        "AT2",
+        "AT3",
+        "AT4",
+        "AT5",
+        "AT6",
+        "AT7",
+        "AT8",
+        "AT9"
+      ],
+      "enumNames": [
+        "Burgenland",
+        "Kärnten",
+        "Niederösterreich",
+        "Oberösterreich",
+        "Salzburg",
+        "Steiermark",
+        "Tirol",
+        "Vorarlberg",
+        "Wien"
+      ]
+    },
+    "regionBE": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "BE1",
+        "BE2",
+        "BE3",
+        "BE4",
+        "BE5",
+        "BE6",
+        "BE7",
+        "BE8",
+        "BE9",
+        "BE10"
+      ],
+      "enumNames": [
+        "Antwerpen",
+        "Brabant Wallon",
+        "Hainaut",
+        "Liège",
+        "Limburg",
+        "Luxembourg",
+        "Namur",
+        "East Flanders",
+        "Vlaams Brabant",
+        "West Vlaanderen"
+      ]
+    },
+    "regionBR": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "State",
+      "enum": [
+        "AC",
+        "AL",
+        "AP",
+        "AM",
+        "BA",
+        "CE",
+        "DF",
+        "ES",
+        "GO",
+        "MA",
+        "MT",
+        "MS",
+        "MG",
+        "PA",
+        "PB",
+        "PR",
+        "PE",
+        "PI",
+        "RJ",
+        "RN",
+        "RS",
+        "RO",
+        "RR",
+        "SC",
+        "SP",
+        "SE",
+        "TO"
+      ],
+      "enumNames": [
+        "Acre",
+        "Alagoas",
+        "Amapá",
+        "Amazonas",
+        "Bahia",
+        "Ceará",
+        "Distrito Federal",
+        "Espírito Santo",
+        "Goiás",
+        "Maranhão",
+        "Mato Grosso",
+        "Mato Grosso do Sul",
+        "Minas Gerais",
+        "Pará",
+        "Paraíba",
+        "Paraná",
+        "Pernambuco",
+        "Piauí",
+        "Rio de Janeiro",
+        "Rio Grande do Norte",
+        "Rio Grande do Sul",
+        "Rondônia",
+        "Rorâima",
+        "Santa Catarina",
+        "São Paulo",
+        "Sergipe",
+        "Tocantins"
+      ]
+    },
+    "regionBG": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "BG1",
+        "BG2",
+        "BG3",
+        "BG4",
+        "BG5",
+        "BG6",
+        "BG7",
+        "BG8",
+        "BG9",
+        "BG10",
+        "BG11",
+        "BG12",
+        "BG13",
+        "BG14",
+        "BG15",
+        "BG16",
+        "BG17",
+        "BG18",
+        "BG19",
+        "BG20",
+        "BG21",
+        "BG22",
+        "BG23",
+        "BG24",
+        "BG25",
+        "BG26",
+        "BG27",
+        "BG28"
+      ],
+      "enumNames": [
+        "Blagoevgrad",
+        "Burgas",
+        "Dobrich",
+        "Gabrovo",
+        "Khaskovo",
+        "Kurdzhali",
+        "Kyustendil",
+        "Lovech",
+        "Montana",
+        "Pazardzhik",
+        "Pernik",
+        "Pleven",
+        "Plovdiv",
+        "Razgrad",
+        "Ruse",
+        "Shumen",
+        "Silistra",
+        "Sliven",
+        "Smolyan",
+        "Sofiya",
+        "Sofiya-Grad",
+        "Stara Zagora",
+        "Turgovishte",
+        "Varna",
+        "Veliko Turnovo",
+        "Vidin",
+        "Vratsa",
+        "Yambol"
+      ]
+    },
+    "regionCA": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "CA1",
+        "CA2",
+        "CA3",
+        "CA4",
+        "CA5",
+        "CA6",
+        "CA7",
+        "CA8",
+        "CA9",
+        "CA10",
+        "CA11",
+        "CA12",
+        "CA13"
+      ],
+      "enumNames": [
+        "Alberta",
+        "British Columbia",
+        "Manitoba",
+        "New Brunswick",
+        "Newfoundland and Labrador",
+        "Northwest Territories",
+        "Nova Scotia",
+        "Nunavut",
+        "Ontario",
+        "Prince Edward Island",
+        "Québec",
+        "Saskatchewan",
+        "Yukon External"
+      ]
+    },
+    "regionCN": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "CN1",
+        "CN2",
+        "CN3",
+        "CN4",
+        "CN5",
+        "CN6",
+        "CN7",
+        "CN8",
+        "CN9",
+        "CN10",
+        "CN11",
+        "CN12",
+        "CN13",
+        "CN14",
+        "CN15",
+        "CN16",
+        "CN17",
+        "CN18",
+        "CN19",
+        "CN20",
+        "CN21",
+        "CN22",
+        "CN23",
+        "CN24",
+        "CN25",
+        "CN26",
+        "CN27",
+        "CN28",
+        "CN29",
+        "CN30",
+        "CN31"
+      ],
+      "enumNames": [
+        "Anhui",
+        "Beijing",
+        "Chongqing",
+        "Fujian",
+        "Gansu",
+        "Guangdong",
+        "Guangxi",
+        "Guizhou",
+        "Hainan",
+        "Hebei",
+        "Heilongjiang",
+        "Henan",
+        "Hubei",
+        "Hunan",
+        "Jiangsu",
+        "Jiangxi",
+        "Jilin",
+        "Liaoning",
+        "Nei Mongol",
+        "Ningxia",
+        "Qinghai",
+        "Shaanxi",
+        "Shandong",
+        "Shanghai",
+        "Shanxi",
+        "Sichuan",
+        "Tianjin",
+        "Xinjiang",
+        "Xizang",
+        "Yunnan",
+        "Zhejiang"
+      ]
+    },
+    "regionHR": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "HR1",
+        "HR2",
+        "HR3",
+        "HR4",
+        "HR5",
+        "HR6",
+        "HR7",
+        "HR8",
+        "HR9",
+        "HR10",
+        "HR11",
+        "HR12",
+        "HR13",
+        "HR14",
+        "HR15",
+        "HR16",
+        "HR17",
+        "HR18",
+        "HR19",
+        "HR20",
+        "HR21"
+      ],
+      "enumNames": [
+        "Bjelovarsko-Bilogorska",
+        "Brodsko-Posavska",
+        "Dubrovacko-Neretvanska Županija",
+        "Istarska Županija",
+        "Karlovačka Županija",
+        "Koprivničko-Križevačka Županija",
+        "Krapinsko-Zagorska Županija",
+        "Ličko-Senjska Županija",
+        "Meðimurska Županija",
+        "Osječko-Baranjska Županija",
+        "Požeško-Slavonska Županija",
+        "Primorsko-Goranska Županija",
+        "Šibensko-Kninska Županija",
+        "Sisačko-Moslavačka Županija",
+        "Splitsko-Dalmatinska Županija",
+        "Varaždinska Županija",
+        "Virovitičko-Podravska Županija",
+        "Vukovarsko-Srijemska Županija",
+        "Zadarska Županija",
+        "Zagrebačka (Zagreb)",
+        "Zagrebačka Županija"
+      ]
+    },
+    "regionCZ": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "CZ1",
+        "CZ2",
+        "CZ3",
+        "CZ4",
+        "CZ5",
+        "CZ6",
+        "CZ7",
+        "CZ8",
+        "CZ9",
+        "CZ10",
+        "CZ11",
+        "CZ12",
+        "CZ13",
+        "CZ14"
+      ],
+      "enumNames": [
+        "Jihočeský kraj",
+        "Jihomoravský kraj",
+        "Karlovarský kraj",
+        "Královéhradecký kraj",
+        "Liberecký kraj",
+        "Moravskoslezský kraj",
+        "Olomoucký kraj",
+        "Pardubický kraj",
+        "Plzeňský kraj",
+        "Praha, hlavníměsto",
+        "Středočeský kraj",
+        "Ústecký kraj",
+        "Kraj Vysočina",
+        "Zlínský kraj"
+      ]
+    },
+    "regionDE": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "DE1",
+        "DE2",
+        "DE3",
+        "DE4",
+        "DE5",
+        "DE6",
+        "DE7",
+        "DE8"
+      ],
+      "enumNames": [
+        "Baden-Württemberg",
+        "Bayern",
+        "Berlin",
+        "Brandenburg",
+        "Bremen",
+        "Hamburg",
+        "Hessen",
+        "Mecklenburg-Vorpommern",
+        "Niedersachsen",
+        "Nordrhein-Westfalen",
+        "Rheinland-Pfalz",
+        "Saarland",
+        "Sachsen",
+        "Sachsen-Anhalt",
+        "Schleswig-Holstein",
+        "Thüringen"
+      ]
+    },
+    "regionDK": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "DK1",
+        "DK2",
+        "DK3",
+        "DK4",
+        "DK5"
+      ],
+      "enumNames": [
+        "Hovedstaden",
+        "Midtjylland",
+        "Nordjylland",
+        "Sjælland",
+        "Syddanmark"
+      ]
+    },
+    "regionEE": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "EE1",
+        "EE2",
+        "EE3",
+        "EE4",
+        "EE5",
+        "EE6",
+        "EE7",
+        "EE8",
+        "EE9",
+        "EE10",
+        "EE11",
+        "EE12",
+        "EE13",
+        "EE14",
+        "EE15"
+      ],
+      "enumNames": [
+        "Harjumaa",
+        "Hiiumaa",
+        "Ida-Virumaa",
+        "Järvamaa",
+        "Jõgevamaa",
+        "Läänemaa",
+        "Lääne-Virumaa",
+        "Pärnumaa",
+        "Põlvamaa",
+        "Raplamaa",
+        "Saaremaa",
+        "Tartumaa",
+        "Valgamaa",
+        "Viljandimaa",
+        "Võrumaa"
+      ]
+    },
+    "regionFI": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "FI1",
+        "FI2",
+        "FI3",
+        "FI4",
+        "FI5",
+        "FI6",
+        "FI7",
+        "FI8",
+        "FI9",
+        "FI10",
+        "FI11",
+        "FI12",
+        "FI13",
+        "FI14",
+        "FI15",
+        "FI16",
+        "FI17",
+        "FI18"
+      ],
+      "enumNames": [
+        "Etelä-Karjala",
+        "Etelä-Pohjanmaa",
+        "Etelä-Savo",
+        "Kainuu",
+        "Kanta-Häme",
+        "Keski-Pohjanmaa",
+        "Keski-Suomi",
+        "Kymenlaakso",
+        "Lappi",
+        "Päijät-Häme",
+        "Pirkanmaa",
+        "Ostrobothnia Pohjanmaa",
+        "Pohjois-Pohjanmaa",
+        "Pohjois-Savo",
+        "Pohjois-Karjala",
+        "Satakunta",
+        "Uusimaa",
+        "Varsinais-Suomi"
+      ]
+    },
+    "regionFR": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "FR1",
+        "FR2",
+        "FR3",
+        "FR4",
+        "FR5",
+        "FR6",
+        "FR7",
+        "FR8",
+        "FR9",
+        "FR10",
+        "FR11",
+        "FR12",
+        "FR13",
+        "FR14",
+        "FR15",
+        "FR16",
+        "FR17",
+        "FR18"
+      ],
+      "enumNames": [
+        "Grand Est",
+        "Nouvelle-Aquitaine",
+        "Auvergne-Rhône-Alpes",
+        "Bourgogne-Franche-Comté",
+        "Bretagne",
+        "Centre-Val de Loire",
+        "Corse",
+        "Ile-de-France",
+        "Occitanie",
+        "Hauts-de-France",
+        "Normandie",
+        "Pays de la Loire",
+        "Provence - Alpes - Côte-d’Azur"
+      ]
+    },
+    "regionGB": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "EN",
+        "WL",
+        "ST",
+        "NI",
+        "CD"
+      ],
+      "enumNames": [
+        "England",
+        "Wales",
+        "Scotland",
+        "Northern Ireland",
+        "Crown Dependent"
+      ]
+    },
+    "regionGR": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "GR1",
+        "GR2",
+        "GR3",
+        "GR4",
+        "GR5",
+        "GR6",
+        "GR7"
+      ],
+      "enumNames": [
+        "Aegean",
+        "Attica",
+        "Crete",
+        "Epirus and Western Macedonia",
+        "Macedonia and Thrace",
+        "Mount Athos",
+        "Peloponnese, Western Greece and the Ionian Islands",
+        "Thessaly and Central Greece"
+      ]
+    },
+    "regionHU": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "HR1",
+        "HR2",
+        "HR3",
+        "HR4",
+        "HR5",
+        "HR6",
+        "HR7",
+        "HR8",
+        "HR9",
+        "HR10",
+        "HR11",
+        "HR12",
+        "HR13",
+        "HR14",
+        "HR15",
+        "HR16",
+        "HR17",
+        "HR18",
+        "HR19",
+        "HR20",
+        "HR21"
+      ],
+      "enumNames": [
+        "Bács-Kiskun",
+        "Baranya",
+        "Békés",
+        "Borsod-Abaúj-Zemplén",
+        "Budapest",
+        "Csongrád-Csanád",
+        "Fejér",
+        "Győr-Moson-Sopron",
+        "Hajdú-Bihar",
+        "Heves",
+        "Jász-Nagykun-Szolnok",
+        "Komárom-Esztergom",
+        "Nógrád",
+        "Pest",
+        "Somogy",
+        "Szabolcs-Szatmár-Bereg",
+        "Szekszárd",
+        "Tolna",
+        "Vas",
+        "Veszprém",
+        "Zala"
+      ]
+    },
+    "regionIL": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "IL1",
+        "IL2",
+        "IL3",
+        "IL4",
+        "IL5",
+        "IL6"
+      ],
+      "enumNames": [
+        "Central",
+        "Haifa",
+        "Jerusalem",
+        "Northern",
+        "Southern",
+        "Tel Aviv"
+      ]
+    },
+    "regionIE": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "IE1",
+        "IE2",
+        "IE3",
+        "IE4"
+      ],
+      "enumNames": [
+        "Connaught",
+        "Leinster",
+        "Munster",
+        "Ulster"
+      ]
+    },
+    "regionIT": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "IT1",
+        "IT2",
+        "IT3",
+        "IT4",
+        "IT5",
+        "IT6",
+        "IT7",
+        "IT8",
+        "IT9",
+        "IT10",
+        "IT11",
+        "IT12",
+        "IT13",
+        "IT14",
+        "IT15",
+        "IT16",
+        "IT17",
+        "IT18",
+        "IT19",
+        "IT20",
+        "IT21"
+      ],
+      "enumNames": [
+        "Abruzzo",
+        "Basilicata",
+        "Calabria",
+        "Campania",
+        "Emilia-Romagna",
+        "Lazio",
+        "Liguria",
+        "Lombardia",
+        "Marche",
+        "Molise",
+        "Piemonte",
+        "Puglia",
+        "Sardegna",
+        "Sicilia",
+        "Toscana",
+        "Trentino-Alto Adige",
+        "Umbria",
+        "Valle D’Aosta",
+        "Veneto"
+      ]
+    },
+    "regionJP": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "JP1",
+        "JP2",
+        "JP3",
+        "JP4",
+        "JP5",
+        "JP6",
+        "JP7",
+        "JP8",
+        "JP9",
+        "JP10",
+        "JP11",
+        "JP12",
+        "JP13",
+        "JP14",
+        "JP15",
+        "JP16",
+        "JP17",
+        "JP18",
+        "JP19",
+        "JP20",
+        "JP21",
+        "JP22",
+        "JP23",
+        "JP24",
+        "JP25",
+        "JP26",
+        "JP27",
+        "JP28",
+        "JP29",
+        "JP30",
+        "JP31",
+        "JP32",
+        "JP33",
+        "JP34",
+        "JP35",
+        "JP36",
+        "JP37",
+        "JP38",
+        "JP39",
+        "JP40",
+        "JP41",
+        "JP42",
+        "JP43",
+        "JP44",
+        "JP45",
+        "JP46",
+        "JP47"
+      ],
+      "enumNames": [
+        "Aichi",
+        "Akita",
+        "Aomori",
+        "Chiba",
+        "Ehime",
+        "Fukui",
+        "Fukuoka",
+        "Fukushima",
+        "Gifu",
+        "Gunma",
+        "Hiroshima",
+        "Hokkaido",
+        "Hyogo",
+        "Ibaraki",
+        "Ishikawa",
+        "Iwate",
+        "Kagawa",
+        "Kagoshima",
+        "Kanagawa",
+        "Kochi",
+        "Kumamoto",
+        "Kyoto",
+        "Mie",
+        "Miyagi",
+        "Miyazaki",
+        "Nagano",
+        "Nagasaki",
+        "Nara",
+        "Niigata",
+        "Oita",
+        "Okayama",
+        "Okinawa",
+        "Osaka",
+        "Saga",
+        "Saitama",
+        "Shiga",
+        "Shimane",
+        "Shizuoka",
+        "Tochigi",
+        "Tokushima",
+        "Tokyo",
+        "Tottori",
+        "Toyama",
+        "Wakayama",
+        "Yamagata",
+        "Yamaguchi",
+        "Yamanashi"
+      ]
+    },
+    "regionNL": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "NL1",
+        "NL2",
+        "NL3",
+        "NL4",
+        "NL5",
+        "NL6",
+        "NL7",
+        "NL8",
+        "NL9",
+        "NL10",
+        "NL11",
+        "NL12"
+      ],
+      "enumNames": [
+        "Drenthe",
+        "Flevoland",
+        "Fryslân",
+        "Gelderland",
+        "Groningen",
+        "Limburg",
+        "Noord Brabant",
+        "Noord Holland",
+        "Overijssel",
+        "Utrecht",
+        "Zeeland",
+        "Zuid Holland"
+      ]
+    },
+    "regionNO": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "NO1",
+        "NO2",
+        "NO3",
+        "NO4",
+        "NO5",
+        "NO6",
+        "NO7",
+        "NO8",
+        "NO9",
+        "NO10",
+        "NO11"
+      ],
+      "enumNames": [
+        "Agder",
+        "Innlandet",
+        "Møre og Romsdal",
+        "Nordlandm",
+        "Oslo",
+        "Rogaland",
+        "Troms og Finnmark",
+        "Trøndelag",
+        "Vestfold og Telemark",
+        "Vestland",
+        "Viken"
+      ]
+    },
+    "regionLT": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "County",
+      "enum": [
+        "LT1",
+        "LT2",
+        "LT3",
+        "LT4",
+        "LT5",
+        "LT6",
+        "LT7",
+        "LT8",
+        "LT9",
+        "LT10"
+      ],
+      "enumNames": [
+        "Alytaus",
+        "Kauno",
+        "Klaipėdos",
+        "Marijampolės",
+        "Panevėžio",
+        "Šiaulių",
+        "Tauragės",
+        "Telšių",
+        "Utenos",
+        "Vilniaus"
+      ]
+    },
+    "regionPL": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Province",
+      "enum": [
+        "PL1",
+        "PL2",
+        "PL3",
+        "PL4",
+        "PL5",
+        "PL6",
+        "PL7",
+        "PL8",
+        "PL9",
+        "PL10",
+        "PL11",
+        "PL12",
+        "PL13",
+        "PL14",
+        "PL15",
+        "PL16"
+      ],
+      "enumNames": [
+        "Dolnoślạskie",
+        "Kujawsko-Pomorskie",
+        "Lubelskie",
+        "Lubuskie",
+        "Łódzkie",
+        "Małopolskie",
+        "Mazowieckie",
+        "Opolskie",
+        "Podkarpackie",
+        "Podlaskie",
+        "Pomorskie",
+        "Ślạskie",
+        "Świętokrzyskie",
+        "Warmińsko-Mazurskie",
+        "Wielkopolskie",
+        "Zachodniopomorskie"
+      ]
+    },
+    "regionPT": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Province",
+      "enum": [
+        "PT1",
+        "PT2",
+        "PT3",
+        "PT4",
+        "PT5",
+        "PT6",
+        "PT7",
+        "PT8",
+        "PT9",
+        "PT10",
+        "PT11",
+        "PT12",
+        "PT13",
+        "PT14",
+        "PT15",
+        "PT16",
+        "PT17",
+        "PT18"
+      ],
+      "enumNames": [
+        "Aveiro",
+        "Beja",
+        "Braga",
+        "Bragança",
+        "Castelo Branco",
+        "Coimbra",
+        "Évora",
+        "Faro",
+        "Guarda",
+        "Leiria",
+        "Lisboa",
+        "Portalegre",
+        "Porto",
+        "Santarém",
+        "Setúbal",
+        "Viana do Castelo",
+        "Vila Real",
+        "Viseu"
+      ]
+    },
+    "regionRS": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "RS1",
+        "RS2",
+        "RS3",
+        "RS4",
+        "RS5",
+        "RS6",
+        "RS7",
+        "RS8",
+        "RS9",
+        "RS10",
+        "RS11",
+        "RS12",
+        "RS13",
+        "RS14",
+        "RS15",
+        "RS16",
+        "RS17",
+        "RS18",
+        "RS19",
+        "RS20",
+        "RS21",
+        "RS22",
+        "RS23",
+        "RS24",
+        "RS25",
+        "RS26"
+      ],
+      "enumNames": [
+        "Beograd",
+        "Bor",
+        "Braničevo",
+        "Central Banat",
+        "Danube",
+        "Jablanica",
+        "Kolubara",
+        "Mačva",
+        "Morava",
+        "Nišava",
+        "North Bačka",
+        "North Banat",
+        "Pčinja",
+        "Pećki",
+        "Pirot",
+        "Pomoravlje",
+        "Rasina",
+        "Raška",
+        "South Bačka",
+        "South Banat",
+        "Srem",
+        "Šumadija",
+        "Toplica",
+        "West Bačka",
+        "Zaječar",
+        "Zlatibor"
+      ]
+    },
+    "regionSK": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "Region",
+      "enum": [
+        "RS1",
+        "RS2",
+        "RS3",
+        "RS4",
+        "RS5",
+        "RS6",
+        "RS7",
+        "RS8"
+      ],
+      "enumNames": [
+        "Banskobystrický",
+        "Bratislavský",
+        "Košický",
+        "Nitriansky",
+        "Prešovský",
+        "Trenčiansky",
+        "Trnavský",
+        "Žilinský"
+      ]
+    },
+    "regionSE": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "County",
+      "enum": [
+        "SE1",
+        "SE2",
+        "SE3",
+        "SE4",
+        "SE5",
+        "SE6",
+        "SE7",
+        "SE8",
+        "SE9",
+        "SE10",
+        "SE11",
+        "SE12",
+        "SE13",
+        "SE14",
+        "SE15",
+        "SE16",
+        "SE17",
+        "SE18",
+        "SE19",
+        "SE20",
+        "SE21"
+      ],
+      "enumNames": [
+        "Blekinge Län",
+        "Dalanas",
+        "Gävleborgs Län",
+        "Gotlands Län",
+        "Hallands Län",
+        "Jämtlands Län",
+        "Jönköpings Län",
+        "Kalmar Län",
+        "Kronobergs Län",
+        "Norbottens Län",
+        "Örebro Län",
+        "Östergötlands",
+        "Skåne",
+        "Södermanlands Län",
+        "Stockholms Län",
+        "Uppsala Län",
+        "Värmlands Län",
+        "Västerbottens Län",
+        "Västernorrlands Län",
+        "Västra Götelands",
+        "Västmanlands Län"
+      ]
+    },
+    "regionUS": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "title": "State",
+      "enum": [
+        "US1",
+        "US2",
+        "US3",
+        "US4",
+        "US5",
+        "US6",
+        "US7",
+        "US8",
+        "US9",
+        "US10",
+        "US11",
+        "US12",
+        "US13",
+        "US14",
+        "SE15",
+        "US16",
+        "US17",
+        "US18",
+        "US19",
+        "US20",
+        "US21",
+        "US22",
+        "US23",
+        "US24",
+        "US25",
+        "US26",
+        "US27",
+        "US28",
+        "US29",
+        "US30",
+        "US31",
+        "US32",
+        "US33",
+        "US34",
+        "US35",
+        "US36",
+        "US37",
+        "US38",
+        "US39",
+        "US40",
+        "US41",
+        "US42",
+        "US43",
+        "US44",
+        "US45",
+        "US46",
+        "US47",
+        "US48",
+        "US49",
+        "US50"
+      ],
+      "enumNames": [
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+        "Colorado",
+        "Connecticut",
+        "Delaware",
+        "Florida",
+        "Georgia",
+        "Hawaii",
+        "Idaho",
+        "Illinois",
+        "Indiana",
+        "Iowa",
+        "Kansas",
+        "Kentucky",
+        "Louisiana",
+        "Maine",
+        "Maryland",
+        "Massachusetts",
+        "Michigan",
+        "Minnesota",
+        "Mississippi",
+        "Missouri",
+        "Montana",
+        "Nebraska",
+        "Nevada",
+        "New Hampshire",
+        "New Jersey",
+        "New Mexico",
+        "New York",
+        "North Carolina",
+        "North Dakota",
+        "Ohio",
+        "Oklahoma",
+        "Oregon",
+        "Pennsylvania",
+        "Rhode Island",
+        "South Carolina",
+        "South Dakota",
+        "Tennessee",
+        "Texas",
+        "Utah",
+        "Vermont",
+        "Virginia",
+        "Washington",
+        "West Virginia",
+        "Wisconsin",
+        "Wyoming"
+      ]
+    },
+    "countryRegion": {
+      "oneOf": [
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AX"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AL"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "DZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AD"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AR"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionAR"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AU"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionAU"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AT"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionAT"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BD"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BB"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BE"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionBE"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BJ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BT"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BR"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionBR"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "VG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BG"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionBG"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CA"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionCA"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CV"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TD"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CL"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CN"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionCN"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CX"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CD"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "HR"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionHR"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CU"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CZ"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionCZ"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "DK"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionDK"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "DJ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "DM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "DO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TL"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "EC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "EG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SV"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GQ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ER"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "EE"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionEE"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ET"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "FO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "FK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "FJ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "FI"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionFI"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "FR"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionFR"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "DE"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionDE"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GR"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionGR"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GL"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GD"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GP"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GU"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GT"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "HT"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "VA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "HN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "HK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "HU"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionHU"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ID"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IQ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IE"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionIE"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IL"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionIL"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "IT"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionIT"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LV"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LB"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LT"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionLT"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LU"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MV"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ML"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MT"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MQ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MU"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "YT"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MX"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "FM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MD"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ME"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NP"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NL"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionNL"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NU"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KP"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MP"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "NO"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionNO"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "OM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PL"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionPL"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PT"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionPT"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "QA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "RE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "RO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "RU"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "RW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "BL"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "MF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "PM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "VC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "WS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ST"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "RS"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionRS"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SL"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SX"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SI"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionSK"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SB"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ZA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "KR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SS"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ES"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "LK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SD"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SJ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SE"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionSE"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "CH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "SY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TW"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TJ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TK"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TO"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TT"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TR"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TC"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "TV"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "UG"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "UA"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "AE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "GB"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionGB"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "US"
+              ]
+            },
+            "region": {
+              "$ref": "#/definitions/regionUS"
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "VI"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "UY"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "UZ"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "VU"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "VE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "VN"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "WF"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "EH"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "YE"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ZM"
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "country": {
+              "enum": [
+                "ZW"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

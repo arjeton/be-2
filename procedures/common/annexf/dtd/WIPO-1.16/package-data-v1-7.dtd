@@ -1,0 +1,1208 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  package-data v1.7     2017  JULY                                            *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD PACKAGE DATA 1.7//EN" "package-data-v1-7.dtd"          *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/package-data-v1-7.dtd       *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Asahi HASEBE : 01/07/17 incorporated changes from PFC
+..changed version number from v1.6 to v1.7
+..added an element "written-opinion" to :"package-data
+..changed an attribute "ref-number" of copy-general-power-of-attorney optional
+MO: 01/07/09 incorporated changes from PFC
+..changed version number from v1.5 to v1.6
+..added attribute 'electronic-format-type' to sequence-list (PFC09/001)
+..added attribute 'part-of-application' to sequence-list (PFC09/001)
+MO: 01/07/08 incorporated changes from PFCs:
+..changed version number from v1.4 to v1.5
+..added element 'xmit-receipt-doc' to package-data (PFC08/004)
+..added element 'ro-request-receiving-info-doc' to package-data (PFC08/004)
+..added element 'pre-conversion-files-package' to package-data (PFC08/004)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.3 to v1.4
+..implementation of PFC06/001
+..added element 'sup' to u (PFC06/003)
+..added element 'sup' to i (PFC06/003)
+..added element 'sup' to b (PFC06/003)
+..added element 'sub' to u (PFC06/003)
+..added element 'sub' to i (PFC06/003)
+..added element 'sub' to b (PFC06/003)
+..added element 'o' to invention-title, b, i, sup, sup2, sub, sub2, heading, claim-text,
+  p, small-caps, dt, dd, li, crossref, figref, othercit, statement (PFC06/003)
+..added element 'restore-rights-reason' to package-data (PFC06/004)
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+..added attribute 'subset' to protection-request (PFC06/005)
+HT: 14/12/04 incorporated changes from PFCs:
+..added attribute 'id' to application-reference, publication-reference
+..added attribute 'seq-file-type' to sequence-list
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.3
+..added element 'address' to first-named-applicant
+..added value 'national-office', 'regional-office' to attribute produced-by of root element
+HT: 16/12/03 Incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..added element 'sup2' and 'sub2' to sup and sub
+..added attribute 'external-type' to table-external
+JD: 03/02/03 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added element 'notice-info', 'request-for-dispatch-info' to office-to-applicant content model
+..added element 'table-external' to root content model
+..added element 'other-filing' to transmittal-info content model
+..added (last-name | orgname) to %name_group;
+..made postcode optional within address
+..removed br from b, i, smallcaps
+2001/12/01
+..released version number as v1.0
+********************************************************************************
+
+Root Element 'package-data'
+
+Attributes:
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+  produced-by   = creator of this document
+  date-produced = YYYYMMDD e.g, 20011230  if desired, 12 characters maximum
+  country       = st.3 code 
+
+%document-attributes group entity:
+
+lang     = language code of attached document, ISO639 language code, e.g, en,de,ja,
+file     = attached document file name, e.g, "request.xml"
+status   = attached document status, e.g, new, replace,
+carriers =
+  internal = This WAD contains the referenced electronic document
+  external = Outside electronic carrier containes the referenced electronic document
+  paper    = The referenced document is paper form
+
+
+-->
+<!ELEMENT package-data (transmittal-info , signatories , dtext? , (application-request | application-body-doc | table-external | chapter2-demand | fee-calculation-sheet | declaration-doc | lack-of-signature | biological-material | separate-power-of-attorney | general-power-of-attorney | copy-general-power-of-attorney | bib-changes | notification | amendment | priority-document | translation-of-application | search-report-doc | written-opinion | trans-search-report | preliminary-examination-report | trans-preliminary-examination-report | published-application | sequence-list | correspondence | other-documents | wrapped-document | restore-rights-reason | xmit-receipt-doc | ro-request-receiving-info-doc | pre-conversion-files-package)+)>
+
+<!ATTLIST package-data  lang          CDATA  #REQUIRED
+                          dtd-version   CDATA  #IMPLIED
+                          file          CDATA  #IMPLIED
+                          produced-by          (applicant | 
+                                          RO | 
+                                          ISA | 
+                                          IPEA | 
+                                          IB | 
+                                          DO | 
+                                          EO | 
+                                          national-office | 
+                                          regional-office )  #REQUIRED
+                          date-produced CDATA  #IMPLIED
+                          country       CDATA  #IMPLIED
+                          status        CDATA  #IMPLIED >
+
+<!--
+  Other documents; specify with sub-elements
+
+-->
+<!ELEMENT other-doc (document-name | document-code | dtext)+>
+
+<!ATTLIST other-doc  id        ID     #IMPLIED
+                       file      CDATA  #REQUIRED
+                       lang      CDATA  #IMPLIED
+                       carriers         (internal-electronic | 
+                                   external-electronic | 
+                                   paper )  #IMPLIED
+                       file-type        (xml | pdf | txt | tif | zip | jpg )  #REQUIRED
+                       status    CDATA  #IMPLIED >
+<!--
+
+-->
+<!ELEMENT pre-conversion-files-package EMPTY>
+
+<!ATTLIST pre-conversion-files-package  id       ID     #IMPLIED
+                                          file     CDATA  #REQUIRED
+                                          lang     CDATA  #IMPLIED
+                                          status   CDATA  #IMPLIED
+                                          carriers        (internal-electronic | 
+                                                     external-electronic | 
+                                                     paper )  #IMPLIED >
+<!--
+
+-->
+<!ELEMENT ro-request-receiving-info-doc EMPTY>
+
+<!ATTLIST ro-request-receiving-info-doc  id       ID     #IMPLIED
+                                           file     CDATA  #REQUIRED
+                                           lang     CDATA  #IMPLIED
+                                           status   CDATA  #IMPLIED
+                                           carriers        (internal-electronic | 
+                                                      external-electronic | 
+                                                      paper )  #IMPLIED >
+<!--
+
+-->
+<!ELEMENT xmit-receipt-doc EMPTY>
+
+<!ATTLIST xmit-receipt-doc  id       ID     #IMPLIED
+                              file     CDATA  #REQUIRED
+                              lang     CDATA  #IMPLIED
+                              status   CDATA  #IMPLIED
+                              carriers        (internal-electronic | 
+                                         external-electronic | 
+                                         paper )  #IMPLIED >
+
+<!--
+
+
+-->
+<!ELEMENT restore-rights-reason EMPTY>
+
+<!ATTLIST restore-rights-reason  id       ID     #IMPLIED
+                                   file     CDATA  #REQUIRED
+                                   lang     CDATA  #IMPLIED
+                                   carriers        (internal-electronic | 
+                                              external-electronic | 
+                                              paper )  #IMPLIED
+                                   status   CDATA  #IMPLIED >
+
+<!--
+  Wrapped document referenced; e.g.record copy, certified priority document.
+
+-->
+<!ELEMENT wrapped-document EMPTY>
+
+<!ATTLIST wrapped-document  id           ID     #IMPLIED
+                              file         CDATA  #REQUIRED
+                              lang         CDATA  #IMPLIED
+                              package-type        (wad | wasp | sep )  #REQUIRED
+                              status       CDATA  #IMPLIED >
+
+<!--
+  Correspondence from applicant
+    it is possible to use corr(espondence)-type attribute for correspondence title
+
+-->
+<!ELEMENT correspondence EMPTY>
+
+<!ATTLIST correspondence  id        ID     #IMPLIED
+                            file      CDATA  #REQUIRED
+                            lang      CDATA  #IMPLIED
+                            carriers         (internal-electronic | 
+                                        external-electronic | 
+                                        paper )  #IMPLIED
+                            status    CDATA  #IMPLIED
+                            corr-type CDATA  #REQUIRED >
+
+<!--
+  SEQUENCE LISTING
+    According to WIPO ST.25: STANDARD FOR THE PRESENTATION OF NUCLEOTIDE AND
+    AMINO ACID SEQUENCE LISTINGS IN PATENT APPLICATIONS:
+      see http://www.wipo.int/scit/en/index.html
+    "The sequence listing as defined in paragraph 2(i) shall, where it is filed
+    together with the application, be placed at the end of the description
+    part of the application. This part shall be entitled Sequence Listing, 
+    begin on a new page and preferably have independent page numbering. 
+    The sequence listing forms an integral part of the description; it is therefore 
+    unnecessary, subject to paragraph 36, to describe the sequences elsewhere 
+    in the description." Therefore we create here a separate sub-document for 
+    sequence listings, it should follow any drawings or the claims.
+    It should follow the format of Annex C/ST.25 and be an external file
+
+-->
+<!ELEMENT sequence-list EMPTY>
+
+<!ATTLIST sequence-list  id                     ID     #IMPLIED
+                           file                   CDATA  #REQUIRED
+                           lang                   CDATA  #IMPLIED
+                           carriers                      (internal-electronic | 
+                                                    external-electronic | 
+                                                    paper )  #IMPLIED
+                           seq-file-type          CDATA  #FIXED 'ST.25'
+                           electronic-format-type        (text | other )  #IMPLIED
+                           status                 CDATA  #IMPLIED
+                           part-of-application           (yes | no )  #IMPLIED >
+
+<!--
+  Published application, e.g. PCT Art.20 communication
+
+-->
+<!ELEMENT published-application EMPTY>
+
+<!ATTLIST published-application  id       ID     #IMPLIED
+                                   file     CDATA  #REQUIRED
+                                   lang     CDATA  #IMPLIED
+                                   carriers        (internal-electronic | 
+                                              external-electronic | 
+                                              paper )  #IMPLIED
+                                   status   CDATA  #IMPLIED >
+
+<!--
+  English translation of International Preliminary Examination Report
+
+-->
+<!ELEMENT trans-preliminary-examination-report EMPTY>
+
+<!ATTLIST trans-preliminary-examination-report  id       ID     #IMPLIED
+                                                  file     CDATA  #REQUIRED
+                                                  lang     CDATA  #IMPLIED
+                                                  carriers        (internal-electronic | 
+                                                             external-electronic | 
+                                                             paper )  #IMPLIED
+                                                  status   CDATA  #IMPLIED >
+
+<!--
+  International Preliminary Examination Report (IPER) (Article 35) 
+
+-->
+<!ELEMENT preliminary-examination-report EMPTY>
+
+<!ATTLIST preliminary-examination-report  id       ID     #IMPLIED
+                                            file     CDATA  #REQUIRED
+                                            lang     CDATA  #IMPLIED
+                                            carriers        (internal-electronic | 
+                                                       external-electronic | 
+                                                       paper )  #IMPLIED
+                                            status   CDATA  #IMPLIED >
+
+<!--
+  English translation of search report
+
+-->
+<!ELEMENT trans-search-report EMPTY>
+
+<!ATTLIST trans-search-report  id       ID     #IMPLIED
+                                 file     CDATA  #REQUIRED
+                                 lang     CDATA  #IMPLIED
+                                 carriers        (internal-electronic | 
+                                            external-electronic | 
+                                            paper )  #IMPLIED
+                                 status   CDATA  #IMPLIED >
+
+<!--
+  Search report
+
+-->
+<!ELEMENT search-report-doc EMPTY>
+
+<!ATTLIST search-report-doc  id       ID     #IMPLIED
+                               file     CDATA  #REQUIRED
+                               lang     CDATA  #IMPLIED
+                               carriers        (internal-electronic | 
+                                          external-electronic | 
+                                          paper )  #IMPLIED
+                               status   CDATA  #IMPLIED >
+
+<!--
+  Translation of international application
+
+-->
+<!ELEMENT translation-of-application EMPTY>
+
+<!ATTLIST translation-of-application  id       ID     #IMPLIED
+                                        file     CDATA  #REQUIRED
+                                        lang     CDATA  #IMPLIED
+                                        carriers        (internal-electronic | 
+                                                   external-electronic | 
+                                                   paper )  #IMPLIED
+                                        status   CDATA  #IMPLIED >
+
+<!--
+  A copy of the earlier application for which priority is being claimed (Rule 17)
+
+-->
+<!ELEMENT priority-document EMPTY>
+
+<!ATTLIST priority-document  id       ID     #IMPLIED
+                               file     CDATA  #REQUIRED
+                               lang     CDATA  #IMPLIED
+                               carriers        (internal-electronic | 
+                                          external-electronic | 
+                                          paper )  #IMPLIED
+                               status   CDATA  #IMPLIED >
+
+<!--
+  Amendment request document (PCT Art 19, Art 34)
+
+-->
+<!ELEMENT amendment EMPTY>
+
+<!ATTLIST amendment  id       ID     #IMPLIED
+                       file     CDATA  #REQUIRED
+                       lang     CDATA  #IMPLIED
+                       status   CDATA  #IMPLIED
+                       carriers        (internal-electronic | external-electronic | paper )  #IMPLIED >
+
+<!--
+  Notification form among applicant and offices
+
+-->
+<!ELEMENT notification EMPTY>
+
+<!ATTLIST notification  id        ID     #IMPLIED
+                          file      CDATA  #REQUIRED
+                          lang      CDATA  #IMPLIED
+                          carriers         (internal-electronic | 
+                                      external-electronic | 
+                                      paper )  #IMPLIED
+                          notf-type CDATA  #REQUIRED
+                          status    CDATA  #IMPLIED >
+
+<!--
+  Changes to bibliographic material; e.g. name, address
+
+-->
+<!ELEMENT bib-changes EMPTY>
+
+<!ATTLIST bib-changes  id       ID     #IMPLIED
+                         file     CDATA  #REQUIRED
+                         lang     CDATA  #IMPLIED
+                         status   CDATA  #IMPLIED
+                         carriers        (internal-electronic | 
+                                    external-electronic | 
+                                    paper )  #IMPLIED >
+
+<!--
+  Copy of general power of attorney; PCT/RO/101 Box IX Check-box 4
+
+-->
+<!ELEMENT copy-general-power-of-attorney EMPTY>
+
+<!ATTLIST copy-general-power-of-attorney  id         ID     #IMPLIED
+                                            file       CDATA  #REQUIRED
+                                            lang       CDATA  #IMPLIED
+                                            carriers          (internal-electronic | 
+                                                         external-electronic | 
+                                                         paper )  #IMPLIED
+                                            ref-number CDATA  #IMPLIED
+                                            status     CDATA  #IMPLIED >
+
+<!--
+  Original general power of attorney; 
+  PCT/RO/101 Box IX, Check-box 3
+
+-->
+<!ELEMENT general-power-of-attorney EMPTY>
+
+<!ATTLIST general-power-of-attorney  id       ID     #IMPLIED
+                                       file     CDATA  #REQUIRED
+                                       lang     CDATA  #IMPLIED
+                                       carriers        (internal-electronic | 
+                                                  external-electronic | 
+                                                  paper )  #IMPLIED
+                                       status   CDATA  #IMPLIED >
+
+<!--
+  Original separate power of attorney
+
+-->
+<!ELEMENT separate-power-of-attorney EMPTY>
+
+<!ATTLIST separate-power-of-attorney  id       ID     #IMPLIED
+                                        file     CDATA  #REQUIRED
+                                        lang     CDATA  #IMPLIED
+                                        carriers        (internal-electronic | 
+                                                   external-electronic | 
+                                                   paper )  #IMPLIED
+                                        status   CDATA  #IMPLIED >
+
+<!--
+  Separate indications concerning deposited microorganism    
+  or other biological material
+
+-->
+<!ELEMENT biological-material EMPTY>
+
+<!ATTLIST biological-material  id       ID     #IMPLIED
+                                 file     CDATA  #REQUIRED
+                                 lang     CDATA  #IMPLIED
+                                 status   CDATA  #IMPLIED
+                                 carriers        (internal-electronic | 
+                                            external-electronic | 
+                                            paper )  #IMPLIED >
+
+<!--
+  Statement explaining lack of signature
+
+-->
+<!ELEMENT lack-of-signature EMPTY>
+
+<!ATTLIST lack-of-signature  id       ID     #IMPLIED
+                               file     CDATA  #REQUIRED
+                               lang     CDATA  #IMPLIED
+                               carriers        (internal-electronic | 
+                                          external-electronic | 
+                                          paper )  #IMPLIED
+                               status   CDATA  #IMPLIED >
+
+<!--
+  Declarations under PCT
+
+  Attribute values of "dec-type":
+   "1" = Declaration as to the identity of the inventor
+   "2" = Declaration as to the applicant's entitlement, as at the international filing date, to apply for and be granted a patent
+   "3" = Declaration as to the applicant's entitlement, as at the international filing date, to claim the priority of the earlier application
+   "4" = Declaration of inventorship (only for the purposes of the designation of the United States of America)
+   "5" = Declaration as to non-prejudicial disclosures or exceptions to lack of novelty
+
+
+-->
+<!ELEMENT declaration-doc EMPTY>
+
+<!ATTLIST declaration-doc  id       ID     #IMPLIED
+                             file     CDATA  #REQUIRED
+                             lang     CDATA  #IMPLIED
+                             carriers        (internal-electronic | 
+                                        external-electronic | 
+                                        paper )  #IMPLIED
+                             dec-type        (1 | 2 | 3 | 4 | 5 | combined )  #REQUIRED
+                             status   CDATA  #IMPLIED >
+
+<!--
+  Reference to an attached fee-calculation sheet
+
+-->
+<!ELEMENT fee-calculation-sheet EMPTY>
+
+<!ATTLIST fee-calculation-sheet  id       ID     #IMPLIED
+                                   file     CDATA  #REQUIRED
+                                   lang     CDATA  #IMPLIED
+                                   status   CDATA  #IMPLIED
+                                   carriers        (internal-electronic | 
+                                              external-electronic | 
+                                              paper )  #IMPLIED >
+
+<!--
+  Chapter2-demand form (IPEA401)
+
+-->
+<!ELEMENT chapter2-demand EMPTY>
+
+<!ATTLIST chapter2-demand  id       ID     #IMPLIED
+                             file     CDATA  #REQUIRED
+                             lang     CDATA  #IMPLIED
+                             status   CDATA  #IMPLIED
+                             carriers        (internal-electronic | 
+                                        external-electronic | 
+                                        paper )  #IMPLIED >
+
+<!--
+  Table external document:
+
+-->
+<!ELEMENT table-external EMPTY>
+
+<!ATTLIST table-external  id       ID     #IMPLIED
+                            file     CDATA  #REQUIRED
+                            lang     CDATA  #IMPLIED
+                            carriers        (internal-electronic | 
+                                       external-electronic | 
+                                       paper )  #IMPLIED
+                            status   CDATA  #IMPLIED >
+
+<!--
+  Application Body document:
+    (ST32: PATDOC)
+  description, claims, drawings and abstract
+
+-->
+<!ELEMENT application-body-doc EMPTY>
+
+<!ATTLIST application-body-doc  id       ID     #IMPLIED
+                                  file     CDATA  #REQUIRED
+                                  lang     CDATA  #IMPLIED
+                                  status   CDATA  #IMPLIED
+                                  carriers        (internal-electronic | 
+                                             external-electronic | 
+                                             paper )  #IMPLIED >
+
+<!--
+  PCT request form (PCT/RO/101)
+
+-->
+<!ELEMENT application-request EMPTY>
+
+<!ATTLIST application-request  id       ID     #IMPLIED
+                                 file     CDATA  #REQUIRED
+                                 lang     CDATA  #IMPLIED
+                                 status   CDATA  #IMPLIED
+                                 carriers        (internal-electronic | 
+                                            external-electronic | 
+                                            paper )  #IMPLIED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+  Information regarding notice
+
+-->
+<!ELEMENT notice-info (response-term? , applicant-name* , agent-info? , reason-for-rejection-info? , drafting-document-info?)>
+
+<!ATTLIST notice-info  notice-id-ref CDATA  #REQUIRED >
+
+<!--
+  Response term of invitation.  
+  
+  Attributes:
+    term     = period of time 
+    division = discernment of month or day
+
+-->
+<!ELEMENT response-term EMPTY>
+
+<!ATTLIST response-term  unit-of-time CDATA  #REQUIRED
+                           value        CDATA  #REQUIRED >
+
+<!--
+  Publication reference information: publication number, date, etc
+    (INID 11, ST.32:B110)
+
+-->
+<!ELEMENT publication-reference (document-id)>
+
+<!ATTLIST publication-reference  id ID  #IMPLIED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Reference to an appealed application
+
+-->
+<!ELEMENT appeal-reference (doc-number , date?)>
+
+<!ATTLIST appeal-reference  appeal-type CDATA  #REQUIRED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Title of the Invention:
+    (INID 54, ST.32:B540/B542)
+
+  Preferably two to seven words when in English or translated into English and
+  precise. (Rule 4.3)
+
+  Recommended id = 'invt'
+
+-->
+<!ELEMENT invention-title (#PCDATA | b | i | u | o | sup | sub)*>
+
+<!ATTLIST invention-title  id   ID     #IMPLIED
+                             lang CDATA  #IMPLIED >
+
+<!--
+  Underscore: style - single is default
+
+-->
+<!ELEMENT u (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST u  style   (single | double | dash | dots )  'single' >
+
+<!--
+  Overscore: style - single is default
+
+-->
+<!ELEMENT o (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST o  style   (single | 
+                       double | 
+                       dash | 
+                       dots | 
+                       leftarrow | 
+                       rightarrow | 
+                       leftrightarrow )  'single' >
+
+<!--
+  Holder for other documents that do not conform to one of the DTDs published in
+  Appendix I of Annex F.
+
+-->
+<!ELEMENT other-documents (other-doc*)>
+
+
+<!--
+  Descriptive text
+
+-->
+<!ELEMENT dtext (#PCDATA)>
+
+
+
+<!--
+  The name of the other-doc(ument) referenced
+
+-->
+<!ELEMENT document-name (#PCDATA)>
+
+
+<!--
+  Signatories
+
+-->
+<!ELEMENT signatories (signatory+)>
+
+
+<!--
+  PCT/RO/101 Box No. X:
+  The signature must be that of the applicant (if there are several applicants, all
+  must sign); however, the signature may be that of the agent, or the common
+  representative, where a separate power of attorney appointing the agent or the
+  common representative, respectively, or a copy of a general power of attorney is
+  already in possession of the receiving Office, is furnished...
+  (PCT Rules 4.1(d), 4.15, and 90)
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+
+-->
+<!ELEMENT signatory (%name_group; , address? , electronic-signature , signatory-capacity?)>
+
+<!ATTLIST signatory
+                  id ID #IMPLIED>
+
+
+<!--
+  The capacity in which the person signs
+
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  Transmittal information
+
+-->
+<!ELEMENT transmittal-info (new-application | subsequent-filing | office-to-office | office-to-applicant)>
+
+
+<!--
+  Document transfer information from office to applicant
+
+-->
+<!ELEMENT office-to-applicant (from , invention-title? , confirmation-number? , receipt-list-info? , file-reference-id? , (application-reference+ | (patent-reference , application-reference+)) , notice-info* , total-number-of-notifications?)>
+
+
+<!--
+  The total number of cases ready for notice
+
+-->
+<!ELEMENT total-number-of-notifications (#PCDATA)>
+
+
+<!--
+  A list of the receipts produced by the Office in response to query
+  "what did I send you?"
+
+-->
+<!ELEMENT receipt-list-info (applicant-name? , receipt-number*)>
+
+
+<!--
+  Notification to the applicant of the document code of the object to draft
+
+-->
+<!ELEMENT drafting-document-info (document-code? , (receipt-number | dispatch-id))>
+
+
+<!--
+  Dispatch identifier
+
+-->
+<!ELEMENT dispatch-id (#PCDATA)>
+
+
+<!--
+  Receipt number
+
+-->
+<!ELEMENT receipt-number (#PCDATA)>
+
+
+<!--
+  The Japanese applicant is demanding the notice of the reason for rejection
+
+-->
+<!ELEMENT reason-for-rejection-info (reason-code , text)>
+
+
+<!--
+  Code of the reason for rejection
+
+-->
+<!ELEMENT reason-code (#PCDATA)>
+
+
+<!--
+  Information regarding the agent (without address information)
+
+-->
+<!ELEMENT agent-info (agent-name+ | customer-number)>
+
+
+<!--
+  Customer number for agents by office
+
+-->
+<!ELEMENT customer-number (#PCDATA)>
+
+
+<!--
+  The name of the agent (without address information)
+
+-->
+<!ELEMENT agent-name (%name_group;)>
+
+
+<!--
+  The name of the applicant (without address information)
+    (ST.32:B711)
+
+-->
+<!ELEMENT applicant-name (%name_group;)>
+
+
+<!--
+  Document transfer information between offices.
+
+-->
+<!ELEMENT office-to-office (invention-title? , first-named-applicant? , confirmation-number? , application-reference , publication-reference? , file-reference-id? , from? , to?)>
+
+
+<!--
+  The office that sends the document
+
+-->
+<!ELEMENT from (country)>
+
+
+<!--
+  Subsequent filing information, before Issue Date
+
+-->
+<!ELEMENT subsequent-filing (invention-title? , first-named-applicant , confirmation-number? , file-reference-id? , appeal-reference? , (application-reference+ | (patent-reference , application-reference+)) , document-code* , to)>
+
+
+<!--
+  Patent reference information: patent number, date, etc
+
+-->
+<!ELEMENT patent-reference (document-id)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Confirmation number from office
+
+-->
+<!ELEMENT confirmation-number (#PCDATA)>
+
+
+<!--
+  New application information from applicant to office
+
+-->
+<!ELEMENT new-application (invention-title? , first-named-applicant? , file-reference-id? , document-code* , to)>
+
+
+<!--
+  The office that receives the document
+
+-->
+<!ELEMENT to (country)>
+
+
+<!--
+  For reference to non-PCT document from national office;
+  code defined by national office
+
+-->
+<!ELEMENT document-code (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+
+<!--
+  First applicant name in applicant group
+
+-->
+<!ELEMENT first-named-applicant (%name_group; , address?)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Bold formatting for text
+
+-->
+<!ELEMENT b (#PCDATA | i | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Italic formatting for text
+
+-->
+<!ELEMENT i (#PCDATA | b | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Small capitals
+
+-->
+<!ELEMENT smallcaps (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup2 (#PCDATA | b | u | i | o)*>
+
+<!--  bio = stub; not same as element (yet)  -->
+
+<!--
+  Writen Opinion of a searching authority
+
+-->
+<!ELEMENT written-opinion EMPTY>
+<!ATTLIST written-opinion  id       ID     #IMPLIED
+                               file     CDATA  #REQUIRED
+                               lang     CDATA  #IMPLIED
+                               carriers        (internal-electronic | 
+                                          external-electronic | 
+                                          paper )  #IMPLIED
+                               status   CDATA  #IMPLIED >
+

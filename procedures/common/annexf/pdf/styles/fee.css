@@ -1,0 +1,73 @@
+h1 {
+  font-size: 1.5rem;
+}
+
+table {
+  width: 100%;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 3.75rem;
+}
+
+.general {
+  margin-top: 1.25rem;
+  font-size: 0.725rem;
+  padding: 0.25rem;
+}
+
+.general td {
+  width: 50%;
+}
+
+.general .table-type {
+  text-align: left;
+}
+
+.general .table-value {
+  border: 1px solid black;
+  padding-left: 0.25rem;
+}
+
+.fee {
+  margin-top: 1.25rem;
+  padding: 0.5rem;
+}
+
+.fee table {
+  border-collapse: collapse;
+}
+
+.fee tbody, .fee td {
+  border: 1px solid black;
+  font-size: 0.725rem;
+}
+
+.fee tfoot {
+  border: 2px solid black;
+  font-size: 0.725rem;
+}
+
+.fee .table-type {
+  text-align: left;
+  width: 60%;
+}
+
+.fee .table-type, .fee .table-value {
+  padding-left: 0.5rem;
+}
+
+.fee th {
+  font-size: 0.725rem;
+  text-align:left;
+}
+
+.fee .table-value {
+  text-align: right;
+}
+
+.fee tfoot td {
+  text-align: right;
+  width: 50%
+}

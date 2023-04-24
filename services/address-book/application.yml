@@ -1,0 +1,14 @@
+server:
+  port: ${ADDRESS_BOOK_PORT:3003}
+  servlet:
+    context-path: ${ADDRESS_BOOK_CONTEXT_PATH:/addressbook-api}
+
+spring:
+  data:
+    mongodb:
+      uri: ${DB_URL:mongodb://admin:admin@host.docker.internal:29019/address_book?authSource=admin}
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:info}
+    org.springframework.data.mongodb.core.MongoTemplate: ${DB_LOGGING_LEVEL:info}

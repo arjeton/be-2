@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="workflows" name="workflows" namespace="http://camunda.org/schema/1.0/dmn" expressionLanguage="groovy" exporter="Camunda Modeler" exporterVersion="5.0.0">
+    <decision id="workflow-parties-ownership" name="Workflow&#10;Parties warning total of 100% ownership">
+         <variable id="InformationItem_1769s53" name="result" />
+         <literalExpression id="LiteralExpression_10zwzhw" expressionLanguage="groovy">
+           <text>// it applicants do not sum up 100% of ownership, return workflow error
+
+     static def checkApplicantsOwnershipPercentage(submission) {
+         def result = [:]
+
+         def totalPercentage = submission.parties?.applicants?.findAll{applicant -&gt;
+             applicant.additionalDetails?.ownershipPercentage != null
+         }?.collect{applicant -&gt;
+             applicant.additionalDetails?.ownershipPercentage
+         }?.sum()
+
+         if ((totalPercentage &lt; 99.99) || (totalPercentage &gt; 100)) {
+             result = [error: "submission.parties.businessrule.applicant.total-percentage-100-required"]
+         }
+
+         return result;
+     }
+     return checkApplicantsOwnershipPercentage(submission)</text>
+         </literalExpression>
+       </decision>
+
+       <decision id="uischema-warn-percentage" name="UiSchema&#10;Applicant ownership percentage validation">
+         <variable id="InformationItem_127o2rs" name="result" />
+         <literalExpression id="LiteralExpression_1h526i0" expressionLanguage="groovy">
+           <text>// if the total with the non CONFIRMED (current) applicant exceeeds 100% of ownership percentage,
+     // then return warning on uischema (to appear on the field)
+
+     static def checkCurrentApplicantOwnershipPercentage(submission) {
+         def currentApplicant = submission.parties?.applicants?.find { a -&gt; a.state != "CONFIRMED" }
+
+         def result = [:]
+         if (currentApplicant != null) {
+
+             def totalPercentage = submission.parties?.applicants?.findAll { applicant -&gt;
+                 applicant.additionalDetails?.ownershipPercentage != null
+             }?.collect { applicant -&gt;
+                 applicant.additionalDetails?.ownershipPercentage
+             }?.sum()
+
+
+             if (totalPercentage &gt; 100) {
+                 def message = "submission.parties.businessrule.applicant.total-percentage-over-100"
+                 result = [
+                         [property: "parties.applicants.items.additionalDetails.ownershipPercentage", "ui:help": message],
+                         [property: "parties.applicants.items.additionalDetails.ownershipPercentage", "ui:help:severity": "warning"],
+                 ]
+             }
+         }
+
+         return result
+     }
+
+     return checkCurrentApplicantOwnershipPercentage(submission)</text>
+         </literalExpression>
+     </decision>
+
+     <decision id="uischema-add-representative-employee" name="Add representative rules (based on number of applicants and type of applicant P4441-3009)">
+       <variable id="uischema-add-representative-employee-result" name="result" />
+       <literalExpression id="uischema-add-representative-employee-expr" expressionLanguage="groovy">
+         <text>
+           result = [[property: "parties.representatives.items.role", "ui:options" : ["enumDisabled": ["EMPTY"]]]]
+           if(submission.parties?.applicants?.size() &lt; 1) {
+             result = [[property: "parties.representatives.items.role", "ui:options" : ["enumDisabled": ["REPRESENTATIVE_EMPLOYEE"]]]]
+           } else if (submission.parties?.applicants?.findAll{a -&gt; a.state == "CONFIRMED" &amp;&amp; a.role == "APPLICANT_LEGAL_ENTITY"}?.size() &lt; 1) {
+             result = [[property: "parties.representatives.items.role", "ui:options" : ["enumDisabled": ["REPRESENTATIVE_EMPLOYEE"]]]]
+           }
+           return result
+         </text>
+       </literalExpression>
+     </decision>
+
+     <decision id="workflow-parties-representativeEmployee" name="representative employee not allowed">
+       <variable id="workflow-parties-representative-employee-variable" name="result" />
+       <literalExpression id="workflow-parties-representative-employee-expression" expressionLanguage="groovy">
+         <text>
+           def existEmployee(submission) {
+             if (submission.parties?.representatives?.findAll{r -&gt; r.state == "CONFIRMED" &amp;&amp; r.role == "REPRESENTATIVE_EMPLOYEE"}?.size() &gt; 0) {
+               return true;
+             }
+               return false;
+             }
+
+             result = [:]
+             if (existEmployee(submission)){
+               if ((submission.parties?.applicants?.size() &lt; 1)
+                   || (submission.parties?.applicants?.findAll{a -&gt; a.state == "CONFIRMED" &amp;&amp; a.role == "APPLICANT_LEGAL_ENTITY"}?.size() &lt; 1)) {
+                 result = [error: "submission.parties.businessrule.epmployee.applicants", path: "parties.representatives" ]
+               }
+             }
+             return result
+           return result</text>
+       </literalExpression>
+     </decision>
+
+   <!-- Communication Address -->
+   <decision id="workflow-parties-communication-address-required" name="Workflow&#10;Communication address required">
+       <variable id="workflow-parties-communication-address-required-result" name="result" />
+       <literalExpression id="workflow-parties-communication-address-required-expr" expressionLanguage="groovy">
+         <text>
+           if ((!submission.parties?.communicationAddress?.any {
+               communicationAddress -&gt; communicationAddress.state == "CONFIRMED" &amp;&amp;
+               communicationAddress.correspondenceAddress.country != null &amp;&amp;
+               communicationAddress.correspondenceAddress.city != null &amp;&amp;
+               communicationAddress.correspondenceAddress.postalCode != null &amp;&amp;
+               communicationAddress.correspondenceAddress.streetAddress != null
+           })) {
+               result = [ error: "spc.submission.parties.businessrule.communicationAddress.required"]
+           }
+         </text>
+       </literalExpression>
+     </decision>
+    <decision id="uischema-parties-communication-address-info" name="UISchema&#10;Communication address info">
+      <variable id="uischema-parties-communication-address-info-variable" name="result" />
+      <literalExpression id="uischema-parties-communication-address-info-expression" expressionLanguage="groovy">
+        <text>
+            // shows the info message caption if a comm address does not exist
+            def communicationAddress = submission.parties?.communicationAddress
+            if (communicationAddress != null) {
+              if (communicationAddress.size() &gt; 0) {
+                result = [property: "parties.communicationAddress", "showInfoMessage": false]
+              }
+            } else {
+              result = [property: "parties.communicationAddress", "showInfoMessage":  true]
+            }
+          </text>
+      </literalExpression>
+    </decision>
+    <decision id="uischema-parties-communication-address-error" name="UISchema&#10;Communication address error">
+      <variable id="uischema-parties-communication-address-error-variable" name="result" />
+      <literalExpression id="uischema-parties-communication-address-error-expression" expressionLanguage="groovy">
+        <text>
+            try {
+              return [property: "parties.communicationAddress", "showErrorMessage": !validateCommunicationAddress(submission)]
+            } catch (e) {
+              // no CA available, no error message
+              return [property: "parties.communicationAddress", "showErrorMessage":  false]
+            }
+          </text>
+      </literalExpression>
+    </decision>
+    <decision id="uischema-parties-communication-address-coupled" name="uischema-communication-address-coupled">
+      <variable id="uischema-communication-address-coupled-variable" name="result" />
+      <literalExpression id="uischema-communication-address-coupled-expression" expressionLanguage="groovy">
+        <text>
+          // disable communication address fields when coupled with parties
+          def communicationAddress = submission.parties?.communicationAddress
+          if (communicationAddress != null &amp;&amp; communicationAddress.size() &gt; 0){
+            def isCoupled = isCommunicationAddressCoupled(submission)
+            result = [
+              [property: "parties.communicationAddress.items.role", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.firstName", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.lastName", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.company", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.correspondenceAddress.streetAddress", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.correspondenceAddress.postalCode", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.correspondenceAddress.city", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.correspondenceAddress.country", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.correspondenceAddress.email", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.correspondenceAddress.telephone", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.correspondenceAddress.poBox", "ui:disabled": isCoupled],
+              [property: "parties.communicationAddress.items.preferredMeanOfNotification", "ui:disabled": isCoupled],
+            ]
+          }
+        </text>
+      </literalExpression>
+    </decision>
+    <decision id="postprocess-parties-update-communication-address" name="PostProcess&#10;Communication address">
+      <variable id="postprocess-parties-update-communication-address-result" name="result" />
+      <literalExpression id="postprocess-parties-update-communication-address-expr" expressionLanguage="groovy">
+        <text>
+          // extract the communication address from parties if possible
+          if (shouldProcessCommunicationAddress(event) &amp;&amp; isCommunicationAddressCoupled(submission)) {
+            def firstConfirmedParty = firstConfirmedParty(submission)
+            if (firstConfirmedParty) {
+              submission = deriveFromParties(submission)
+            }
+            else {
+              submission = removeCommunicationAddress(submission)
+            }
+          }
+          result = submission
+        </text>
+      </literalExpression>
+    </decision>
+    <decision id="custom-parties-updated" name="Custom popup message for party updates">
+      <variable id="custom-parties-updated-result" name="result" />
+      <literalExpression id="custom-parties-updated-expr">
+        <text>
+          // custom rule that should return texts for the dialog warning about potential Comm Address automatic changes
+          def slurper = new groovy.json.JsonSlurper()
+          def entityIds_ = slurper.parseText(entityIds)
+
+          // default deletion warning if decoupled or when deleting parties which are not derivation source
+          if (operationType == 'delete') {
+            if (!isCommunicationAddressCoupled(submission) || getCommAddressSourcePartyId(submission) != entityIds_[0]) {
+              return [
+                "titleText": "messages.are-you-sure",
+                "messageText": "messages.confirmation.party.delete",
+                "confirmButtonText": "parties.update.default.popup.confirm",
+                "cancelButtonText": "parties.update.default.popup.cancel"
+              ]
+            }
+          }
+
+          // for decoupled CA no warnings will be issued
+          if (hasCommunicationAddress(submission) &amp;&amp; !isCommunicationAddressCoupled(submission)) return null
+
+          switch(operationType) {
+            case "delete":
+              // deleting the source party should show popup
+              if (getCommAddressSourcePartyId(submission) == entityIds_[0] &amp;&amp; entityPath.endsWith("applicants")) {
+                return [
+                  "titleText": "parties.update.delete.applicant.popup.title",
+                  "messageText": "parties.update.delete.applicant.popup.msg",
+                  "confirmButtonText": "parties.update.default.popup.confirm",
+                  "cancelButtonText": "parties.update.default.popup.cancel"
+                ]
+              }
+              if (getCommAddressSourcePartyId(submission) == entityIds_[0] &amp;&amp; entityPath.endsWith("applicants")) {
+                return [
+                  "titleText": "parties.update.delete.representative.popup.title",
+                  "messageText": "parties.update.delete.representative.popup.msg",
+                  "confirmButtonText": "parties.update.default.popup.confirm",
+                  "cancelButtonText": "parties.update.default.popup.cancel"
+                ]
+              }
+            case "edit":
+              // editing the source party should show popup
+              if (getCommAddressSourcePartyId(submission) == entityIds_[0] &amp;&amp; entityPath.endsWith("applicants")) {
+                return [
+                  "titleText": "parties.update.edit.applicant.popup.title",
+                  "messageText": "parties.update.edit.applicant.popup.msg",
+                  "confirmButtonText": "parties.update.default.popup.confirm",
+                  "cancelButtonText": "parties.update.default.popup.cancel"
+                ];
+              }
+              if (getCommAddressSourcePartyId(submission) == entityIds_[0] &amp;&amp; entityPath.endsWith("representatives")) {
+                return [
+                  "titleText": "parties.update.edit.representative.popup.title",
+                  "messageText": "parties.update.edit.representative.popup.msg",
+                  "confirmButtonText": "parties.update.default.popup.confirm",
+                  "cancelButtonText": "parties.update.default.popup.cancel"
+                ];
+              }
+              break
+
+            case "order":
+              // reordering the first party should show popup (only if the CA is among the reordered parties)
+              def sourcePartyId = getCommAddressSourcePartyId(submission)
+
+              if (entityIds_.contains(sourcePartyId) &amp;&amp; sourcePartyId != entityIds_[0] &amp;&amp; entityPath.endsWith("applicants")) {
+                return [
+                  "titleText": "parties.update.order.applicant.popup.title",
+                  "messageText": "parties.update.order.applicant.popup.msg",
+                  "confirmButtonText": "parties.update.default.popup.confirm",
+                  "cancelButtonText": "parties.update.default.popup.cancel"
+                ]
+              }
+              if (entityIds_.contains(sourcePartyId) &amp;&amp; sourcePartyId != entityIds_[0] &amp;&amp; entityPath.endsWith("representatives")) {
+                return [
+                  "titleText": "parties.update.order.representative.popup.title",
+                  "messageText": "parties.update.order.representative.popup.msg",
+                  "confirmButtonText": "parties.update.default.popup.confirm",
+                  "cancelButtonText": "parties.update.default.popup.cancel"
+                ]
+              }
+              break
+
+            case "add":
+              // adding a party needs a warning for the following cases:
+              //   - no CA, no applicant and no representatives
+              //   - has CA, has applicant and no representatives (and a representative is added)
+
+              if ((!hasCommunicationAddress(submission) &amp;&amp; !firstConfirmedApplicant(submission) &amp;&amp; !firstConfirmedRepresentative(submission)) ||
+                  (hasCommunicationAddress(submission) &amp;&amp; firstConfirmedApplicant(submission) &amp;&amp; !firstConfirmedRepresentative(submission)
+                    &amp;&amp; entityPath.endsWith("representatives"))) {
+                 return [
+                  "titleText": "parties.update.add.popup.title",
+                  "messageText": "parties.update.add.popup.msg",
+                  "confirmButtonText": "parties.update.default.popup.confirm",
+                  "cancelButtonText": "parties.update.default.popup.cancel"
+                ];
+              }
+
+              break
+          }
+          return null;
+
+        </text>
+      </literalExpression>
+    </decision>
+</definitions>

@@ -1,0 +1,744 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  pkgheader v1.4     2012  JULY                                               *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD PKGHEADER 1.4//EN" "pkgheader-v1-4.dtd"                *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/pkgheader-v1-4.dtd          *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.3 to v1.4
+..implementation of PFC06/001
+..added element 'sup' to u (PFC06/003)
+..added element 'sup' to i (PFC06/003)
+..added element 'sup' to b (PFC06/003)
+..added element 'sub' to u (PFC06/003)
+..added element 'sub' to i (PFC06/003)
+..added element 'sub' to b (PFC06/003)
+..added element 'o' to invention-title, b, i, sup, sup2, sub, sub2, heading, claim-text,
+  p, small-caps, dt, dd, li, crossref, figref, othercit, statement (PFC06/003)
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+HT: 14/12/04 incorporated changes from PFCs:
+..added attribute 'id' to application-reference, publication-reference
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.3
+..added element 'address' to first-named-applicant
+HT: 16/12/03 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..added element 'sup2' and 'sub2' to sup and sub
+JD: 03/02/03 Incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added element 'filelist' to root content model
+..added element 'other-filing' to transmittal-info
+..added (last-name | orgname) option to %name_group;
+..removed br from b, i, smallcaps
+2001/12/01
+..released version number as v1.0
+********************************************************************************
+
+Root element, pkgheader
+
+Attributes:
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+
+-->
+<!ELEMENT pkgheader (wad-message-digest , transmittal-info , ip-type , filelist? , application-software? , transmission-type? , payment?)>
+
+<!ATTLIST pkgheader  lang        CDATA  #REQUIRED
+                       dtd-version CDATA  #IMPLIED
+                       file        CDATA  #IMPLIED
+                       status      CDATA  #IMPLIED >
+
+<!--
+  Contents of the file received.  See Section 704(a):
+  'and may, at the option of the Office, also indicate or contain such information
+  as 
+     (v)  the names and sizes of the electronic files received;
+     (vi) the dates of creation of the electronic files received;..."
+                                    
+  attributes: 
+    doc-name      = name of the document
+    file-name     = name of the electronic file
+    size          = size of the file                                 
+    date-produced = date of creation of the file
+
+-->
+<!ELEMENT file-content EMPTY>
+
+<!ATTLIST file-content  doc-name               CDATA  #REQUIRED
+                          file-name              CDATA  #REQUIRED
+                          size                   CDATA  #IMPLIED
+                          date-produced          CDATA  #IMPLIED
+                          number-of-notification CDATA  #IMPLIED >
+
+<!--
+  Credit card used as payment method
+
+-->
+<!ELEMENT credit-card EMPTY>
+
+<!ATTLIST credit-card  number      CDATA  #REQUIRED
+                         expires     CDATA  #REQUIRED
+                         name        CDATA  #IMPLIED
+                         postal-code CDATA  #IMPLIED >
+
+<!--
+  Deposit account information
+
+-->
+<!ELEMENT account EMPTY>
+
+<!ATTLIST account  number       CDATA  #REQUIRED
+                     account-type CDATA  #REQUIRED
+                     name         CDATA  #IMPLIED >
+
+<!--
+  Total amount of fees due
+
+-->
+<!ELEMENT fee-total EMPTY>
+
+<!ATTLIST fee-total  amount CDATA  #REQUIRED >
+
+<!--
+  Amount due
+
+-->
+<!ELEMENT fee EMPTY>
+
+<!ATTLIST fee  fee-code CDATA  #REQUIRED
+                 amount   CDATA  #REQUIRED
+                 quantity CDATA  #IMPLIED
+                 currency CDATA  #REQUIRED >
+
+<!--
+  Information regarding notice
+
+-->
+<!ELEMENT notice-info (response-term? , applicant-name* , agent-info? , reason-for-rejection-info? , drafting-document-info?)>
+
+<!ATTLIST notice-info  notice-id-ref CDATA  #REQUIRED >
+
+<!--
+  Response term of invitation.  
+  
+  Attributes:
+    term     = period of time 
+    division = discernment of month or day
+
+-->
+<!ELEMENT response-term EMPTY>
+
+<!ATTLIST response-term  unit-of-time CDATA  #REQUIRED
+                           value        CDATA  #REQUIRED >
+
+<!--
+  Publication reference information: publication number, date, etc
+    (INID 11, ST.32:B110)
+
+-->
+<!ELEMENT publication-reference (document-id)>
+
+<!ATTLIST publication-reference  id ID  #IMPLIED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Reference to an appealed application
+
+-->
+<!ELEMENT appeal-reference (doc-number , date?)>
+
+<!ATTLIST appeal-reference  appeal-type CDATA  #REQUIRED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Title of the Invention:
+    (INID 54, ST.32:B540/B542)
+
+  Preferably two to seven words when in English or translated into English and
+  precise. (Rule 4.3)
+
+  Recommended id = 'invt'
+
+-->
+<!ELEMENT invention-title (#PCDATA | b | i | u | o | sup | sub)*>
+
+<!ATTLIST invention-title  id   ID     #IMPLIED
+                             lang CDATA  #IMPLIED >
+
+<!--
+  Underscore: style - single is default
+
+-->
+<!ELEMENT u (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST u  style   (single | double | dash | dots )  'single' >
+
+<!--
+  Overscore: style - single is default
+
+-->
+<!ELEMENT o (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST o  style   (single | 
+                       double | 
+                       dash | 
+                       dots | 
+                       leftarrow | 
+                       rightarrow | 
+                       leftrightarrow )  'single' >
+
+<!--
+  List of files received
+
+-->
+<!ELEMENT filelist (file-content+)>
+
+
+<!--
+  Wrapped Application Documents message digest
+
+-->
+<!ELEMENT wad-message-digest (#PCDATA)>
+
+
+<!--
+  Payment method
+
+-->
+<!ELEMENT payment (fee+ , fee-total , (account | credit-card | other-method))>
+
+
+<!--
+  Other payment method.  Specify
+
+-->
+<!ELEMENT other-method (#PCDATA)>
+
+
+<!--
+  Transmission type; e.g., submission or dispatch, etc.
+
+-->
+<!ELEMENT transmission-type (#PCDATA)>
+
+
+<!--
+  The software used to generate the XML document instance
+
+-->
+<!ELEMENT application-software (software-name , software-version , software-message?)>
+
+
+<!--
+  Any message (e.g., parser response text) returned by the software used to create
+  the document
+
+-->
+<!ELEMENT software-message (#PCDATA)>
+
+
+<!--
+  The version of the software used to create the document
+
+-->
+<!ELEMENT software-version (#PCDATA)>
+
+
+<!--
+  The name of the software used to create the document
+
+-->
+<!ELEMENT software-name (#PCDATA)>
+
+
+<!--
+  Intellecutal Property type
+
+-->
+<!ELEMENT ip-type (#PCDATA)>
+
+
+<!--
+  Transmittal information
+
+-->
+<!ELEMENT transmittal-info (new-application | subsequent-filing | office-to-office | office-to-applicant)>
+
+
+<!--
+  Document transfer information from office to applicant
+
+-->
+<!ELEMENT office-to-applicant (from , invention-title? , confirmation-number? , receipt-list-info? , file-reference-id? , (application-reference+ | (patent-reference , application-reference+)) , notice-info* , total-number-of-notifications?)>
+
+
+<!--
+  The total number of cases ready for notice
+
+-->
+<!ELEMENT total-number-of-notifications (#PCDATA)>
+
+
+<!--
+  A list of the receipts produced by the Office in response to query
+  "what did I send you?"
+
+-->
+<!ELEMENT receipt-list-info (applicant-name? , receipt-number*)>
+
+
+<!--
+  Notification to the applicant of the document code of the object to draft
+
+-->
+<!ELEMENT drafting-document-info (document-code? , (receipt-number | dispatch-id))>
+
+
+<!--
+  Dispatch identifier
+
+-->
+<!ELEMENT dispatch-id (#PCDATA)>
+
+
+<!--
+  Receipt number
+
+-->
+<!ELEMENT receipt-number (#PCDATA)>
+
+
+<!--
+  The Japanese applicant is demanding the notice of the reason for rejection
+
+-->
+<!ELEMENT reason-for-rejection-info (reason-code , text)>
+
+
+<!--
+  Code of the reason for rejection
+
+-->
+<!ELEMENT reason-code (#PCDATA)>
+
+
+<!--
+  Information regarding the agent (without address information)
+
+-->
+<!ELEMENT agent-info (agent-name+ | customer-number)>
+
+
+<!--
+  Customer number for agents by office
+
+-->
+<!ELEMENT customer-number (#PCDATA)>
+
+
+<!--
+  The name of the agent (without address information)
+
+-->
+<!ELEMENT agent-name (%name_group;)>
+
+
+<!--
+  The name of the applicant (without address information)
+    (ST.32:B711)
+
+-->
+<!ELEMENT applicant-name (%name_group;)>
+
+
+<!--
+  Document transfer information between offices.
+
+-->
+<!ELEMENT office-to-office (invention-title? , first-named-applicant? , confirmation-number? , application-reference , publication-reference? , file-reference-id? , from? , to?)>
+
+
+<!--
+  The office that sends the document
+
+-->
+<!ELEMENT from (country)>
+
+
+<!--
+  Subsequent filing information, before Issue Date
+
+-->
+<!ELEMENT subsequent-filing (invention-title? , first-named-applicant , confirmation-number? , file-reference-id? , appeal-reference? , (application-reference+ | (patent-reference , application-reference+)) , document-code* , to)>
+
+
+<!--
+  Patent reference information: patent number, date, etc
+
+-->
+<!ELEMENT patent-reference (document-id)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Confirmation number from office
+
+-->
+<!ELEMENT confirmation-number (#PCDATA)>
+
+
+<!--
+  New application information from applicant to office
+
+-->
+<!ELEMENT new-application (invention-title? , first-named-applicant? , file-reference-id? , document-code* , to)>
+
+
+<!--
+  The office that receives the document
+
+-->
+<!ELEMENT to (country)>
+
+
+<!--
+  For reference to non-PCT document from national office;
+  code defined by national office
+
+-->
+<!ELEMENT document-code (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+
+<!--
+  First applicant name in applicant group
+
+-->
+<!ELEMENT first-named-applicant (%name_group; , address?)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Bold formatting for text
+
+-->
+<!ELEMENT b (#PCDATA | i | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Italic formatting for text
+
+-->
+<!ELEMENT i (#PCDATA | b | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Small capitals
+
+-->
+<!ELEMENT smallcaps (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup2 (#PCDATA | b | u | i | o)*>
+
+

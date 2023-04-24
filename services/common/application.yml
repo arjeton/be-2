@@ -1,0 +1,80 @@
+remote-configuration:
+  path-prefix: ${PATH_PREFIX:/fo/configuration/}
+  default-version: ${DEFAULT_VERSION:develop}
+  cache-duration: ${CACHE_DURATION:60000}
+
+remote-integration:
+  path-prefix: ${INTEGRATION_PATH_PREFIX:/fo/integration/}
+  default-version: ${DEFAULT_VERSION:develop}
+
+integration-endpoints:
+  frontend: ${FRONTEND_PUBLIC_ENDPOINT:https://localhost}
+  submission-service: ${SUBMISSION_SERVICE_ENDPOINT:http://host.docker.internal:3001/npefiling-api}
+  configuration-service: ${CONFIGURATION_SERVICE_ENDPOINT:http://host.docker.internal:3009}
+  file-service: ${FILE_SERVICE_ENDPOINT:http://host.docker.internal:3002/fo-file-develop/files}
+  epct-service: ${EPCT_SERVICE_ENDPOINT:http://host.docker.internal:3012/api/}
+  eolf-service: ${ANNEXF_DATA_SERVICE_ENDPOINT:http://host.docker.internal:3010/annexf-data}
+  annexf-data-service: ${ANNEXF_DATA_SERVICE_ENDPOINT:http://host.docker.internal:3010/annexf-data}
+  annexf-protocol-service: ${ANNEXF_PROTOCOL_SERVICE_ENDPOINT:http://host.docker.internal:3011/annexf-protocol}
+  notification-service: ${NOTIFICATION_SERVICE_ENDPOINT:http://host.docker.internal:3007/notification-develop}
+  integration-consumer-service: ${INTEGRATION_CONSUMER_SERVICE_ENDPOINT:http://host.docker.internal:3016/adapters}
+  ops-service: ${OPS_SERVICE_ENDPOINT:https://ops.epo.org/3.2/rest-services}
+  user-service: ${USER_MANAGEMENT_SERVICE_ENDPOINT:http://host.docker.internal:3017/user-api}
+
+storage:
+  max-combined-size: ${MAX_COMBINED_SIZE:524288000}
+
+receiver:
+  defaultReceiver: ${DEFAULT_RECEIVER:NP}
+
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST:host.docker.internal}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+  security:
+    trusted-issuers:
+      public: ${IAM_OIDC_PUBLIC_ENDPOINT:http://host.docker.internal:7000/auth/realms/front-office-public}
+      internal: ${IAM_OIDC_INTERNAL_ENDPOINT:http://host.docker.internal:7000/auth/realms/front-office-internal}
+    oauth2:
+      client:
+        provider:
+          base-service-web-client:
+            token-uri: ${CLOUD_CONFIG_JWT_TOKEN_ENDPOINT:http://host.docker.internal:8081/auth/realms/front-office-public/protocol/openid-connect/token}
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${IAM_OIDC_JWK_ENDPOINT:http://host.docker.internal:8081/auth/realms/front-office-public/protocol/openid-connect/certs}
+  servlet:
+    multipart:
+      max-file-size: ${MULTIPART_MAX_FILE_SIZE:524288KB}
+      max-request-size: ${MULTIPART_MAX_REQUEST_SIZE:524288KB}
+  thymeleaf:
+    cache: false
+
+management:
+  metrics:
+    enable:
+      all: true
+      jvm: true
+  endpoint:
+    health:
+      enabled: true
+    httptrace:
+      enabled: true
+    loggers:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health, httptrace, info, prometheus, metrics, loggers, refresh
+
+notification:
+  enabled: ${NOTIFICATION_ENABLED:true}
+  topics: submission-update,addressbook-contact-update
+
+logging:
+  level:
+    org.epo.itc.frontoffice.logging.WebClientLogging: debug
+  pattern:
+    level: "%5p [%X{traceId:-}]"

@@ -1,0 +1,1366 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!-- 
+********************************************************************************
+*  Request v1.9     2017  JULY                                                 *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD REQUEST 1.9//EN" "request-v1-9.dtd"                    *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/request-v1-9.dtd            *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Asahi HASEBE : 01/07/17 incorporated changes from PFC
+..changed version number from v1.8 to v1.9
+..added an attribute "id" to signatory and us-rights
+..added an element " earlier-search-authorization" to search-authority
+..added an element "figures-in-color" to "request"
+SY: 01/07/12 incorporated changes from PFC:
+..changed version number from v1.7 to v1.8
+..added attribute 'priority-doc-access-code' to priority-doc-from-library (PFC12/001)
+SY: 01/04/10 incorporated changes from PFC:
+..changed version number from v1.6 to v1.7
+..added element 'priority-doc-from-library' to priority-claim (PFC09/005)
+..added element 'store-in-digital-library' to request (PFC09/005)
+MO: 01/07/09 incorporated changes from PFC:
+..changed version number from v1.5 to v1.6
+..added attribute 'carriers-type' to cl-sequence-listing (PFC09/001)
+..added attribute 'carriers-quantity' to cl-sequence-listing (PFC09/001)
+..added attribute 'size' to cl-sequence-listing (PFC09/001)
+MO: 01/07/08 incorporated changes from PFCs:
+..changed version number from v1.4 to v1.5
+..added element 'substantially-equivalent' to earlier-search-request (PFC08/003)
+..added element 'earlier-search-document' to earlier-search-request (PFC08/003)
+..added element 'cl-earlier-search-document' to check-list (PFC08/003)
+..added attribute 'email-purpose' to email (PFC08/006)
+..added attribute 'for-search-only' to cl-sequence-listing-table (PFC08/007)
+..added attribute 'additional-copies-including-search-copy' to cl-sequence-listing-table (PFC08/007)
+..added attribute 'with-identifying-statement' to cl-sequence-listing-table (PFC08/007)
+..added attribute 'for-search-only' to cl-sequence-listing (PFC08/007)
+..added attribute 'additional-copies-including-search-copy' to cl-sequence-listing (PFC08/007)
+..added attribute 'with-identifying-statement' to cl-sequence-listing (PFC08/007)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.3 to v1.4
+..added element 'sup' to u (PFC06/003)
+..added element 'sup' to i (PFC06/003)
+..added element 'sup' to b (PFC06/003)
+..added element 'sub' to u (PFC06/003)
+..added element 'sub' to i (PFC06/003)
+..added element 'sub' to b (PFC06/003)
+..added element 'o' to invention-title, b, i, sup, sup2, sub, sub2, heading, claim-text,
+  p, small-caps, dt, dd, li, crossref, figref, othercit, statement (PFC06/003)
+..added element 'incorporation-by-reference' to priority-claims (PFC06/004)
+..added element 'restore-rights' to priority-claim (PFC06/004)
+..added element 'cl-restore-rights-reason' to checklist (PFC06/004)
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+..added attribute 'subset' to protection-request (PFC06/005)
+HT: 14/12/04 incorporated changes from PFCs:
+..changed attribute he, wi of doc-page from 'NMTOKEN' to 'CDATA'
+..added attribute 'id' to addressbook, priority-claim
+..added attribute 'ocr' to doc-page
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.3
+..added attribute 'legal-representative', 'administrator', 'administratrix',
+   'legal-representatives', 'heirs', 'executors', 'legal-heirs' to us-right
+..added value 'national-office', 'regional-office' to attribute produced-by of root element
+HT: 16/12/03 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..changed element request from 'dtext?' to 'dtext*'
+..changed element designation-of-states
+   from '(precautionary-designation-statement, exclusion-from-designation?)?)'
+   to '(precautionary-designation-statement?, exclusion-from-designation?))'
+..added element 'sup2' and 'sub2' to sup and sub
+..added element 'cl-sequence-listing-table to check-list
+..added attribute 'ppf' and 'ppl' to cl-abstract, cl-claims, cl-description
+..added attribute 'fig-count' to cl-drawings
+..added attribute 'carriers' to cl-sequence-listing
+JD: 03/02/03 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..changed element inventors from '(inventor+, deceased-inventor*)' to '(inventor | deceased-inventor)+'
+..changed element protection-request from '?' to '*' in national, regional
+..added element 'any-other-state' to regional
+..added attribute 'total-page-count' to check-list
+..added attribute 'page-count' to cl-sequence-listing
+..added attribute 'lang', 'sequence' attributes to deceased-inventor
+..added attribute 'orientation' to doc-page
+..added (last-name | orgname) option to %name_group;
+..made postcode optional within address
+..removed 'br' from b, i, smallcaps
+December 2001
+..released version number as v1.0
+******************************************************************************** 
+
+PCT REQUEST FORM : RO101 (root element)
+
+attributes for request
+
+Attributes:
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+  date-produced = YYYYMMDD e.g, 20011230  if desired, 12 characters maximum
+  ro            = Receiving office name, country code ST.3          
+  produced-by   = creator of this document
+
+-->
+<!ELEMENT request ((file-reference-id? , request-petition , invention-title? , parties , designation-of-states? , priority-claims? , search-authority? , declarations? , check-list? , figure-to-publish? , figures-in-color? ,  language-of-filing? , signatories? , store-in-digital-library? , dtext* , office-specific-data*) | doc-page+)>
+
+<!ATTLIST request  lang          CDATA  #REQUIRED
+                     dtd-version   CDATA  #IMPLIED
+                     file          CDATA  #IMPLIED
+                     produced-by          (applicant | 
+                                     RO | 
+                                     ISA | 
+                                     IPEA | 
+                                     IB | 
+                                     DO | 
+                                     EO | 
+                                     national-office | 
+                                     regional-office )  #REQUIRED
+                     date-produced CDATA  #IMPLIED
+                     ro            CDATA  #REQUIRED
+                     status        CDATA  #IMPLIED >
+
+<!--
+  doc-page - DOCument or PAGE
+
+  This is primarily to be used when data for the whole or major sections of an
+  application are in image format OR other formats such as pdf.
+
+  Page range attributes are given when required
+    pp  - page range
+    ppf - first page 
+    ppl - last page (for pdf).
+  The 'img' may also be used for complete pages, e.g. in drawings 
+
+  Recommended id = docp0001, docp0002, etc.
+  Attributes "he" and "wi" mean height and width. 
+
+
+-->
+<!ELEMENT doc-page EMPTY>
+
+<!ATTLIST doc-page  id          ID     #IMPLIED
+                      he          CDATA  #REQUIRED
+                      wi          CDATA  #REQUIRED
+                      type               (jpg | pdf | tif )  #REQUIRED
+                      alt         CDATA  #IMPLIED
+                      pp          CDATA  #IMPLIED
+                      ppf         CDATA  #IMPLIED
+                      ppl         CDATA  #IMPLIED
+                      file        CDATA  #REQUIRED
+                      ocr         CDATA  #IMPLIED
+                      color              (color | bw )  #IMPLIED
+                      orientation        (portrait | landscape )  'portrait' >
+
+<!--
+  Office is the ST.3 country code, including the regional authorities.
+  Office-dtd is the file which contains the DTD for the office-specific elements.
+
+-->
+<!ELEMENT office-specific-data EMPTY>
+
+<!ATTLIST office-specific-data  office     CDATA  #REQUIRED
+                                  office-dtd CDATA  #REQUIRED
+                                  file       CDATA  #REQUIRED
+                                  id         ID     #IMPLIED
+                                  lang       CDATA  #IMPLIED
+                                  status     CDATA  #IMPLIED >
+
+<!--
+    Indicator used to flag request to store this application in digital library for later use as a priority document.
+  In the case of PCT this will be the WIPO DAS for Priority documents
+  The Indicators presence implies the request and absence implies no request
+
+-->
+<!ELEMENT store-in-digital-library EMPTY>
+
+<!ATTLIST store-in-digital-library  id ID  #IMPLIED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+  Request (PCT/RO/101) BOX No.IX Check list, figure number to publish and language
+  of International Application check-list
+
+-->
+<!ELEMENT check-list (cl-request? , cl-description? , cl-claims? , cl-abstract? , cl-drawings? , cl-sequence-listing? , cl-sequence-listing-table? , cl-fee-calculation? , cl-separate-power-of-attorney? , cl-general-power-of-attorney? , cl-copy-general-power-of-attorney? , cl-lack-of-signature? , cl-priority-document? , cl-translation-of-application? , cl-biological-material? , cl-restore-rights-reason? , cl-earlier-search-document? , cl-other-document*)>
+
+<!ATTLIST check-list  total-page-count CDATA  #IMPLIED >
+
+<!--
+  Checklist; an additional document is being furnished
+
+-->
+<!ELEMENT cl-other-document (#PCDATA)>
+
+<!ATTLIST cl-other-document  page-count CDATA  #IMPLIED >
+<!--
+	Checklist; an earlier-search report is being furnished
+
+-->
+<!ELEMENT cl-earlier-search-document EMPTY>
+
+<!ATTLIST cl-earlier-search-document  quantity CDATA  #REQUIRED >
+
+<!--
+
+
+-->
+<!ELEMENT cl-restore-rights-reason EMPTY>
+
+<!ATTLIST cl-restore-rights-reason  quantity CDATA  #REQUIRED >
+
+<!--
+  Includes the PCT/RO/134 or any separate sheet containing
+  Indications that is not included as part of the description
+
+-->
+<!ELEMENT cl-biological-material EMPTY>
+
+<!ATTLIST cl-biological-material  quantity CDATA  #REQUIRED >
+
+<!--
+  Check-list; a translation of application  is being furnished
+
+-->
+<!ELEMENT cl-translation-of-application EMPTY>
+
+<!ATTLIST cl-translation-of-application  quantity CDATA  #REQUIRED
+                                           lang     CDATA  #IMPLIED >
+
+<!--
+  Checklist; a priority document is being furnished
+
+-->
+<!ELEMENT cl-priority-document (sequence-number+)>
+
+<!ATTLIST cl-priority-document  quantity CDATA  #REQUIRED >
+
+<!--
+  Checklist; a statement explaining lack of signature is being furnished
+
+-->
+<!ELEMENT cl-lack-of-signature EMPTY>
+
+<!ATTLIST cl-lack-of-signature  quantity CDATA  #REQUIRED >
+
+<!--
+  Checklist; a copy of the general power of attorney is being furnished
+
+-->
+<!ELEMENT cl-copy-general-power-of-attorney (ref-number+)>
+
+<!ATTLIST cl-copy-general-power-of-attorney  quantity CDATA  #REQUIRED >
+
+<!--
+  Checklist; a general power of attorney is being furnished
+
+-->
+<!ELEMENT cl-general-power-of-attorney EMPTY>
+
+<!ATTLIST cl-general-power-of-attorney  quantity CDATA  #REQUIRED >
+
+<!--
+  Checklist; a separate power of attorney is being furnished
+
+-->
+<!ELEMENT cl-separate-power-of-attorney EMPTY>
+
+<!ATTLIST cl-separate-power-of-attorney  quantity CDATA  #REQUIRED >
+
+<!--
+  Checklist; a sequence listing table is being furnished
+
+-->
+<!ELEMENT cl-sequence-listing-table EMPTY>
+
+<!ATTLIST cl-sequence-listing-table  quantity                                CDATA  #REQUIRED
+                                       for-search-only                                (yes | 
+                                                                                 no )  #IMPLIED
+                                       additional-copies-including-search-copy        (yes | 
+                                                                                 no )  #IMPLIED
+                                       with-identifying-statement                     (yes | 
+                                                                                 no )  #IMPLIED
+                                       page-count                              CDATA  #IMPLIED
+                                       carriers                                       (internal-electronic | 
+                                                                                 external-electronic | 
+                                                                                 paper )  #IMPLIED >
+
+<!--
+  Checklist; a sequence listing or sequence listings is/are being furnished
+  For carrier-type the listed values represent:
+    FD    - Floppy Disc
+    CD    - Compact Disc
+    BD    - Blu-Ray Disc
+    DVD   - Digital Versatile Disc
+    Other - Other media types
+
+-->
+<!ELEMENT cl-sequence-listing EMPTY>
+
+<!ATTLIST cl-sequence-listing  quantity                                CDATA  #REQUIRED
+                                 for-search-only                                (yes | 
+                                                                           no )  #IMPLIED
+                                 additional-copies-including-search-copy        (yes | 
+                                                                           no )  #IMPLIED
+                                 with-identifying-statement                     (yes | 
+                                                                           no )  #IMPLIED
+                                 page-count                              CDATA  #IMPLIED
+                                 carriers                                       (internal-electronic | 
+                                                                           external-electronic | 
+                                                                           paper )  #IMPLIED
+                                 carriers-type                                  (FD | 
+                                                                           CD | 
+                                                                           BD | 
+                                                                           DVD | 
+                                                                           other )  #IMPLIED
+                                 carriers-quantity                       CDATA  #IMPLIED
+                                 size                                    CDATA  #IMPLIED >
+
+<!--
+  Checklist; drawings are being furnished
+    (ST32:B598)
+  
+-->
+<!ELEMENT cl-drawings EMPTY>
+
+<!ATTLIST cl-drawings  page-count CDATA  #IMPLIED
+                         fig-count  CDATA  #IMPLIED>
+
+<!--
+  Checklist; the abstract is being furnished
+
+-->
+<!ELEMENT cl-abstract EMPTY>
+
+<!ATTLIST cl-abstract  page-count CDATA  #IMPLIED
+                         ppf        CDATA  #IMPLIED
+                         ppl        CDATA  #IMPLIED >
+
+<!--
+  Checklist; claims are being furnished
+
+-->
+<!ELEMENT cl-claims EMPTY>
+
+<!ATTLIST cl-claims  page-count CDATA  #IMPLIED
+                       ppf        CDATA  #IMPLIED
+                       ppl        CDATA  #IMPLIED >
+
+<!--
+  Checklist; a description is being furnished
+
+-->
+<!ELEMENT cl-description EMPTY>
+
+<!ATTLIST cl-description  page-count CDATA  #IMPLIED
+                            ppf        CDATA  #IMPLIED
+                            ppl        CDATA  #IMPLIED >
+
+<!--
+  Checklist; the request is being furnished
+
+-->
+<!ELEMENT cl-request EMPTY>
+
+<!ATTLIST cl-request  page-count CDATA  #IMPLIED >
+
+<!--
+  Declaration as to non-prejudical disclosures or exceptions to lack of novelty
+  (Rules 4.17(v) and 51bis.1(a)(v))
+
+-->
+<!ELEMENT declaration5 EMPTY>
+
+<!ATTLIST declaration5  quantity CDATA  #REQUIRED >
+
+<!--
+  Declaration of inventorship (Rules 4.17(iv) and 51bis.1(a)(iv)) for the purposes
+  of the designation of the United States of America
+
+-->
+<!ELEMENT declaration4 EMPTY>
+
+<!ATTLIST declaration4  quantity CDATA  #REQUIRED >
+
+<!--
+  Declaration as applicant's entitlement, as at the international filing date, to
+  claim the priority of the earlier application, where the applicant is not the
+  applicant who filed the earlier application or where the applicant's name has
+  changed since the filing of the earlier application
+  (Rules 4.17(iii) and 51bis.1(a)(iii))
+
+-->
+<!ELEMENT declaration3 EMPTY>
+
+<!ATTLIST declaration3  quantity CDATA  #REQUIRED >
+
+<!--
+  Declaration as applicant's entitlement, as at the international filing date, to
+  apply for and be granted a patent (Rules 4.17(ii) and 51bis.1(a)(ii)), in a case
+  where the declaration under Rule 4.17(iv) is not appropriate
+
+-->
+<!ELEMENT declaration2 EMPTY>
+
+<!ATTLIST declaration2  quantity CDATA  #REQUIRED >
+
+<!--
+  Declaration as to the identity of the inventor
+  (Rules 4.17(i) and 51bis.1(a)(i))
+
+-->
+<!ELEMENT declaration1 EMPTY>
+
+<!ATTLIST declaration1  quantity CDATA  #REQUIRED >
+<!--
+-->
+<!ELEMENT earlier-search-documents EMPTY>
+
+<!ATTLIST earlier-search-documents  results-of-earlier-search                   (yes | 
+                                                                                  no )  #IMPLIED
+                                      earlier-application                         (yes | 
+                                                                                  no )  #IMPLIED
+                                      translation-of-earlier-application          (yes | 
+                                                                                  no )  #IMPLIED
+                                      translation-of-results-of-earlier-search    (yes | 
+                                                                                  no )  #IMPLIED
+                                      documents-cited-in-earlier-search-results   (yes | 
+                                                                                  no )  #IMPLIED
+                                      available-at-isa                            (yes | 
+                                                                                  no )  #IMPLIED
+                                      request-ro-to-transmit-to-isa               (yes | 
+                                                                                  no )  #IMPLIED >
+
+<!--
+  Priority claim (PCT Rule 4.10)
+    (INID 32/33/34, ST.32:B320/B330/B340)
+
+-->
+<!ELEMENT priority-claim (country , doc-number? , date , office-of-filing? , (priority-doc-requested | priority-doc-attached | priority-doc-from-library)? , restore-rights?)>
+
+<!ATTLIST priority-claim  id       ID     #IMPLIED
+                            sequence CDATA  #REQUIRED
+                            kind            (national | regional | international )  #REQUIRED >
+
+<!--
+  library-identifier  attribute intended as an identifying code for the library containing the document ? to be used where offices support the access of documents from many such libraries
+
+  action-by  attribute would indicate the office requested to retrieve the document (for PCT this can be the RO or IB, default IB)
+  
+  priority-doc-access-code indicates, when present, the access code that the Office (or applicable Offices) should use to obtain the priority document from the specified digital library
+
+-->
+<!ELEMENT priority-doc-from-library EMPTY>
+
+<!ATTLIST priority-doc-from-library  library-identifier       CDATA  #IMPLIED
+                                       action-by                CDATA  #IMPLIED
+                                       priority-doc-access-code CDATA  #IMPLIED >
+
+<!--
+  Protection request for the designated office.
+
+-->
+<!ELEMENT protection-request (kind-of-protection , document-id?)>
+
+<!ATTLIST protection-request  subset   (yes | no )  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Agent or common representative (Rules 90.1, 90.2)
+
+-->
+<!ELEMENT agent (addressbook+)>
+
+<!ATTLIST agent  sequence CDATA  #REQUIRED
+                   rep-type        (agent | attorney | common-representative )  #REQUIRED >
+
+<!--
+  Deceased inventor name
+
+-->
+<!ELEMENT deceased-inventor (%name_group;)>
+
+<!ATTLIST deceased-inventor  sequence CDATA  #IMPLIED
+                               lang     CDATA  #IMPLIED >
+
+<!--
+  The individual or entity responsible for creating the matter that protection is
+  sought for.
+    (ST.32:B721)
+
+-->
+<!ELEMENT inventor (addressbook+ , designated-states?)>
+
+<!ATTLIST inventor  sequence    CDATA  #REQUIRED
+                      designation        (all | all-except-us | us-only | as-indicated )  #IMPLIED >
+
+<!--
+  Applicant information: 
+    (INID 71, ST.32:B710)
+
+  attributes for applicant
+    sequence   : sequence number of each applicant
+                  e.g, sequence="1"
+    app-type   : applicant type
+                  app-type="applicant" : the applicant is only applicant
+                  app-type="applicant-inventor" : the applicant is also inventor
+    designation: This person is applicant for the purpose of:
+                  designation="all"          : all designated states
+                  designation="all-except-us": all designated states except US
+                  designation="us-only"      : US only
+                  designation="as-indicated" : the states indicated in
+                                               designated-states element
+                                               under applicant element
+
+-->
+<!ELEMENT applicant (addressbook+ , nationality , residence , us-rights* , designated-states? , designated-states-as-inventor?)>
+
+<!ATTLIST applicant  sequence    CDATA  #REQUIRED
+                       app-type           (applicant | applicant-inventor )  #REQUIRED
+                       designation        (all | all-except-us | us-only | as-indicated )  #REQUIRED >
+
+<!--
+  This person is successor to the rights of an inventor who is deceased, insane, or
+  legally incapacitated, for the purposes of the designation of the United States
+  of America
+
+-->
+<!ELEMENT us-rights (#PCDATA)>
+
+<!ATTLIST us-rights  to-dead-inventor CDATA  #REQUIRED
+                       kind                    (heir | 
+                                          heiress | 
+                                          executor | 
+                                          executrix | 
+                                          estate | 
+                                          legal-representative | 
+                                          administrator | 
+                                          administratrix | 
+                                          legal-representatives | 
+                                          heirs | 
+                                          executors | 
+                                          legal-heirs )  #REQUIRED
+                       id  ID  #IMPLIED >
+
+<!--
+  ADDRESSBOOK GROUP: 
+  Holds name and contact information for individuals/organizations
+
+  The LANG attribute is REQUIRED for certain document types,
+  e.g., the JPO PCT Request where names and addresses may be repeated in two
+    different languages. If no structure possible use text.
+
+-->
+<!ELEMENT addressbook ((%name_group; , address , phone* , fax* , email* , url* , ead* , dtext?) | text)>
+
+<!ATTLIST addressbook  id   ID     #IMPLIED
+                         lang CDATA  #IMPLIED >
+
+<!--
+	Email address
+
+	Attribute:
+		email-purpose    reason for which email address is included:
+informal     for informal contact only
+general      for any type of communication
+confirmation any type of communication, but formal messages followed up
+             by conventional mailing (to the extent offered)
+main         where applicant desires this address to be used as primary
+             means of contact as a replacement of the use of conventional
+             post (to the extent that an Office offers this)
+		the default value depends on e-mail policies of the relevant Office. 
+		For PCT purposes as at 1 July 2008, no attribute being included is 
+		equivalent to 'informal'
+
+-->
+<!ELEMENT email (#PCDATA)>
+
+<!ATTLIST email  email-purpose   (informal | general | advance | main )  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Title of the Invention:
+    (INID 54, ST.32:B540/B542)
+
+  Preferably two to seven words when in English or translated into English and
+  precise. (Rule 4.3)
+
+  Recommended id = 'invt'
+
+-->
+<!ELEMENT invention-title (#PCDATA | b | i | u | o | sup | sub)*>
+
+<!ATTLIST invention-title  id   ID     #IMPLIED
+                             lang CDATA  #IMPLIED >
+
+<!--
+  Underscore: style - single is default
+
+-->
+<!ELEMENT u (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST u  style   (single | double | dash | dots )  'single' >
+
+<!--
+  Overscore: style - single is default
+
+-->
+<!ELEMENT o (#PCDATA | b | i | smallcaps | sup | sub)*>
+
+<!ATTLIST o  style   (single | 
+                       double | 
+                       dash | 
+                       dots | 
+                       leftarrow | 
+                       rightarrow | 
+                       leftrightarrow )  'single' >
+
+<!--
+  Signatories
+
+-->
+<!ELEMENT signatories (signatory+)>
+
+
+<!--
+  PCT/RO/101 Box No. X:
+  The signature must be that of the applicant (if there are several applicants, all
+  must sign); however, the signature may be that of the agent, or the common
+  representative, where a separate power of attorney appointing the agent or the
+  common representative, respectively, or a copy of a general power of attorney is
+  already in possession of the receiving Office, is furnished...
+  (PCT Rules 4.1(d), 4.15, and 90)
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+
+-->
+<!ELEMENT signatory (%name_group; , address? , electronic-signature , signatory-capacity?)>
+
+<!ATTLIST signatory
+                  id ID #IMPLIED>
+
+
+<!--
+  The capacity in which the person signs
+
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  Filing language, ISO639 language code, e.g, en,de,ja, etc.
+    (INID 25, ST.32:B250)
+
+-->
+<!ELEMENT language-of-filing (#PCDATA)>
+
+
+<!--
+  Figure of the drawings which should accompany the abstract
+
+-->
+<!ELEMENT figure-to-publish (fig-number+)>
+
+
+<!--
+  PCT/RO/101 Box IX: the number of the figure which should accompany the abstract.
+    (ST.32:B598)
+
+-->
+<!ELEMENT fig-number (#PCDATA)>
+
+
+<!--
+  Sequential identification of priority documents.  PCT/RO/101 Box VI.
+
+-->
+<!ELEMENT sequence-number (#PCDATA)>
+
+
+<!--
+  Reference number of general power of attorney.
+
+-->
+<!ELEMENT ref-number (#PCDATA)>
+
+
+<!--
+  Checklist; a fee calculation sheet is being furnished
+
+-->
+<!ELEMENT cl-fee-calculation EMPTY>
+
+
+<!--
+  PCT/RO/101  Box No. VIII: DECLARATIONS 
+  (Rules 4.1(c)(iii) and 4.17)
+
+-->
+<!ELEMENT declarations (declaration1? , declaration2? , declaration3? , declaration4? , declaration5?)>
+
+
+<!--
+  PCT/RO/101 Box No.VII :International Searching Authority
+
+-->
+<!ELEMENT search-authority (isa , earlier-search-request?,  earlier-search-authorization*)>
+
+
+<!--
+  Request to use results of earlier search; reference to that search
+
+-->
+<!ELEMENT earlier-search-request (document-id , substantially-equivalent? , earlier-search-documents?)+>
+
+<!--
+-->
+<!ELEMENT substantially-equivalent EMPTY>
+
+
+<!--
+  International Search Authority; international search to be carried out by
+
+-->
+<!ELEMENT isa (country)>
+
+
+<!--
+  PCT/RO/101 BOX No.VI Priority Claim (PCT Rule 4.10)
+    (INID 30, ST.32:B300)
+
+-->
+<!ELEMENT priority-claims (priority-claim+ , incorporation-by-reference?)>
+
+
+<!--
+	where an element  of the international application referrred to in Article 11(1)(iii)(d) or (e) or a part of the description, claims or drawings referred to in Rule 20.5(a) is not otherwise contained in this international application but is completely contained in an earlier application whose priority is claimed on the date on which one or more elements referred to in Article 11(1)(iii) were first received by the receiving Office, that element or part is, subject to confirmation under Rule 20.6, incorporated by reference in this international application for the purposes of Rule 20.6
+
+-->
+<!ELEMENT incorporation-by-reference EMPTY>
+
+
+<!--
+  The priority document is attached to the application
+
+-->
+<!ELEMENT priority-doc-attached EMPTY>
+
+
+<!--
+  The receiving office is requested to prepare and transmit to the IB a certified
+  copy of the earlier application
+
+-->
+<!ELEMENT priority-doc-requested EMPTY>
+
+
+<!--
+	This element is made when the receiving Office is requested to restore the right of priority.
+
+-->
+<!ELEMENT restore-rights EMPTY>
+
+
+<!--
+  Where the earlier application is an ARIPO application,indicate at least one
+  country party to the PARIS convention for the protection of industrial property
+  or one member of the WTO for which that earlier application was filed.
+
+-->
+<!ELEMENT office-of-filing ((region , country?) | country)>
+
+
+<!--
+  PCT/RO/101 Box No.V Designation Of States (PCT Rule 4.9) 
+
+-->
+<!ELEMENT designation-of-states (designation-pct , (precautionary-designation-statement? , exclusion-from-designation?))>
+
+
+<!--
+  Rule 4.9(b),(c)
+    In addition to the designations made above [i.e, designation-of states], the
+    applicant also makes under Rule 4.9(b) all other designations which would be
+    permitted under the PCT except any designation(s) indicated in the Supplemental
+    Box [i.e., exclusion-from-designation] as being excluded form the scope of this
+    statement. The applicant declares that those additional designations are
+    subject to confirmation and that any designation which is not confirmed before
+    the expiration of 15 months from the priority date is to be regarded as
+    withdrawn by the applicant at the expiration of that time limit.
+
+-->
+<!ELEMENT precautionary-designation-statement (#PCDATA)>
+
+
+<!--
+  State(s) excluded from precautionary designations under Rule 4.9(b)
+
+-->
+<!ELEMENT exclusion-from-designation (regional* , national?)>
+
+
+<!--
+  The Contracting States in which protection is desired
+  (Rules 4.1(a)(iv) and 4.9(a))
+
+-->
+<!ELEMENT designation-pct (regional* , national? , new-designation-country*)>
+
+
+<!--
+  New PCT member country states (e.g., not yet published in WIPO ST.3, joined after
+  PCT electronic filing software published)
+
+-->
+<!ELEMENT new-designation-country (#PCDATA)>
+
+
+<!--
+  The States for which protection or exclusion (depending upon context) is desired
+
+-->
+<!ELEMENT national (country , protection-request*)+>
+
+
+<!--
+  Regional (as opposed to national) protection being sought
+
+-->
+<!ELEMENT regional (region , (country , protection-request*)+ , any-other-state?)>
+
+
+
+<!--
+  Any other state in which protection is being sought
+
+-->
+<!ELEMENT any-other-state EMPTY>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Kind of protection; e.g., patent, utility model
+
+-->
+<!ELEMENT kind-of-protection (#PCDATA)>
+
+
+<!--
+  PCT/RO/101 Box No.II, III and IV APPLICANTS, FURTHER APPLICANT(S)
+  AND/OR (FURTHER) INVENTOR(S)AGENT OR COMMON REPRESENTATIVE; 
+  OR ADDRESS FOR CORRESPONDENCE (PCT Rule 4.5, 4.6, 4.7, 4.8)
+    (INID 70, ST.32:B700)
+
+-->
+<!ELEMENT parties (applicants , inventors? , correspondence-address? , agents?)>
+
+
+<!--
+  Information regarding Agents or common representatives
+
+-->
+<!ELEMENT agents (customer-number | agent+)>
+
+
+<!--
+  Address used for general correspondence
+
+-->
+<!ELEMENT correspondence-address (customer-number | addressbook+)>
+
+
+<!--
+  Customer number for agents by office
+
+-->
+<!ELEMENT customer-number (#PCDATA)>
+
+
+<!--
+  Inventors information:
+    If the US is designated, all of the inventors must also be named as applicants
+    for purposes of that designation.
+
+-->
+<!ELEMENT inventors (inventor | deceased-inventor)+>
+
+
+<!--
+  Applicants information:  
+    At least one of the applicants named must be a resident or national of a PCT
+    Contracting State for which the receiving Office acts.
+
+-->
+<!ELEMENT applicants (applicant+)>
+
+
+<!--
+  Rule 4.6(c):
+   "The request may, for different designated states, indicate different persons
+    as inventors where, in this respect, the requirements of the national laws of
+    the designated States are not the same.  In such a case, the request shall
+    contain a separate statement for each designated State or group of States in
+    which a particular person, or the same person, is to be considered the
+    inventor, or in which particular persons, or the same persons, are to be
+    considered the inventors."
+
+-->
+<!ELEMENT designated-states-as-inventor (country* , (region , country+)*)>
+
+
+<!--
+  Indication of specific Contracting States in or for which the applicant is
+  seeking protection for his invention 
+  (Rule 4.9(a))
+
+-->
+<!ELEMENT designated-states (country* , (region , country+)*)>
+
+
+<!--
+  The region for which protection or exclusion (depending upon context) is desired.
+
+-->
+<!ELEMENT region (country)>
+
+
+<!--
+  Country of residence
+
+-->
+<!ELEMENT residence (country)>
+
+
+<!--
+  Country of nationality
+
+-->
+<!ELEMENT nationality (country)>
+
+
+<!--
+  Descriptive text
+
+-->
+<!ELEMENT dtext (#PCDATA)>
+
+
+<!--
+  Universal Resource Locator; e.g. www.wipo.int
+
+-->
+<!ELEMENT url (#PCDATA)>
+
+
+<!--
+  Fax number
+
+-->
+<!ELEMENT fax (#PCDATA)>
+
+
+<!--
+  Telephone number
+
+-->
+<!ELEMENT phone (#PCDATA)>
+
+
+<!--
+  Electronic address use for other than email
+
+-->
+<!ELEMENT ead (#PCDATA)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Bold formatting for text
+
+-->
+<!ELEMENT b (#PCDATA | i | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Italic formatting for text
+
+-->
+<!ELEMENT i (#PCDATA | b | u | o | smallcaps | sup | sub)*>
+
+
+<!--
+  Small capitals
+
+-->
+<!ELEMENT smallcaps (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup (#PCDATA | b | u | i | o | sup2 | sub2)*>
+
+
+<!--
+  Subscripted text
+
+-->
+<!ELEMENT sub2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  Superscripted text
+
+-->
+<!ELEMENT sup2 (#PCDATA | b | u | i | o)*>
+
+
+<!--
+  (PCT Rule 4.1(a)):
+    "The request shall contain: (i) a petition,"
+  (PCT Rule 4.2):
+    "The petition shall be to the following effect and shall preferably be worded
+     as follows: 'The undersigned requests that the present international
+     application be processed according to the Patent Cooperation Treaty.'"
+
+-->
+<!ELEMENT request-petition (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+<!--
+  Authorization to RO to transmit  earlier search
+-->
+<!ELEMENT earlier-search-authorization (document-id )>
+<!ATTLIST earlier-search-authorization  request-ro-not-transmit                   (yes |
+                                                                                  no )  #IMPLIED
+                                      applicant-authorizes-ro-transmit                         (yes |
+                                                                                  no )  #IMPLIED >
+
+<!--
+    Indicator used to flag the fact that the drawings of the application have been furnished as color images
+  The indicators presence implies the drawings are in color format and absence implies that they are black and white
+
+-->
+
+<!ELEMENT figures-in-color EMPTY>
+

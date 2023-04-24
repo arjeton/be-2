@@ -1,0 +1,13 @@
+{
+  "fees": [
+    { "code": "001", "amount": 50, "descriptionKey": "fees.search.description" },
+    { "code": "0011", "amount": 150, "descriptionKey": "fees.searchOpinion.description" },
+    { "code": "002", "amount": 500, "descriptionKey": "fees.filing.description" },
+    { "code": "003", "amount": 150, "descriptionKey": "fees.claims.description" },
+    { "code": "search-fee", "amount": 50, "descriptionKey": "fees.shortDescription.search-fee" },
+    { "code": "004", "amount": 2500, "descriptionKey": "fees.publication.description" },
+    { "code": "005", "amount": 500, "descriptionKey": "fees.renewal.description" },
+    { "code": "IE16", "amount": 444.03, "descriptionKey": "fees.description.IE16" },
+    { "code": "PE16", "amount": 444.03, "descriptionKey": "fees.description.PE16" }
+  ]
+}

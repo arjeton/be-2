@@ -1,0 +1,136 @@
+{
+  "attachmentTypes": [
+    {
+      "type": "DESCRIPTION",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 0
+    },
+    {
+      "type": "CLAIMS",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 1
+    },
+    {
+      "type": "ABSTRACT",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 2
+    },
+    {
+      "type": "DRAWINGS",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 3
+    },
+    {
+      "type": "COMBINED",
+      "systemFileName": "SPECEPO",
+      "docTypeLabel": "SPECEPO",
+      "description": "",
+      "subType": "TECHNICAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 4
+    },
+    {
+      "type": "ELECTRONIC_PRIORITY",
+      "systemFileName": "ELECTRONIC_PRIORITY",
+      "docTypeLabel": "ELECTRONIC_PRIORITY",
+      "description": "Electronic priority documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": true,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 2
+    },
+    {
+      "type": "GENERAL",
+      "systemFileName": "GENAUTH",
+      "docTypeLabel": "1004",
+      "description": "General authorisation",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 0
+    },
+    {
+      "type": "SPECIFIC",
+      "systemFileName": "SPECAUTH",
+      "docTypeLabel": "1003",
+      "description": "Specific authorisation",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 1
+    },
+    {
+      "type": "TRANSLATIONS_OF_TECHNICAL_DOCUMENTS",
+      "systemFileName": "TRANSLATIONS_OF_TECHNICAL_DOCUMENTS",
+      "docTypeLabel": "TRANSLATIONS_OF_TECHNICAL_DOCUMENTS",
+      "description": "Translations of technical documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 3
+    },
+    {
+      "type": "TRANSLATIONS_OF_PRIORITY_DOCUMENTS",
+      "systemFileName": "TRANSLATIONS_OF_PRIORITY_DOCUMENTS",
+      "docTypeLabel": "TRANSLATIONS_OF_PRIORITY_DOCUMENTS",
+      "description": "Translations of priority documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 4
+    },
+    {
+      "type": "INVENTOR_WAIVER",
+      "systemFileName": "INVENTOR_WAIVER",
+      "docTypeLabel": "INVENTOR_WAIVER",
+      "description": "Inventor Waiver",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 5
+    },
+    {
+      "type": "OTHER",
+      "systemFileName": "OTHER",
+      "docTypeLabel": "OTHERPDF",
+      "description": "Assignment documents",
+      "subType": "ADDITIONAL",
+      "needDistinctTypes": false,
+      "acceptedMimeTypes": ["application/pdf"],
+      "acceptedFileExtensions": ["pdf"],
+      "order": 6
+    }
+  ]
+}

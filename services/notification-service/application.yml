@@ -1,0 +1,23 @@
+server:
+  port: ${NOTIFICATION_SERVICE_PORT:3007}
+  servlet:
+    context-path: ${NOTIFICATION_SERVICE_CONTEXT_PATH:/notification-develop}
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  cloud:
+    stream:
+      bindings:
+        process-in-0:
+          destination: "notification-topic"
+    function:
+      definition: process
+
+security:
+  multitenancy: false
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:info}

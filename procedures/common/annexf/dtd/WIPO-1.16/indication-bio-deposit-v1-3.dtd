@@ -1,0 +1,392 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  indication-bio-deposit v1.3     2012  JULY                                  *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD INDICATION BIO DEPOSIT 1.3//EN"                        *
+*                                             "indication-bio-deposit-v1-3.dtd"*
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/                            *
+*                                              indication-bio-deposit-v1-3.dtd *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.3
+..implementation of PFC06/001
+HT: 14/12/04 incorporated changes from PFCs:
+..changed attribute he, wi of doc-page from 'NMTOKEN' to 'CDATA'
+..added attribute 'id' to application-reference
+..added attribute 'ocr' to doc-page
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..added value 'national-office', 'regional-office' to attribute produced-by of root element
+JD: 03/02/03 Incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added 'orientation' attribute to 'doc-page'
+..made 'postcode' optional within 'address'
+..changed content of root from ((application-reference?,file-reference-id?,
+    indications,(bio-deposit,additional-indication?,(all-designations|
+    designated-states),separate-indications?)+)|doc-page+)
+    to "((application-reference?,file-reference-id?,indications+)|doc-page+)"
+..changed content of 'indications' from "(para-number+)"
+    to (para-number, (bio-deposit,additional-indication?,(all-designations|
+    designated-states),separate-indications?))
+    to better encapsulate information regarding to deposits
+2001/12/01
+..released version number as v1.0
+********************************************************************************
+
+Attributes: 
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+  date-produced = date this document was produced
+  produced-by   = creator of this document
+  ro            = Receiving office name, country code ST.3
+
+-->
+<!ELEMENT indication-bio-deposit ((application-reference? , file-reference-id? , indications+) | doc-page+)>
+
+<!ATTLIST indication-bio-deposit  lang          CDATA  #REQUIRED
+                                    dtd-version   CDATA  #IMPLIED
+                                    file          CDATA  #IMPLIED
+                                    produced-by          (applicant | 
+                                                    RO | 
+                                                    ISA | 
+                                                    IPEA | 
+                                                    IB | 
+                                                    DO | 
+                                                    EO | 
+                                                    national-office | 
+                                                    regional-office )  #REQUIRED
+                                    date-produced CDATA  #IMPLIED
+                                    ro            CDATA  #REQUIRED
+                                    status        CDATA  #IMPLIED >
+
+<!--
+  doc-page - DOCument or PAGE
+
+  This is primarily to be used when data for the whole or major sections of an
+  application are in image format OR other formats such as pdf.
+
+  Page range attributes are given when required
+    pp  - page range
+    ppf - first page 
+    ppl - last page (for pdf).
+  The 'img' may also be used for complete pages, e.g. in drawings 
+
+  Recommended id = docp0001, docp0002, etc.
+  Attributes "he" and "wi" mean height and width. 
+
+
+-->
+<!ELEMENT doc-page EMPTY>
+
+<!ATTLIST doc-page  id          ID     #IMPLIED
+                      he          CDATA  #REQUIRED
+                      wi          CDATA  #REQUIRED
+                      type               (jpg | pdf | tif )  #REQUIRED
+                      alt         CDATA  #IMPLIED
+                      pp          CDATA  #IMPLIED
+                      ppf         CDATA  #IMPLIED
+                      ppl         CDATA  #IMPLIED
+                      file        CDATA  #REQUIRED
+                      ocr         CDATA  #IMPLIED
+                      color              (color | bw )  #IMPLIED
+                      orientation        (portrait | landscape )  'portrait' >
+
+<!--
+  Biological deposit citation (US EFS: biological-deposit)
+    (INID 83, ST.32:B830)
+  According to PCT Rule 13bis, EPC Rule 28
+  This covers all bio data references long and short within the description and/or
+  claims
+
+  Recommended id = biod0001, biod0002, etc.
+
+-->
+<!ELEMENT bio-deposit (depositary , bio-accno , date? , term? , dtext?)>
+
+<!ATTLIST bio-deposit  id   ID     #IMPLIED
+                         num  CDATA  #REQUIRED
+                         url  CDATA  #IMPLIED
+                         dnum CDATA  #IMPLIED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  indications relate to the bio-deposit in the application body
+
+-->
+<!ELEMENT indications (para-number , (bio-deposit , additional-indication? , (all-designations | designated-states) , separate-indications?))>
+
+
+<!--
+  Separate furnishing of indications
+
+-->
+<!ELEMENT separate-indications (#PCDATA)>
+
+
+<!--
+  Indication of specific Contracting States in or for which the applicant is
+  seeking protection for his invention 
+  (Rule 4.9(a))
+
+-->
+<!ELEMENT designated-states (country* , (region , country+)*)>
+
+
+<!--
+  The region for which protection or exclusion (depending upon context) is desired.
+
+-->
+<!ELEMENT region (country)>
+
+
+<!--
+  All designations permitted by the Treaty are made  (Rule 4.9(b))
+
+-->
+<!ELEMENT all-designations EMPTY>
+
+
+<!--
+  Additional indication information for the deposit
+
+-->
+<!ELEMENT additional-indication (#PCDATA)>
+
+
+<!--
+  Identifies the period of time during which the depository must be able to furnish
+  samples of the biological material.
+
+-->
+<!ELEMENT term (#PCDATA)>
+
+
+<!--
+  Descriptive text
+
+-->
+<!ELEMENT dtext (#PCDATA)>
+
+
+<!--
+  Biological accession number:
+    (ST.32:B831)
+  The identification assigned to the biological material by the depository
+ 
+-->
+<!ELEMENT bio-accno (#PCDATA)>
+
+
+<!--
+  Information regarding the facility storing the biological deposit.
+    (ST.32:B832)
+
+-->
+<!ELEMENT depositary (#PCDATA | address)*>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Indications relate to the bio-deposit in the application body at paragraph number
+
+-->
+<!ELEMENT para-number (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+

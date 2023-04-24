@@ -1,0 +1,735 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  wo-notification v1.3     2017  JULY                                         *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD WO NOTIFICATION 1.3//EN" "wo-notification-v1-3.dtd"    *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/wo-notification-v1-3.dtd    *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Asahi HASEBE : 01/07/17 incorporated changes from PFC
+..changed version number from v1.2 to v1.3
+..added an attribute "id" to signatory and us-rights
+MO: 01/07/08 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..added attribute 'email-purpose' to email (PFC08/006)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added element 'sup' to u (PFC06/003)
+..added element 'sup' to i (PFC06/003)
+..added element 'sup' to b (PFC06/003)
+..added element 'sub' to u (PFC06/003)
+..added element 'sub' to i (PFC06/003)
+..added element 'sub' to b (PFC06/003)
+..added element 'o' to invention-title, b, i, sup, sup2, sub, sub2, heading, claim-text,
+  p, small-caps, dt, dd, li, crossref, figref, othercit, statement (PFC06/003)
+January 2005
+..released version number as v1.0
+********************************************************************************
+
+Attributes for notification:
+  lang              = language of application - use ISO639 language code
+  dtd-version       = dtd version number
+  file              = filename of the whole application
+  id                = unique id for this application - could be file name
+  status            = status of the application; values: new = new application
+  country           = WIPO ST.3 code for application
+  file-reference-id = applicant's or agent's file reference, if any
+
+Notification by applicant to Office, or from Office to Office, or from Office to
+applicant; should contain a <signatory> element as provided for in Rule 92.1(a):
+92.1 Need for Letter and for Signature
+(a) Any paper submitted by the applicant in the course of the international
+procedure provided for in the Treaty and these Regulations, other than the
+international application itself, shall, if not itself in the form of a letter,
+be accompanied by a letter identifying the international application to which it
+relates. The letter shall be signed by the applicant.
+
+-->
+<!ELEMENT wo-notification ((application-reference , parties , wo-notification-doc+ , effective-date? , notify-office? , signatories?))>
+
+<!ATTLIST wo-notification  lang              CDATA  #REQUIRED
+                             dtd-version       CDATA  #IMPLIED
+                             file              CDATA  #IMPLIED
+                             status            CDATA  #IMPLIED
+                             id                ID     #IMPLIED
+                             country           CDATA  #REQUIRED
+                             file-reference-id CDATA  #IMPLIED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+  Office(s) to be notified of changes
+
+  Attribute 'office-type'
+  Specifies capacity of Office receiving correspondence
+
+  Values:
+    RO - Receiving Office
+    ISA - International Search Authority
+    IPEA - International Preliminary Examination Authority
+    IB - International Bureau
+
+-->
+<!ELEMENT notify-office (country* , (region , country+)*)>
+
+<!ATTLIST notify-office  office-type   (RO | ISA | IPEA | IB )  #REQUIRED >
+
+<!--
+  The contents of notification sent by Applicant to Office
+
+-->
+<!ELEMENT wo-notification-doc (text? , doc-page+)>
+
+<!ATTLIST wo-notification-doc  sequence          CDATA  #REQUIRED
+                                 notification-type        (change-name | 
+                                                     change-address | 
+                                                     change-nationality | 
+                                                     change-residence | 
+                                                     change-person | 
+                                                     withdrawal-application | 
+                                                     withdrawal-designations | 
+                                                     withdrawal-priority-claim | 
+                                                     withdrawal-demand | 
+                                                     withdrawal-elections | 
+                                                     request-early-publication | 
+                                                     change-reference-number | 
+                                                     art19-amendments | 
+                                                     statement-lack-of-signature | 
+                                                     earlier-search-copy | 
+                                                     separate-poa-doc | 
+                                                     correction-declarations | 
+                                                     correction-drawings | 
+                                                     response-notification | 
+                                                     other-notification )  #REQUIRED
+                                 document-name     CDATA  #IMPLIED >
+
+<!--
+  doc-page - DOCument or PAGE
+
+  This is primarily to be used when data for the whole or major sections of an
+  application are in image format OR other formats such as pdf.
+
+  Page range attributes are given when required
+    pp  - page range
+    ppf - first page 
+    ppl - last page (for pdf).
+  The 'img' may also be used for complete pages, e.g. in drawings 
+
+  Recommended id = docp0001, docp0002, etc.
+  Attributes "he" and "wi" mean height and width. 
+
+
+-->
+<!ELEMENT doc-page EMPTY>
+
+<!ATTLIST doc-page  id          ID     #IMPLIED
+                      he          CDATA  #REQUIRED
+                      wi          CDATA  #REQUIRED
+                      type               (jpg | pdf | tif )  #REQUIRED
+                      alt         CDATA  #IMPLIED
+                      pp          CDATA  #IMPLIED
+                      ppf         CDATA  #IMPLIED
+                      ppl         CDATA  #IMPLIED
+                      file        CDATA  #REQUIRED
+                      ocr         CDATA  #IMPLIED
+                      color              (color | bw )  #IMPLIED
+                      orientation        (portrait | landscape )  'portrait' >
+
+<!--
+  Agent or common representative (Rules 90.1, 90.2)
+
+-->
+<!ELEMENT agent (addressbook+)>
+
+<!ATTLIST agent  sequence CDATA  #REQUIRED
+                   rep-type        (agent | attorney | common-representative )  #REQUIRED >
+
+<!--
+  Deceased inventor name
+
+-->
+<!ELEMENT deceased-inventor (%name_group;)>
+
+<!ATTLIST deceased-inventor  sequence CDATA  #IMPLIED
+                               lang     CDATA  #IMPLIED >
+
+<!--
+  The individual or entity responsible for creating the matter that protection is
+  sought for.
+    (ST.32:B721)
+
+-->
+<!ELEMENT inventor (addressbook+ , designated-states?)>
+
+<!ATTLIST inventor  sequence    CDATA  #REQUIRED
+                      designation        (all | all-except-us | us-only | as-indicated )  #IMPLIED >
+
+<!--
+  Applicant information: 
+    (INID 71, ST.32:B710)
+
+  attributes for applicant
+    sequence   : sequence number of each applicant
+                  e.g, sequence="1"
+    app-type   : applicant type
+                  app-type="applicant" : the applicant is only applicant
+                  app-type="applicant-inventor" : the applicant is also inventor
+    designation: This person is applicant for the purpose of:
+                  designation="all"          : all designated states
+                  designation="all-except-us": all designated states except US
+                  designation="us-only"      : US only
+                  designation="as-indicated" : the states indicated in
+                                               designated-states element
+                                               under applicant element
+
+-->
+<!ELEMENT applicant (addressbook+ , nationality , residence , us-rights* , designated-states? , designated-states-as-inventor?)>
+
+<!ATTLIST applicant  sequence    CDATA  #REQUIRED
+                       app-type           (applicant | applicant-inventor )  #REQUIRED
+                       designation        (all | all-except-us | us-only | as-indicated )  #REQUIRED >
+
+<!--
+  This person is successor to the rights of an inventor who is deceased, insane, or
+  legally incapacitated, for the purposes of the designation of the United States
+  of America
+
+-->
+<!ELEMENT us-rights (#PCDATA)>
+
+<!ATTLIST us-rights  to-dead-inventor CDATA  #REQUIRED
+                       kind                    (heir | 
+                                          heiress | 
+                                          executor | 
+                                          executrix | 
+                                          estate | 
+                                          legal-representative | 
+                                          administrator | 
+                                          administratrix | 
+                                          legal-representatives | 
+                                          heirs | 
+                                          executors | 
+                                          legal-heirs )  #REQUIRED
+                       id  ID  #IMPLIED >
+
+<!--
+  ADDRESSBOOK GROUP: 
+  Holds name and contact information for individuals/organizations
+
+  The LANG attribute is REQUIRED for certain document types,
+  e.g., the JPO PCT Request where names and addresses may be repeated in two
+    different languages. If no structure possible use text.
+
+-->
+<!ELEMENT addressbook ((%name_group; , address , phone* , fax* , email* , url* , ead* , dtext?) | text)>
+
+<!ATTLIST addressbook  id   ID     #IMPLIED
+                         lang CDATA  #IMPLIED >
+
+<!--
+	Email address
+
+	Attribute:
+		email-purpose    reason for which email address is included:
+informal     for informal contact only
+general      for any type of communication
+confirmation any type of communication, but formal messages followed up
+             by conventional mailing (to the extent offered)
+main         where applicant desires this address to be used as primary
+             means of contact as a replacement of the use of conventional
+             post (to the extent that an Office offers this)
+		the default value depends on e-mail policies of the relevant Office. 
+		For PCT purposes as at 1 July 2008, no attribute being included is 
+		equivalent to 'informal'
+
+-->
+<!ELEMENT email (#PCDATA)>
+
+<!ATTLIST email  email-purpose   (informal | general | advance | main )  #IMPLIED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Signatories
+
+-->
+<!ELEMENT signatories (signatory+)>
+
+
+<!--
+  PCT/RO/101 Box No. X:
+  The signature must be that of the applicant (if there are several applicants, all
+  must sign); however, the signature may be that of the agent, or the common
+  representative, where a separate power of attorney appointing the agent or the
+  common representative, respectively, or a copy of a general power of attorney is
+  already in possession of the receiving Office, is furnished...
+  (PCT Rules 4.1(d), 4.15, and 90)
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+
+-->
+<!ELEMENT signatory (%name_group; , address? , electronic-signature , signatory-capacity?)>
+
+<!ATTLIST signatory
+                  id ID #IMPLIED>
+
+
+<!--
+  The capacity in which the person signs
+
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  The date any proposed changes would take effect.
+
+-->
+<!ELEMENT effective-date (date)>
+
+
+<!--
+  PCT/RO/101 Box No.II, III and IV APPLICANTS, FURTHER APPLICANT(S)
+  AND/OR (FURTHER) INVENTOR(S)AGENT OR COMMON REPRESENTATIVE; 
+  OR ADDRESS FOR CORRESPONDENCE (PCT Rule 4.5, 4.6, 4.7, 4.8)
+    (INID 70, ST.32:B700)
+
+-->
+<!ELEMENT parties (applicants , inventors? , correspondence-address? , agents?)>
+
+
+<!--
+  Information regarding Agents or common representatives
+
+-->
+<!ELEMENT agents (customer-number | agent+)>
+
+
+<!--
+  Address used for general correspondence
+
+-->
+<!ELEMENT correspondence-address (customer-number | addressbook+)>
+
+
+<!--
+  Customer number for agents by office
+
+-->
+<!ELEMENT customer-number (#PCDATA)>
+
+
+<!--
+  Inventors information:
+    If the US is designated, all of the inventors must also be named as applicants
+    for purposes of that designation.
+
+-->
+<!ELEMENT inventors (inventor | deceased-inventor)+>
+
+
+<!--
+  Applicants information:  
+    At least one of the applicants named must be a resident or national of a PCT
+    Contracting State for which the receiving Office acts.
+
+-->
+<!ELEMENT applicants (applicant+)>
+
+
+<!--
+  Rule 4.6(c):
+   "The request may, for different designated states, indicate different persons
+    as inventors where, in this respect, the requirements of the national laws of
+    the designated States are not the same.  In such a case, the request shall
+    contain a separate statement for each designated State or group of States in
+    which a particular person, or the same person, is to be considered the
+    inventor, or in which particular persons, or the same persons, are to be
+    considered the inventors."
+
+-->
+<!ELEMENT designated-states-as-inventor (country* , (region , country+)*)>
+
+
+<!--
+  Indication of specific Contracting States in or for which the applicant is
+  seeking protection for his invention 
+  (Rule 4.9(a))
+
+-->
+<!ELEMENT designated-states (country* , (region , country+)*)>
+
+
+<!--
+  The region for which protection or exclusion (depending upon context) is desired.
+
+-->
+<!ELEMENT region (country)>
+
+
+<!--
+  Country of residence
+
+-->
+<!ELEMENT residence (country)>
+
+
+<!--
+  Country of nationality
+
+-->
+<!ELEMENT nationality (country)>
+
+
+<!--
+  Descriptive text
+
+-->
+<!ELEMENT dtext (#PCDATA)>
+
+
+<!--
+  Universal Resource Locator; e.g. www.wipo.int
+
+-->
+<!ELEMENT url (#PCDATA)>
+
+
+<!--
+  Fax number
+
+-->
+<!ELEMENT fax (#PCDATA)>
+
+
+<!--
+  Telephone number
+
+-->
+<!ELEMENT phone (#PCDATA)>
+
+
+<!--
+  Electronic address use for other than email
+
+-->
+<!ELEMENT ead (#PCDATA)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+

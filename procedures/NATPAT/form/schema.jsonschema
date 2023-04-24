@@ -1,0 +1,3140 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$sid": "NATPAT/form/schema.jsonschema",
+  "type": "object",
+  "properties": {
+    "basicFilingInfo": {
+      "type": "object",
+      "title": "i18n(basic-filing.info)",
+      "description": "i18n(basic_filing_info.description)",
+      "properties": {
+        "userReference": {
+          "title": "i18n(basic-filing.user-reference)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 25,
+          "pattern": "^[\\d\\w\\s\\\\.,<>=_\\-()/'\"\\\\À-ž\u0600-\u06FF]*$"
+        },
+        "caseId": {
+          "type": "string",
+          "title": "i18n(basic-filing.caseId)"
+        },
+        "titleOfInvention": {
+          "title": "i18n(basic-filing.title-of-invention-first-language) i18n(optional)",
+          "type": ["string", "null"],
+          "maxLength": 512
+        },
+        "applicationType": {
+          "$ref": "#/definitions/applicationType"
+        },
+        "typeOfSearchReportContainer": {
+          "title": "i18n(basic-filing.type-of-search-report)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "priorSearch",
+            "nationalSearch",
+            "internationalSearch",
+            "sentLater"
+          ],
+          "enumNames": [
+            "i18n(basic-filing.prior-search-report)",
+            "i18n(basic-filing.national-search-report)",
+            "i18n(basic-filing.international-search-report)",
+            "i18n(basic-filing.search-report-send-later)"
+          ],
+          "default": "priorSearch"
+        },
+        "fastTrack": {
+          "title": "i18n(basic-filing.fastTrack)",
+          "type": "boolean"
+        }
+      },
+      "dependencies": {
+        "applicationType": {
+          "oneOf": [
+            {
+              "properties": {
+                "applicationType": {
+                  "enum": ["NATIONAL_PATENT"]
+                }
+              }
+            },
+            {
+              "properties": {
+                "applicationType": {
+                  "enum": ["DIVISIONAL"]
+                },
+                "divisionalNumber": {
+                  "title": "i18n(basic-filing.divisional-number)",
+                  "pattern": "^[0-9]{0,11}$",
+                  "type": "string",
+                  "maxLength": 11
+                },
+                "divisionalFilingDate": {
+                  "title": "i18n(basic-filing.divisional-filing-date)",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": ["divisionalNumber", "divisionalFilingDate"]
+            }
+          ]
+        }
+      },
+      "required": [
+        "userReference",
+        "typeOfSearchReportContainer",
+        "applicationType"
+      ]
+    },
+    "parties": {
+      "title": "Parties",
+      "type": "object",
+      "properties": {
+        "applicants": {
+          "title": "i18n(parties.applicants)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/applicant"
+          }
+        },
+        "representatives": {
+          "title": "i18n(parties.representatives)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/representative"
+          }
+        },
+        "inventors": {
+          "title": "i18n(parties.inventors)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/inventor"
+          }
+        },
+        "communicationAddress": {
+          "title": "i18n(spc.parties.communicationAddress)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/communicationAddress"
+          }
+        }
+      }
+    },
+    "declaration": {
+      "title": "Declaration",
+      "type": "object",
+      "properties": {
+        "priorities": {
+          "title": "Priorities",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/priority"
+          }
+        },
+        "noIntention": {
+          "title": "i18n(declaration.priority.no-further-priorities-intended)",
+          "type": "boolean"
+        },
+        "exhibitions": {
+          "title": "i18n(declaration.exhibition-priority.title)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/exhibition"
+          }
+        }
+      }
+    },
+    "seqlBio": {
+      "title": "i18n(seqlBio.title)",
+      "type": "object",
+      "properties": {
+        "seqlAttachments" : {
+          "title": "i18n(seql.attachments.title)",
+          "type": [
+            "array"
+          ],
+          "items": {
+            "type": "object"
+          }
+        },
+        "biologicalInfos": {
+          "title": "i18n(biologicalInfos.materials.title)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/biologicalInfos"
+          }
+        }
+      }
+    },
+    "attachments": {
+      "title": "i18n(attachments.title)",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object"
+      }
+    },
+    "fees": {
+      "type": "object",
+      "properties": {
+        "sectionInformation": {
+            "type": "null",
+            "text": "i18n(fees.section.information.pat)"
+        },
+        "paymentIntention": {
+          "title": "i18n(fees.payment.intention)",
+          "type": "object",
+          "properties": {
+            "intentionSubtitle": {
+              "subtitle": "i18n(fees.section.information.sub)"
+            },
+            "notIntendingToPay": {
+              "$ref": "/procedures/common/form/field-types.jsonschema/definitions/notIntendingToPay"
+            }
+          }
+        },
+        "methodOfPayment": {
+          "$ref": "/procedures/common/form/field-types.jsonschema/definitions/methodOfPayment"
+        },
+        "feesSelection": {
+          "title": "i18n(fees.selection)",
+          "type": "object",
+          "properties": {
+            "selectedFees": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "001",
+                      "0011",
+                      "002",
+                      "003"
+                    ]
+                  },
+                  "price": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+                  },
+                  "discount": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/percentageNumber"
+                  },
+                  "quantity": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber",
+                    "minimum": 1
+                  },
+                  "subtotal": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+                  }
+                }
+              }
+            },
+            "total": {
+              "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+            },
+            "currency": {
+              "enum": [
+                "EUR"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "methodOfPayment"
+      ],
+      "dependencies": {
+        "methodOfPayment": {
+          "oneOf": [
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "payOnline"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "alreadyPaid"
+                  ]
+                },
+                "paymentAttachments": {
+                  "title": "i18n(fees.payment.attachments.title)",
+                  "type": [
+                    "array"
+                  ],
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "notBlank": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(?!\\s*$).+"
+    },
+    "officeType": {
+      "title": "i18n(declaration.priority.type-of-office)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "NATIONAL",
+        "REGIONAL",
+        "INTERNATIONAL"
+      ],
+      "enumNames": [
+        "i18n(enum.office-type.national)",
+        "i18n(enum.office-type.regional)",
+        "i18n(enum.office-type.international)"
+      ],
+       "config": {"resetsFieldIds": ["office", "applicationKind"]}
+    },
+    "applicationKind": {
+      "title": "i18n(declaration.priority.modality)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "PATENT",
+        "PROVISIONAL",
+        "UTILITY"
+      ],
+      "enumNames": [
+        "i18n(enum.application-kind.patent)",
+        "i18n(enum.application-kind.provisional)",
+        "i18n(enum.application-kind.utility)"
+      ]
+    },
+    "applicationType": {
+      "title": "i18n(basic-filing.application-type)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "NATIONAL_PATENT",
+        "DIVISIONAL"
+      ],
+      "enumNames": [
+        "i18n(basic-filing.application-type.national-patent)",
+        "i18n(basic-filing.application-type.divisional)"
+      ],
+      "default": "NATIONAL_PATENT"
+    },
+    "institution": {
+      "title": "i18n(biologicalInfos.institution)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AU1",
+        "AU2",
+        "BE" ,
+        "BG" ,
+        "CA" ,
+        "CL" ,
+        "CN1",
+        "CN2",
+        "CN3",
+        "CZ" ,
+        "FI" ,
+        "FR" ,
+        "DE" ,
+        "HU" ,
+        "IN1",
+        "IN2",
+        "IN3",
+        "IT1",
+        "IT2",
+        "IT3",
+        "JP1",
+        "JP2",
+        "LV" ,
+        "MX" ,
+        "MA" ,
+        "NL" ,
+        "PL1",
+        "PL2",
+        "KP1",
+        "KP2",
+        "KP3",
+        "KP4",
+        "RU1",
+        "RU2",
+        "SK" ,
+        "ES1",
+        "ES2",
+        "CH" ,
+        "UK1",
+        "UK2",
+        "UK3",
+        "UK4",
+        "UK5",
+        "UK6",
+        "UK7",
+        "US1",
+        "US2",
+        "US3"
+      ],
+      "enumNames": [
+        "i18n(international.depositary.institution.Australia1)",
+        "i18n(international.depositary.institution.Australia2)",
+        "i18n(international.depositary.institution.Belgium)",
+        "i18n(international.depositary.institution.Bulgaria)",
+        "i18n(international.depositary.institution.Canada)",
+        "i18n(international.depositary.institution.Chile)",
+        "i18n(international.depositary.institution.China1)" ,
+        "i18n(international.depositary.institution.China2)",
+        "i18n(international.depositary.institution.China3)",
+        "i18n(international.depositary.institution.Czech-Republic)",
+        "i18n(international.depositary.institution.Finland)",
+        "i18n(international.depositary.institution.France)" ,
+        "i18n(international.depositary.institution.Germany)",
+        "i18n(international.depositary.institution.Hungary)",
+        "i18n(international.depositary.institution.India1)" ,
+        "i18n(international.depositary.institution.India2)" ,
+        "i18n(international.depositary.institution.India3)" ,
+        "i18n(international.depositary.institution.Italy1)" ,
+        "i18n(international.depositary.institution.Italy2)" ,
+        "i18n(international.depositary.institution.Italy3)" ,
+        "i18n(international.depositary.institution.Japan1)" ,
+        "i18n(international.depositary.institution.Japan2)" ,
+        "i18n(international.depositary.institution.Latvia)" ,
+        "i18n(international.depositary.institution.Mexico)" ,
+        "i18n(international.depositary.institution.Morocco)",
+        "i18n(international.depositary.institution.Netherlands)",
+        "i18n(international.depositary.institution.Poland1)",
+        "i18n(international.depositary.institution.Poland2)",
+        "i18n(international.depositary.institution.Republic-of-Korea1)",
+        "i18n(international.depositary.institution.Republic-of-Korea2)",
+        "i18n(international.depositary.institution.Republic-of-Korea3)",
+        "i18n(international.depositary.institution.Republic-of-Korea4)",
+        "i18n(international.depositary.institution.Russian-Federation1)",
+        "i18n(international.depositary.institution.Russian-Federation2)",
+        "i18n(international.depositary.institution.Slovakia)",
+        "i18n(international.depositary.institution.Spain1)",
+        "i18n(international.depositary.institution.Spain2)",
+        "i18n(international.depositary.institution.Switzerland)",
+        "i18n(international.depositary.institution.United-Kingdom1)",
+        "i18n(international.depositary.institution.United-Kingdom2)",
+        "i18n(international.depositary.institution.United-Kingdom3)",
+        "i18n(international.depositary.institution.United-Kingdom4)",
+        "i18n(international.depositary.institution.United-Kingdom5)",
+        "i18n(international.depositary.institution.United-Kingdom6)",
+        "i18n(international.depositary.institution.United-Kingdom7)",
+        "i18n(international.depositary.institution.United-States1)" ,
+        "i18n(international.depositary.institution.United-States2)" ,
+        "i18n(international.depositary.institution.United-States3)"
+      ]
+    },
+    "nationalOffice": {
+      "title": "i18n(National office)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AD",
+        "AE",
+        "AF",
+        "AG",
+        "AL",
+        "AM",
+        "AO",
+        "AR",
+        "AT",
+        "AU",
+        "AZ",
+        "BA",
+        "BB",
+        "BD",
+        "BE",
+        "BF",
+        "BG",
+        "BH",
+        "BI",
+        "BJ",
+        "BN",
+        "BO",
+        "BR",
+        "BS",
+        "BT",
+        "BW",
+        "BY",
+        "BZ",
+        "CA",
+        "CD",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CL",
+        "CM",
+        "CN",
+        "CO",
+        "CR",
+        "CU",
+        "CV",
+        "CY",
+        "CZ",
+        "DE",
+        "DJ",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EC",
+        "EE",
+        "EG",
+        "ES",
+        "FI",
+        "FJ",
+        "FR",
+        "GA",
+        "GB",
+        "GD",
+        "GE",
+        "GH",
+        "GM",
+        "GN",
+        "GQ",
+        "GR",
+        "GT",
+        "GW",
+        "GY",
+        "HK",
+        "HN",
+        "HR",
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IN",
+        "IQ",
+        "IR",
+        "IS",
+        "IT",
+        "JM",
+        "JO",
+        "JP",
+        "KE",
+        "KG",
+        "KH",
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KW",
+        "KZ",
+        "LA",
+        "LB",
+        "LC",
+        "LI",
+        "LK",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD",
+        "ME",
+        "MG",
+        "MK",
+        "ML",
+        "MM",
+        "MN",
+        "MR",
+        "MT",
+        "MU",
+        "MV",
+        "MW",
+        "MX",
+        "MY",
+        "MZ",
+        "NA",
+        "NE",
+        "NG",
+        "NI",
+        "NL",
+        "NO",
+        "NP",
+        "NZ",
+        "OM",
+        "PA",
+        "PE",
+        "PG",
+        "PH",
+        "PK",
+        "PL",
+        "PT",
+        "PY",
+        "QA",
+        "RO",
+        "RS",
+        "RU",
+        "RW",
+        "SA",
+        "SB",
+        "SC",
+        "SD",
+        "SE",
+        "SG",
+        "SI",
+        "SK",
+        "SL",
+        "SM",
+        "SN",
+        "SR",
+        "ST",
+        "SV",
+        "SY",
+        "SZ",
+        "TD",
+        "TG",
+        "TH",
+        "TJ",
+        "TM",
+        "TN",
+        "TO",
+        "TR",
+        "TT",
+        "TW",
+        "TZ",
+        "UA",
+        "UG",
+        "US",
+        "UY",
+        "UZ",
+        "VA",
+        "VC",
+        "VE",
+        "VN",
+        "WS",
+        "YE",
+        "ZA",
+        "ZM",
+        "ZW"
+      ],
+      "enumNames": [
+        "i18n(enum.priority-office.Andorra)",
+        "i18n(enum.priority-office.United-Arab-Emirates)",
+        "i18n(enum.priority-office.Afghanistan)",
+        "i18n(enum.priority-office.Antigua-and-Barbuda)",
+        "i18n(enum.priority-office.Albania)",
+        "i18n(enum.priority-office.Armenia)",
+        "i18n(enum.priority-office.Angola)",
+        "i18n(enum.priority-office.Argentina)",
+        "i18n(enum.priority-office.Austria)",
+        "i18n(enum.priority-office.Australia)",
+        "i18n(enum.priority-office.Azerbaijan)",
+        "i18n(enum.priority-office.Bosnia-Hercegovina)",
+        "i18n(enum.priority-office.Barbados)",
+        "i18n(enum.priority-office.Bangladesh)",
+        "i18n(enum.priority-office.Belgium)",
+        "i18n(enum.priority-office.Burkina-Faso)",
+        "i18n(enum.priority-office.Bulgaria)",
+        "i18n(enum.priority-office.Bahrain)",
+        "i18n(enum.priority-office.Burundi)",
+        "i18n(enum.priority-office.Benin)",
+        "i18n(enum.priority-office.Brunei-Darussalam)",
+        "i18n(enum.priority-office.Bolivia)",
+        "i18n(enum.priority-office.Brazil)",
+        "i18n(enum.priority-office.Bahamas)",
+        "i18n(enum.priority-office.Bhutan)",
+        "i18n(enum.priority-office.Botswana)",
+        "i18n(enum.priority-office.Belarus)",
+        "i18n(enum.priority-office.Belize)",
+        "i18n(enum.priority-office.Canada)",
+        "i18n(enum.priority-office.Congo-Democratic-Republic-of)",
+        "i18n(enum.priority-office.Central-African-Republic)",
+        "i18n(enum.priority-office.Congo-Republic-of)",
+        "i18n(enum.priority-office.Switzerland)",
+        "i18n(enum.priority-office.Cote-d'Ivoire)",
+        "i18n(enum.priority-office.Chile)",
+        "i18n(enum.priority-office.Cameroon)",
+        "i18n(enum.priority-office.China)",
+        "i18n(enum.priority-office.Colombia)",
+        "i18n(enum.priority-office.Costa-Rica)",
+        "i18n(enum.priority-office.Cuba)",
+        "i18n(enum.priority-office.Cabo-Verde)",
+        "i18n(enum.priority-office.Cyprus)",
+        "i18n(enum.priority-office.Czechia)",
+        "i18n(enum.priority-office.Germany)",
+        "i18n(enum.priority-office.Djibouti)",
+        "i18n(enum.priority-office.Denmark)",
+        "i18n(enum.priority-office.Dominica)",
+        "i18n(enum.priority-office.Dominican-Republic)",
+        "i18n(enum.priority-office.Algeria)",
+        "i18n(enum.priority-office.Ecuador)",
+        "i18n(enum.priority-office.Estonia)",
+        "i18n(enum.priority-office.Egypt)",
+        "i18n(enum.priority-office.Spain)",
+        "i18n(enum.priority-office.Finland)",
+        "i18n(enum.priority-office.Fiji)",
+        "i18n(enum.priority-office.France)",
+        "i18n(enum.priority-office.Gabon)",
+        "i18n(enum.priority-office.United-Kingdom)",
+        "i18n(enum.priority-office.Grenada)",
+        "i18n(enum.priority-office.Georgia)",
+        "i18n(enum.priority-office.Ghana)",
+        "i18n(enum.priority-office.Gambia)",
+        "i18n(enum.priority-office.Guinea)",
+        "i18n(enum.priority-office.Equatorial-Guinea)",
+        "i18n(enum.priority-office.Greece)",
+        "i18n(enum.priority-office.Guatemala)",
+        "i18n(enum.priority-office.Guinea-Bissau)",
+        "i18n(enum.priority-office.Guyana)",
+        "i18n(enum.priority-office.Hong-Kong)",
+        "i18n(enum.priority-office.Honduras)",
+        "i18n(enum.priority-office.Croatia)",
+        "i18n(enum.priority-office.Haiti)",
+        "i18n(enum.priority-office.Hungary)",
+        "i18n(enum.priority-office.Indonesia)",
+        "i18n(enum.priority-office.Ireland)",
+        "i18n(enum.priority-office.Israel)",
+        "i18n(enum.priority-office.India)",
+        "i18n(enum.priority-office.Iraq)",
+        "i18n(enum.priority-office.Iran)",
+        "i18n(enum.priority-office.Iceland)",
+        "i18n(enum.priority-office.Italy)",
+        "i18n(enum.priority-office.Jamaica)",
+        "i18n(enum.priority-office.Jordan)",
+        "i18n(enum.priority-office.Japan)",
+        "i18n(enum.priority-office.Kenya)",
+        "i18n(enum.priority-office.Kyrgyzstan)",
+        "i18n(enum.priority-office.Cambodia)",
+        "i18n(enum.priority-office.Comoros)",
+        "i18n(enum.priority-office.Saint-Kitts-and-Nevis)",
+        "i18n(enum.priority-office.North-Korea)",
+        "i18n(enum.priority-office.South-Korea)",
+        "i18n(enum.priority-office.Kuwait)",
+        "i18n(enum.priority-office.Kazakhstan)",
+        "i18n(enum.priority-office.Laos)",
+        "i18n(enum.priority-office.Lebanon)",
+        "i18n(enum.priority-office.Saint-Lucia)",
+        "i18n(enum.priority-office.Liechtenstein)",
+        "i18n(enum.priority-office.Sri-Lanka)",
+        "i18n(enum.priority-office.Liberia)",
+        "i18n(enum.priority-office.Lesotho)",
+        "i18n(enum.priority-office.Lithuania)",
+        "i18n(enum.priority-office.Luxembourg)",
+        "i18n(enum.priority-office.Latvia)",
+        "i18n(enum.priority-office.Libya)",
+        "i18n(enum.priority-office.Morocco)",
+        "i18n(enum.priority-office.Monaco)",
+        "i18n(enum.priority-office.Moldova)",
+        "i18n(enum.priority-office.Montenegro)",
+        "i18n(enum.priority-office.Madagascar)",
+        "i18n(enum.priority-office.North-Macedonia)",
+        "i18n(enum.priority-office.Mali)",
+        "i18n(enum.priority-office.Myanmar)",
+        "i18n(enum.priority-office.Mongolia)",
+        "i18n(enum.priority-office.Mauritania)",
+        "i18n(enum.priority-office.Malta)",
+        "i18n(enum.priority-office.Mauritius)",
+        "i18n(enum.priority-office.Maldives)",
+        "i18n(enum.priority-office.Malawi)",
+        "i18n(enum.priority-office.Mexico)",
+        "i18n(enum.priority-office.Malaysia)",
+        "i18n(enum.priority-office.Mozambique)",
+        "i18n(enum.priority-office.Namibia)",
+        "i18n(enum.priority-office.Niger)",
+        "i18n(enum.priority-office.Nigeria)",
+        "i18n(enum.priority-office.Nicaragua)",
+        "i18n(enum.priority-office.Netherlands)",
+        "i18n(enum.priority-office.Norway)",
+        "i18n(enum.priority-office.Nepal)",
+        "i18n(enum.priority-office.New-Zealand)",
+        "i18n(enum.priority-office.Oman)",
+        "i18n(enum.priority-office.Panama)",
+        "i18n(enum.priority-office.Peru)",
+        "i18n(enum.priority-office.Papua-New-Guinea)",
+        "i18n(enum.priority-office.Philippines)",
+        "i18n(enum.priority-office.Pakistan)",
+        "i18n(enum.priority-office.Poland)",
+        "i18n(enum.priority-office.Portugal)",
+        "i18n(enum.priority-office.Paraguay)",
+        "i18n(enum.priority-office.Qatar)",
+        "i18n(enum.priority-office.Romania)",
+        "i18n(enum.priority-office.Serbia)",
+        "i18n(enum.priority-office.Russia)",
+        "i18n(enum.priority-office.Rwanda)",
+        "i18n(enum.priority-office.Saudi-Arabia)",
+        "i18n(enum.priority-office.Solomon-Islands)",
+        "i18n(enum.priority-office.Seychelles)",
+        "i18n(enum.priority-office.Sudan)",
+        "i18n(enum.priority-office.Sweden)",
+        "i18n(enum.priority-office.Singapore)",
+        "i18n(enum.priority-office.Slovenia)",
+        "i18n(enum.priority-office.Slovakia)",
+        "i18n(enum.priority-office.Sierra-Leone)",
+        "i18n(enum.priority-office.San-Marino)",
+        "i18n(enum.priority-office.Senegal)",
+        "i18n(enum.priority-office.Suriname)",
+        "i18n(enum.priority-office.Sao-Tome-and-Principe)",
+        "i18n(enum.priority-office.El-Salvador)",
+        "i18n(enum.priority-office.Syria)",
+        "i18n(enum.priority-office.Eswatini)",
+        "i18n(enum.priority-office.Chad)",
+        "i18n(enum.priority-office.Togo)",
+        "i18n(enum.priority-office.Thailand)",
+        "i18n(enum.priority-office.Tajikistan)",
+        "i18n(enum.priority-office.Turkmenistan)",
+        "i18n(enum.priority-office.Tunisia)",
+        "i18n(enum.priority-office.Tonga)",
+        "i18n(enum.priority-office.Turkey)",
+        "i18n(enum.priority-office.Trinidad-and-Tobago)",
+        "i18n(enum.priority-office.Chinese-Taipei)",
+        "i18n(enum.priority-office.Tanzania)",
+        "i18n(enum.priority-office.Ukraine)",
+        "i18n(enum.priority-office.Uganda)",
+        "i18n(enum.priority-office.United-States-of-America)",
+        "i18n(enum.priority-office.Uruguay)",
+        "i18n(enum.priority-office.Uzbekistan)",
+        "i18n(enum.priority-office.Holy-See)",
+        "i18n(enum.priority-office.Saint-Vincent-and-the-Grenadines)",
+        "i18n(enum.priority-office.Venezuela)",
+        "i18n(enum.priority-office.Vietnam)",
+        "i18n(enum.priority-office.Samoa)",
+        "i18n(enum.priority-office.Yemen)",
+        "i18n(enum.priority-office.South-Africa)",
+        "i18n(enum.priority-office.Zambia)",
+        "i18n(enum.priority-office.Zimbabwe)"
+      ],
+      "config": {"resetsFieldIds": ["applicationKind"]}
+    },
+    "regionalOffice": {
+      "title": "i18n(Regional office)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AP",
+        "EA",
+        "EP",
+        "GC",
+        "OA"
+      ],
+      "enumNames": [
+        "i18n(enum.regional-office.African-Regional-Intellectual-Property-Organization)",
+        "i18n(enum.regional-office.Eurasian-Patent-Organization)",
+        "i18n(enum.regional-office.European-Patent-Office)",
+        "i18n(enum.regional-office.Patent-Office-of-the-Cooperation-Council-for-the-Arab-States-of-the-Gulf)",
+        "i18n(enum.regional-office.African-Intellectual-Property-Organization)"
+      ],
+      "config": {"resetsFieldIds": ["applicationKind"]}
+    },
+    "internationalOffice": {
+      "title": "i18n(International office)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AG",
+        "AL",
+        "AM",
+        "AP",
+        "AT",
+        "AU",
+        "AZ",
+        "BA",
+        "BG",
+        "BH",
+        "BN",
+        "BR",
+        "BW",
+        "BY",
+        "BZ",
+        "CA",
+        "CH",
+        "CL",
+        "CN",
+        "CO",
+        "CR",
+        "CU",
+        "CY",
+        "CZ",
+        "DE",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EA",
+        "EC",
+        "EE",
+        "EG",
+        "EP",
+        "ES",
+        "FI",
+        "FR",
+        "GB",
+        "GD",
+        "GE",
+        "GH",
+        "GR",
+        "GT",
+        "HN",
+        "HR",
+        "HU",
+        "IB",
+        "ID",
+        "IE",
+        "IL",
+        "IN",
+        "IR",
+        "IS",
+        "IT",
+        "JP",
+        "KE",
+        "KG",
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KZ",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD",
+        "MK",
+        "MN",
+        "MT",
+        "MW",
+        "MX",
+        "MY",
+        "NI",
+        "NL",
+        "NO",
+        "NZ",
+        "OA",
+        "PA",
+        "PE",
+        "PG",
+        "PH",
+        "PL",
+        "PT",
+        "QA",
+        "RO",
+        "RS",
+        "RU",
+        "RW",
+        "SA",
+        "SC",
+        "SD",
+        "SE",
+        "SG",
+        "SI",
+        "SK",
+        "SM",
+        "SV",
+        "SY",
+        "TH",
+        "TJ",
+        "TM",
+        "TN",
+        "TR",
+        "TT",
+        "UA",
+        "US",
+        "UZ",
+        "VN",
+        "ZA",
+        "ZM",
+        "ZW"
+      ],
+      "enumNames": [
+        "i18n(enum.priority-office.Antigua-and-Barbuda)",
+        "i18n(enum.priority-office.Albania)",
+        "i18n(enum.priority-office.Armenia)",
+        "i18n(enum.regional-office.African-Regional-Intellectual-Property-Organization)",
+        "i18n(enum.priority-office.Austria)",
+        "i18n(enum.priority-office.Australia)",
+        "i18n(enum.priority-office.Azerbaijan)",
+        "i18n(enum.priority-office.Bosnia-Hercegovina)",
+        "i18n(enum.priority-office.Bulgaria)",
+        "i18n(enum.priority-office.Bahrain)",
+        "i18n(enum.priority-office.Brunei-Darussalam)",
+        "i18n(enum.priority-office.Brazil)",
+        "i18n(enum.priority-office.Botswana)",
+        "i18n(enum.priority-office.Belarus)",
+        "i18n(enum.priority-office.Belize)",
+        "i18n(enum.priority-office.Canada)",
+        "i18n(enum.priority-office.Switzerland)",
+        "i18n(enum.priority-office.Chile)",
+        "i18n(enum.priority-office.China)",
+        "i18n(enum.priority-office.Colombia)",
+        "i18n(enum.priority-office.Costa-Rica)",
+        "i18n(enum.priority-office.Cuba)",
+        "i18n(enum.priority-office.Cyprus)",
+        "i18n(enum.priority-office.Czechia)",
+        "i18n(enum.priority-office.Germany)",
+        "i18n(enum.priority-office.Denmark)",
+        "i18n(enum.priority-office.Dominica)",
+        "i18n(enum.priority-office.Dominican-Republic)",
+        "i18n(enum.priority-office.Algeria)",
+        "i18n(enum.regional-office.Eurasian-Patent-Organization)",
+        "i18n(enum.priority-office.Ecuador)",
+        "i18n(enum.priority-office.Estonia)",
+        "i18n(enum.priority-office.Egypt)",
+        "i18n(enum.regional-office.European-Patent-Office)",
+        "i18n(enum.priority-office.Spain)",
+        "i18n(enum.priority-office.Finland)",
+        "i18n(enum.priority-office.France)",
+        "i18n(enum.priority-office.United-Kingdom)",
+        "i18n(enum.priority-office.Grenada)",
+        "i18n(enum.priority-office.Georgia)",
+        "i18n(enum.priority-office.Ghana)",
+        "i18n(enum.priority-office.Greece)",
+        "i18n(enum.priority-office.Guatemala)",
+        "i18n(enum.priority-office.Honduras)",
+        "i18n(enum.priority-office.Croatia)",
+        "i18n(enum.priority-office.Hungary)",
+        "i18n(enum.regional-office.wipo)",
+        "i18n(enum.priority-office.Indonesia)",
+        "i18n(enum.priority-office.Ireland)",
+        "i18n(enum.priority-office.Israel)",
+        "i18n(enum.priority-office.India)",
+        "i18n(enum.priority-office.Iran)",
+        "i18n(enum.priority-office.Iceland)",
+        "i18n(enum.priority-office.Italy)",
+        "i18n(enum.priority-office.Japan)",
+        "i18n(enum.priority-office.Kenya)",
+        "i18n(enum.priority-office.Kyrgyzstan)",
+        "i18n(enum.priority-office.Comoros)",
+        "i18n(enum.priority-office.Saint-Kitts-and-Nevis)",
+        "i18n(enum.priority-office.North-Korea)",
+        "i18n(enum.priority-office.South-Korea)",
+        "i18n(enum.priority-office.Kazakhstan)",
+        "i18n(enum.priority-office.Liberia)",
+        "i18n(enum.priority-office.Lesotho)",
+        "i18n(enum.priority-office.Lithuania)",
+        "i18n(enum.priority-office.Luxembourg)",
+        "i18n(enum.priority-office.Latvia)",
+        "i18n(enum.priority-office.Libya)",
+        "i18n(enum.priority-office.Morocco)",
+        "i18n(enum.priority-office.Monaco)",
+        "i18n(enum.priority-office.Moldova)",
+        "i18n(enum.priority-office.North-Macedonia)",
+        "i18n(enum.priority-office.Mongolia)",
+        "i18n(enum.priority-office.Malta)",
+        "i18n(enum.priority-office.Malawi)",
+        "i18n(enum.priority-office.Mexico)",
+        "i18n(enum.priority-office.Malaysia)",
+        "i18n(enum.priority-office.Nicaragua)",
+        "i18n(enum.priority-office.Netherlands)",
+        "i18n(enum.priority-office.Norway)",
+        "i18n(enum.priority-office.New-Zealand)",
+        "i18n(enum.regional-office.African-Intellectual-Property-Organization)",
+        "i18n(enum.priority-office.Panama)",
+        "i18n(enum.priority-office.Peru)",
+        "i18n(enum.priority-office.Papua-New-Guinea)",
+        "i18n(enum.priority-office.Philippines)",
+        "i18n(enum.priority-office.Poland)",
+        "i18n(enum.priority-office.Portugal)",
+        "i18n(enum.priority-office.Qatar)",
+        "i18n(enum.priority-office.Romania)",
+        "i18n(enum.priority-office.Serbia)",
+        "i18n(enum.priority-office.Russia)",
+        "i18n(enum.priority-office.Rwanda)",
+        "i18n(enum.priority-office.Saudi-Arabia)",
+        "i18n(enum.priority-office.Seychelles)",
+        "i18n(enum.priority-office.Sudan)",
+        "i18n(enum.priority-office.Sweden)",
+        "i18n(enum.priority-office.Singapore)",
+        "i18n(enum.priority-office.Slovenia)",
+        "i18n(enum.priority-office.Slovakia)",
+        "i18n(enum.priority-office.San-Marino)",
+        "i18n(enum.priority-office.El-Salvador)",
+        "i18n(enum.priority-office.Syria)",
+        "i18n(enum.priority-office.Thailand)",
+        "i18n(enum.priority-office.Tajikistan)",
+        "i18n(enum.priority-office.Turkmenistan)",
+        "i18n(enum.priority-office.Tunisia)",
+        "i18n(enum.priority-office.Turkey)",
+        "i18n(enum.priority-office.Trinidad-and-Tobago)",
+        "i18n(enum.priority-office.Ukraine)",
+        "i18n(enum.priority-office.United-States-of-America)",
+        "i18n(enum.priority-office.Uzbekistan)",
+        "i18n(enum.priority-office.Vietnam)",
+        "i18n(enum.priority-office.South-Africa)",
+        "i18n(enum.priority-office.Zambia)",
+        "i18n(enum.priority-office.Zimbabwe)"
+      ],
+      "config": {"resetsFieldIds": ["applicationKind"]}
+    },
+    "priorityOffice": {
+      "title": "i18n(priority office)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AD",
+        "AE",
+        "AF",
+        "AG",
+        "AL",
+        "AM",
+        "AO",
+        "AP",
+        "AR",
+        "AT",
+        "AU",
+        "AZ",
+        "BA",
+        "BB",
+        "BD",
+        "BE",
+        "BF",
+        "BG",
+        "BH",
+        "BI",
+        "BJ",
+        "BN",
+        "BO",
+        "BR",
+        "BS",
+        "BT",
+        "BW",
+        "BY",
+        "BZ",
+        "CA",
+        "CD",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CL",
+        "CM",
+        "CN",
+        "CO",
+        "CR",
+        "CU",
+        "CV",
+        "CY",
+        "CZ",
+        "DE",
+        "DJ",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EA",
+        "EC",
+        "EE",
+        "EG",
+        "EP",
+        "ES",
+        "FI",
+        "FJ",
+        "FR",
+        "GA",
+        "GB",
+        "GC",
+        "GD",
+        "GE",
+        "GH",
+        "GM",
+        "GN",
+        "GQ",
+        "GR",
+        "GT",
+        "GW",
+        "GY",
+        "HK",
+        "HN",
+        "HR",
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IN",
+        "IQ",
+        "IR",
+        "IS",
+        "IT",
+        "JM",
+        "JO",
+        "JP",
+        "KE",
+        "KG",
+        "KH",
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KW",
+        "KZ",
+        "LA",
+        "LB",
+        "LC",
+        "LI",
+        "LK",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD",
+        "ME",
+        "MG",
+        "MK",
+        "ML",
+        "MM",
+        "MN",
+        "MR",
+        "MT",
+        "MU",
+        "MV",
+        "MW",
+        "MX",
+        "MY",
+        "MZ",
+        "NA",
+        "NE",
+        "NG",
+        "NI",
+        "NL",
+        "NO",
+        "NP",
+        "NZ",
+        "OA",
+        "OM",
+        "PA",
+        "PE",
+        "PG",
+        "PH",
+        "PK",
+        "PL",
+        "PT",
+        "PY",
+        "QA",
+        "RO",
+        "RS",
+        "RU",
+        "RW",
+        "SA",
+        "SB",
+        "SC",
+        "SD",
+        "SE",
+        "SG",
+        "SI",
+        "SK",
+        "SL",
+        "SM",
+        "SN",
+        "SR",
+        "ST",
+        "SV",
+        "SY",
+        "SZ",
+        "TD",
+        "TG",
+        "TH",
+        "TJ",
+        "TM",
+        "TN",
+        "TO",
+        "TR",
+        "TT",
+        "TW",
+        "TZ",
+        "UA",
+        "UG",
+        "US",
+        "UY",
+        "UZ",
+        "VA",
+        "VC",
+        "VE",
+        "VN",
+        "WS",
+        "YE",
+        "ZA",
+        "ZM",
+        "ZW"
+      ],
+      "enumNames": [
+        "i18n(enum.priority-office.Andorra)",
+        "i18n(enum.priority-office.United-Arab-Emirates)",
+        "i18n(enum.priority-office.Afghanistan)",
+        "i18n(enum.priority-office.Antigua-and-Barbuda)",
+        "i18n(enum.priority-office.Albania)",
+        "i18n(enum.priority-office.Armenia)",
+        "i18n(enum.priority-office.Angola)",
+        "i18n(enum.regional-office.African-Regional-Intellectual-Property-Organization)",
+        "i18n(enum.priority-office.Argentina)",
+        "i18n(enum.priority-office.Austria)",
+        "i18n(enum.priority-office.Australia)",
+        "i18n(enum.priority-office.Azerbaijan)",
+        "i18n(enum.priority-office.Bosnia-Hercegovina)",
+        "i18n(enum.priority-office.Barbados)",
+        "i18n(enum.priority-office.Bangladesh)",
+        "i18n(enum.priority-office.Belgium)",
+        "i18n(enum.priority-office.Burkina Faso)",
+        "i18n(enum.priority-office.Bulgaria)",
+        "i18n(enum.priority-office.Bahrain)",
+        "i18n(enum.priority-office.Burundi)",
+        "i18n(enum.priority-office.Benin)",
+        "i18n(enum.priority-office.Brunei-Darussalam)",
+        "i18n(enum.priority-office.Bolivia)",
+        "i18n(enum.priority-office.Brazil)",
+        "i18n(enum.priority-office.Bahamas)",
+        "i18n(enum.priority-office.Bhutan)",
+        "i18n(enum.priority-office.Botswana)",
+        "i18n(enum.priority-office.Belarus)",
+        "i18n(enum.priority-office.Belize)",
+        "i18n(enum.priority-office.Canada)",
+        "i18n(enum.priority-office.Congo-Democratic-Republic-of)",
+        "i18n(enum.priority-office.Central-African-Republic)",
+        "i18n(enum.priority-office.Congo-Republic-of)",
+        "i18n(enum.priority-office.Switzerland)",
+        "i18n(enum.priority-office.Cote-d'Ivoire)",
+        "i18n(enum.priority-office.Chile)",
+        "i18n(enum.priority-office.Cameroon)",
+        "i18n(enum.priority-office.China)",
+        "i18n(enum.priority-office.Colombia)",
+        "i18n(enum.priority-office.Costa-Rica)",
+        "i18n(enum.priority-office.Cuba)",
+        "i18n(enum.priority-office.Cabo-Verde)",
+        "i18n(enum.priority-office.Cyprus)",
+        "i18n(enum.priority-office.Czechia)",
+        "i18n(enum.priority-office.Germany)",
+        "i18n(enum.priority-office.Djibouti)",
+        "i18n(enum.priority-office.Denmark)",
+        "i18n(enum.priority-office.Dominica)",
+        "i18n(enum.priority-office.Dominican-Republic)",
+        "i18n(enum.priority-office.Algeria)",
+        "i18n(enum.regional-office.Eurasian-Patent-Organization)",
+        "i18n(enum.priority-office.Ecuador)",
+        "i18n(enum.priority-office.Estonia)",
+        "i18n(enum.priority-office.Egypt)",
+        "i18n(enum.regional-office.European-Patent-Office)",
+        "i18n(enum.priority-office.Spain)",
+        "i18n(enum.priority-office.Finland)",
+        "i18n(enum.priority-office.Fiji)",
+        "i18n(enum.priority-office.France)",
+        "i18n(enum.priority-office.Gabon)",
+        "i18n(enum.priority-office.United-Kingdom)",
+        "i18n(enum.regional-office.Patent-Office-of-the-Cooperation-Council-for-the-Arab-States-of-the-Gulf)",
+        "i18n(enum.priority-office.Grenada)",
+        "i18n(enum.priority-office.Georgia)",
+        "i18n(enum.priority-office.Ghana)",
+        "i18n(enum.priority-office.Gambia)",
+        "i18n(enum.priority-office.Guinea)",
+        "i18n(enum.priority-office.Equatorial-Guinea)",
+        "i18n(enum.priority-office.Greece)",
+        "i18n(enum.priority-office.Guatemala)",
+        "i18n(enum.priority-office.Guinea-Bissau)",
+        "i18n(enum.priority-office.Guyana)",
+        "i18n(enum.priority-office.Hong-Kong)",
+        "i18n(enum.priority-office.Honduras)",
+        "i18n(enum.priority-office.Croatia)",
+        "i18n(enum.priority-office.Haiti)",
+        "i18n(enum.priority-office.Hungary)",
+        "i18n(enum.priority-office.Indonesia)",
+        "i18n(enum.priority-office.Ireland)",
+        "i18n(enum.priority-office.Israel)",
+        "i18n(enum.priority-office.India)",
+        "i18n(enum.priority-office.Iraq)",
+        "i18n(enum.priority-office.Iran)",
+        "i18n(enum.priority-office.Iceland)",
+        "i18n(enum.priority-office.Italy)",
+        "i18n(enum.priority-office.Jamaica)",
+        "i18n(enum.priority-office.Jordan)",
+        "i18n(enum.priority-office.Japan)",
+        "i18n(enum.priority-office.Kenya)",
+        "i18n(enum.priority-office.Kyrgyzstan)",
+        "i18n(enum.priority-office.Cambodia)",
+        "i18n(enum.priority-office.Comoros)",
+        "i18n(enum.priority-office.Saint-Kitts-and-Nevis)",
+        "i18n(enum.priority-office.North-Korea)",
+        "i18n(enum.priority-office.South-Korea)",
+        "i18n(enum.priority-office.Kuwait)",
+        "i18n(enum.priority-office.Kazakhstan)",
+        "i18n(enum.priority-office.Laos)",
+        "i18n(enum.priority-office.Lebanon)",
+        "i18n(enum.priority-office.Saint-Lucia)",
+        "i18n(enum.priority-office.Liechtenstein)",
+        "i18n(enum.priority-office.Sri-Lanka)",
+        "i18n(enum.priority-office.Liberia)",
+        "i18n(enum.priority-office.Lesotho)",
+        "i18n(enum.priority-office.Lithuania)",
+        "i18n(enum.priority-office.Luxembourg)",
+        "i18n(enum.priority-office.Latvia)",
+        "i18n(enum.priority-office.Libya)",
+        "i18n(enum.priority-office.Morocco)",
+        "i18n(enum.priority-office.Monaco)",
+        "i18n(enum.priority-office.Moldova)",
+        "i18n(enum.priority-office.Montenegro)",
+        "i18n(enum.priority-office.Madagascar)",
+        "i18n(enum.priority-office.North-Macedonia)",
+        "i18n(enum.priority-office.Mali)",
+        "i18n(enum.priority-office.Myanmar)",
+        "i18n(enum.priority-office.Mongolia)",
+        "i18n(enum.priority-office.Mauritania)",
+        "i18n(enum.priority-office.Malta)",
+        "i18n(enum.priority-office.Mauritius)",
+        "i18n(enum.priority-office.Maldives)",
+        "i18n(enum.priority-office.Malawi)",
+        "i18n(enum.priority-office.Mexico)",
+        "i18n(enum.priority-office.Malaysia)",
+        "i18n(enum.priority-office.Mozambique)",
+        "i18n(enum.priority-office.Namibia)",
+        "i18n(enum.priority-office.Niger)",
+        "i18n(enum.priority-office.Nigeria)",
+        "i18n(enum.priority-office.Nicaragua)",
+        "i18n(enum.priority-office.Netherlands)",
+        "i18n(enum.priority-office.Norway)",
+        "i18n(enum.priority-office.Nepal)",
+        "i18n(enum.priority-office.New-Zealand)",
+        "i18n(enum.regional-office.African-Intellectual-Property-Organization)",
+        "i18n(enum.priority-office.Oman)",
+        "i18n(enum.priority-office.Panama)",
+        "i18n(enum.priority-office.Peru)",
+        "i18n(enum.priority-office.Papua-New-Guinea)",
+        "i18n(enum.priority-office.Philippines)",
+        "i18n(enum.priority-office.Pakistan)",
+        "i18n(enum.priority-office.Poland)",
+        "i18n(enum.priority-office.Portugal)",
+        "i18n(enum.priority-office.Paraguay)",
+        "i18n(enum.priority-office.Qatar)",
+        "i18n(enum.priority-office.Romania)",
+        "i18n(enum.priority-office.Serbia)",
+        "i18n(enum.priority-office.Russia)",
+        "i18n(enum.priority-office.Rwanda)",
+        "i18n(enum.priority-office.Saudi-Arabia)",
+        "i18n(enum.priority-office.Solomon-Islands)",
+        "i18n(enum.priority-office.Seychelles)",
+        "i18n(enum.priority-office.Sudan)",
+        "i18n(enum.priority-office.Sweden)",
+        "i18n(enum.priority-office.Singapore)",
+        "i18n(enum.priority-office.Slovenia)",
+        "i18n(enum.priority-office.Slovakia)",
+        "i18n(enum.priority-office.Sierra Leone)",
+        "i18n(enum.priority-office.San Marino)",
+        "i18n(enum.priority-office.Senegal)",
+        "i18n(enum.priority-office.Suriname)",
+        "i18n(enum.priority-office.Sao-Tome-and-Principe)",
+        "i18n(enum.priority-office.El-Salvador)",
+        "i18n(enum.priority-office.Syria)",
+        "i18n(enum.priority-office.Eswatini)",
+        "i18n(enum.priority-office.Chad)",
+        "i18n(enum.priority-office.Togo)",
+        "i18n(enum.priority-office.Thailand)",
+        "i18n(enum.priority-office.Tajikistan)",
+        "i18n(enum.priority-office.Turkmenistan)",
+        "i18n(enum.priority-office.Tunisia)",
+        "i18n(enum.priority-office.Tonga)",
+        "i18n(enum.priority-office.Turkey)",
+        "i18n(enum.priority-office.Trinidad-and-Tobago)",
+        "i18n(enum.priority-office.Chinese-Taipei)",
+        "i18n(enum.priority-office.Tanzania)",
+        "i18n(enum.priority-office.Ukraine)",
+        "i18n(enum.priority-office.Uganda)",
+        "i18n(enum.priority-office.United-States-of-America)",
+        "i18n(enum.priority-office.Uruguay)",
+        "i18n(enum.priority-office.Uzbekistan)",
+        "i18n(enum.priority-office.Holy-See)",
+        "i18n(enum.priority-office.Saint-Vincent-and-the-Grenadines)",
+        "i18n(enum.priority-office.Venezuela)",
+        "i18n(enum.priority-office.Vietnam)",
+        "i18n(enum.priority-office.Samoa)",
+        "i18n(enum.priority-office.Yemen)",
+        "i18n(enum.priority-office.South-Africa)",
+        "i18n(enum.priority-office.Zambia)",
+        "i18n(enum.priority-office.Zimbabwe)"
+      ]
+    },
+    "priority": {
+      "title": "i18n(declaration.priority.new)",
+      "type": "object",
+      "properties": {
+        "officeType": {
+          "$ref": "#/definitions/officeType"
+        },
+        "office": {
+          "title": "i18n(declaration.priority.office)",
+          "type": "string",
+          "readOnly": true
+        },
+        "applicationKind": {
+          "$ref": "#/definitions/applicationKind",
+          "readOnly": true
+        },
+        "applicationNumber": {
+          "title": "i18n(declaration.priority.application-number) i18n(optional)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 20
+        },
+        "filingDate": {
+          "title": "i18n(declaration.priority.filing-date)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxPastMonths": 14
+        },
+        "dasCode": {
+          "title": "",
+          "type": "object",
+          "properties": {
+            "checkbox": {
+              "title": "i18n(declaration.priority.request-for-retrieval-of-priority-from-DAS)",
+              "type": "boolean"
+            }
+          },
+          "dependencies": {
+            "checkbox": {
+              "oneOf": [
+                {
+                  "properties": {
+                    "checkbox": {
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "dasCodeValue": {
+                      "title": "i18n(declaration.priority.DAS-code)",
+                      "pattern": "^([A-F0-9])*$",
+                      "placeholder": "i18n(ex.bb7a)",
+                      "type": "string",
+                      "maxLength": 4,
+                      "minLength": 4
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "checkbox": {
+                      "enum": [
+                        false
+                      ]
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "dependencies": {
+        "officeType": {
+          "oneOf": [
+            {
+              "properties": {
+                "officeType": {
+                  "enum": [
+                    "NATIONAL"
+                  ]
+                },
+                "office": {
+                  "$ref": "#/definitions/nationalOffice",
+                  "readOnly": false
+                }
+              },
+              "dependencies": {
+                "office": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            "AL",
+                            "AM",
+                            "AR",
+                            "AT",
+                            "AZ",
+                            "BA",
+                            "BG",
+                            "BR",
+                            "BW",
+                            "BY",
+                            "BZ",
+                            "CN",
+                            "CO",
+                            "CR",
+                            "CZ",
+                            "DE",
+                            "DK",
+                            "DM",
+                            "EC",
+                            "EE",
+                            "ES",
+                            "FI",
+                            "GE",
+                            "GH",
+                            "GR",
+                            "HU",
+                            "IT",
+                            "JP",
+                            "KE",
+                            "KG",
+                            "KP",
+                            "KR",
+                            "KZ",
+                            "LS",
+                            "MA",
+                            "MD",
+                            "MX",
+                            "MY",
+                            "MZ",
+                            "NI",
+                            "PA",
+                            "PH",
+                            "PL",
+                            "PT",
+                            "PY",
+                            "RO",
+                            "RU",
+                            "SK",
+                            "SL",
+                            "TH",
+                            "TJ",
+                            "TR",
+                            "TT",
+                            "TW",
+                            "UA",
+                            "UY",
+                            "UZ",
+                            "VC",
+                            "VN"
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "Kind of application",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "PATENT",
+                            "UTILITY"
+                          ],
+                          "enumNames": [
+                            "i18n(enum.application-kind.patent)",
+                            "i18n(enum.application-kind.utility)"
+                          ],
+                          "readOnly": false
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            "AD",
+                            "AE",
+                            "AF",
+                            "AG",
+                            "AO",
+                            "AU",
+                            "BB",
+                            "BD",
+                            "BE",
+                            "BF",
+                            "BH",
+                            "BI",
+                            "BJ",
+                            "BN",
+                            "BO",
+                            "BS",
+                            "BT",
+                            "CA",
+                            "CD",
+                            "CF",
+                            "CG",
+                            "CH",
+                            "CI",
+                            "CL",
+                            "CM",
+                            "CU",
+                            "CV",
+                            "CY",
+                            "DJ",
+                            "DO",
+                            "DZ",
+                            "EG",
+                            "FJ",
+                            "FR",
+                            "GA",
+                            "GB",
+                            "GD",
+                            "GM",
+                            "GN",
+                            "GQ",
+                            "GT",
+                            "GW",
+                            "GY",
+                            "HK",
+                            "HN",
+                            "HR",
+                            "HT",
+                            "ID",
+                            "IE",
+                            "IL",
+                            "IN",
+                            "IQ",
+                            "IR",
+                            "IS",
+                            "JM",
+                            "JO",
+                            "KH",
+                            "KM",
+                            "KN",
+                            "KW",
+                            "LA",
+                            "LB",
+                            "LC",
+                            "LI",
+                            "LK",
+                            "LR",
+                            "LT",
+                            "LU",
+                            "LV",
+                            "LY",
+                            "MC",
+                            "ME",
+                            "MG",
+                            "MK",
+                            "ML",
+                            "MM",
+                            "MN",
+                            "MR",
+                            "MT",
+                            "MU",
+                            "MV",
+                            "MW",
+                            "NA",
+                            "NE",
+                            "NG",
+                            "NL",
+                            "NO",
+                            "NP",
+                            "NZ",
+                            "OM",
+                            "PE",
+                            "PG",
+                            "PK",
+                            "QA",
+                            "RS",
+                            "RW",
+                            "SA",
+                            "SB",
+                            "SC",
+                            "SD",
+                            "SE",
+                            "SG",
+                            "SI",
+                            "SM",
+                            "SN",
+                            "SR",
+                            "ST",
+                            "SV",
+                            "SY",
+                            "SZ",
+                            "TD",
+                            "TG",
+                            "TM",
+                            "TN",
+                            "TO",
+                            "TZ",
+                            "UG",
+                            "VA",
+                            "VE",
+                            "WS",
+                            "YE",
+                            "ZA",
+                            "ZM",
+                            "ZW"
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "i18n(declaration.priority.modality)",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "PATENT"
+                          ],
+                          "enumNames": [
+                            "i18n(enum.application-kind.patent)"
+                          ],
+                          "readOnly": false
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            "US"
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "i18n(declaration.priority.modality)",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "PATENT",
+                            "PROVISIONAL"
+                          ],
+                          "enumNames": [
+                            "i18n(enum.application-kind.patent)",
+                            "i18n(enum.application-kind.provisional)"
+                          ],
+                          "readOnly": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "officeType": {
+                  "enum": [
+                    "REGIONAL"
+                  ]
+                },
+                "office": {
+                  "$ref": "#/definitions/regionalOffice",
+                  "readOnly": false
+                }
+              },
+              "dependencies": {
+                "office": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            ""
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "i18n(declaration.priority.modality)",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            ""
+                          ],
+                          "enumNames": [
+                            "None"
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            "AP",
+                            "OA"
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "i18n(declaration.priority.modality)",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "PATENT",
+                            "UTILITY"
+                          ],
+                          "enumNames": [
+                            "i18n(enum.application-kind.patent)",
+                            "i18n(enum.application-kind.utility)"
+                          ],
+                          "readOnly": false
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            "EA",
+                            "EP",
+                            "GC"
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "i18n(declaration.priority.modality)",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "PATENT"
+                          ],
+                          "enumNames": [
+                            "i18n(enum.application-kind.patent)"
+                          ],
+                          "readOnly": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "officeType": {
+                  "enum": [
+                    "INTERNATIONAL"
+                  ]
+                },
+                "office": {
+                  "$ref": "#/definitions/internationalOffice",
+                  "readOnly": false
+                }
+              },
+              "dependencies": {
+                "office": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            ""
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            "AD",
+                            "AE",
+                            "AF",
+                            "AG",
+                            "AL",
+                            "AM",
+                            "AO",
+                            "AR",
+                            "AT",
+                            "AU",
+                            "AZ",
+                            "BA",
+                            "BB",
+                            "BD",
+                            "BE",
+                            "BF",
+                            "BG",
+                            "BH",
+                            "BI",
+                            "BJ",
+                            "BN",
+                            "BO",
+                            "BR",
+                            "BS",
+                            "BT",
+                            "BW",
+                            "BY",
+                            "BZ",
+                            "CA",
+                            "CD",
+                            "CF",
+                            "CG",
+                            "CH",
+                            "CI",
+                            "CL",
+                            "CM",
+                            "CN",
+                            "CO",
+                            "CR",
+                            "CU",
+                            "CV",
+                            "CY",
+                            "CZ",
+                            "DE",
+                            "DJ",
+                            "DK",
+                            "DM",
+                            "DO",
+                            "DZ",
+                            "EA",
+                            "EC",
+                            "EE",
+                            "EG",
+                            "EP",
+                            "ES",
+                            "FI",
+                            "FJ",
+                            "FR",
+                            "GA",
+                            "GB",
+                            "GC",
+                            "GD",
+                            "GE",
+                            "GH",
+                            "GM",
+                            "GN",
+                            "GQ",
+                            "GR",
+                            "GT",
+                            "GW",
+                            "GY",
+                            "HK",
+                            "HN",
+                            "HR",
+                            "HT",
+                            "HU",
+                            "ID",
+                            "IE",
+                            "IL",
+                            "IN",
+                            "IQ",
+                            "IR",
+                            "IS",
+                            "IT",
+                            "JM",
+                            "JO",
+                            "JP",
+                            "KE",
+                            "KG",
+                            "KH",
+                            "KM",
+                            "KN",
+                            "KP",
+                            "KR",
+                            "KW",
+                            "KZ",
+                            "LA",
+                            "LB",
+                            "LC",
+                            "LI",
+                            "LK",
+                            "LR",
+                            "LS",
+                            "LT",
+                            "LU",
+                            "LV",
+                            "LY",
+                            "MA",
+                            "MC",
+                            "MD",
+                            "ME",
+                            "MG",
+                            "MK",
+                            "ML",
+                            "MM",
+                            "MN",
+                            "MR",
+                            "MT",
+                            "MU",
+                            "MV",
+                            "MW",
+                            "MX",
+                            "MY",
+                            "MZ",
+                            "NA",
+                            "NE",
+                            "NG",
+                            "NI",
+                            "NL",
+                            "NO",
+                            "NP",
+                            "NZ",
+                            "OM",
+                            "PA",
+                            "PE",
+                            "PG",
+                            "PH",
+                            "PK",
+                            "PL",
+                            "PT",
+                            "PY",
+                            "QA",
+                            "RO",
+                            "RS",
+                            "RU",
+                            "RW",
+                            "SA",
+                            "SB",
+                            "SC",
+                            "SD",
+                            "SE",
+                            "SG",
+                            "SI",
+                            "SK",
+                            "SL",
+                            "SM",
+                            "SN",
+                            "SR",
+                            "ST",
+                            "SV",
+                            "SY",
+                            "SZ",
+                            "TD",
+                            "TG",
+                            "TH",
+                            "TJ",
+                            "TM",
+                            "TN",
+                            "TO",
+                            "TR",
+                            "TT",
+                            "TW",
+                            "TZ",
+                            "UA",
+                            "UG",
+                            "US",
+                            "UY",
+                            "UZ",
+                            "VA",
+                            "VC",
+                            "VE",
+                            "VN",
+                            "WS",
+                            "YE",
+                            "ZA",
+                            "ZM",
+                            "ZW"
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "i18n(declaration.priority.modality)",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "PATENT"
+                          ],
+                          "enumNames": [
+                            "i18n(enum.application-kind.patent)"
+                          ],
+                          "readOnly": false
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "office": {
+                          "enum": [
+                            "AP",
+                            "OA"
+                          ]
+                        },
+                        "applicationKind": {
+                          "title": "i18n(declaration.priority.modality)",
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "PATENT",
+                            "UTILITY"
+                          ],
+                          "enumNames": [
+                            "i18n(enum.application-kind.patent)",
+                            "i18n(enum.application-kind.utility)"
+                          ],
+                          "readOnly": false
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "officeType": {
+                  "enum": [
+                    "NONE"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "officeType",
+        "office",
+        "applicationKind",
+        "filingDate"
+      ]
+    },
+    "exhibition": {
+      "title": "i18n(declaration.exhibition-priority.new)",
+      "type": "object",
+      "properties": {
+        "internationalExhibition": {
+          "$ref": "#/definitions/internationalExhibition"
+        },
+        "city": {
+          "$ref": "#/definitions/internationalExhibitionCities",
+          "readOnly": true
+        },
+        "exhibitionDate": {
+          "title": "i18n(declaration.exhibition-priority.exhibition-date)",
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": ["internationalExhibition", "city", "exhibitionDate"]
+    },
+    "internationalExhibition": {
+      "title": "i18n(declaration.exhibition-priority.international-exhibition)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ASTANA",
+        "MILANO_2019",
+        "BEIJING",
+        "DUBAI",
+        "MILANO_2022",
+        "AMSTERDAM",
+        "DOHA",
+        "OSAKA"
+      ],
+      "enumNames": [
+        "i18n(enum.international-exhibition.astana)",
+        "i18n(enum.international-exhibition.milano-2019)",
+        "i18n(enum.international-exhibition.beijing)",
+        "i18n(enum.international-exhibition.dubai)",
+        "i18n(enum.international-exhibition.milano-2022)",
+        "i18n(enum.international-exhibition.amsterdam)",
+        "i18n(enum.international-exhibition.doha)",
+        "i18n(enum.international-exhibition.osaka)"
+      ]
+    },
+    "internationalExhibitionCities": {
+      "title": "i18n(declaration.exhibition-priority.international-exhibition-city)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "ASTANA",
+        "MILANO",
+        "BEIJING",
+        "DUBAI",
+        "AMSTERDAM",
+        "DOHA",
+        "OSAKA"
+      ],
+      "enumNames": [
+        "i18n(enum.international-exhibition.city.astana)",
+        "i18n(enum.international-exhibition.city.milano)",
+        "i18n(enum.international-exhibition.city.beijing)",
+        "i18n(enum.international-exhibition.city.dubai)",
+        "i18n(enum.international-exhibition.city.amsterdam)",
+        "i18n(enum.international-exhibition.city.doha)",
+        "i18n(enum.international-exhibition.city.osaka)"
+      ]
+    },
+    "biologicalInfos": {
+      "title": "i18n(biologicalInfos.material.title)",
+      "description": "i18n(biologicalInfos.description)",
+      "type": "object",
+      "properties": {
+        "bioMaterial": {
+          "title": "i18n(biologicalInfos.material.general.title)",
+          "type": "object",
+          "properties": {
+            "country": {
+              "title": "i18n(biologicalInfos.country)",
+              "type": [
+                "string",
+                "null"
+              ],
+              "enum": [
+                "AU",
+                "BE",
+                "BG",
+                "CA",
+                "CL",
+                "CN",
+                "CZ",
+                "FI",
+                "FR",
+                "DE",
+                "HU",
+                "IN",
+                "IT",
+                "JP",
+                "LV",
+                "MX",
+                "MA",
+                "NL",
+                "PL",
+                "KP",
+                "RU",
+                "SK",
+                "ES",
+                "CH",
+                "GB",
+                "US"
+              ],
+              "enumNames": [
+                "i18n(enum.countries.Australia)",
+                "i18n(enum.countries.Belgium)",
+                "i18n(enum.countries.Bulgaria)",
+                "i18n(enum.countries.Canada)",
+                "i18n(enum.countries.Chile)",
+                "i18n(enum.countries.China)",
+                "i18n(enum.countries.Czechia)",
+                "i18n(enum.countries.Finland)",
+                "i18n(enum.countries.France)",
+                "i18n(enum.countries.Germany)",
+                "i18n(enum.countries.Hungary)",
+                "i18n(enum.countries.India)",
+                "i18n(enum.countries.Italy)",
+                "i18n(enum.countries.Japan)",
+                "i18n(enum.countries.Latvia)",
+                "i18n(enum.countries.Mexico)",
+                "i18n(enum.countries.Morocco)",
+                "i18n(enum.countries.Netherlands)",
+                "i18n(enum.countries.Poland)",
+                "i18n(enum.countries.North-Korea)",
+                "i18n(enum.countries.Russia)",
+                "i18n(enum.countries.Slovakia)",
+                "i18n(enum.countries.Spain)",
+                "i18n(enum.countries.Switzerland)",
+                "i18n(enum.countries.United-Kingdom)",
+                "i18n(enum.countries.United-States-of-America)"
+              ],
+              "config": {"resetsFieldIds": ["institution"]}
+            },
+            "institution": {
+              "$ref": "#/definitions/institution"
+            },
+            "accession": {
+              "title": "i18n(biologicalInfos.accession)",
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 25
+            },
+            "date": {
+              "title": "i18n(biologicalInfos.date)",
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "restricted": {
+              "title": "i18n(biologicalInfos.restricted)",
+              "type": [
+                "boolean",
+                "null"
+              ]
+            },
+            "attachments": {
+              "title": "i18n(attachments.title) i18n(optional)",
+              "type": [
+                "array",
+                "null"
+              ],
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "dependencies": {
+            "country" : {
+              "oneOf": [
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "US"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum": [
+                        "US1",
+                        "US2",
+                        "US3"
+                      ],
+                      "enumNames": [
+                        "i18n(international.depositary.institution.United-States1)",
+                        "i18n(international.depositary.institution.United-States2)",
+                        "i18n(international.depositary.institution.United-States3)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "GB"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "UK1",
+                        "UK2",
+                        "UK3",
+                        "UK4",
+                        "UK5",
+                        "UK6",
+                        "UK7"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.United-Kingdom1)",
+                        "i18n(international.depositary.institution.United-Kingdom2)",
+                        "i18n(international.depositary.institution.United-Kingdom3)",
+                        "i18n(international.depositary.institution.United-Kingdom4)",
+                        "i18n(international.depositary.institution.United-Kingdom5)",
+                        "i18n(international.depositary.institution.United-Kingdom6)",
+                        "i18n(international.depositary.institution.United-Kingdom7)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "CH"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "CH"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Switzerland)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "ES"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "ES1",
+                        "ES2"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Spain1)",
+                        "i18n(international.depositary.institution.Spain2)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "SK"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "SK"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Slovakia)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "RU"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "RU1",
+                        "RU2"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Russian-Federation1)",
+                        "i18n(international.depositary.institution.Russian-Federation2)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "KP"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "KP1",
+                        "KP2",
+                        "KP3",
+                        "KP4"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Republic-of-Korea1)",
+                        "i18n(international.depositary.institution.Republic-of-Korea2)",
+                        "i18n(international.depositary.institution.Republic-of-Korea3)",
+                        "i18n(international.depositary.institution.Republic-of-Korea4)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "PL"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "PL1",
+                        "PL2"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Poland1)",
+                        "i18n(international.depositary.institution.Poland2)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "NL"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "NL"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Netherlands)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "MA"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "MA"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Morocco)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "MX"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "MX"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Mexico)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "LV"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "LV"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Latvia)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "JP"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "JP1",
+                        "JP2"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Japan1)" ,
+                        "i18n(international.depositary.institution.Japan2)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "IT"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "IT1",
+                        "IT2",
+                        "IT3"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Italy1)" ,
+                        "i18n(international.depositary.institution.Italy2)" ,
+                        "i18n(international.depositary.institution.Italy3)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "IN"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "IN1",
+                        "IN2",
+                        "IN3"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.India1)" ,
+                        "i18n(international.depositary.institution.India2)" ,
+                        "i18n(international.depositary.institution.India3)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "HU"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "HU"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Hungary)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "DE"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "DE"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Germany)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "FR"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "FR"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.France)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "FI"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "FI"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Finland)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "CZ"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "CZ"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Czech-Republic)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "CN"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "CN1",
+                        "CN2",
+                        "CN3"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.China1)" ,
+                        "i18n(international.depositary.institution.China2)",
+                        "i18n(international.depositary.institution.China3)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "CL"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "CL"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Chile)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "CA"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "CA"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Canada)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "BG"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "BG"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Bulgaria)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "BE"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "BE"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Belgium)"
+                      ]
+                    }
+                  }
+                },
+                {
+                  "properties": {
+                    "country": {
+                      "enum": [
+                        "AU"
+                      ]
+                    },
+                    "institution": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "title": "i18n(biologicalInfos.institution)",
+                      "enum" : [
+                        "AU1",
+                        "AU2"
+                      ],
+                      "enumNames" : [
+                        "i18n(international.depositary.institution.Australia1)",
+                        "i18n(international.depositary.institution.Australia2)"
+                      ]
+                    }
+                  }
+                }
+              ]}
+          },
+          "required": [
+            "accession",
+            "date",
+            "country",
+            "institution"
+          ]
+        }
+      },
+      "required": [
+        "bioMaterial"
+      ]
+    },
+    "institutionDepositary": {
+      "title": "i18n(biologicalInfos.institution)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AU1",
+        "AU2",
+        "BE" ,
+        "BG" ,
+        "CA" ,
+        "CL" ,
+        "CN1",
+        "CN2",
+        "CN3",
+        "CZ" ,
+        "FI" ,
+        "FR" ,
+        "DE" ,
+        "HU" ,
+        "IN1",
+        "IN2",
+        "IN3",
+        "IT1",
+        "IT2",
+        "IT3",
+        "JP1",
+        "JP2",
+        "LV" ,
+        "MX" ,
+        "MA" ,
+        "NL" ,
+        "PL1",
+        "PL2",
+        "KP1",
+        "KP2",
+        "KP3",
+        "KP4",
+        "RU1",
+        "RU2",
+        "SK" ,
+        "ES1",
+        "ES2",
+        "CH" ,
+        "UK1",
+        "UK2",
+        "UK3",
+        "UK4",
+        "UK5",
+        "UK6",
+        "UK7",
+        "US1",
+        "US2",
+        "US3"
+      ],
+      "enumNames": [
+        "i18n(international.depositary.institution.Australia1)",
+        "i18n(international.depositary.institution.Australia2)",
+        "i18n(international.depositary.institution.Belgium)",
+        "i18n(international.depositary.institution.Bulgaria)",
+        "i18n(international.depositary.institution.Canada)",
+        "i18n(international.depositary.institution.Chile)",
+        "i18n(international.depositary.institution.China1)" ,
+        "i18n(international.depositary.institution.China2)",
+        "i18n(international.depositary.institution.China3)",
+        "i18n(international.depositary.institution.Czech-Republic)",
+        "i18n(international.depositary.institution.Finland)",
+        "i18n(international.depositary.institution.France)" ,
+        "i18n(international.depositary.institution.Germany)",
+        "i18n(international.depositary.institution.Hungary)",
+        "i18n(international.depositary.institution.India1)" ,
+        "i18n(international.depositary.institution.India2)" ,
+        "i18n(international.depositary.institution.India3)" ,
+        "i18n(international.depositary.institution.Italy1)" ,
+        "i18n(international.depositary.institution.Italy2)" ,
+        "i18n(international.depositary.institution.Italy3)" ,
+        "i18n(international.depositary.institution.Japan1)" ,
+        "i18n(international.depositary.institution.Japan2)" ,
+        "i18n(international.depositary.institution.Latvia)" ,
+        "i18n(international.depositary.institution.Mexico)" ,
+        "i18n(international.depositary.institution.Morocco)",
+        "i18n(international.depositary.institution.Netherlands)",
+        "i18n(international.depositary.institution.Poland1)",
+        "i18n(international.depositary.institution.Poland2)",
+        "i18n(international.depositary.institution.Republic-of-Korea1)",
+        "i18n(international.depositary.institution.Republic-of-Korea2)",
+        "i18n(international.depositary.institution.Republic-of-Korea3)",
+        "i18n(international.depositary.institution.Republic-of-Korea4)",
+        "i18n(international.depositary.institution.Russian-Federation1)",
+        "i18n(international.depositary.institution.Russian-Federation2)",
+        "i18n(international.depositary.institution.Slovakia)",
+        "i18n(international.depositary.institution.Spain1)",
+        "i18n(international.depositary.institution.Spain2)",
+        "i18n(international.depositary.institution.Switzerland)",
+        "i18n(international.depositary.institution.United-Kingdom1)",
+        "i18n(international.depositary.institution.United-Kingdom2)",
+        "i18n(international.depositary.institution.United-Kingdom3)",
+        "i18n(international.depositary.institution.United-Kingdom4)",
+        "i18n(international.depositary.institution.United-Kingdom5)",
+        "i18n(international.depositary.institution.United-Kingdom6)",
+        "i18n(international.depositary.institution.United-Kingdom7)",
+        "i18n(international.depositary.institution.United-States1)" ,
+        "i18n(international.depositary.institution.United-States2)" ,
+        "i18n(international.depositary.institution.United-States3)"
+      ]
+    }
+  }
+}

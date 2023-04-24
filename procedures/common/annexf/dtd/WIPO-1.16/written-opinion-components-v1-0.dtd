@@ -1,0 +1,2306 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!--
+*******************************************************************************
+
+The written opinion DTD is larger than needed by Ann F, for this reason
+it has been rendered customizable by separating the DTD from the components.
+
+Before instantiating the components declare the following entity:
+
+- for the full set of components (ST.36) :
+
+	Nothing to do
+	
+- for the Ann F version:
+
+	<!ENTITY % ST36.DTD   "IGNORE">
+	<!ENTITY % ANNF.DTD   "INCLUDE">
+
+*******************************************************************************
+-->
+
+<!--WRITTEN OPINION
+
+This construction is intended to capture all communications from an examiner to
+an applicant concerning an application typically referred as written opinions
+or examination reports. The DTD could also cover minutes of telephone
+conversation or other formal meetings with the applicant.
+
+Contacts:
+
+Yuya USHIDA; yukako.shiba@wipo.int
+
+For details about PCT Annex F and about all Annex F DTDs see:
+http://www.wipo.int/pct-safe/en/resources/ and for PFCs see:
+http://www.wipo.int/efiling_standard/en
+
+### Version 1.0 ###
+
+- ADDED
+ <clasification-national> to <application-info>
+
+### Version 0.7 ###
+
+- MODIFIED
+* introduced entities to enable customization
+* cut in modules: info, components and written-opinion
+
+### Version 0.6 ###
+
+- MODIFIED
+* written-opinion-admin brought in-line with info.dtd (PCT Forms discussions)
+Only with needed tags for opinions
+* additional-info: cardinality of p to +
+
+- ADDED
+* office-admin in communication-info
+* attributes id and level to heading
+
+- REMOVED
+* invention-to-be-selected-by-applicant
+In first communication the examiner may defer a detailed reasoning until the
+applicant has indicated on which invention he wishes the procedure to be based
+on.
+Intended for future use in PCT/ISA/206
+EPO/JPO/WIPO : to be added in country specific implementation
+<!ELEMENT invention-to-be-selected-by-applicant EMPTY >
+* invention-title
+* date-of-actual-receipt
+
+### Version 0.3 ###
+
+Changed non-establishment-of-opinion (simplification)
+
+### Version 0.1 ###
+
+Created written-opinion-components based on written-opinion-0.6
+
+-->
+
+<!-- info.dtd
+Import info DTD for the header/footer components.
+
+ QUESTION: To be added here or with the main DTD ?
+-->
+
+<!ENTITY % info_st36 PUBLIC "-//WIPO//FORMS INFO 1.0//EN" "info-v1-0.dtd">
+%info_st36;
+
+<!--
+  DTD MathML2: maintained by W3C.  Download from:
+    http://www.w3.org/TR/MathML2/DTD-MathML-20010221.zip
+ 
+  If using nsgmls-based parser (SP, Near & Far Designer, etc.)
+  Uncomment 'mathml-charent-module' switch below or replace the Referenced 
+  MathML2 DTD with the version downloadable from:
+    http://www.w3.org/Math/DTD/dtd-sp.zip
+ 
+  This notice copied from: http://www.w3.org/Math/DTD/
+     
+  "DTD for nsgmls
+    Some systems (including the popular nsgmls parser) may not be able to 
+    process files using 'plane 1' characters which have Unicode numbers 
+    higher than #xFFFF. The versions of the DTD provided here incoprorate 
+    the modifications mentioned above, but the high characters are replaced 
+    by the equivalent mchar construct <mchar name="..." /> this allows the 
+    DTD to be read and for MathML files to be validated using such sytems."
+
+    ENTITY % mathml-charent.module "IGNORE"
+
+Defaults: 
+
+<!ENTITY % MATHML.prefixed "IGNORE">
+ 
+<!ENTITY % MATHML.xmlns "">
+-->
+ 
+<!--
+The EPO limits the attributes of the element math as follows:
+
+	display (block | inline) "inline"
+	
+	The following common attributes are not used
+
+			MATHML.xmlns.attrib	
+			%MATHML.NamespaceDecl.attrib;
+      %XLINK.prefix;:href   CDATA           #IMPLIED		
+      %XLINK.prefix;:type   CDATA           #IMPLIED	
+      
+-->
+<!ENTITY % att-topinfo "display (block | inline) 'inline'">
+<!ENTITY % att-browif "" >
+<!-- Attributes shared by all elements  .......................... -->
+
+<!ENTITY % MATHML.xmlns.attrib "">
+<!ENTITY % MATHML.Common.attrib
+     "class        CDATA                    #IMPLIED
+      style        CDATA                    #IMPLIED
+      id           ID                       #IMPLIED
+      xref         IDREF                    #IMPLIED
+      other        CDATA                    #IMPLIED"
+>
+
+<!--
+  import MathML2 dtd
+-->
+<!ENTITY % mathml2 PUBLIC "-//W3C//DTD MathML 2.0//EN" "imported\mathml2.dtd">
+%mathml2;
+
+<!--
+  DTD OASIS Open XML Exchange Table Model.  
+  Maintained by OASIS; download from:
+    http://oasis-open.org/specs/soextblx.dtd
+  Note that the FPI in soextblx.dtd refers to itself as 'calstblx'.
+  That convention has been followed here.
+-->
+
+<!--
+  create content for title element in table
+-->
+<!ENTITY % title "<!ELEMENT title (#PCDATA | b | i | u | o | sup | sub | smallcaps)* > ">
+%title;
+ 
+<!--
+  override OASIS Exchange <entry> model
+-->
+<!ENTITY % tbl.entry.mdl "(#PCDATA | b | i | u | o | sup | sub | smallcaps | 
+                           pre | br | patcit | nplcit | bio-deposit | crossref | 
+                           figref | img | dl | ul | ol | chemistry | maths)* ">
+ 
+<!--
+  import OASIS Exchange model
+-->
+<!ENTITY % calstblx PUBLIC "-//OASIS//DTD XML Exchange Table Model 19990315//EN" 
+                           "imported\soextblx.dtd">
+<!ENTITY % yesorno  "NMTOKEN" >
+
+<!-- EPO Limits the attributes
+Does not use:
+
+                            orient    (port | land)  #IMPLIED
+                            tabstyle  NMTOKEN        #IMPLIED
+-->
+<!ENTITY % tbl.table.att  " pgwide    %yesorno;      #IMPLIED" >
+%calstblx;
+
+
+
+<!--
+*******************************************************************************
+SECTION ENTITIES DECLARATION
+This section contains entities used accross the DTD
+*******************************************************************************
+-->
+
+<!--
+address_group
+Structure to store an address.
+-->
+<!ENTITY % address_group  
+               "((address-1?,address-2?,address-3?,address-4?,
+							address-5?,mailcode?,pobox?,room?,address-floor?,building?,
+							street?,city?,county?,state?,postcode?,country) | text)" >
+
+<!--name_group
+Structure to identify a person.
+-->
+<!ENTITY % name_group  
+               "((name | (prefix?,(last-name | orgname),first-name?,
+							middle-name?,first-last-name?, second-last-name?, suffix?,iid?,
+							role?,orgname?,department?,synonym*)),registered-number?)" >
+
+<!-- wo-specific-data -->
+<!ENTITY % wo_specific_data
+		"wo-isa-as-ipea?, iprp-final-date?, demand-submission-date?,
+		iprp-sheet-of-annexes?, sis-received-and-considered*">
+
+<!--
+DTD Customisation, the following entities can be redefined before calling the
+components to customize the DTD. When doing so, care should be take to maintain
+the backward compatibility
+-->
+
+<!-- country-specific-data 
+redefine the entity with the country code element for your country before
+including this DTD.
+
+e.g.:
+
+<!ENTITY % country_specific_data ",ep-specific-data" >
+!!! do not forget to prepend with a comma
+
+and define ep-specific-data in your own DTD.
+
+-->
+<!ENTITY % country_specific_data "" >
+
+<!-- p_group
+Defines the structure of the p tag
+-->
+<!ENTITY % p_group "(#PCDATA | b | i | u | o | sup | sub | smallcaps | br | pre | dl | ul | 
+               ol | crossref | figref | legalref | patcit | nplcit | bio-deposit | 
+               img | chemistry | maths | tables | table-external-doc)*">
+
+<!-- additional_info_group
+-->
+<!ENTITY % additional_info_group "application-document*,(p+|xhtml-text)" >
+
+<!-- written_opinion_request_group
+-->
+<!ENTITY %  written_opinion_request_group "application-documents,priority-opinion?,
+               non-establishment-of-opinion?,added-subject-matter-objections?,
+               lack-of-unity-objection?,clarity-objections?,
+               insufficiency-of-disclosure-objections?,compliance-of-invention*,
+               formal-defects?,comments-of-applicant?,additional-info?,conclusion?">
+             
+<!-- application_documents_group
+-->
+
+<!ENTITY % application_documents_group "translation-of-appl?,
+               application-documents-description?,application-documents-claims?,
+               application-documents-drawings?,application-documents-sequence-list?,
+               rectification-of-obvious-mistakes?, (top-up-search-carried-out | no-top-up-search-carried-out)?, additional-info?">
+
+<!-- claim_defect_group
+-->
+<!ENTITY % claim_defect_group "((claim-num*, partially-for-claims?) | 
+		sequence-list-defect | table-defect)">
+
+<!-- objection_group
+-->
+<!ENTITY % objection_group "application-document+,p*,additional-info*">
+
+<!-- objections_group
+-->
+<!ENTITY % objections_group "objection+ | p+">
+
+<!-- lack_of_unity_objection_group
+-->
+<!ENTITY % lack_of_unity_objection_group "( lack-of-unity-additional-fees,
+							 ((lack-of-unity-single-general-inventive-concept?,
+               lack-of-unity-invention+) | p+), opinion-established-regarding,
+               additional-info*)">
+               
+<!-- lack_of_unity_invention_group
+-->
+<!ENTITY % lack_of_unity_invention_group "claim-num+,identification-of-invention,p*,
+               lack-of-unity-invention-special-tech-feature?">
+
+<!-- opinion_established_regarding_group
+-->               
+<!ENTITY % opinion_established_regarding_group "entire-application | (
+               completely-for-claims?, partially-for-claims?, not-for-claims?) | 
+               selected-invention">               
+
+<!-- compliance_group
+Defines the structure of the elements determining the compliance of the
+application with certain criteria
+-->
+<!ENTITY % compliance_group "(compliance-valid | compliance-not-valid)+, additional-info*">
+
+<!-- compliance_valid_group
+Remove p, covered by additional-info
+-->
+<!ENTITY % compliance_valid_group "claim-num+">
+
+<!-- citations_group
+-->
+<!ENTITY % citations_group "citation | conflicting-document | non-written-disclosure">
+
+<!-- common_id_attribute_group
+-->
+<!ENTITY % common_id_attribute_group "id  ID    #IMPLIED 
+               idrefs  IDREFS    #IMPLIED 
+               gidrefs  CDATA    #IMPLIED">
+
+<!--
+*******************************************************************************
+END SECTION ENTITIES DECLARATION
+*******************************************************************************
+-->
+
+<!--written-opinion-admin
+Wrapper for information related to the application and written opinion,
+as well as specific information for specific procedures/phases.
+-->
+<!ELEMENT written-opinion-admin  (application-info, communication-info,
+ 								 office-specific-data?) >
+
+<!--wo-isa-as-ipea
+The written opinion of the ISA is considered a WO of the IPEA
+-->
+<!ELEMENT wo-isa-as-ipea   EMPTY  >
+
+<!ATTLIST wo-isa-as-ipea
+               considered (yes | no)   #IMPLIED  >
+
+<!--iprp-final-date
+The final date by which the international preliminary report on
+patentability (Chapter II of the PCT) must be established according to
+Rule 69.2.
+-->
+<!ELEMENT iprp-final-date  (date) >
+
+<!--Date of submiision of demand, format YYYYMMDD
+
+-->
+<!ELEMENT demand-submission-date  (date) >
+
+<!--2. This REPORT consists of a total of ___________ sheets, including this
+cover sheet.
+
+-->
+<!ELEMENT iprp-sheet-of-annexes  (iprp-annexes-sheet?,
+               iprp-annexes-electronic-carrier?) >
+
+<!ATTLIST iprp-sheet-of-annexes
+               page-count  CDATA    #IMPLIED  >
+
+<!--3. This report is also accompanied by ANNEXES, comprising:
+a. a total of ___________ sheets, as follows:
+
+-->
+<!ELEMENT iprp-annexes-sheet  (iprp-beyond-disclosure?,
+               iprp-rectifications-authorized?,
+               iprp-rectifications-not-authorized?) >
+
+<!ATTLIST iprp-annexes-sheet
+               page-count  CDATA    #IMPLIED  >
+
+<!--Sheets of the description, claims and/or drawings which have been amended and are
+the basis of this report and/or sheets containing rectifications authorized by
+this Authority
+(see Rule 70.16 and Section 607 of the Administrative Instructions)
+
+-->
+<!ELEMENT iprp-beyond-disclosure   EMPTY  >
+
+<!--Sheets which supersede earlier sheets, but which this Authority considers contain
+an amendment that goes beyond the disclosure in the international application as
+filed, as indicated in item 4 of Box No. I and the Supplemental Box.
+
+-->
+<!ELEMENT iprp-rectifications-authorized   EMPTY  >
+
+<!--sheets containing rectifications, where the decision was made by this Authority not to take them into account because
+they were not authorized by or notified to this Authority at the time when this Authority began to draw up this report,
+and any accompanying letters (Rules 66.4bis, 70.2(e), 70.16 and 91.2).
+
+-->
+<!ELEMENT iprp-rectifications-not-authorized   EMPTY  >
+
+<!--A total of (indicate type and number of electronic carrier(s)) ________________ ,
+containing a sequence listing and/or tables related thereto, in computer readable
+form only, as indicated in the Supplemental Box Relating to Sequence Listing
+(see Section 802 of the Administrative Instructions).
+
+-->
+<!ELEMENT iprp-annexes-electronic-carrier   EMPTY  >
+
+<!ATTLIST iprp-annexes-electronic-carrier
+               quantity  CDATA    #IMPLIED  >
+
+<!--sis-received-and-considered
+Supplementary international search report was received and considered
+in the redaction of the opinion. Office code according to ST.3.
+-->
+<!ELEMENT sis-received-and-considered  (#PCDATA) >
+
+<!--Office is the ST.3 country code, including the regional authorities.
+Office-dtd is the file which contains the DTD for the office-specific elements.
+-->
+<!ELEMENT office-specific-data
+	(%wo_specific_data; %country_specific_data;)
+>
+
+<!ATTLIST office-specific-data
+               id  ID    #IMPLIED 
+               file  CDATA    #REQUIRED 
+               lang  CDATA    #IMPLIED 
+               office  CDATA    #REQUIRED 
+               office-dtd  CDATA    #REQUIRED 
+               status  CDATA    #IMPLIED  >
+
+<!--*********************************
+DOC-PAGE
+*********************************
+doc-page - DOCument or PAGE
+
+This is primarily to be used when data for the whole or major sections of an
+application are in image format OR other formats such as pdf.
+
+Page range attributes are given when required
+pp - page range
+ppf - first page
+ppl - last page (for pdf).
+The 'img' may also be used for complete pages, e.g. in drawings
+
+EPO Required usage:
+- in the EP publication process this tag is only likely to be used for the
+search report; then we use:
+- id="srep0001"
+- file="srep0001.tif"
+
+- in all other cases use:
+- id="docp0001"
+- file="docp0001.tif"
+
+** Note: ocr attribute added NOT ANNEX F compatible - for OCR project? CHECK
+
+Example:
+<search-report-data id="srep" srep-office="EP" date-produced="20050308">
+<doc-page id="srep0001" file="srep0001.tif" he="231" wi="159" type="tif" />
+<doc-page id="srep0002" file="srep0002.tif" he="231" wi="159" type="tif"/>
+</search-report-data>
+-->
+<!ELEMENT doc-page   EMPTY  >
+
+<!ATTLIST doc-page
+               id  ID    #IMPLIED 
+               file  CDATA    #REQUIRED 
+               wi  CDATA    #REQUIRED 
+               he  CDATA    #REQUIRED 
+               type (jpg | pdf | tif)   #REQUIRED 
+               alt  CDATA    #IMPLIED 
+               pp  CDATA    #IMPLIED 
+               ppf  CDATA    #IMPLIED 
+               ppl  CDATA    #IMPLIED 
+               ocr  CDATA    #IMPLIED 
+               color (color | bw)   #IMPLIED 
+               orientation (portrait | landscape)  "portrait" >
+
+<!--*******************************
+HEADINGS
+*******************************
+
+EPO required usage:
+- id="h0001", "h0002", etc.
+- level="1" etc MAY be used and are used in PatXML files
+
+EPO PatXML uses:
+- For level 1: left justified, bold, line break
+- For level 2: left justified, underlined, line
+- For level 3: left justified, line break,
+but the rendering tags are included within the <heading>; eg. <b>
+
+- For ALL other headings entered by the contractor just use <heading> using
+bold etc as entered by the applicant
+BUT left justified,
+DO NOT USE level attribute UNLESS it is a PatXML file which can be left "as is".
+-->
+<!ELEMENT heading  (#PCDATA | b | i | u | o | sup | sub | smallcaps)* >
+
+<!ATTLIST heading
+               id  ID    #IMPLIED 
+               level (1 | 2 | 3)   #IMPLIED  >
+
+<!--Bold formatting for text-->
+<!ELEMENT b  (#PCDATA | i | u | o | smallcaps | sup | sub)* >
+
+<!--Italic formatting for text-->
+<!ELEMENT i  (#PCDATA | b | u | o | smallcaps | sup | sub)* >
+
+<!--Underscore: style - single is default-->
+<!ELEMENT u  (#PCDATA | b | i | smallcaps | sup | sub)* >
+
+<!ATTLIST u
+               style (single | double | dash | dots)  "single" >
+
+<!--Small capitals-->
+<!ELEMENT smallcaps  (#PCDATA | b | u | i | o)* >
+
+<!--Overscore: style - single is default-->
+<!ELEMENT o  (#PCDATA | b | i | smallcaps | sup | sub)* >
+
+<!ATTLIST o
+               ostyle (single | double | dash | dots | leftarrow | rightarrow | 
+               leftrightarrow)  "single" >
+
+<!--Superscripted text-->
+<!ELEMENT sup  (#PCDATA | b | u | i | o | sup2 | sub2)* >
+
+<!--Superscripted text-->
+<!ELEMENT sup2  (#PCDATA | b | u | i | o)* >
+
+<!--Subscripted text-->
+<!ELEMENT sub2  (#PCDATA | b | u | i | o)* >
+
+<!--Subscripted text-->
+<!ELEMENT sub  (#PCDATA | b | u | i | o | sup2 | sub2)* >
+
+<!--*******************************************************************************
+START SECTION FORMATTING TAGS
+*******************************************************************************
+
+*******************************
+PARAGRAPH
+*******************************
+
+EPO Required usage:
+- In case of standard paragraphs in the description: id="p0001", "p0002", etc.
+- In case of abstracts: id="pa01", "pa02", etc. (more than three is rare)
+- In case of amended-claims-statement: id="pc0001", "pc0002", etc.
+- In case of search reports: id="ps0001", "ps0002", etc.
+- num = 0001, 0002, etc.
+
+EPO style: - always left justified
+- precede by para. number in bold as so: [0001]
+- para. text indented 7mm from [0001]
+- see espacenet for examples
+
+-->
+
+<!ELEMENT p  %p_group; >
+
+<!ATTLIST p
+               id  ID    #IMPLIED 
+               num  CDATA    #REQUIRED  >
+
+<!--br - break, line break within a paragraph, etc
+-->
+<!ELEMENT br   EMPTY  >
+
+<!--*******************************
+PRE
+*******************************
+- This element is one method to identify content consisting of text objects that
+require preservation (pre) of their whitespace in order to preserve internal
+logical relationships.
+(e.g., sequence listing fragments, computer program listings)
+-->
+<!ELEMENT pre  (#PCDATA) >
+
+<!ATTLIST pre
+               id  ID    #IMPLIED 
+               xml:space (preserve | default)   #IMPLIED 
+               listing-type (sequence | program-listing | other)   #REQUIRED  >
+
+<!--*******************************
+LISTS
+*******************************
+DEFINTION LISTS
+*******************************
+EPO required usage:
+- For dl elements in the main part of the document: id="dl0001"
+- If parent element is abstract: id="dla01" BUT contractors
+should, if possible, not use in abstracts.
+(It is not used in PatXML in abstracts)
+- tsize: this is optional and not used in PatXML
+files (similar to HTML).
+- Old SGML files have the value of the length of the first <dt> this can be removed
+- For new processing tsize is not required; layout will depend on style sheet
+- This follows HTML practice
+
+Example:
+
+Old file:
+
+<DL TSIZE=10>
+<DT>Fig. 1<DD>shows a 3D surface plot ..
+<DT>Fig. 2a<DD>is a schematic diagram ...
+</DL>
+
+New file
+
+<dl id="dl0001">
+<dt>fig. 1</dt><dd>shows a 3d surface plot ..</dd>
+<dt>fig. 2a</dt><dd>is a schematic diagram ...</dd>
+</dl>
+
+
+-->
+<!ELEMENT dl  (dt,dd)+ >
+
+<!ATTLIST dl
+               id  ID    #IMPLIED 
+               tsize  CDATA    #IMPLIED 
+               compact (compact)   #IMPLIED  >
+
+<!--Term to be defined
+
+Recommended id="dt0001",etc
+EPO required usage:
+NOT USED IN EPO.
+-->
+<!ELEMENT dt  (#PCDATA | b | i | u | o | sup | sub | smallcaps)* >
+
+<!ATTLIST dt
+               id  ID    #IMPLIED  >
+
+<!--Definition description
+-->
+<!ELEMENT dd  (#PCDATA | b | i | u | o | sup | sub | smallcaps | br | pre | patcit | 
+               nplcit | bio-deposit | crossref | figref | img | ul | ol | chemistry | 
+               maths)* >
+
+<!--PATENT CITATIONS: (ST.32:B561) Patent Citation within abstract, description or claims. 
+For patent citations within Search Report see Search Report DTD Notes: Tags arranged according to WIPO ST.14 order. 
+This can be free text data without any structure (text). 
+Example: 
+<patcit id='pcit0001' dnum='US4793675A' dnum-type='publication number'> 
+<document-id> <country>US</country> <doc-number>4793675</doc-number> <kind>A</kind> <name>Handa</name> <date>19881227</date> 
+</document-id> 
+</patcit> 
+Note: It is NOT expected that the applicant will create the tagged data - 
+it could be generated from a 'pull down' data entry form or generated from 
+internal SR databases 
+Attributes (recommended): 
+id - pcit0001, pcit0002, etc. 
+num - 0001, 0002, etc. dnum - use full number as one string, eg, "US5401234A"; 
+url - where possible give full web link to patent file - file name eg. 
+if stored on local systems dnum-type - type of document number 
+(e.g., application number, publication number)
+
+REMOVED rel-passage NOT USED
+-->
+<!ELEMENT patcit (text | (document-id , rel-passage*))>
+
+<!ATTLIST patcit
+               id  ID    #IMPLIED 
+               num  CDATA    #IMPLIED 
+               dnum  CDATA    #IMPLIED 
+               dnum-type  CDATA    #IMPLIED 
+               file  CDATA    #IMPLIED 
+               url  CDATA    #IMPLIED  >
+
+<!-- INCLUDED BY INHERITANCE  -->
+<!--If no structure is possible, enter text (without markup)-->
+<!--<!ELEMENT text  (#PCDATA) >-->
+
+<!-- INCLUDED BY INHERITANCE  -->
+<!--Document identification refers to patents (and patent applications) only. See WIPO ST.14-->
+<!--<!ELEMENT document-id  (country,doc-number,kind?,name?,date?) >-->
+
+<!-- INCLUDED BY INHERITANCE  -->
+<!--Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc. Also includes EP, WROP-->
+<!--<!ELEMENT country  (#PCDATA) >-->
+
+<!-- INCLUDED BY INHERITANCE  -->
+<!--The number of the referenced patent (or application) document-->
+<!--<!ELEMENT doc-number  (#PCDATA) >-->
+
+<!-- INCLUDED BY INHERITANCE  -->
+<!--Document kind code; e.g., A1 (INID 13, ST.32:B130)-->
+<!--<!ELEMENT kind  (#PCDATA) >-->
+
+<!-- INCLUDED BY INHERITANCE  -->
+<!--Name: If no distinction or detail can be given. Also to be used for: personal (natural person) and corporate (legal entity) names-->
+<!--<!ELEMENT name  (#PCDATA) >-->
+
+<!--Relevant passage group within patent; most used in search reports - use text in abstract, description and claims-->
+<!ELEMENT rel-passage  (text | (passage+,(category,rel-claims?)*)) >
+
+<!--Passage within the cited patent literature-->
+<!ELEMENT passage  (#PCDATA) >
+
+<!--Category (ST.32:B563)-->
+<!ELEMENT category  (#PCDATA) >
+
+<!--Relevant claims
+see example above
+-->
+<!ELEMENT rel-claims  (#PCDATA) >
+
+<!--Non-Patent Literature (NPL) CITation; 
+Notes: This can be free text data without any structure (#PCDATA) which is 
+NOT recommended or it can be highly structured data which is marked up according 
+to ST.14 and ISO 690 layout; This part of the DTD has used many different sources 
+for element names and DTD structure and reference: AACR2 / MARC ISO 12083 - 
+$Electronic manuscript prep. and markup. DTD Association of American Publishers 
+(AAP) Z39.59 DTD European Working Group for SGML (EWS) MAJOUR DTD SuperJournal 
+Full Article DTD www.superjournal.ac.uk/sj Elsevier DTD Medline DTD (NLM) 
+
+Attributes (recommended): 
+¨
+id - ncit0001, ncit0002, etc 
+
+num - 0001, 0002 
+
+npltype - The TYPE of citation is office specific (recommended):; 
+A - Abstract citation of no specific kind 
+B - Book citation I - Bilogical abstract citation 
+C - Chemical abstracts citation E - Database citation 
+D - Derwent citation 
+P - Patent cited within NPL group 
+J - Patent Abstracts of Japan citation (REC 067) 
+S - Serial / Journal / Periodical citation 
+W - World Wide Web / Internet search citation 
+
+medium - the type of medium e.g., CD (CD-ROM), MT (Magnetic Tape), DISK, 
+ONLINE 
+
+file - file name on local systems eg. XP number in EPO 
+
+url - where possible give full web link to document
+
+REMOVED rel-passage NOT USED
+-->
+<!ELEMENT nplcit ((text | article | book | online | othercit) , rel-passage*)>
+
+<!ATTLIST nplcit
+               id  ID    #IMPLIED 
+               num  CDATA    #IMPLIED 
+               lang  CDATA    #IMPLIED 
+               file  CDATA    #IMPLIED 
+               npl-type  CDATA    #IMPLIED 
+               medium  CDATA    #IMPLIED 
+               url  CDATA    #IMPLIED  >
+
+<!--Article citations within a 'host' document After patent citations the most common citations are articles within serials (periodicals, magazines), books and electronic (eg. internet) sources. This is a very complex and varied area to standardise. The tag set below is drawn from a number of sources as is the order of the tags (which in any case can be changed depending on the stylesheet used).; The order of tags is that of WIPO ST.14 / ISO 690 layout. DROP, J.G. Integrated Circuit Personalization at the Module Level. IBM Tech. Dis. Bull. October 1974, Vol. 17, No. 5, p. 1344 and 1345. [XPnnnnnnnnnnn]. <nplcit id='ncit1' num='0012' type='S' file='XP1234456'> <article> <author> <name>DROP, J.G.</name> </author> <atl>Integrated Circuit Personalization at the Module Level</atl> <serial> <sertitle>IBM Tech. Dis. Bull.</sertitle> <pubdate>19741000</pubdate> <vid>17</vid> <ino>5</ino> </serial> <location> <pp>1344 and 1345</pp> </location> <refno id='XP1'>XP1234456</refno> </article> </nplcit> Note: it is NOT expected that the applicant will create the tagged data - it can be generated from a 'pull down' data entry form (eg. in Word) or generated from internal SR databases-->
+<!ELEMENT article  (text | (author*,atl?,subname*,(serial | book),absno?,location?,
+               class*,keyword*,cpyrt?,artid?,refno*)) >
+
+<!--Author Prime responsibility for the work there is no distinguishing between personal and corporate authors <author> followed by name or addressbook information use the ID attribute if, for example, there is a need to distinguish between multiple authors. Can also include affiliation details Recommended id = auth0001, auth0002, etc.-->
+<!ELEMENT author  (((name | (prefix?,(last-name | orgname),first-name?,middle-name?,
+               first-last-name?,second-last-name?,suffix?,iid?,role?,orgname?,
+               department?,synonym*)),registered-number?) | addressbook) >
+
+<!ATTLIST author
+               id  ID    #IMPLIED  >
+
+<!--Article title-->
+<!ELEMENT atl  (#PCDATA) >
+
+<!--Subordinate responsibility; e.g., editor, translator, etc.-->
+<!ELEMENT subname  (((name | (prefix?,(last-name | orgname),first-name?,middle-name?,
+               first-last-name?,second-last-name?,suffix?,iid?,role?,orgname?,
+               department?,synonym*)),registered-number?) | addressbook) >
+
+<!ATTLIST subname
+               subname-type (editor | translator | other-subname-type)  "editor"
+                >
+
+<!--Serial citation data: This describes the volume or issue as a whole and not a particular article within it.-->
+<!ELEMENT serial  (sertitle,alttitle?,subname*,issue?,imprint?,pubdate?,descrip?,
+               notes?,pubid?,vid?,ino?,doi?,issn?,isbn?,cpyrt?) >
+
+<!--Serial title-->
+<!ELEMENT sertitle  (#PCDATA) >
+
+<!--Alternate title for serial; e.g. BMJ = British Medical Journal-->
+<!ELEMENT alttitle  (#PCDATA) >
+
+<!--Issue designation; e.g., Annual, 1971-, 1890-1972-->
+<!ELEMENT issue  (#PCDATA) >
+
+<!--Imprint: Publication / creation data Place of publication : publisher, date(s) of publication usually only date of publication is used for journal citations-->
+<!ELEMENT imprint  (text | (address?,name,pubdate*)) >
+
+<!--Publication date used in npl citations-->
+<!ELEMENT pubdate  (#PCDATA | sdate | edate | time)* >
+
+<!--Start date used in pubdate-->
+<!ELEMENT sdate  (#PCDATA) >
+
+<!--End date used in pubdate-->
+<!ELEMENT edate  (#PCDATA) >
+
+<!--Time; format HHMM-->
+<!ELEMENT time  (#PCDATA) >
+
+<!--Physical description - generally NOT used in citations in pats; e.g., v., 27cm-->
+<!ELEMENT descrip  (#PCDATA) >
+
+<!--Notes about the journal; e.g. Continues Journal of XYZ 1910-1998, published in French and English, etc.-->
+<!ELEMENT notes  (#PCDATA) >
+
+<!--Publisher's unique id-->
+<!ELEMENT pubid  (#PCDATA) >
+
+<!--Volume id/number-->
+<!ELEMENT vid  (#PCDATA) >
+
+<!--Issue number-->
+<!ELEMENT ino  (#PCDATA) >
+
+<!---->
+<!ELEMENT doi  (#PCDATA) >
+
+<!--International Standard Serial Number-->
+<!ELEMENT issn  (#PCDATA) >
+
+<!--International Standard Book Number-->
+<!ELEMENT isbn  (#PCDATA) >
+
+<!--Copyright info. Copyright of publisher of serial-->
+<!ELEMENT cpyrt  (#PCDATA) >
+
+<!--Book citation In the order specified by WIPO ST.14 and ISO 690 and AACR2 rules for layout WALTON, Herrmann. Microwave quantum theory. London : Sweet and Maxwell, 1973. ISBN 0123456789. Vol.2, p. 138 to 192. <nplcit id='ncit12' num='0013' type='b'> <book> <author> <name>WALTON, Herrman</name> </author> <book-title>Microwave quantum theory</book-title> <imprint> <address> <text>London</text> </address> <name>Sweet and Maxwell</name> <pubdate>19730000</pubdate> </imprint> <location> <pp>138 to 192</pp> </location> <isbn>0-1234-568-9</isbn> </book> </nplcit>-->
+<!ELEMENT book  (text | (author*,(book-title+ | conference),(subtitle?,subname*,
+               edition?,imprint?,vid?,ino?,descrip?,series?,notes?,absno?,location*,
+               pubid?,bookno?,class*,keyword*,cpyrt?,doi?,issn?,isbn*,refno*))) >
+
+<!--The title of the cited book-->
+<!ELEMENT book-title  (#PCDATA) >
+
+<!--CONFERENCE GROUP / CITATION There is no standard way of citing conference proceedings; date of the conf. may come before or after place, for example. The tags are specified in a set order where it is not possible or correct then simply use <text>-->
+<!ELEMENT conference  (text | (conftitle,confdate?,confno?,confplace?,confsponsor*)) >
+
+<!--Conference title-->
+<!ELEMENT conftitle  (#PCDATA) >
+
+<!---->
+<!ELEMENT confdate  (date | (sdate,edate)) >
+
+<!--Conference number-->
+<!ELEMENT confno  (#PCDATA) >
+
+<!--Conference place-->
+<!ELEMENT confplace  (#PCDATA | address)* >
+
+<!--Conference sponsor-->
+<!ELEMENT confsponsor  (#PCDATA | addressbook)* >
+
+<!--Book subtitle-->
+<!ELEMENT subtitle  (#PCDATA) >
+
+<!--Edition statement (ST.32:B516)-->
+<!ELEMENT edition  (#PCDATA) >
+
+<!--Series statement-->
+<!ELEMENT series  (text | (mst,msn?,issn?)) >
+
+<!--Monographic series title-->
+<!ELEMENT mst  (#PCDATA) >
+
+<!--Monographic series number-->
+<!ELEMENT msn  (#PCDATA) >
+
+<!--Abstract number-->
+<!ELEMENT absno  (#PCDATA) >
+
+<!--Location within the cited work-->
+<!ELEMENT location  (text | (serpart?,sersect?,chapter?,pp?,column?,para?,line?)) >
+
+<!--Part within a serial-->
+<!ELEMENT serpart  (#PCDATA) >
+
+<!--Serial section-->
+<!ELEMENT sersect  (#PCDATA) >
+
+<!--Chapter; e.g., in a book. Example: Chapter 2-->
+<!ELEMENT chapter  (#PCDATA) >
+
+<!--Cited document page numbers-->
+<!ELEMENT pp  (#PCDATA | ppf | ppl)* >
+
+<!--Cited document page , first-->
+<!ELEMENT ppf  (#PCDATA) >
+
+<!--Cited document page, last-->
+<!ELEMENT ppl  (#PCDATA) >
+
+<!--Cited document column numbers-->
+<!ELEMENT column  (#PCDATA | colf | coll)* >
+
+<!--Cited document column, first-->
+<!ELEMENT colf  (#PCDATA) >
+
+<!--Cited document column, last-->
+<!ELEMENT coll  (#PCDATA) >
+
+<!--Referenced paragraph within cited work-->
+<!ELEMENT para  (#PCDATA | paraf | paral)* >
+
+<!--Cited paragraph, first-->
+<!ELEMENT paraf  (#PCDATA) >
+
+<!--Cited paragraph, last-->
+<!ELEMENT paral  (#PCDATA) >
+
+<!--Referenced line within cited work-->
+<!ELEMENT line  (#PCDATA | linef | linel)* >
+
+<!--Cited document line, first-->
+<!ELEMENT linef  (#PCDATA) >
+
+<!--Cited document line, last-->
+<!ELEMENT linel  (#PCDATA) >
+
+<!--Book number-->
+<!ELEMENT bookno  (#PCDATA) >
+
+<!-- INCLUDED BY INHERITANCE-->
+<!--Classification code; e.g., ipc, dewey etc.-->
+<!--<!ELEMENT class  (#PCDATA) >-->
+
+<!--Keyword; e.g., from a Thesaurus or class. scheme (ST.32:B550)-->
+<!ELEMENT keyword  (#PCDATA) >
+
+<!--Reference number (general); for the EPO this is the XP number-->
+<!ELEMENT refno  (#PCDATA) >
+
+<!ATTLIST refno
+               id  ID    #IMPLIED  >
+
+<!--Article unique ID - assigned by a publisher to an article-->
+<!ELEMENT artid  (#PCDATA) >
+
+<!--Online citation Revised according to ISO-690-2 - Electronic documents and parts thereof. Please refer to this standard for definitions and examples. See: http://www.nlc-bnc.ca/iso/tc46sc9/standard/690-2e.htm#Contents The tagging in fact is a mixture of article and book tags together with specific electronic source tags. 'Online' is taken to mean any kind of electronic documentation: databases, internet, CD-Roms, DVD, email, etc EXAMPLES:; Kirk-Othmer Encyclopedia of Chemical Technology [online]. 3rd ed. New York : John Wiley, 1984 [cited 3 January 1990]. Available from: DIALOG Information Services, Palo Alto (Calif.). <nplcit id='ncit1' num='0001' type='E' medium='online'> <online> <online-title>Kirk-Othmer Encyclopedia of Chemical Technology </online-title> <edition>3rd ed.</edition> <imprint> <address> <text>New York</text> </address> <name>John Wiley</name> <pubdate>19840000</pubdate> </imprint> <avail>dialog information services, palo alto (calif.).</avail> <datecit> <date>19900103</date> </datecit> </online> </nplcit> * Article on Internet: Clark, Carol. On the Threshold of a Brave New World. In Blueprint of the Body [online]. CNN.com, 2000. [cited 24 August 2000;10:25 EST]. In-depth specials. Available from: [http://www.cnn.com/SPECIALS/2000/genome/story/overview/] <nplcit id='ncit1' num='0002' type='E' medium='online'> <online> <author> <name>Clark, Carol</name> </author> <online-title>On the Threshold of a Brave New World</online-title> <imprint> <name>CNN.com, 2000</name> </imprint> <series> <text>In-depth specials</text> </series> <avail>http://www.cnn.com/SPECIALS/2000/genome/story/</avail> <datecit> <date>20000824; 10:25 est</date> </datecit> </online> </nplcit> * Personal communication (e-mail) Thacker, Jane. MPEG-21 project stream on digital item identification [online]. Message to: [iso.tc46.sc9@nlc-bnc.ca]. 3 October 2000; 13:33 EST [cited 6 October 2000; 13:10 EST]. Message-ID: [002f01c02d60$051a64a0$22a2580c@vaio]. Personal communication. <nplcit id='ncit3' num='0003' type='E' medium='online'> <online> <author> <name>Thacker, Jane</name> </author> <online-title>MPEG-21 project stream on digital item identification </online-title> <subname> <name>Message to: <iso.tc46.sc9@nlc-bnc.ca></name> </subname> <pubdate>3 October 2000; 13:33 EST</pubdate> <notes>Personal communication</notes> <avail>Message-ID: <002f01c02d60$051a64a0$22a2580c@vaio></avail> <datecit><date>6 october 2000; 13:10 EST</date></datecit> </online> </nplcit>-->
+<!ELEMENT online  (text | (author*,online-title*,hosttitle?,subname*,edition?,(
+               serial | book)?,imprint?,pubdate?,vid?,ino?,history?,series?,hostno?,
+               absno?,location?,notes?,avail*,class*,keyword*,cpyrt?,doi?,issn?,
+               isbn?,datecit?,srchterm*,srchdate?,refno*)) >
+
+<!--The title of the electronic resource-->
+<!ELEMENT online-title  (#PCDATA) >
+
+<!--Title of the host document/database-->
+<!ELEMENT hosttitle  (#PCDATA) >
+
+<!--History of the article (not serial)-->
+<!ELEMENT history  (text | (received | accepted | revised | misc)) >
+
+<!--Date article was received-->
+<!ELEMENT received  (date) >
+
+<!--Date article was accepted-->
+<!ELEMENT accepted  (date) >
+
+<!--Date article was revised-->
+<!ELEMENT revised  (date) >
+
+<!--Miscellaneous information relating to the history of the article; see ISO 12083-->
+<!ELEMENT misc  (#PCDATA | date)* >
+
+<!--Numeration within host document-->
+<!ELEMENT hostno  (#PCDATA) >
+
+<!--Availability and access - REQUIRED use for URL, online database, ftp address, email, etc.; e.g., Available from Internet: http://www.epoline.org Available from DIALOG Information Systems, Palo Alto (Calif.)-->
+<!ELEMENT avail  (#PCDATA) >
+
+<!--Date cited - date on which the citation was cited. May be different from srchdate below-->
+<!ELEMENT datecit  (date) >
+
+<!--Search terms-->
+<!ELEMENT srchterm  (#PCDATA) >
+
+<!--Date of search/retrieval YYYYMMDD-->
+<!ELEMENT srchdate  (date) >
+
+<!--Other citations - free form-->
+<!ELEMENT othercit  (#PCDATA | b | i | u | o | sup | sub)* >
+
+<!--Date: components of a date. Format: YYYYMMDD
+
+If no structure is possible, enter text (without markup)
+
+*******************************
+BIO-DEPOSIT
+*******************************.
+Biological deposit citation
+(INID 83, ST.32:B830)
+According to PCT Rule 13bis, EPC Rule 32
+This covers all bio data references long and short within
+the description and/or claims
+
+Recommended id=biod0001, biod0002, etc.
+
+Used in PatXML files
+
+Corresponding SDOBI tags:
+ST.32:B831 - depositary
+ST.32:B832 - bio-accno
+ST.32:B833 - date
+ST.32:B834 - term
+ST.32:B835 - dtext
+-->
+<!ELEMENT bio-deposit  (depositary,bio-accno,date?,term?,dtext?) >
+
+<!ATTLIST bio-deposit
+               id  ID    #IMPLIED 
+               num  CDATA    #REQUIRED 
+               url  CDATA    #IMPLIED 
+               dnum  CDATA    #IMPLIED  >
+
+<!--Information regarding the facility storing the biological deposit.
+(ST.32:B831)
+-->
+<!ELEMENT depositary  (#PCDATA | address)* >
+
+<!--Biological accession number:
+The identification assigned to the biological material by the depository
+(ST.32:B832)
+-->
+<!ELEMENT bio-accno  (#PCDATA) >
+
+<!--Identifies the period of time during which the depository must be able to furnish
+samples of the biological material.
+(ST.32:B834)
+-->
+<!ELEMENT term  (#PCDATA) >
+
+<!--Cross reference to any other element with an identifier (id)
+
+In PatXML files can be to a table only.
+-->
+<!ELEMENT crossref  (#PCDATA | b | i | u | o | sup | sub | smallcaps)* >
+
+<!ATTLIST crossref
+               idrefs  IDREFS    #REQUIRED 
+               gidrefs  CDATA    #IMPLIED  >
+
+<!--*******************************
+REFERENCES:
+*******************************
+A reference to a figure. May be in PatXML files.
+QUESTION: For discussion with contractor ?**
+
+Example:"...as shown in <figref idref='f0001'>Fig.1</figref>..."
+
+-->
+<!ELEMENT figref  (#PCDATA | b | i | u | o | sup | sub | smallcaps)* >
+
+<!ATTLIST figref
+               idrefs  IDREFS    #IMPLIED 
+               gidrefs  CDATA    #IMPLIED 
+               num  CDATA    #IMPLIED  >
+
+<!--*******************************
+IMAGE DATA
+*******************************
+Image is used for any kind of image: drawings, art work,
+figures, complex work units (math, tables, chemistry), etc.
+
+EPO Required usage:
+the following attributes must be used in this order:
+- id
+- file
+- wi (in mm) - note wi and he can be in any order (old Datimtex files are he and wi)
+- he (in mm)
+- img-content="drawing" (default - may be other - see below)
+- img-format="tif" (default - no other)
+- orientation="portrait" (default for PATXML files - may be landscape)
+- inline may be used
+- alt is NOT used
+
+- id and file values:
+- For figures within the DRAWINGS section:
+id="if0001", etc.
+file="imgf0001.tif" (where f = figure)
+- For images within the DESCRIPTION and CLAIMS section:
+id="ib0001", etc.
+file ="imgb0001.tif" (where b = body)
+- For images within the BODY of the ABSTRACT section eg a chemical formula
+id="ia01", etc.
+file ="imga0001.tif" (where a = abstract)
+- For the figure to accompany the ABSTRACT section (abstract drawing): Taken from
+the drawings section NOT in PatXML files.
+id="iaf01", etc.
+file ="imgaf001.tif" (where af = abstract figure)
+
+Example:
+
+<img id="if0001" file="imgf0001.tif" wi="155" he="230" img-content="drawing" img-format="tif"/>
+
+Note: where images occur, possibly, in other sections, eg. search report data use similar logic.
+-->
+<!ELEMENT img   EMPTY  >
+
+<!ATTLIST img
+               id  ID    #IMPLIED 
+               file  CDATA    #REQUIRED 
+               wi  CDATA    #REQUIRED 
+               he  CDATA    #REQUIRED 
+               img-content (drawing | photograph | character | dna | undefined | 
+               chem | table | math | program-listing | flowchart | graph)  
+               "drawing"
+               img-format (jpg | tif | st33 | st35)   #REQUIRED 
+               orientation (portrait | landscape)  "portrait"
+               inline (yes | no)  "no"
+               alt  CDATA    #IMPLIED  >
+
+<!--*******************************
+UNORDERED LISTS:
+*******************************
+
+List-style may be empty for lists with no bullet or other symbol
+default list-style is 'bullets'.
+
+EPO required usage:
+- for ul element in the description: id="ul0001"
+- If parent element is abstract: id="ula01"; BUT contractors
+should, if possible, not use in abstracts just type in the
+numbers as text (not used in PatXML)
+- list-style: "none" means "none" or other type of symbol;
+that is if the applicant used
+some other symbol use this and then in the body of the text enter that symbol
+- bullet and dash may be used
+- compact
+
+
+EPO style: indent whole list 6mm from left margin
+
+Example:
+<ul id="ul0001" list-style="bullet">
+
+-->
+<!ELEMENT ul  (li+) >
+
+<!ATTLIST ul
+               id  ID    #IMPLIED 
+               list-style (bullet | dash | none)  "bullet"
+               compact (compact)   #IMPLIED  >
+
+<!--LIST ITEM
+EPO required usage:
+- DO NOT USE ID
+-->
+<!ELEMENT li  (#PCDATA | b | i | u | o | sup | sub | smallcaps | br | pre | patcit | 
+               nplcit | bio-deposit | crossref | figref | img | dl | ul | ol | 
+               chemistry | maths)* >
+
+<!ATTLIST li
+               id  ID    #IMPLIED 
+               num  CDATA    #IMPLIED  >
+
+<!--*******************************
+ORDERED LISTS:
+*******************************
+
+EPO required use:
+- For ol elements in the main part of the document id="ol0001"
+- If parent element is abstract:id="ola01";BUT contractors
+should, if possible, not use in abstracts just type in the
+numbers as text.
+
+EPO PatXML style ONLY for three levels and ONLY in the description:
+- level 1 use arablic numbers 1, 2, 3, ...
+- level 2 use lower alpha a, b, c, ...
+- level 3 use lower roman i, ii, iii, ...
+
+Early PatXML files <ol> is nested as above.
+
+Example (from PatXML version 1.4) :
+<ol id="ol0001" ol-style="1.">
+<ol id="ol0001" ol-style="a.">
+<ol id="ol0001" ol-style="i.">
+
+Contractors: For all other cases (ie non-PatXML) leave the style
+empty and insert the actual numbering in the text after <li>:
+
+EPO style: indent whole list 6mm from left margin
+
+Example:
+<ol id="ol0001" ol-style="">
+<li>1.1 List item 1.1</li>
+</ol>
+
+-->
+<!ELEMENT ol  (li+) >
+
+<!ATTLIST ol
+               id  ID    #IMPLIED 
+               compact (compact)   #IMPLIED 
+               ol-style  CDATA    #IMPLIED  >
+
+<!--*******************************
+CHEMISTRY
+*******************************
+Chemical formulae, ring structures, Markush structures, etc.
+
+** Added 2006-02-08 - <formula-text> as alternative to image for very simple
+chemical "formulaes" where it would be useful to indentify them as such.
+
+EPO required usage:
+- For now treat as image or text data.
+- Depending on industry support we may use, e.g. CML later
+- For chemistry elements in the main part of the document:
+id="chem0001".
+- For chemistry elements in the abstract:id="chema01";
+- num = 0001, 0002, etc.
+-->
+<!ELEMENT chemistry  (img | formula-text | (chem,img?)) >
+
+<!ATTLIST chemistry
+               id  ID    #IMPLIED 
+               num  CDATA    #REQUIRED  >
+               
+<!--NEW data element for v.1.1:
+formula-text allows the data entry of very simple formulae
+without the verbosity of full mark up of maths and when available for chemistry
+-->
+<!ELEMENT formula-text  (#PCDATA | b | i | u | o | sup | sub | smallcaps)* >
+
+<!--This is a pointer to an external DTD for
+chemical markup - to be determined.
+IDEA: For EPO probably CML; http://www.xml-cml.org/ ?**
+-->
+<!ELEMENT chem   EMPTY  >
+
+<!ATTLIST chem
+               id  ID    #IMPLIED 
+               file  CDATA    #REQUIRED 
+               chem-type  CDATA    #IMPLIED  >
+
+<!--This is image data or coded according to mathml, version 2
+
+** Added 2006-02-08 - <text> as alternative to image for very simple
+maths which do not need rendition and the "heavy coding" of
+mathml, eg. 2 x 2 = 4
+
+The top-level element "math" contains MathML encoded
+mathematics. The "math" element has the browser info
+attributes if it is also the browser interface element.
+
+EPO required usage:
+- id="math0001"
+- If parent element is abstract: id="matha01"
+- num="0001", 0002, etc. OR
+- use the value given by the applicant, usually in
+parenthesis to the (right) side of the formula, eg. (1)
+- old SGML files:
+<DF NUM="(1)"> becomes <maths id="math0001" num="(1)">
+if there is no number:
+<maths id="math0001" num="">
+-->
+<!ELEMENT maths  (img | formula-text | (math,img?)) >
+
+<!ATTLIST maths
+               id  ID    #IMPLIED 
+               num  CDATA    #REQUIRED  >
+
+<!--Legal reference
+Reference to a law document
+-->
+<!ELEMENT legalref  (#PCDATA | b | i | u | o | sup | sub | smallcaps)* >
+
+<!--*********************************
+TABLES
+*********************************
+This is image data or coded according to OASIS Exchange model with modified cell
+'entry' and 'title' content.
+
+EPO required usage:
+- id="tabl0001" etc.
+- If parent element is abstract: id="tabla01";
+- num="0001" etc.
+- tables may be images or marked up. Mark up should be the default
+
+The parameter entities defined by the CALS table model as published
+(as part of the Example DTD) in MIL-HDBK-28001, have been removed
+and replaced by the corresponding values, to simplify reading. LS
+-->
+<!ELEMENT tables  (img | table) >
+
+<!ATTLIST tables
+               id  ID    #IMPLIED 
+               num  CDATA    #REQUIRED  >
+
+<!--*******************************
+TABLE EXTERNAL - NOT USED
+*******************************
+References a stand-alone table authored with the table-external DTD.
+This is unlikely to be used by the EPO
+-->
+<!ELEMENT table-external-doc  (#PCDATA) >
+
+<!ATTLIST table-external-doc
+               id  ID    #IMPLIED 
+               file  CDATA    #REQUIRED 
+               lang  CDATA    #IMPLIED 
+               carriers (internal-electronic | external-electronic | paper)  
+                #IMPLIED 
+               external-type (math | chemistry | program-listing | other)  
+                #IMPLIED 
+               status  CDATA    #IMPLIED  >
+
+<!--written-opinion-request
+A written opinion is based on a set of documents (description, claims,
+drawings, sequence listing material) on file, generally referred to as a
+request. Although in PCT there is generally only one request on file, some
+offices authorise the applicant to have multiple requests on file, each being
+handled separately in a written opinion.
+
+id
+Id for the request, suggested values (combine id of written-opinion followed by
+the sequence number) e.g. : wo-01-01
+
+num
+Identifies the level of the request, e.g.: 0=main request, 1=first
+auxiliary request, ...
+
+request-allowable
+Indicates if the request meets all the criteria for patentability.
+
+-->
+<!ELEMENT written-opinion-request  (%written_opinion_request_group;) >
+
+<!ATTLIST written-opinion-request
+               id  ID    #IMPLIED 
+               num  CDATA    #REQUIRED 
+               request-allowable (yes | no)   #IMPLIED  >
+
+<!--application-documents
+Wrapper element to indicate the documents that form part of the request, i.e.
+which have considered for the establishment of the opinion.
+-->
+<!ELEMENT application-documents  (%application_documents_group;) >
+
+<!--translation-of-appl
+Indicates that a translation of the application is on file.
+
+translation
+A translation has been provided or not.
+
+lang
+Language into which the application has been translated.
+
+translation-purpose
+The reason for which the translation was submitted.
+- international-search
+Rules 12.3(a) and 23.1(b) PCT, the translation was submitted for
+the purpose of international search.
+- international-publication
+Rule 12.4(a) PCT, the translation was submitted for the purpose
+of the international publication
+- supplementary-international-search
+Rule 45bis.1(c)(i) PCT, the translation was submitted for the
+purpose of a supplementary international search
+- international-examination
+Rules 55.2(a) and/or 55.3(a) PCT, the translation was submitted
+for the purpose of international examination (including amendments).
+- entry-regional-phase
+The translation was submitted when entering a regional phase
+-->
+<!ELEMENT translation-of-appl   EMPTY  >
+
+<!ATTLIST translation-of-appl
+               translation (yes | no)   #REQUIRED 
+               lang  CDATA    #IMPLIED 
+               translation-purpose (international-search | 
+               international-publication | supplementary-international-search | 
+               international-type-search | international-preliminary-examination | 
+               entry-regional-phase | priority-document | national-search | 
+               national-examination | opposition)   #IMPLIED  >
+
+<!--application-documents-description
+Indicates the documents of the description on which the opinion is based.
+-->
+<!ELEMENT application-documents-description  (application-document+) >
+
+<!--application-document
+Part of a document provided as basis.
+
+value
+Describes the value of the tag, e.g. whether it refers to pages, claims, ...
+- free-text
+Take the value as is. Not allowed in PCT.
+- page, paragraph
+Identifies a part of the description as page or paragraph.
+- claim
+Identifies a claim.
+- sheet, figure
+Identifies a part of the drawings either a sheet or a specific figure.
+
+basis, basis-other
+Indicates the basis of the provided documents: as filed (default), amended,
+cancelled, ignored. after-search-report cover the specific
+case of Article 19(1) PCT.
+basis-other is intended to provided for extension for national procedures.
+
+basis-format
+the support by which the documents were filed.
+
+basis-date, basis-received
+The date of drafting and the date of receipt of the document indicating
+the changes.
+
+EXAMPLE 1
+Pages 1-5 as originally filed:
+
+<application-document value="page" basis="as-filed">1-5</application-document>
+
+EXAMPLE 2
+Pages 1-5 as originally filed
+Page 6 filed with letter of 12 january 2009 received on 15
+january 2009
+Pages 7-10 filed electronically on 25 march 2009
+Claims 1-10 filed electronically on 25 march 2009
+Claims 12-15 cancelled with letter of 12 january 2009 received on 15
+january 2009
+
+<application-document value="page" basis="as-filed">1-5</application-document>
+<application-document value="page" basis="amended" basis-format="letter"
+basis-date="20090112" basis-received="20090115">6</application-document>
+<application-document value="page" basis="amended" basis-format="electronic"
+basis-received="20090325">7-10</application-document>
+<application-document value="claim" basis="amended" basis-format="electronic"
+basis-received="20090325">1-10</application-document>
+<application-document value="claim" basis="cancelled" basis-format="letter"
+basis-date="20090112" basis-received="20090115" >12-15</application-document>
+
+-->
+<!ELEMENT application-document  (text+ | (range-from,range-to?)+) >
+
+<!ATTLIST application-document
+               id  ID    #IMPLIED 
+               basis (as-filed | after-search-report | entry-regional-phase | 
+                      amended | cancelled | ignored | application-published |
+                      specification-published | iper | filed-with-demand |
+                      introduced-by-examiner | requested-by-applicant)   #IMPLIED 
+               basis-other  CDATA    #IMPLIED 
+               basis-format (letter | fax | electronic | interview | 
+                             oral-proceedings | other)   #IMPLIED 
+               basis-date  CDATA    #IMPLIED 
+               basis-received  CDATA    #IMPLIED 
+               idrefs  IDREFS    #IMPLIED 
+               gidrefs  CDATA    #IMPLIED  >
+
+<!--range-from
+Start of a range of reference to document part.
+e.g. page 3 column 2 line 3 - 10
+-->
+<!ELEMENT range-from  (range-position+) >
+
+<!--range-position
+Element to define a position in a document
+e.g. page 3
+-->
+<!ELEMENT range-position  (#PCDATA) >
+
+<!ATTLIST range-position
+               value (page | column | line | paragraph | claim | sheet | figure)  
+                #REQUIRED  >
+
+<!--range-to
+Start of a range of reference to document part.
+-->
+<!ELEMENT range-to  (range-position+) >
+
+<!--application-documents-claims
+Indicates the documents of the description on which the opinion is based.
+-->
+<!ELEMENT application-documents-claims  (application-document+) >
+
+<!--application-documents-drawings
+Indicates the documents of the description on which the opinion is based.
+-->
+<!ELEMENT application-documents-drawings  (application-document+) >
+
+<!--application-documents-sequence-list
+Indicates the documents of the description on which the opinion is based.
+-->
+<!ELEMENT application-documents-sequence-list  (material-of-sequence-list,
+               material-of-sequence-listing-cancelled?,
+               material-of-sequence-listing-ignored?,
+               presentation-of-statements?, additional-info?) >
+
+<!--material-of-sequence-list
+Basis of any nucleotide and/or amino acid sequence disclosed in the
+international application and necessary to the claimed invention.
+Typically used in written opinions to provide the basis, e.g. in forms
+PCT/ISA/237, PCT/IPEA/408, PCT/IPEA/409.
+
+sequence-listing
+Sequence listings were filed (default yes)
+
+table
+table(s) were filed.
+
+paper
+Submitted in paper.
+
+electronic
+Submitted electronically (default yes).
+
+filing
+Time of filing/cancellation of sequence listing material
+- in-application-as-filed
+Contained in the international application as filed. Empty
+tag.
+- electronically-with-application
+Filed together with the international application in electronic
+form. Empty tag
+- submitted-for-search-or-exam
+Submitted subsequently to this Authority for the purposes of
+search and/or examination. Empty tag
+- amendment
+Received by this Authority as amendment. The tag contains the
+date of reception of the sequence listing material.
+
+amendment-received-on
+Date of receipt of the amended material.
+
+cancelled
+Indicates that the part was cancelled.
+
+ignored
+Indicates that the part (amendement) was ignored because it was
+considered to go beyond the application as originally filed.
+-->
+<!ELEMENT material-of-sequence-list  (sequence-listing-material-type,
+               sequence-listing-material-format,sequence-listing-filing-time) >
+
+<!--a. type of material
+
+-->
+<!ELEMENT sequence-listing-material-type   EMPTY  >
+
+<!ATTLIST sequence-listing-material-type
+               sequence-listing (yes | no)  "yes"
+               table (yes | no)   #REQUIRED  >
+
+<!--b. format of material
+
+-->
+<!ELEMENT sequence-listing-material-format   EMPTY  >
+
+<!ATTLIST sequence-listing-material-format
+               paper (yes | no)   #REQUIRED 
+               electronic (yes | no)  "yes" >
+
+<!--c. time of filing/furnishing
+
+-->
+<!ELEMENT sequence-listing-filing-time  (#PCDATA) >
+
+<!ATTLIST sequence-listing-filing-time
+               in-application (yes | no)   #REQUIRED 
+               together-with-application (yes | no)   #REQUIRED 
+               furnished-for-search (yes | no)   #REQUIRED 
+               amendment (yes | no)   #IMPLIED  >
+
+<!-- material-of-sequence-listing-cancelled
+The amendments have resulted in the cancellation of sequence listing material.
+-->
+<!ELEMENT material-of-sequence-listing-cancelled (#PCDATA) >
+
+<!-- material-of-sequence-listing-ignored
+This opinion has been established as if (some of) the amendments to the sequence
+listing material below had not been made, since either they are considered to 
+go beyond the disclosure as filed, or they were not accompanied by a letter 
+indicating the basis for the amendments in the application as filed.
+-->
+<!ELEMENT material-of-sequence-listing-ignored (#PCDATA) >
+               
+<!--presentation-of-statements
+In addition, in the case that more than one version or copy of a sequence
+listing and/or table relating thereto has been filed or furnished,
+the required statements that the information in the subsequent or
+additional copies is identical to that in the application as filed or
+does not go beyond the application as filed, as appropriate, were
+submitted.
+
+submitted
+Indicates if the statements were submitted
+-->
+<!ELEMENT presentation-of-statements   EMPTY  >
+
+<!ATTLIST presentation-of-statements
+               submitted (yes | no)   #REQUIRED  >
+
+<!--rectification-of-obvious-mistakes
+Indicates if the authority took into account the correction of obvious
+mistakes under Rule 91 PCT.
+
+considered
+Yes if the authority took the corrections into account.
+-->
+<!ELEMENT rectification-of-obvious-mistakes   EMPTY  >
+
+<!ATTLIST rectification-of-obvious-mistakes
+               considered (yes | no)   #REQUIRED  >
+
+<!--Additional information. (ST.32:B513)
+Any observation that does not fit in other elements, typically
+comments or suggestions made by an authorized officer or examiner.
+Stylesheet:
+If no p is provided, generates a standard phrase based on legal-basis,
+legal-source and the references to the application documents.
+-->
+<!ELEMENT additional-info  (%additional_info_group;) >
+
+<!ATTLIST additional-info
+               id  ID    #IMPLIED 
+               idrefs  IDREFS    #IMPLIED 
+               gidrefs  CDATA    #IMPLIED 
+               legal-basis  CDATA    #IMPLIED 
+               legal-source  CDATA    #IMPLIED  >
+
+<!--priority-opinion
+This opinion has been established as if no priority hab been claimed.
+
+Suggested value for id: wo-01-01-po
+-->
+<!ELEMENT priority-opinion  (earlier-appl?,claim-invalid?,additional-info?) >
+
+<!ATTLIST priority-opinion %common_id_attribute_group; >
+
+<!--(PCT/ISA/237 - Box II) - Priority
+Priority 1. The following document has not yet been
+furnished: 
+Attribute value: 
+copy = copy of the earlier application whose priority
+has been claimed (Rules 43bis.1 and 66.7(a)). 
+
+translation = translation of the earlier
+application whose priority has been claimed (Rules 43bis.1 and 66.7(b)).
+
+Consequently it has not been possible to consider the validity of the priority
+claim. This opinion has nevertheless been established on the assumption that the
+relevant date is the claimed priority date.-->
+<!ELEMENT earlier-appl   EMPTY  >
+
+<!ATTLIST earlier-appl
+               earlier-appl-missing (copy | translation)   #IMPLIED  >
+
+<!--This opinion has been established as if no priority had been claimed due to the fact that the priority claim has been found invalid (Rules 43bis.1 and 64.1). Thus for the purposes of this opinion, the international filing date indicated above is considered to be the relevant date.-->
+<!ELEMENT claim-invalid   EMPTY  >
+
+<!--non-establishment-of-opinion
+Non-establishment of opinion with regard to novelty, inventive step and
+industrial applicability.
+
+entire-application
+No opinion could be established with respect to the entire application.
+
+complex-application
+Indicates whether the objection results in the application to be treated as a
+complex application (Articles 17(2)(a)(ii) and 34(4)(a)(ii) PCT
+(Rule 63 EPC-2000).
+
+Suggested value for id: wo-01-01-ne
+-->
+<!ELEMENT non-establishment-of-opinion  (non-establishment-reason*,additional-info*) >
+
+<!ATTLIST non-establishment-of-opinion %common_id_attribute_group;
+	complex-application (yes | no)   #IMPLIED
+	entire-application (yes | no)   #REQUIRED  >
+
+<!--non-establishment-reason
+No opinion was established with repect to claims, sequence-listing or a
+table.
+
+reason
+Reason for not establishing an opinion:
+- no-opinion-required
+The said application or said claims relate to the following
+subject matter which does not require an opinion, see statement.
+See Article 17(2)(a)(i) or 34(4)(a)(i) PCT (20011003), Article 52(2) EPC 2000.
+- unclear
+The description, claims or drawings (indicate particular elements
+in statement) or said claims are so unclear that no meaningful
+opinion could be formed.
+See Article 6 PCT (20011003), Article 84 EPC 2000.
+- not-supported
+The claims, or said claims are so inadequately supported
+by the description that no meaningful opinion could be formed.
+See Article 5 PCT (20011003), Article 83 EPC 2000.
+- no-search-report
+No international search report has been established for said
+claims.
+- added-subject-matter
+The ammendements go beyond the application as orginally filed to
+such an extent that no examination is possible
+See Article 19(2) or 34(2)(b) PCT (20011003), Article 123(2) EPC 2000.
+- novelty-overflow
+The claims are so broad that the search generated such a number of prior
+documents that no meaningful opinion can be established.
+
+All reasons should be accompanied by a statement except for
+no-search-report.
+
+Suggested value for id: wo-01-01-ne-01, wo-01-01-ne-02, ...
+-->
+<!ELEMENT non-establishment-reason  (%claim_defect_group;,p*) >
+
+<!ATTLIST non-establishment-reason %common_id_attribute_group;
+	reason (no-opinion-required | unclear | not-supported |
+	no-search-report | added-subject-matter | novelty-overflow |
+	sequence-listing ) #REQUIRED                 >
+
+<!--*******************************************************************************
+END SECTION WRITTEN-OPINION DTD
+This section contains the tags specific to the written opinion.
+*******************************************************************************
+
+*******************************************************************************
+SECTION GENERIC TAGS
+This section contains generic tags out of their context, typically ICE
+*******************************************************************************
+
+Claim numbers
+-->
+<!ELEMENT claim-num  (#PCDATA) >
+
+<!--partially-for-claims
+Opinion established to limited aspects of the provided claims, see additional
+info for details.
+
+Typically used in case of Markush type claims, novelty overflow, ...
+-->
+<!ELEMENT partially-for-claims  (claim-num+) >
+
+<!--sequence-list-defect
+No opinion was established without the sequence listing.
+
+reason
+Reason for not establishing an opinion:
+- no-paper-submitted
+The applicant did not submit within the prescribed time limit
+a sequence listing on paper complying with the standard provided for
+in Annex C of the Administrative Instructions, and such listing was
+not available to the Authority in a form and manner acceptable to it.
+- no-electronic-submitted
+The applicant did not submit within the prescribed time limit
+a sequence listing in electronic form complying with the standard
+provided for in Annex C of the Administrative Instructions, and such
+listing was not available to the Authority in a form and manner
+acceptable to it.
+- no-fee-paid
+The applicant did not within the prescribed time limit pay the
+required late furnishing fee for the furnishing of a sequence
+listing in response to an invitation under Rules 13ter.1(a) or (b)
+and 13ter.2 PCT.
+
+No additional statement required.
+-->
+<!ELEMENT sequence-list-defect   EMPTY  >
+
+<!ATTLIST sequence-list-defect
+               reason (no-paper-submitted | no-electronic-submitted | no-fee-paid)  
+                #REQUIRED  >
+
+<!--table-defect
+No opinion was established because the tables related to the sequence
+listings.
+
+reason
+Reason for not establishing an opinion:
+- not-electronically-submitted
+A meaningful opinion could not be formed without the tables
+related to the sequence listings; the applicant did not, within the
+prescribed time limit, furnish such tables in electronic form
+complying with the technical requirements provided for in
+Annex C-bis of the Administrative Instructions, and such tables
+were not available to the Authority in a form and manner acceptable
+to it.
+- not-format-compliant
+The tables related to the nucleotide and/or amino acid sequence
+listing, if in electronic form only, do not comply with the
+technical requirements provided for in Annex C-bis of the
+Administrative Instructions.
+
+No additional statement required.
+-->
+<!ELEMENT table-defect   EMPTY  >
+
+<!ATTLIST table-defect
+               reason (not-electronically-submitted | not-format-compliant)  
+                #REQUIRED  >
+
+<!--added-subject-matter-objections
+The amendments shall not go beyond the disclosure in the international
+application as filed ( Art 19(2), 28(2), 34(2)(b) and 41(2) PCT - Oct 3, 2001 )
+and further information.
+The amendment not fullfilling the requirement will be identified and a
+statement explaining the reason as to why it goes beyond the application as
+originally filed is provided.
+When referring to a previous set of objections as a whole, this element only
+needs to contain the additional objections not yet covered by the referred set.
+
+suggested value for id: wo-01-01-as
+-->
+<!ELEMENT added-subject-matter-objections  (%objections_group;) >
+
+<!ATTLIST added-subject-matter-objections
+               id  ID    #IMPLIED 
+               idref  IDREFS    #IMPLIED 
+               gidref  CDATA    #IMPLIED  >
+
+
+<!--objection
+Identifies any objection related to specific application documents
+When referring to a previous (set of) objection(s), this element only
+needs to contain additional information not yet covered by the referred set or
+element.
+Stylesheet:
+If no p is provided, generates a standard phrase based on legal-basis,
+legal-source and the references to the application documents.
+
+Suggested values for id:
+added subject-matter: wo-01-01-as-01, wo-01-01-as-02, ...
+clarity : wo-01-01-co-01, wo-01-01-co-02, ...
+insuficiency of disclosure: wo-01-01-id-01, wo-01-01-id-02, ...
+formal defects: wo-01-01-fd-01, wo-01-01-fd-02, ...
+-->
+<!ELEMENT objection  (%objection_group;) >
+
+<!ATTLIST objection %common_id_attribute_group; 
+               legal-basis  CDATA    #IMPLIED 
+               legal-source  CDATA    #IMPLIED  >
+
+<!--lack-of-unity-objection
+The Authority has determined that the present application does (not)
+relate to one invention only or to a group of inventions so linked as to
+form a single general inventive concept.
+A lack of unity is assessed whenever:
+* the special technical features of each of the invention are neither
+corresponding nor the same, and/or
+* the general concept linking all the inventions is neither novel nor
+inventive
+
+unity-of-invention
+Indicates if the requirement of unity of invention is satisfied.
+
+complex-application
+Indicates whether the objection results in the application to be treated as a
+complex application (Articles 17(2)(a)(ii) and 34(4)(a)(ii) PCT
+(Rule 63 EPC-2000).
+
+-->
+
+<!ELEMENT lack-of-unity-objection  %lack_of_unity_objection_group; >
+
+<!ATTLIST lack-of-unity-objection
+               unity-of-invention (yes | no)   #REQUIRED 
+               complex-application (yes | no)   #IMPLIED 
+               idref  IDREF    #IMPLIED 
+               gidref  CDATA    #IMPLIED  >
+
+<!--lack-of-unity-additional-feesIf the Authority finds that the requirement of unity of invention is not 
+complied with, it may invite the applicant to pay additional fees.
+
+additional-fees-requested
+This Authority found that the requirement of unity of invention is not
+complied with and chose (not) to invite the applicant to restrict or
+pay additional fees.
+
+response-additional-fees
+The response of the applicant to the request to pay additional fees.
+* restricted-claims
+  the applicant restricted the claims.
+* paid-additional-fees
+	the applicant paid the additional fees.
+* neither-additional-fees-nor-restricted-claims
+	the applicant did neither pay the fees nor restricted the claims.
+
+-->
+<!ELEMENT lack-of-unity-additional-fees (additional-fees-paid-under-protest?)>
+
+<!ATTLIST lack-of-unity-additional-fees
+							 additional-fees-requested ( yes | no ) #REQUIRED
+               response-additional-fees (restricted-claims | 
+               additional-fees-paid | additional-fees-not-paid) #IMPLIED> 
+
+<!-- additional-fees-paid-under-protest
+* paid-additional-fees-under-protest-and-protest-fee
+	the applicant paid the additional fees under protest. The protest was paid.
+* paid-additional-fees-under-protest-and-not-protest-fee
+	the applicant paid the additional fees under protest. The protest was not paid.
+-->
+<!ELEMENT additional-fees-paid-under-protest EMPTY>
+
+<!ATTLIST additional-fees-paid-under-protest
+								protest-fee-paid (yes | no) #REQUIRED >
+
+<!--lack-of-unity-single-general-inventive-concept
+The requirement of unity of invention is fulfilled only when there exists
+a single general inventive concept among the claimed separate inventions
+(see claim-num) which finds its expression in one or more of the same or
+corresponding special technical features. It should be noted, however,
+that it is not required that the concept linking the claimed separate
+inventions be expressly stated in the wording of the claims.
+If no single general concept can be distinguished, or if the single
+general concept is clearly known from the state of the art at hand (see
+citations), then the application lacks unity of invention.
+-->
+<!ELEMENT lack-of-unity-single-general-inventive-concept  (p+) >
+
+<!--lack-of-unity-invention
+Invention or group of inventions so linked as to form a single general inventive
+concept. When assessing a posteriori the lack of unity, the lack of novelty of
+the first claim should be firts assessed.
+The reasonning to identify the special technical feature is only required for
+the first mentionned invention.
+
+num
+Sequence number of the invention
+-->
+<!ELEMENT lack-of-unity-invention  (%lack_of_unity_invention_group;) >
+
+<!ATTLIST lack-of-unity-invention %common_id_attribute_group;
+               num  CDATA    #REQUIRED >
+
+<!--identification-of-invention
+Identification of an invention or group of inventions so linked as
+to form a single general inventive concept. This is not to be confused
+with the invention title of the description.
+-->
+<!ELEMENT identification-of-invention  (text) >
+
+<!--lack-of-unity-invention-special-tech-features
+Where a group of inventions is claimed in one and the same international
+application, the requirement of unity of invention referred to in
+Rule 13.1 PCT shall be fulfilled only when there is a technical
+relationship among those inventions involving one or more of the same or
+corresponding special technical features.
+The expression special technical features shall mean those technical
+features that define a contribution which each of the claimed inventions,
+considered as a whole, makes over the prior art.
+-->
+<!ELEMENT lack-of-unity-invention-special-tech-feature  (claim-num+,text,
+               lack-of-unity-invention-tech-problem-solved) >
+
+<!--lack-of-unity-invention-tech-problem-solved
+Technical problem solved by the selected special technical feature
+-->
+<!ELEMENT lack-of-unity-invention-tech-problem-solved  (text) >
+
+<!--opinion-established-regarding
+A written opinion has been established with respect to the provided
+elements.
+-->
+<!ELEMENT opinion-established-regarding  (%opinion_established_regarding_group;) >
+
+<!--entire-application
+When making references to parts of the application, this refers to
+the application as a whole.
+-->
+<!ELEMENT entire-application   EMPTY  >
+
+<!--completely-for-claims
+Opinion established to all aspects of the provided claims, see additional
+info for details.
+-->
+<!ELEMENT completely-for-claims  (claim-num+) >
+
+<!--not-for-claims
+Opinion not established for the provided claims, see additional
+info for details.
+
+Typically used in case of Markush type claims, novelty overflow, ...
+-->
+<!ELEMENT not-for-claims  (claim-num+) >
+
+<!--selected-invention
+In the context of an objection of lack of unity this refers to one of
+the named inventions.
+-->
+<!ELEMENT selected-invention   EMPTY  >
+
+<!ATTLIST selected-invention
+               idref  IDREF    #REQUIRED 
+               gidref  CDATA    #IMPLIED  >
+
+<!--clarity-objections
+Container for all clarity objections and further additional-infos.
+
+Suggested value for id: wo-01-01-co
+-->
+<!ELEMENT clarity-objections  (%objections_group;) >
+
+<!ATTLIST clarity-objections %common_id_attribute_group;>
+
+<!--insufficiency-of-disclosure-objections
+The description shall disclose the invention in a manner sufficiently clear
+and complete for the invention to be carried out by a person skilled in the
+art.
+
+Suggested value for id: wo-01-01-id
+-->
+<!ELEMENT insufficiency-of-disclosure-objections  (%objections_group;) >
+
+<!ATTLIST insufficiency-of-disclosure-objections %common_id_attribute_group; >
+
+<!--compliance-of-invention
+The Authority establishes a non-binding opinion on the questions whether
+the claimed invention appears to be novel, to involve an inventive step
+(to be non-obvious), and to be industrially applicable,
+Article 33(1)-(4) PCT.
+
+Recommended values for id: wo-01-01-pr
+-->
+<!ELEMENT compliance-of-invention  (novelty-compliance?,inventive-step-compliance?,
+               industrial-applicability-compliance?,additional-info*) >
+
+<!ATTLIST compliance-of-invention %common_id_attribute_group; >
+
+<!--novelty-compliance
+A claimed invention shall be considered novel if it is not anticipated
+by the prior art, Art 33(2) PCT.
+
+Recommended values for id: wo-01-01-pr-n
+-->
+<!ELEMENT novelty-compliance  (%compliance_group;) >
+
+<!ATTLIST novelty-compliance %common_id_attribute_group; >
+
+<!--compliance-valid
+Said claims comply with the criteria to which this element
+refers to (novelty, inventive step or industrial applicability) for the
+reasons provided.
+
+Recommended values for:
+novelty: wo-01-01-pr-n-01, wo-01-01-pr-n-02, ...
+inventive step: wo-01-01-pr-is-01, wo-01-01-pr-is-02, ...
+industrial applicability: wo-01-01-pr-ia-01, wo-01-01-pr-ia-02, ...
+-->
+<!ELEMENT compliance-valid  (%compliance_valid_group;) >
+
+<!ATTLIST compliance-valid %common_id_attribute_group; >
+
+<!--compliance-not-valid
+Said claims do not comply with the criteria to which this element
+refers to (novelty, inventive step or industrial applicability) for the
+reasons provided.
+
+Recommended values for:
+novelty: wo-01-01-pr-n-01, wo-01-01-pr-n-02, ...
+inventive step: wo-01-01-pr-is-01, wo-01-01-pr-is-02, ...
+industrial applicability: wo-01-01-pr-ia-01, wo-01-01-pr-ia-02, ...
+-->
+<!ELEMENT compliance-not-valid  (%compliance_valid_group;) >
+
+<!ATTLIST compliance-not-valid %common_id_attribute_group; >
+
+<!--inventive-step-compliance
+A claimed invention shall be considered to involve an inventive step if,
+having regard to the prior art, it is not, at the prescribed relevant
+date, obvious to a person skilled in the art, Article 33(3) PCT.
+
+Recommended values: wo-01-01-pr-is
+-->
+<!ELEMENT inventive-step-compliance  (%compliance_group;) >
+
+<!ATTLIST inventive-step-compliance %common_id_attribute_group; >
+
+<!--industrial-applicability-compliance
+A claimed invention shall be considered industrially applicable if,
+according to its nature, it can be made or used (in the technological
+sense) in any kind of industry.
+Industry shall be understood in its broadest sense, as in the Paris
+Convention for the Protection of Industrial Property, Article 33(4) PCT.
+
+Recommended values: wo-01-01-pr-ia
+-->
+<!ELEMENT industrial-applicability-compliance  (%compliance_group;) >
+
+<!ATTLIST industrial-applicability-compliance %common_id_attribute_group; >
+
+<!--formal-defects
+Container for all objections related to formal aspects and further
+additional-infos.
+
+Recommended values: wo-01-01-fd
+-->
+<!ELEMENT formal-defects  (%objections_group;) >
+
+<!ATTLIST formal-defects %common_id_attribute_group;  >
+
+<!--comments-of-applicant
+Container for all observations from the examiner to address arguments of the
+applicant that were not cover by any of the preceeding points.
+
+Recommended values: wo-01-01-ca
+-->
+<!ELEMENT comments-of-applicant  (additional-info+) >
+
+<!ATTLIST comments-of-applicant %common_id_attribute_group;  >
+
+<!--conclusion
+Set of statements of additional information concluding either a request or the
+written opinion.
+Stylesheet:
+If no p is provided, generates a standard phrase based on legal-basis,
+legal-source and the references to the application documents.
+
+id
+Suggested values:
+for a request: wo-01-01-c
+for the opinon: wo-01-c
+-->
+<!ELEMENT conclusion  (p*,additional-info*) >
+
+<!ATTLIST conclusion %common_id_attribute_group; 
+               legal-basis  CDATA    #IMPLIED 
+               legal-source  CDATA    #IMPLIED  >
+
+<!--citations
+The statement shall be accompanied by the citation of the documents
+believed to support the stated conclusion with such explanations as the
+circumstances of the case may require (Article 35(2) PCT).
+-->
+<!ELEMENT citations  (%citations_group;)+ >
+
+<!--*******************************
+CITATIONS
+*******************************
+Grouping tag for patent literature (patcit)
+or non-patent literature (nplcit) plus data related to those citations.
+
+Recommended id='cit0001', 'cit0002', etc.
+For the SR: id='sr-cit0001', 'sr-cit0002'
+For the WO: id='wo-cit0001"
+
+@reference
+Identification given by the party to the document, e.g. A1.
+
+@exam-reference
+Identification given by the search or examining division to the document,
+e.g. D1.
+
+@has-equivalent :
+The expected usage of this attribute is that it will only be present in the circumstances where the examiner explicitly 
+chooses to express the fact that the cited document has no equivalent document / patent family members in the 
+rendered search report citation; in other words the attribute when present and having the value "no" will result in the text 
+"No patent family" or "No equivalent documents" in the relevant language being displayed on the search report.
+
+-->
+<!ELEMENT citation  ((patcit | nplcit),(rel-passage*,category*,rel-claims*)*,
+               corresponding-docs*, classification-ipc?, classifications-ipcr?, classification-national?, doi?) >
+
+<!ATTLIST citation
+               id  ID    #IMPLIED 
+               cited-phase (application | search | international-search-report | 
+               supplementary-international-search-report | 
+               international-type-search-report | national-search-report | 
+               supplementary-national-search-report | examination | 
+               international-examination | national-examination | opposition | 
+               limitation)   #IMPLIED 
+               cited-by (applicant | examiner | opponent | third-party)   #IMPLIED 
+               reference  CDATA    #IMPLIED 
+               exam-reference  CDATA    #IMPLIED
+               has-equivalent        (yes | no)  #IMPLIED >
+
+<!--Patent family and corresponding-docs - see example above
+These are also "&" cases.
+** PB 2006-03-02
+-->
+<!ELEMENT corresponding-docs  ((patcit | nplcit),(rel-passage*,category*,rel-claims*)*) >
+
+<!--conflicting-document
+Any published application or any patent whose publication date is the
+same as, or later than, but whose filing date, or, where applicable,
+claimed priority date, is earlier than the international filing date of
+the international application searched, and which would constitute
+relevant prior art for the purposes of Article 15(2) had it been published
+prior to the international filing date, shall be specially mentioned in
+the international search report.
+Such published application or patent shall not be considered part
+of the prior art for the purposes of Article 33(2) and (3). Nevertheless,
+the international preliminary examination report shall call attention to
+such application or patent in the manner provided for in Rule 70.10.<br/>
+Rules 33.1(c) and 64(3) PCT
+
+Recommended id='cit0001', 'cit0002', etc.
+For the SR: id='sr-cit0001', 'sr-cit0002'
+For the WO: id='wo-cit0001"
+
+reference
+Identification given by the party to the document, e.g. A1.
+
+exam-reference
+Identification given by the search or examining division to the document,
+e.g. D1.
+-->
+<!ELEMENT conflicting-document  ((application-reference,publication-reference,priority-date?) | text) >
+
+<!ATTLIST conflicting-document 
+               id  ID    #IMPLIED 
+               reference  CDATA    #IMPLIED 
+               exam-reference  CDATA    #IMPLIED  >
+
+
+<!--
+  Publication reference information: publication number, date, etc
+    (INID 11, ST.32:B110)
+
+-->
+<!ELEMENT publication-reference (document-id)>
+
+<!ATTLIST publication-reference  id ID  #IMPLIED >
+
+<!--Rule 70.10: Any published application ... shall be accompanied by ... its claimed priority date (if any). In respect of the priority date of any such document, the report may indicate that, in the opinion of the International Preliminary Examining Authority, such date has not been validly claimed.-->
+<!ELEMENT priority-date  (#PCDATA) >
+
+<!ATTLIST priority-date
+               priority-valid (yes | no)  "yes" >
+
+<!--non-written-disclosure
+In cases where the making available to the public occurred by means of an
+oral disclosure, use, exhibition or other non-written means ( non-written
+disclosure ) before the relevant date as defined in Rule 64.1(b) and the
+date of such non-written disclosure is indicated in a written disclosure
+which has been made available to the public on a date which is the same
+as, or later than, the relevant date, the non-written disclosure shall
+not be considered part of the prior art for the purposes of Article 33(2)
+and (3). Nevertheless, the international preliminary examination report
+shall call attention to such non-written disclosure in the manner
+provided for in Rule 70.9.
+See also Rules 33.1(b) and 64(2) PCT
+
+Recommended id='cit0001', 'cit0002', etc.
+For the SR: id='sr-cit0001', 'sr-cit0002'
+For the WO: id='wo-cit0001"
+
+reference
+Identification given by the party to the document, e.g. A1.
+
+exam-reference
+Identification given by the search or examining division to the document,
+e.g. D1.
+-->
+<!ELEMENT non-written-disclosure  ((kind-of-disclosure,date,
+               date-of-written-disclosure) | text) >
+
+<!ATTLIST non-written-disclosure
+               id  ID    #IMPLIED 
+               reference  CDATA    #IMPLIED 
+               exam-reference  CDATA    #IMPLIED  >
+
+<!--Kind of non-written disclosure-->
+<!ELEMENT kind-of-disclosure  (#PCDATA) >
+
+<!--Date of written disclosure Referring to non-written disclosure (day/month/year)-->
+<!ELEMENT date-of-written-disclosure  (date) >
+
+<!--annexed-documents
+Documents annexed to an xml files either as facsimile or electronic files-->
+<!ELEMENT annexed-documents  (doc-page | electronic-file)+ >
+
+<!--electronic-file
+-->
+<!ELEMENT electronic-file   EMPTY  >
+
+<!ATTLIST electronic-file
+               title  CDATA    #IMPLIED 
+               file  CDATA    #IMPLIED 
+               file-type (tif | pdf | xml | other)   #IMPLIED 
+               file-type-other  CDATA    #IMPLIED 
+               lang  CDATA    #IMPLIED 
+               status  CDATA    #IMPLIED  >
+
+<!-- Exceptional handling for WIPO - EPO data exchange
+If the opinion cannot be converted to ST.36, the original XHTML code will be
+stored in this tag as CDATA-->
+<!ELEMENT xhtml-text (#PCDATA)>
+
+<!-- top-up-search-carried-out
+[PCT/IPEA/409]
+Box I : 6. With regard to top-up searches (Rules 66.1ter and 70.2(f)):
+  [] A top-up search was carried out by this Authority on _________________
+       [] Additional relevant documents have been discovered during the top-up search.
+
+-->
+<!ELEMENT top-up-search-carried-out EMPTY>
+
+<!ATTLIST top-up-search-carried-out 
+    date CDATA #REQUIRED
+    document-found (yes | no) #REQUIRED>
+
+<!-- no-top-up-search-carried-out
+[PCT/IPEA/409]
+Box I : 6. With regard to top-up searches (Rules 66.1ter and 70.2(f)):
+  []  No top-up search was carried out by this Authority because it would serve no useful purpose
+
+-->
+<!ELEMENT no-top-up-search-carried-out EMPTY>
+
+<!--
+********************************************************************************
+  END OF FILE
+********************************************************************************
+-->

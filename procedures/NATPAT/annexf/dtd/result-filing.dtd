@@ -1,0 +1,329 @@
+<!--
+*************************************************************************
+* result-filing v1.0 2004 july                                          *
+*************************************************************************
+*  PUBLIC "-???"  "request-filing.dtd"            						*
+*************************************************************************
+* $Author$
+* $Date$
+* $Revision$
+*************************************************************************
+18/10/2005: added name-extra and address-extra tags in the address-book element to support national offices requirements
+10/10/2005: added extra-attributes attribute in the file-content element. it should have the format extra-attributes="key=value;key=value"
+12/08/2005: added attribute format for the element "date" and "time"
+12/08/2005: added tag signed-receiving-timestamp (child of received-on)
+12/08/2005: added tag timestamp-signer (child of olf-signers)
+-->
+
+<!--
+ | For time being, just add the street-number, since the CZ now has this new element
+ | Has to decide what to do.
+ +-->
+<!ENTITY % address_group
+               "((address-1? , address-2? , address-3? , mailcode?
+                          , pobox? , room? , address-floor? , building?
+                          , street? , street-number?,  city? , county? , state? , postcode?
+                          , country) | text)" >
+
+<!ENTITY % name_group
+               "(
+               (name | (prefix? , (last-name | orgname) , first-name?
+                       , middle-name? , suffix? , iid? , role? , orgname?
+                       , department? , synonym*)) , registered-number?)" >
+
+<!ENTITY % timestamp_group
+               "(date,time?)" >
+
+<!--
+====================
+=
+====================
+-->
+<!ELEMENT result-filing  (
+		server-software?,
+		client-software?,
+		filing-procedure,
+		received-on,
+		file-reference-id?,
+		wad-message-digest,
+		language-of-filing?,
+		invention-title*,
+		olf-names?,
+		olf-signers?,
+		olf-result,
+		filelist,
+		office-specific-data*,
+		dtext*
+)>
+
+<!-- do we need to have the fee information entered here, or can we define that as 'office-specific-data' when necessary -->
+
+<!ATTLIST result-filing  lang        CDATA  #REQUIRED
+                        dtd-version CDATA  #IMPLIED
+                        file        CDATA  #IMPLIED
+                        status      CDATA  #IMPLIED >
+
+<!ELEMENT server-software		(software-name?, software-version?, software-message?)>
+<!ELEMENT client-software		(software-name?, software-version?, software-message?, filing-type?)>
+
+<!ELEMENT software-name			(#PCDATA)>
+<!ELEMENT software-version		(#PCDATA)>
+<!ELEMENT software-message		(#PCDATA)>
+<!ELEMENT filing-type			(#PCDATA)>
+
+
+<!ELEMENT received-on			(start-timestamp?, receiving-timestamp, signed-receiving-timestamp?, receipt-timestamp?, legal-filing-date?)>
+
+<!ELEMENT start-timestamp		(%timestamp_group;)>
+<!ATTLIST start-timestamp
+			timezone	CDATA	#IMPLIED>
+<!ELEMENT receiving-timestamp		(%timestamp_group;)>
+<!ATTLIST receiving-timestamp
+			timezone	CDATA	#IMPLIED>
+<!ELEMENT signed-receiving-timestamp	(%timestamp_group;)>
+<!ATTLIST signed-receiving-timestamp
+			timezone	CDATA	#IMPLIED>
+<!ELEMENT receipt-timestamp		(%timestamp_group;)>
+<!ATTLIST receipt-timestamp
+			timezone	CDATA	#IMPLIED>
+<!ELEMENT legal-filing-date	(date)>
+
+<!ELEMENT filing-procedure	(submission-id, document-id?, past-record*, priority-claim*, initial-ro, final-ro)>
+<!ATTLIST filing-procedure  form		CDATA	#REQUIRED
+                     		version 	CDATA	#REQUIRED
+                     		filing-mode (cd-filing | online) #IMPLIED
+                     		lang		CDATA #IMPLIED
+                            request-entity-name CDATA  #IMPLIED
+				            applnr-origin (generated|by-applicant) #IMPLIED>
+<!ELEMENT initial-ro		(#PCDATA)>
+<!ATTLIST initial-ro		country	CDATA	#IMPLIED
+				lang	CDATA	#IMPLIED>
+
+<!ELEMENT final-ro				(#PCDATA)>
+<!ATTLIST final-ro  country CDATA	#IMPLIED
+				lang	CDATA	#IMPLIED>
+
+<!ELEMENT submission-id		(#PCDATA)>
+
+<!ELEMENT document-id		(country , doc-number , kind? , name? , date?)>
+<!ATTLIST document-id	lang 	CDATA  	#IMPLIED>
+<!ELEMENT doc-number		(#PCDATA)>
+<!ELEMENT kind			(#PCDATA)>
+
+<!ELEMENT file-reference-id		(#PCDATA)>
+
+<!-- Wrapped Application Documents message digest-->
+<!ELEMENT wad-message-digest	(#PCDATA)>
+
+<!--filing language, ISO639 language code, e.g, en,de,ja, etc. -->
+<!ELEMENT language-of-filing	(#PCDATA) >
+<!ATTLIST language-of-filing id		ID     #IMPLIED
+				lang-code	CDATA  #IMPLIED >
+
+
+<!-- copied from ep1200 -->
+<!ELEMENT priority-claim (document-id)>
+<!ATTLIST priority-claim  	office-of-filing CDATA		#IMPLIED
+				translation 	 CDATA		#IMPLIED
+				kind    		(national | regional | international )  #IMPLIED
+				type			(patent | provisional | world | utility ) #IMPLIED
+				request-type	(priority-doc-requested | priority-doc-attached) #IMPLIED>
+
+<!-- copied from fi-request -->
+<!ELEMENT past-record 	(document-id)>
+<!ATTLIST past-record  	type (divisional-application | separated-application | transferred-application) #IMPLIED>
+
+
+
+<!ELEMENT invention-title	(#PCDATA)>
+<!ATTLIST invention-title	id			ID     #IMPLIED
+				lang		CDATA  #IMPLIED >
+
+<!ELEMENT olf-result		(olf-status, olf-error*, olf-warning*)>
+<!ELEMENT olf-status		(#PCDATA)>
+<!ATTLIST olf-status 		id			CDATA	#IMPLIED>
+<!ELEMENT olf-error		(#PCDATA)>
+<!ATTLIST olf-error		id			CDATA	#IMPLIED>
+<!ELEMENT olf-warning		(#PCDATA)>
+<!ATTLIST olf-warning		id			CDATA	#IMPLIED>
+
+
+
+<!-- what kind of documents were received in the submission receipted. <!ELEMENT filing-type			(#PCDATA)>		 -->
+<!ATTLIST filing-type  filing-mode (online|cd-filing|e-mail|other) #IMPLIED>
+
+<!ELEMENT olf-signers		(wasp-signer, wasp-sender?, wasp-uploader?, timestamp-signer?)>
+<!ELEMENT wasp-signer		(certificate)>
+<!ELEMENT wasp-sender		(signatory)>
+<!ELEMENT wasp-uploader		(signatory)>
+<!ELEMENT timestamp-signer	(signatory)>
+
+<!ELEMENT olf-names		(olf-applicant*, olf-inventor*, olf-deceased-inventor*, olf-agent*, correspondence-address?) >
+
+<!--
+ | olf-applicant is a merge of applicant and ep-applicant
+ | - ep1001,ep1200: "app-type" can also have value "employee"
+ +-->
+<!ELEMENT olf-applicant		(customer-number | addressbook)>
+<!ATTLIST olf-applicant  	app-type (applicant | applicant-inventor | employee)   #IMPLIED
+               			designation (all | all-except-us | us-only | as-indicated)  #IMPLIED>
+
+<!--
+ | olf-inventor is a merge of inventor and ep-inventor.
+ | - 1001e: attribute "waiver", "renunciation", "inv-rights", "inv-rights-date"
+ | - 1200e: attribute "waiver", "renunciation",
+ +-->
+<!ELEMENT olf-inventor		(customer-number | addressbook)>
+<!ATTLIST olf-inventor		designation (all | all-except-us | us-only | as-indicated) #IMPLIED
+               			waiver  	CDATA    #IMPLIED
+               			renunciation  	CDATA    #IMPLIED
+               			inv-rights (employee | successor | under-agreement)   #IMPLIED
+               			inv-rights-date	CDATA    #IMPLIED  >
+
+<!ELEMENT olf-deceased-inventor	(customer-number | addressbook)>
+
+<!--
+ | olf-agent is a merge of agent and ep-agent.
+ |  - EP1001E: "rep-address (yes|no)"
+ |  - EP1200E: "rep-address", "authorisation-code (1 | 2 | 3 | 4)"
+ +-->
+<!ELEMENT olf-agent		(customer-number | addressbook)>
+<!ATTLIST olf-agent		rep-type (agent | attorney | common-representative)   #IMPLIED
+               			rep-address (yes | no)   #IMPLIED
+               			authorisation-code  (1 | 2 | 3 | 4) #IMPLIED>
+
+<!ELEMENT correspondence-address (customer-number | addressbook)>
+<!ELEMENT customer-number	(#PCDATA) >
+
+<!ELEMENT addressbook  		((%name_group;,address,phone*,fax*,email*,url*,ead*,dtext?,name-extra*)|text) >
+<!ATTLIST addressbook		lang  		CDATA    #REQUIRED >
+<!ELEMENT address  		(%address_group;,address-extra*)>
+<!ATTLIST address		correspondence-address CDATA #IMPLIED>
+
+
+<!ELEMENT name			(#PCDATA) >
+<!ATTLIST name			name-type (legal | natural)   #IMPLIED>
+<!ELEMENT prefix		(#PCDATA)>
+<!ELEMENT last-name		(#PCDATA)>
+<!ELEMENT orgname		(#PCDATA)>
+<!ELEMENT first-name		(#PCDATA)>
+<!ELEMENT middle-name		(#PCDATA)>
+<!ELEMENT suffix		(#PCDATA)>
+<!ELEMENT iid			(#PCDATA)>
+<!ELEMENT role			(#PCDATA)>
+<!ELEMENT department		(#PCDATA)>
+<!ELEMENT synonym		(#PCDATA)>
+<!ELEMENT registered-number	(#PCDATA)>
+
+<!ELEMENT address-1		(#PCDATA)>
+<!ELEMENT address-2		(#PCDATA)>
+<!ELEMENT address-3		(#PCDATA)>
+<!ELEMENT mailcode		(#PCDATA)>
+<!ELEMENT pobox			(#PCDATA)>
+<!ELEMENT room			(#PCDATA)>
+<!ELEMENT address-floor		(#PCDATA)>
+<!ELEMENT building		(#PCDATA)>
+<!ELEMENT street		(#PCDATA)>
+<!ELEMENT street-number	(#PCDATA)>	<!-- can be used in case of CZ, in other cases the street-number i spart of the street. We can decide in the stylesheet to merge into street, as long as we dont use it separatedly -->
+<!ELEMENT city			(#PCDATA)>
+<!ELEMENT county		(#PCDATA)>
+<!ELEMENT state			(#PCDATA)>
+<!ELEMENT postcode		(#PCDATA)>
+<!ELEMENT country		(#PCDATA)>		<!-- Country: use ST.3 country code, e.g. DE, FR, GB, NL, etc.  Also includes EP, WO  -->
+<!ELEMENT text			(#PCDATA)>
+
+<!ELEMENT phone			(#PCDATA)>
+<!ELEMENT fax			(#PCDATA)>
+<!ELEMENT email			(#PCDATA)>
+<!ELEMENT url			(#PCDATA)>
+<!ELEMENT ead			(#PCDATA)>
+<!ELEMENT dtext			(#PCDATA)>
+
+<!-- date format is compatible with java formatting;
+	when left out the format (of date) is assumed to be ddMMyyyy and (time)hhmmss
+-->
+<!ELEMENT date			(#PCDATA)>
+<!ATTLIST date			format		CDATA	#IMPLIED>
+<!ELEMENT time			(#PCDATA)>
+<!ATTLIST time			format		CDATA	#IMPLIED>
+
+<!ELEMENT name-extra (#PCDATA) >
+<!ATTLIST name-extra		id		CDATA	#REQUIRED
+				attr1		CDATA	#IMPLIED
+				attr2		CDATA	#IMPLIED
+				attr3		CDATA	#IMPLIED
+				attr4		CDATA	#IMPLIED
+				attr5		CDATA	#IMPLIED>
+
+<!ELEMENT address-extra (#PCDATA) >
+<!ATTLIST address-extra		id		CDATA	#REQUIRED
+				attr1		CDATA	#IMPLIED
+				attr2		CDATA	#IMPLIED
+				attr3		CDATA	#IMPLIED
+				attr4		CDATA	#IMPLIED
+				attr5		CDATA	#IMPLIED>
+
+<!ELEMENT filelist 		(file-content+)>
+<!ELEMENT file-content		(section-document*)>
+<!ATTLIST file-content  	id		CDATA	#IMPLIED
+				document-name	CDATA	#REQUIRED
+				file-name	CDATA	#REQUIRED
+				file-type	CDATA	#IMPLIED
+				size		CDATA	#IMPLIED
+				date-produced	CDATA	#IMPLIED
+				full-xml	CDATA	#IMPLIED
+				applicant-file-name	CDATA	#IMPLIED
+				total-number-pages CDATA #IMPLIED
+				extra-attributes	CDATA	#IMPLIED
+				>
+
+<!ELEMENT section-document	EMPTY>
+<!ATTLIST section-document  	section-document-name	CDATA	#REQUIRED
+				first-page	CDATA	#IMPLIED
+				last-page	CDATA	#IMPLIED
+				number-pages	CDATA	#IMPLIED >
+
+
+<!--
+ | or we can have a complete office-dtd included here
+ | or we have a list of extra information (key is stored in @id, value in #PCDATA
+ | with extra (up to 5) attributes.
+ | Ofcourse when using these elements, the producer and the user have to have an agreement when to put where.
+ +-->
+<!ELEMENT office-specific-data   (information*)>
+<!ATTLIST office-specific-data
+               			office		CDATA	#IMPLIED
+				office-dtd	CDATA	#IMPLIED
+				file		CDATA	#REQUIRED
+				id		CDATA	#IMPLIED
+				lang		CDATA	#IMPLIED
+				status		CDATA	#IMPLIED>
+
+<!ELEMENT information   (#PCDATA)>
+<!ATTLIST information		id		CDATA	#REQUIRED
+				attr1		CDATA	#IMPLIED
+				attr2		CDATA	#IMPLIED
+				attr3		CDATA	#IMPLIED
+				attr4		CDATA	#IMPLIED
+				attr5		CDATA	#IMPLIED>
+
+<!ELEMENT signatory  (%name_group;,address?,electronic-signature,signatory-capacity?) >
+
+<!ELEMENT electronic-signature  (basic-signature | enhanced-signature) >
+<!ATTLIST electronic-signature		date  CDATA    #REQUIRED
+               						place-signed  CDATA    #IMPLIED  >
+<!ELEMENT enhanced-signature  (pkcs7) >
+<!ELEMENT pkcs7   EMPTY  >
+
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+<!ELEMENT fax-image EMPTY>
+<!ATTLIST fax-image  	file CDATA  #REQUIRED >
+<!ELEMENT text-string (#PCDATA)>
+<!ELEMENT click-wrap EMPTY>
+
+<!ELEMENT signatory-capacity  (#PCDATA) >
+
+<!ELEMENT certificate (subject-dn, issuer-dn, serial-number)>
+<!ELEMENT subject-dn (#PCDATA)>
+<!ELEMENT issuer-dn (#PCDATA)>
+<!ELEMENT serial-number (#PCDATA)>

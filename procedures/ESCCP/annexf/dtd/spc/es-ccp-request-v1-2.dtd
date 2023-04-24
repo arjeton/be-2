@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+*  PUBLIC "-//OEPM//DTD ES SPC REQUEST 1.1//EN" "es-ccp-request.dtd"  *
+*******************************************************************
+* Spaniard SPC Request DTD 	     			*
+*******************************************************************
+*  contacts:                                                           		*
+*  R. Brookes EPO									*
+*  A. Garcia del Vello Lopez OEPM 										*
+*******************************************************************
+* Change History
+* 
+attributes for es-ccp-request
+Attributes:
+  lang         		= language of application - use ISO639 language code
+  dtd-version   	= dtd version number
+  file          		= filename of the whole application
+  status       		= status of the application;
+                  		values: n = new application
+  date-produced = YYYYMMDD e.g, 20011230 if desired, 12 characters maximum
+  ro           		= Receiving office name, country code ST.3
+  produced-by   	= creator of this document
+  file-reference-id = the applicant's reference
+  
+  1/7/2014  ADN: Added  for-the-product to application-type
+  22/5/2015 ADN: Added  property country to cl-marketing-ex
+
+ -->
+ <!--  ENTITIES:  -->
+ <!ENTITY % name_group "(((prefix? , (last-name | orgname) , first-name? , suffix? , iid? , role? , orgname? , department? , synonym*) | name) , registered-number?)">
+ <!ENTITY % address_group "((street , postcode ,mailcode? , city, state, country) | text)">
+ <!ENTITY % rep_type " rep-type (agent | attorney | common-representative ) #REQUIRED">
+ <!ENTITY % es_boolean "(true  | false)">
+<!ELEMENT es-ccp-request (file-reference-id?, application-type, past-record, parties, authorisations, es-check-list, signatories, remarks?)>
+<!ATTLIST es-ccp-request
+	lang CDATA #REQUIRED
+	dtd-version CDATA #REQUIRED
+	file CDATA #IMPLIED
+	status CDATA #IMPLIED
+	date-produced CDATA #IMPLIED
+	ro CDATA #REQUIRED
+	produced-by CDATA #REQUIRED
+	type CDATA #REQUIRED
+>
+<!ELEMENT file-reference-id (#PCDATA)>
+
+<!--
+application-type options are:
+1. new-spc 
+2. granted-spc
+3. spc-in-process
+-->
+
+<!ELEMENT application-type (new-spc?, granted-spc?, spc-in-process?)>
+<!ATTLIST application-type 
+for-the-product CDATA #IMPLIED
+>
+
+<!ELEMENT new-spc EMPTY>
+<!ATTLIST new-spc 
+type (medicinal | plant-protection) #REQUIRED
+time-extension (true |false) #REQUIRED
+>
+
+<!ELEMENT granted-spc EMPTY>
+<!ATTLIST granted-spc 
+time-extension (true |false) #REQUIRED
+>
+
+<!ELEMENT spc-in-process EMPTY>
+
+
+<!--
+Past record contains:
+ - information about the patent for which supplementary protection is sought, or 
+ - information about an existing SPC application or granted SPC
+-->
+<!ELEMENT past-record (patent?, certificate?)>
+
+<!ELEMENT remarks (remark*)>
+<!ELEMENT remark (Author?, Subject?, Text?)>
+<!ATTLIST remark
+	seqno CDATA #REQUIRED
+	date CDATA #IMPLIED
+	rem-type (remark | private-remark) #REQUIRED
+	rem-kind (appl | nat-office) #REQUIRED
+>
+<!ELEMENT Author (#PCDATA)>
+<!ELEMENT Subject (#PCDATA)>
+<!ELEMENT Text (#PCDATA)>
+
+<!ELEMENT patent (patent-application-number?, filing-date?, patent-number?, grant-date?, es-invention-title?)>
+<!ATTLIST patent
+	type (national-patent | european-patent) #REQUIRED
+>
+
+<!ELEMENT patent-application-number (document-id, filing-date)>
+
+<!ELEMENT filing-date (#PCDATA)>
+
+<!ELEMENT patent-number (document-id, grant-date)>
+
+<!ELEMENT grant-date (#PCDATA)>
+
+<!ELEMENT es-invention-title (#PCDATA)>
+
+<!ELEMENT certificate (certificate-application-number?)>
+
+<!ELEMENT certificate-application-number (document-id)>
+
+<!ELEMENT certificate-number (document-id)>
+
+
+<!--
+Information about applicants and representatives
+-->
+<!-- PARTIES PAGE APPLICANTS, INVENTOR(S),AGENTs ADDRESS FOR CORRESPONDENCE -->
+<!ELEMENT parties (applicants, agents?)>
+<!-- Applicant information: -->
+<!ELEMENT applicants (applicant*)>
+<!ELEMENT applicant (addressbook+, nationality, email-notification-wanted?)>
+<!ATTLIST applicant
+	sequence CDATA #REQUIRED
+	app-type (applicant | applicant-inventor) #REQUIRED
+	designation (all | all-except-us | us-only | as-indicated) #IMPLIED
+>
+<!-- Agents-->
+<!ELEMENT agents (agent*)>
+<!ELEMENT agent (addressbook, nationality?, email-notification-wanted?, es-pow-att?, es-number-general-power-of-attorney?)>
+<!ATTLIST agent
+	sequence CDATA #REQUIRED
+	%rep_type; 
+>
+<!ELEMENT es-pow-att EMPTY>
+<!ATTLIST es-pow-att
+	es-ch-pow-att %es_boolean; #IMPLIED
+>
+<!ELEMENT es-number-general-power-of-attorney EMPTY>
+<!ATTLIST es-number-general-power-of-attorney
+	es-ch-gen-pow-att %es_boolean; #REQUIRED
+	es-number-general-power-of-attorney CDATA #REQUIRED
+>
+<!-- ADDRESSBOOK GROUP: -->
+<!ELEMENT addressbook ((%name_group;, address?, C.I.F.*, CNAE*, PYME*, D.N.I.*, passport-number*, phone*, fax*, email*, contactperson*, organisation-number*, url*, ead*, dtext?) | text)>
+<!ATTLIST addressbook
+	lang CDATA #IMPLIED
+>
+<!ELEMENT address (%address_group;)>
+<!ELEMENT last-name (#PCDATA)>
+<!ELEMENT first-name (#PCDATA)>
+<!ELEMENT C.I.F. (#PCDATA)>
+<!ELEMENT CNAE (#PCDATA)>
+<!ELEMENT PYME (#PCDATA)>
+<!ELEMENT D.N.I. (#PCDATA)>
+<!ELEMENT passport-number (#PCDATA)>
+<!ELEMENT fax (#PCDATA)>
+<!ELEMENT street (#PCDATA)>
+<!ELEMENT phone (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT contactperson (#PCDATA)>
+<!ELEMENT organisation-number (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT ead (#PCDATA)>
+<!ELEMENT dtext (#PCDATA)>
+
+<!ELEMENT authorisations (APPM*)>
+<!ELEMENT APPM (authorisation-country?, authorisation-number?, product-identity?, authorisation-date?, legal-basis?, product-information?)>
+<!ATTLIST APPM
+	appm-type (national | national-and-community | community) #REQUIRED
+>
+<!ELEMENT authorisation-country (#PCDATA)>
+<!ELEMENT authorisation-number (#PCDATA)>
+<!ELEMENT product-identity (#PCDATA)>
+<!ELEMENT authorisation-date (#PCDATA)>
+<!ELEMENT product-information (#PCDATA)>
+<!ELEMENT legal-basis (#PCDATA)>
+
+<!--
+  Document information
+-->
+<!ELEMENT application-number (document-id)>
+<!ELEMENT document-id (#PCDATA)>
+<!--
+  Date
+-->
+<!ELEMENT date (#PCDATA)>
+<!--
+  checklist of the system generated and attached documents being furnished
+-->
+<!ELEMENT es-check-list (cl-es-ccp-request?, cl-fee-calculation?, cl-voluntary-contribution*, cl-copy-of-es-authorisation*, cl-copy-of-eu-authorisation*, cl-notice-publishing-authorisation*, cl-marketing-authorisation*, cl-pat-protection*, cl-marketing-es*, cl-marketing-ex*, cl-marketing-eu*, cl-power-of-attorney*, cl-fee-receipt*, cl-other-document*)>
+<!--
+  checklist; the request is being furnished
+-->
+<!ELEMENT cl-es-ccp-request EMPTY>
+<!ATTLIST cl-es-ccp-request
+	page-count CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; generated fee sheet is being furnished
+-->
+<!ELEMENT cl-fee-calculation EMPTY>
+
+
+<!--
+  checklist; Explanation of voluntary contribution
+-->
+<!ELEMENT cl-voluntary-contribution EMPTY>
+<!ATTLIST cl-voluntary-contribution
+	page-count CDATA #REQUIRED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; copy of Spaniard authorisation (National)
+-->
+<!ELEMENT cl-copy-of-es-authorisation EMPTY>
+<!ATTLIST cl-copy-of-es-authorisation
+	page-count CDATA #REQUIRED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; copy of European authorisation (National)
+-->
+<!ELEMENT cl-copy-of-eu-authorisation EMPTY>
+<!ATTLIST cl-copy-of-eu-authorisation
+	page-count CDATA #REQUIRED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; a notice publishing authorisation to market the product being furnished
+-->
+<!ELEMENT cl-notice-publishing-authorisation (#PCDATA)>
+<!ATTLIST cl-notice-publishing-authorisation
+	page-count CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+
+
+<!--
+  checklist; marketing authorisation
+-->
+<!ELEMENT cl-marketing-authorisation (#PCDATA)>
+<!ATTLIST cl-marketing-authorisation
+	page-count CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; Patent protection info
+-->
+<!ELEMENT cl-pat-protection EMPTY>
+<!ATTLIST cl-pat-protection
+	page-count CDATA #REQUIRED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; Marketing ES
+-->
+<!ELEMENT cl-marketing-es EMPTY>
+<!ATTLIST cl-marketing-es
+	page-count CDATA #REQUIRED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; Marketing EX
+-->
+<!ELEMENT cl-marketing-ex EMPTY>
+<!ATTLIST cl-marketing-ex
+  country CDATA #REQUIRED
+	page-count CDATA #REQUIRED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; Marketing EU
+-->
+<!ELEMENT cl-marketing-eu EMPTY>
+<!ATTLIST cl-marketing-eu
+	page-count CDATA #REQUIRED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; power of attorney is being furnished
+-->
+<!ELEMENT cl-power-of-attorney (#PCDATA)>
+<!ATTLIST cl-power-of-attorney
+	page-count CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; Fee receipt
+-->
+<!ELEMENT cl-fee-receipt (#PCDATA)>
+<!ATTLIST cl-fee-receipt
+	page-count CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+
+<!--
+  checklist; Other document
+-->
+<!ELEMENT cl-other-document (#PCDATA)>
+<!ATTLIST cl-other-document
+	page-count CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+<!--
+  signatories
+-->
+<!ELEMENT signatories (signatory+)>
+<!--
+
+ The signature of the applicant or agent
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+-->
+<!ELEMENT signatory (((name | (prefix?, last-name, first-name, middle-name?, suffix?, iid?, role?, orgname?, department?, synonym*)), registered-number?), address?, electronic-signature, signatory-capacity?)>
+<!--
+  the capacity in which the person signs
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+<!--
+  A PKI / PKCS #7 digital signature data type
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+<!--
+  PKCS7 digital signature
+-->
+<!ELEMENT pkcs7 EMPTY>
+<!--
+  a non-PKI electronic signature
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+<!--
+  a simple 'signature', e.g., clicking a button
+  labeled 'accept' or 'I agree'
+-->
+<!ELEMENT click-wrap EMPTY>
+<!--
+  a simple text string is to be used as the basic electronic
+  signature, e.g., John Doe  <text-string>/jd/</text-string>
+-->
+<!ELEMENT text-string (#PCDATA)>
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+<!ATTLIST electronic-signature
+	date CDATA #REQUIRED
+	place-signed CDATA #IMPLIED
+>
+<!--
+  a TIFF image of a signature
+-->
+<!ELEMENT fax-image EMPTY>
+<!ATTLIST fax-image
+	file CDATA #REQUIRED
+>
+<!--
+  individual id
+-->
+<!ELEMENT iid (#PCDATA)>
+<!--
+  role, e.g. President, Chairman, etc.
+-->
+<!ELEMENT role (#PCDATA)>
+<!--
+  name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+-->
+<!ELEMENT suffix (#PCDATA)>
+<!--
+  synonym
+-->
+<!ELEMENT synonym (#PCDATA)>
+<!-- Name: If no distinction or detail can be given. Also to be used for: personal (natural person) and corporate (legal entity) names-->
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name
+	name-type (legal | natural) #IMPLIED
+>
+<!-- Title: e.g., Mr., Mrs., Dr. etc-->
+<!ELEMENT prefix (#PCDATA)>
+<!-- Postal code or zip code-->
+<!ELEMENT postcode (#PCDATA)>
+<!-- City or town name-->
+<!ELEMENT city (#PCDATA)>
+<!ELEMENT state (#PCDATA)>
+<!-- Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc. Also includes EP, WO-->
+<!ELEMENT country (#PCDATA)>
+<!-- Country of nationality-->
+<!ELEMENT nationality (country)>
+<!-- Notifications wanted by email -->
+<!ELEMENT email-notification-wanted EMPTY>
+<!-- Registered number-->
+<!ELEMENT registered-number (#PCDATA)>

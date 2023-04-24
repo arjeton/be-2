@@ -1,0 +1,27 @@
+{
+  "definitions": {
+    "fees": {
+      "ui:field": "FormSectionField",
+      "ui:title": "i18n(fees.title)",
+      "ui:icon": "euro",
+      "ui:disabled": true,
+      "scrollSection": true
+    },
+    "feesSelection": {
+      "ui:field": "FeesSelectionField",
+      "ui:feesTitle": "i18n(fees.selection)",
+      "ui:description": "i18n(feesDescription)",
+      "ui:optional": "i18n(feesOptional)"
+    },
+    "accountInformation": {
+      "ui:description": "i18n(fees.accountInformationDescription)",
+      "ui:field": "PaperObjectField",
+      "accountNumber": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+      },
+      "accountHolder": {
+        "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+      }
+    }
+  }
+}

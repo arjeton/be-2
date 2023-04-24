@@ -1,0 +1,33 @@
+[
+	{
+		"type": "selectAll",
+		"ariaLabel": "actions.select.all.invitations",
+		"activeAriaLabel": "messages.all.invitations.selected"
+	},
+	{
+		"type": "default",
+		"label": "user-management.invitation.email",
+		"field": "emailAddress",
+		"sortId": "filter.emailAddress",
+		"filterId": "emailAddress",
+		"filterType": "textField"
+	},
+	{
+		"type": "default",
+		"label": "user-management.user-name",
+		"field": "username",
+		"sortId": "filter.username",
+		"filterId": "username",
+		"filterType": "textField"
+	},
+	{
+		"type": "roles"
+	},
+	{
+		"type": "invitationStatus"
+	},
+	{
+		"type": "combinedCell",
+		"showOnNonXLDevice": true
+	}
+]

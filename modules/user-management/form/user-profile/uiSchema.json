@@ -1,0 +1,58 @@
+{
+  "firstName": {
+    "ui:widget": "typicalText",
+    "ui:options": {
+      "style": {
+        "width": "100%",
+        "& .MuiInputBase-input.Mui-disabled": {
+          "opacity": "1"
+        }
+      }
+    }
+  },
+  "lastName": {
+    "ui:widget": "typicalText",
+    "ui:options": {
+      "style": {
+        "width": "100%",
+        "& .MuiInputBase-input.Mui-disabled": {
+          "opacity": "1"
+        }
+      }
+    }
+  },
+  "emailAddress": {
+    "ui:widget": "userEmailWidget",
+    "ui:options": {
+      "style": {
+        "width": "100%"
+      }
+    }
+  },
+  "username": {
+    "ui:widget": "usernameWidget",
+    "ui:options": {
+      "style": {
+        "width": "100%"
+      }
+    },
+    "ui:validation": {
+      "pattern": "validation.default.username.pattern"
+    }
+  },
+  "initials": {
+    "ui:widget": "typicalText",
+    "ui:options": {
+      "style": {
+        "width": "100%"
+      }
+    },
+    "ui:validation": {
+      "pattern": "validation.default.initials.pattern"
+    }
+  },
+  "ui:validation": {
+    "required": "validation.default.required",
+    "format": "validation.default.pattern"
+  }
+}

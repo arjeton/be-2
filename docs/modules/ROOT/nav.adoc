@@ -1,0 +1,9 @@
+* xref:index.adoc[Overview]
+
+* xref:submission-form/index.adoc[Submission Form]
+** xref:submission-form/1-basic-filing/index.adoc[Basic filing]
+** xref:submission-form/2-parties/index.adoc[Parties]
+*** xref:submission-form/2-parties/1-applicants/index.adoc[Applicants]
+*** xref:submission-form/2-parties/2-representatives/index.adoc[Representatives]
+*** xref:submission-form/2-parties/3-inventors/index.adoc[Inventors]
+*** xref:submission-form/2-parties/4-communication-address/index.adoc[Communication Address]

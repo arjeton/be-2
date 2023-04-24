@@ -1,0 +1,30 @@
+{
+  "name": {
+    "ui:widget": "organizationNameWidget",
+    "ui:title": "i18n(user.management.organization-info)",
+    "ui:options": {
+      "style": {
+        "width": "27rem"
+      }
+    }
+  },
+  "description": {
+    "ui:widget": "textarea",
+    "ui:options": {
+      "rows": 3,
+      "style": {
+        "width": "27rem",
+        "marginBottom": "3rem"
+      }
+    }
+  },
+  "accentColor": {
+    "ui:widget": "accentColorPicker",
+    "ui:title": "i18n(accent-color.title)",
+    "ui:definition": "i18n(user.management.accent-color.description)"
+  },
+  "ui:validation": {
+    "required": "validation.default.required",
+    "format": "validation.default.pattern"
+  }
+}

@@ -1,0 +1,50 @@
+server:
+  port: ${FILE_SERVICE_PORT:3002}
+  servlet:
+    context-path: ${FILE_SERVICE_CONTEXT_PATH:/fo-file-develop}
+
+spring:
+  cloud:
+    stream:
+      function:
+        definition: deleteByGroupIdConsumer
+      bindings:
+        deleteByGroupIdConsumer-in-0:
+          destination: storage.topic
+          group: files.storage.deleteByGroupId
+  datasource:
+    url: ${SQL_DB_URL:jdbc:mysql://host.docker.internal:3306/}${FILE_DB:filedb}
+    username: ${FILE_DB_USER:fileuser}
+    password: ${FILE_DB_PASSWORD:fileusersecret}
+    driver-class-name: ${FILE_DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    hikari:
+      maximum-pool-size: 5
+  liquibase:
+    changelog: classpath:/db/db-changelog-master.xml
+  jpa:
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
+        temp.use_jdbc_metadata_defaults: false
+        jdbc.batch_size: 1000
+        dialect: ${FILE_DB_DIALECT:org.hibernate.dialect.MySQL5InnoDBDialect}
+
+storage:
+  location: ${STORAGE_PATH:/tmp/itc-fo/attachments/}
+  digest-algorithm: ${DIGEST_ALGORITHM:SHA1}
+  antivirus-scan-enabled: ${ANTIVIRUS_SCAN_ENABLED:false}
+  antivirus-scan-endpoint: ${ANTIVIRUS_SCAN_ENDPOINT:http://host.docker.internal:11080/api/v1/scan}
+
+encryption:
+  keystore-cert-name: ${KEYSTORE_CERT_NAME:TCStestuser99791.p12}
+  keystore-secret: ${KEYSTORE_SECRET:epoline99791}
+  keystore-alias: ${KEYSTORE_ALIAS:tcs test user 99791’s european patent office id}
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:debug}
+    com:
+      zaxxer:
+        hikari:
+          HikariConfig: ${HIKARI_LOGGING_LEVEL:info}
+          nodeValue: ${NODEVALUE_LOGGING_LEVEL:info}

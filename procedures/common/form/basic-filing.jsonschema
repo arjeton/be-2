@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "userReference": {
+        "title": "i18n(basic-filing.user-reference)",
+        "type": [
+            "string",
+            "null"
+        ],
+        "maxLength": 25,
+        "pattern": "^[\\d\\w\\s\\\\.,<>=_\\-()/'\"À-ž\u0600-\u06FF]*$"
+    },
+    "titleOfInvention": {
+        "title": "i18n(basic-filing.title-of-invention)",
+        "type": [
+            "string",
+            "null"
+        ],
+        "maxLength": 512
+    },
+    "typeOfProtection": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "provisional",
+        "definitive"
+      ],
+      "enumNames": [
+        "i18n(basic-filing.type-of-protection.provisional)",
+        "i18n(basic-filing.type-of-protection.definitive)"
+      ],
+      "default": "definitive"
+    },
+    "definitiveProtectionSelection": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [ "B1","B2","B3"],
+      "enumNames": [
+        "i18n(enum.definitiveProtectionSelection.B1)",
+        "i18n(enum.definitiveProtectionSelection.B2)",
+        "i18n(enum.definitiveProtectionSelection.B3)"
+      ]
+    }
+  }
+}

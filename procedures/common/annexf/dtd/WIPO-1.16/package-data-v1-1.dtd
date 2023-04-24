@@ -1,0 +1,926 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+        <!--
+          The  "epoline (r) Online Filing software (eOLF) software" which you may
+          download is a software that supports the online electronic filing of
+          intellectual property documents and hereinafter is referred to as
+          "the Program".
+
+          Copyright (r) 2005 European Patent Organisation
+
+          The European Patent Organisation has made available the source code to pave
+          the way for the system to become a world standard for Intellectual Property
+          document archiving and to facilitate document exchange between offices,
+          which will reduce costs for applicants and increase efficiencies within the
+          offices.
+
+          To accomplish this goal a Release Board has been formed to ensure the
+          maximum possible international uniformity in this area. The members of this
+          Release Board are various governmental and intergovernmental
+          administrations: EPO, USPTO, JPO, WIPO and several other interested
+          organisations. For details about the Release Board and how to become a
+          member thereof see http://eolf.sourceforge.net.
+
+          You are requested to provide your modifications and contributions on the
+          Program to the eOLF Open Source community on
+          http://eolf.sourceforge.net, so as to make it possible for the Release
+          Board to assess them and incorporate them into a new certified release of
+          the Program.
+
+          You can redistribute this Program and/or modify it in accordance with the
+          terms of the European Patent Organisation Open Source Licence No. 2005/1.
+
+          This Program is distributed in the hope that it will be useful, but WITHOUT
+          ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+          FITNESS FOR A PARTICULAR PURPOSE. See the European Patent Organisation Open
+          Source Licence No. 2005/1 for more details.
+
+          You should have received a copy of the European Patent Organisation Open
+          Source Licence No. 2005/1 along with this Program; if not write to
+          epoline (r), European Patent Office - P.O. Box 5818 - 2280HV Rijswijk (ZH) -
+          Netherlands or email to the Administrator of the ePHOENIX project at
+          SourceForge (see: http://sourceforge.net/project/eolf.
+
+          If the program is interactive, make it output a short notice like this when
+          it starts in an interactive mode:
+
+          epoline (r) Online Filing, Copyright (c) 2005 European Patent Organisation,
+          comes with ABSOLUTELY NO WARRANTY; for details see the European Patent
+          Organisation Open Source Licence No. 2005/1 at
+          http://eolf.sourceforge.net. You are welcome to redistribute it under
+          certain conditions; for details see the European Patent Organisation Open
+          Source Licence No. 2005/1 at http://eolf.sourceforge.net.
+        -->
+
+        <!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name?
+                       , middle-name? , suffix? , iid? , role? , orgname?
+                       , department? , synonym*)) , registered-number?)">
+
+        <!ENTITY % address_group "((address-1? , address-2? , address-3? , mailcode? , pobox?
+                          , room? , address-floor? , building? , street? , city?
+                          , county? , state? , postcode? , country) | text)">
+
+        <!ENTITY % document_attributes " file     CDATA  #REQUIRED
+                                 lang     CDATA  #IMPLIED
+                                 status   CDATA  #IMPLIED
+                                 carriers (internal-electronic
+                                         | external-electronic
+                                         | paper )  #IMPLIED">
+
+
+        <!--
+        **************************************************************************
+        *  package-data   v1.1 2003 FEBRUARY                                     *
+        **************************************************************************
+        *  PUBLIC "-//WIPO//DTD PACKAGE DATA 1.1//EN" "package-data.dtd"         *
+        **************************************************************************
+        *  http://pcteasy.wipo.int/efiling_standards/schemaDocs/1.1/package-data.dtd *
+        **************************************************************************
+        *  contacts:                                                             *
+        *  EPO:   Paul Brewin;   pbrewin@epo.org                                 *
+        *  JPO:   Shiro Ankyu;   ankyu-shiro@jpo.go.jp                           *
+        *  USPTO: Bruce B. Cox;  bruce.cox@uspto.gov                             *
+        *  WIPO:  John Dunning;  john.dunning@wipo.int                           *
+        *  WIPO:  Hideto Tanaka; hideto.tanaka@wipo.int                          *
+        **************************************************************************
+        * REVISION HISTORY                                                       *
+        **************************************************************************
+        JD: 03/02/03 Incorporated changes from PFCs:
+        ..removed first-named-applicant from office-to-applicant
+        ..added total-number-of-notifications to office-to-applicant
+        ..added notice-info to office-to-applicant
+        ..made postcode optional within address
+        ..added (last-name | orgname) to %name_group;
+        ..added notice-info, request-for-dispatch-info to office-to-applicant content model
+        ..added table-external to root content model
+        ..added other-filing to transmittal-info content model
+        ..removed br from b, i, smallcaps
+        **************************************************************************
+        Root Element 'package-data'
+
+        Attributes:
+          lang          = language of application - use ISO639 language code
+          dtd-version   = dtd version number
+          file          = filename of the whole application
+          status        = status of the application;
+                          values: n = new application
+          produced-by   = creator of this document
+          date-produced = YYYYMMDD e.g, 20011230
+                          if desired, 12 characters maximum
+          country       = st.3 code
+
+        %document-attributes group entity:
+
+        lang     = language code of attached document, ISO639 language code,
+                  e.g, en,de,ja,,
+        file     = attached document file name  e.g, "request.xml"
+        status   = attached document status  e.g, new, replace,
+        carriers =
+           internal = This WAD contains the referenced electronic document
+           external = Outside electronic carrier containes the referenced
+                      electronic document
+           paper    = The referenced document is paper form
+
+                    -->
+        <!ELEMENT package-data (transmittal-info , signatories , dtext? , (application-request
+                | application-body-doc | table-external | chapter2-demand
+                | fee-calculation-sheet | declaration-doc | lack-of-signature
+                | biological-material | separate-power-of-attorney
+                | general-power-of-attorney | copy-general-power-of-attorney
+                | bib-changes | notification | amendment | priority-document
+                | translation-of-application | search-report | trans-search-report
+                | preliminary-examination-report | trans-preliminary-examination-report
+                | published-application | sequence-list | correspondence
+                | other-documents | wrapped-document)+)>
+
+        <!ATTLIST package-data  lang        CDATA  #REQUIRED
+                dtd-version CDATA  #IMPLIED
+                file        CDATA  #IMPLIED
+                status      CDATA  #IMPLIED
+                produced-by   (applicant | RO | ISA | IPEA | IB | DO | EO )
+                        #REQUIRED
+                date-produced CDATA  #IMPLIED
+                country       CDATA  #IMPLIED >
+
+        <!--
+          other documents; specify with sub-elements
+
+                    -->
+        <!ELEMENT other-doc (document-name | document-code | dtext)+>
+
+        <!ATTLIST other-doc  id                  ID  #IMPLIED
+                %document_attributes;
+                file-type   (xml | pdf | txt | tif | zip | jpg )  #REQUIRED >
+        <!--
+          Wrapped document referenced; e.g.record copy, certified priority document.
+
+                    -->
+        <!ELEMENT wrapped-document EMPTY>
+
+        <!ATTLIST wrapped-document  id     CDATA  #IMPLIED
+                lang   CDATA  #IMPLIED
+                status CDATA  #IMPLIED
+                file          CDATA  #REQUIRED
+                package-type         (wad | wasp | sep )  #REQUIRED >
+        <!--
+          correspondence from applicant
+              it is possible to use corr(espondence)-type attribute
+              for correspondence title
+
+                    -->
+        <!ELEMENT correspondence EMPTY>
+
+        <!ATTLIST correspondence  id                  ID     #IMPLIED
+                %document_attributes;
+                corr-type           CDATA  #REQUIRED >
+        <!--
+          SEQUENCE LISTING
+              According to WIPO ST.25: STANDARD FOR THE PRESENTATION OF
+              NUCLEOTIDE AND AMINO ACID SEQUENCE LISTINGS IN PATENT APPLICATIONS:
+              see http://www.wipo.int/scit/en/index.html
+              "The sequence listing as defined in paragraph 2(i)
+              shall, where it is filed together with the application, be placed
+              at the end of the application. This part shall be entitled
+              Sequence Listing, begin on a new page and preferably have
+              independent page numbering. The sequence listing forms an
+              integral part of the description; it is therefore unnecessary,
+              subject to paragraph 36, to describe the sequences elsewhere
+              in the description."
+              Therefore we create here a separate sub-document for sequence
+              listings, it should follow any drawings or the claims.
+              It should follow the format of ST.25 and be an external file
+
+                    -->
+        <!ELEMENT sequence-list EMPTY>
+
+        <!ATTLIST sequence-list  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          published application, e.g. PCT Art.20 communication
+
+                    -->
+        <!ELEMENT published-application EMPTY>
+
+        <!ATTLIST published-application  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          English translation of
+              International Preliminary Examination Report
+
+                    -->
+        <!ELEMENT trans-preliminary-examination-report EMPTY>
+
+        <!ATTLIST trans-preliminary-examination-report  id      ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          International Preliminary Examination Report (IPER) (Article 35)
+
+                    -->
+        <!ELEMENT preliminary-examination-report EMPTY>
+
+        <!ATTLIST preliminary-examination-report  id         ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          English translation of search report
+
+                    -->
+        <!ELEMENT trans-search-report EMPTY>
+
+        <!ATTLIST trans-search-report  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+           search report
+
+                    -->
+        <!ELEMENT search-report EMPTY>
+
+        <!ATTLIST search-report  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          translation of international application
+
+                    -->
+        <!ELEMENT translation-of-application EMPTY>
+
+        <!ATTLIST translation-of-application  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          a copy of the earlier application for which priority is
+          being claimed (Rule 17)
+
+                    -->
+        <!ELEMENT priority-document EMPTY>
+
+        <!ATTLIST priority-document  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+         amendment request document (PCT Art 19, Art 34)
+
+                    -->
+        <!ELEMENT amendment EMPTY>
+
+        <!ATTLIST amendment  %document_attributes;
+                id                  ID  #IMPLIED >
+        <!--
+          notification form among applicant and offices
+
+                    -->
+        <!ELEMENT notification EMPTY>
+
+        <!ATTLIST notification  id                  ID     #IMPLIED
+                %document_attributes;
+                notf-type           CDATA  #REQUIRED >
+        <!--
+          changes to bibliographic material; e.g. name, address
+
+                    -->
+        <!ELEMENT bib-changes EMPTY>
+
+        <!ATTLIST bib-changes  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          copy of general power of attorney; PCT/RO/101 Box IX Check-box 4
+
+                    -->
+        <!ELEMENT copy-general-power-of-attorney EMPTY>
+
+        <!ATTLIST copy-general-power-of-attorney  id                  ID     #IMPLIED
+                %document_attributes;
+                ref-number          CDATA  #IMPLIED >
+        <!-- bli: set to implied for testing, was REQUIRED !!!!! -->
+        <!--
+          original general power of attorney;
+          PCT/RO/101 Box IX, Check-box 3
+
+                    -->
+        <!ELEMENT general-power-of-attorney EMPTY>
+
+        <!ATTLIST general-power-of-attorney  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+           original separate power of attorney
+
+                    -->
+        <!ELEMENT separate-power-of-attorney EMPTY>
+
+        <!ATTLIST separate-power-of-attorney  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          separate indications concerning deposited microorganism
+              or other biological material
+
+                    -->
+        <!ELEMENT biological-material EMPTY>
+
+        <!ATTLIST biological-material  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          statement explaining lack of signature
+
+                    -->
+        <!ELEMENT lack-of-signature EMPTY>
+
+        <!ATTLIST lack-of-signature  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          Declarations under PCT
+
+                    -->
+        <!ELEMENT declaration-doc EMPTY>
+
+        <!ATTLIST declaration-doc  id                  ID  #IMPLIED
+                %document_attributes;
+                dec-type   (1 | 2 | 3 | 4 | 5 | combined )  #REQUIRED >
+        <!--
+          reference to an attached fee-calculation sheet
+
+                    -->
+        <!ELEMENT fee-calculation-sheet EMPTY>
+
+        <!ATTLIST fee-calculation-sheet  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+          chapter2-demand form (IPEA401)
+
+                    -->
+        <!ELEMENT chapter2-demand EMPTY>
+
+        <!ATTLIST chapter2-demand  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+           References a stand-alone table authored with the table-external DTD.
+
+
+
+                    -->
+        <!ELEMENT table-external EMPTY>
+
+        <!ATTLIST table-external  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+        Application Body document:
+          description, claims, drawings and abstract
+
+                    -->
+        <!ELEMENT application-body-doc EMPTY>
+
+        <!ATTLIST application-body-doc  id                  ID  #IMPLIED
+                %document_attributes; >
+        <!--
+         PCT request form (PCT/RO/101)
+
+                    -->
+        <!ELEMENT application-request EMPTY>
+
+        <!ATTLIST application-request  %document_attributes;
+                id                  ID  #IMPLIED >
+        <!--
+          a signature represented by electronic means
+
+                    -->
+        <!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+        <!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                place-signed CDATA  #IMPLIED >
+        <!--
+          a TIFF image of a signature
+
+                    -->
+        <!ELEMENT fax-image EMPTY>
+
+        <!ATTLIST fax-image  file CDATA  #REQUIRED >
+        <!--
+          Information regarding notice
+
+
+
+                    -->
+        <!ELEMENT notice-info (response-term? , applicant-name* , agent-info?
+                , reason-for-rejection-info? , drafting-document-info?)>
+
+        <!ATTLIST notice-info  notice-id-ref CDATA  #REQUIRED >
+        <!--
+          Response term of invitation.
+
+          Attributes:
+             term     = period of time
+             division = discernment of month or day
+
+
+                    -->
+        <!ELEMENT response-term EMPTY>
+
+        <!ATTLIST response-term  unit-of-time CDATA  #REQUIRED
+                value        CDATA  #REQUIRED >
+        <!--
+         application reference information: application number, country
+
+                    -->
+        <!ELEMENT application-reference (document-id)>
+
+        <!ATTLIST application-reference  appl-type CDATA  #REQUIRED >
+        <!--
+          Document identification refers to patents (and patent
+          applications) only.  See WIPO ST.14
+
+                    -->
+        <!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+        <!ATTLIST document-id  lang CDATA  #IMPLIED >
+        <!--
+         reference to an appealed application
+
+                    -->
+        <!ELEMENT appeal-reference (doc-number , date?)>
+
+        <!ATTLIST appeal-reference  appeal-type CDATA  #REQUIRED >
+        <!--
+          name: if no distinction or detail can be given.
+          Also to be used for: personal (natural person) and corporate
+          (legal entity) names
+
+                    -->
+        <!ELEMENT name (#PCDATA)>
+
+        <!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+        <!--
+          Title of the Invention: preferably two to seven words when
+          in English or translated into English and precise. (Rule 4.3)
+
+          Recommended id = 'invt'
+
+                    -->
+        <!ELEMENT invention-title (#PCDATA | b | i | u | sup | sub)*>
+
+        <!ATTLIST invention-title  id   ID     #IMPLIED
+                lang CDATA  #IMPLIED >
+        <!--
+          underscore: style - single is default
+
+                    -->
+        <!ELEMENT u (#PCDATA | b | i | smallcaps)*>
+
+        <!ATTLIST u  style   (single | double | dash | dots )  'single' >
+        <!--
+          holder for other documents that do not conform to one of the
+          DTDs published in Appendix I of Annex F.
+
+                    -->
+        <!ELEMENT other-documents (other-doc*)>
+
+        <!--
+          Descriptive text
+
+                    -->
+        <!ELEMENT dtext (#PCDATA)>
+
+        <!--
+          the name of the other-doc(ument) referenced
+
+                    -->
+        <!ELEMENT document-name (#PCDATA)>
+
+        <!--
+          signatories
+
+                    -->
+        <!ELEMENT signatories (signatory+)>
+
+        <!--
+          PCT/RO/101 Box No. X:
+          The signature must be that of the applicant (if there are several
+          applicants, all must sign); however, the signature may be that of
+          the agent, or the common representative, where a separate power of
+          attorney appointing the agent or the common representative,
+          respectively, or a copy of a general power of attorney is already
+          in possession of the receiving Office, is furnished...
+          (PCT Rules 4.1(d), 4.15, and 90)
+
+          Indicate the capacity of the signer with 'signatory-capacity'
+
+
+
+                    -->
+        <!ELEMENT signatory (%name_group; , address? , electronic-signature
+                , signatory-capacity?)>
+
+        <!--
+          the capacity in which the person signs
+
+                    -->
+        <!ELEMENT signatory-capacity (#PCDATA)>
+
+        <!--
+          A PKI / PKCS #7 digital signature data type
+
+                    -->
+        <!ELEMENT enhanced-signature (pkcs7)>
+
+        <!--
+          PKCS7 digital signature
+
+                    -->
+        <!ELEMENT pkcs7 EMPTY>
+
+        <!--
+          a non-PKI electronic signature
+
+                    -->
+        <!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+        <!--
+          a simple 'signature', e.g., clicking a button
+          labeled 'accept' or 'I agree'
+
+                    -->
+        <!ELEMENT click-wrap EMPTY>
+
+        <!--
+          a simple text string is to be used as the basic electronic
+          signature, e.g., John Doe  <text-string>/jd/</text-string>
+
+                    -->
+        <!ELEMENT text-string (#PCDATA)>
+
+        <!--
+          address components:
+          Address formats differ from country to country
+          If no structure possible use text
+
+
+
+                    -->
+        <!ELEMENT address (%address_group;)>
+
+        <!--
+          postal code or zip code
+
+                    -->
+        <!ELEMENT postcode (#PCDATA)>
+
+        <!--
+          Region of country eg. state, province, etc.
+
+                    -->
+        <!ELEMENT state (#PCDATA)>
+
+        <!--
+          County, parish, department, etc (mainly UK, USA)
+
+                    -->
+        <!ELEMENT county (#PCDATA)>
+
+        <!--
+          City or town name
+
+                    -->
+        <!ELEMENT city (#PCDATA)>
+
+        <!--
+          street may contain house number or name
+
+                    -->
+        <!ELEMENT street (#PCDATA)>
+
+        <!--
+          building information in address, e.g., Hoffman building
+
+                    -->
+        <!ELEMENT building (#PCDATA)>
+
+        <!--
+          address floor, e.g., 10th
+
+                    -->
+        <!ELEMENT address-floor (#PCDATA)>
+
+        <!--
+          address room; e.g., Room 55B
+
+                    -->
+        <!ELEMENT room (#PCDATA)>
+
+        <!--
+          Post Office Box number
+
+                    -->
+        <!ELEMENT pobox (#PCDATA)>
+
+        <!--
+          organizational mail code
+
+                    -->
+        <!ELEMENT mailcode (#PCDATA)>
+
+        <!--
+          Address, third line
+
+                    -->
+        <!ELEMENT address-3 (#PCDATA)>
+
+        <!--
+          Address, second line
+
+                    -->
+        <!ELEMENT address-2 (#PCDATA)>
+
+        <!--
+          Address, first line
+
+                    -->
+        <!ELEMENT address-1 (#PCDATA)>
+
+        <!--
+          transmittal information
+
+                    -->
+        <!ELEMENT transmittal-info (new-application | subsequent-filing | office-to-office
+                | office-to-applicant)>
+
+        <!--
+          Document transfer information from office to applicant
+
+
+
+
+                    -->
+        <!ELEMENT office-to-applicant (from , invention-title? , confirmation-number?
+                , receipt-list-info? , file-reference-id?
+                , (application-reference+ | (patent-reference
+                , application-reference+)) , notice-info*
+                , total-number-of-notifications?)>
+
+        <!--
+          The total number of cases ready for notice
+
+                    -->
+        <!ELEMENT total-number-of-notifications (#PCDATA)>
+
+        <!--
+          A list of the receipts produced by the Office in response to query
+          "what did I send you?"
+
+
+                    -->
+        <!ELEMENT receipt-list-info (applicant-name? , receipt-number*)>
+
+        <!--
+          Notification to the applicant of the document code of the object to draft
+
+
+
+                    -->
+        <!ELEMENT drafting-document-info (document-code? , (receipt-number | dispatch-id))>
+
+        <!--
+          Dispatch identifier
+
+                    -->
+        <!ELEMENT dispatch-id (#PCDATA)>
+
+        <!--
+          Receipt number
+
+                    -->
+        <!ELEMENT receipt-number (#PCDATA)>
+
+        <!--
+            The Japanese applicant is demanding the notice of the reason for rejection
+
+                    -->
+        <!ELEMENT reason-for-rejection-info (reason-code , text)>
+
+        <!--
+          if no structure is possible, enter text (without markup)
+
+                    -->
+        <!ELEMENT text (#PCDATA)>
+
+        <!--
+          Code of the reason for rejection
+
+                    -->
+        <!ELEMENT reason-code (#PCDATA)>
+
+        <!--
+          information regarding the agent (without address information)
+
+
+
+                    -->
+        <!ELEMENT agent-info (agent-name+ | customer-number)>
+
+        <!--
+          customer number for agents by office
+
+                    -->
+        <!ELEMENT customer-number (#PCDATA)>
+
+        <!--
+          the name of the agent (without address information)
+
+                    -->
+        <!ELEMENT agent-name (%name_group;)>
+
+        <!--
+          the name of the applicant (without address information)
+
+                    -->
+        <!ELEMENT applicant-name (%name_group;)>
+
+        <!--
+          Document transfer information between offices.
+
+                    -->
+        <!ELEMENT office-to-office (invention-title? , first-named-applicant?
+                , confirmation-number? , application-reference
+                , publication-reference? , file-reference-id?
+                , from? , to?)>
+
+        <!--
+         the office that sends the document
+
+                    -->
+        <!ELEMENT from (country)>
+
+        <!--
+          publication reference information: publication number, date, etc
+
+                    -->
+        <!ELEMENT publication-reference (document-id)>
+
+        <!--
+          subsequent filing information, before Issue Date
+
+                    -->
+        <!ELEMENT subsequent-filing (invention-title? , first-named-applicant
+                , confirmation-number? , file-reference-id?
+                , appeal-reference? , (application-reference+
+                | (patent-reference , application-reference+))
+                , document-code* , to)>
+
+        <!--
+          patent reference information: patent number, date, etc
+
+                    -->
+        <!ELEMENT patent-reference (document-id)>
+
+        <!--
+          document kind code; e.g. A1
+
+                    -->
+        <!ELEMENT kind (#PCDATA)>
+
+        <!--
+          date: components of a date.  Format: YYYYMMDD
+
+                    -->
+        <!ELEMENT date (#PCDATA)>
+
+        <!--
+          the number of the referenced patent (or application) document
+
+                    -->
+        <!ELEMENT doc-number (#PCDATA)>
+
+        <!--
+          confirmation number from office
+
+                    -->
+        <!ELEMENT confirmation-number (#PCDATA)>
+
+        <!--
+          new application information from applicant to office
+
+                    -->
+        <!ELEMENT new-application (invention-title? , first-named-applicant?
+                , file-reference-id? , document-code* , to)>
+
+        <!--
+          the office that receives the document
+
+                    -->
+        <!ELEMENT to (country)>
+
+        <!--
+          Country: use ST.3 country code, e.g. DE, FR, GB, NL, etc.
+          Also includes EP, WO
+
+                    -->
+        <!ELEMENT country (#PCDATA)>
+
+        <!--
+          for reference to non-PCT document from national office;
+          code defined by national office
+
+                    -->
+        <!ELEMENT document-code (#PCDATA)>
+
+        <!--
+          applicant's or agent's file reference, if desired,
+           12 characters maximum
+
+                    -->
+        <!ELEMENT file-reference-id (#PCDATA)>
+
+        <!--
+          first applicant name in applicant group
+
+
+                    -->
+        <!ELEMENT first-named-applicant (%name_group;)>
+
+        <!--
+          registered number
+
+                    -->
+        <!ELEMENT registered-number (#PCDATA)>
+
+        <!--
+          synonym
+
+                    -->
+        <!ELEMENT synonym (#PCDATA)>
+
+        <!--
+          department, division, section, etc. name
+
+                    -->
+        <!ELEMENT department (#PCDATA)>
+
+        <!--
+          organisation name or company name
+
+                    -->
+        <!ELEMENT orgname (#PCDATA)>
+
+        <!--
+          role, e.g. President, Chairman, etc.
+
+                    -->
+        <!ELEMENT role (#PCDATA)>
+
+        <!--
+          individual id
+
+                    -->
+        <!ELEMENT iid (#PCDATA)>
+
+        <!--
+          name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+                    -->
+        <!ELEMENT suffix (#PCDATA)>
+
+        <!--
+          middle name(s) or initial(s)
+
+                    -->
+        <!ELEMENT middle-name (#PCDATA)>
+
+        <!--
+          First or given name(s), initial(s)
+
+                    -->
+        <!ELEMENT first-name (#PCDATA)>
+
+        <!--
+          last, family, surname
+
+                    -->
+        <!ELEMENT last-name (#PCDATA)>
+
+        <!--
+         title: e.g., Mr., Mrs., Dr. etc
+
+                    -->
+        <!ELEMENT prefix (#PCDATA)>
+
+        <!--
+          subscripted text
+
+                    -->
+        <!ELEMENT sub (#PCDATA | b | u | i)*>
+
+        <!--
+          superscripted text
+
+                    -->
+        <!ELEMENT sup (#PCDATA | b | u | i)*>
+
+        <!--
+          bold formatting for text
+
+                    -->
+        <!ELEMENT b (#PCDATA | i | u | smallcaps)*>
+
+        <!--
+          italic formatting for text
+
+                    -->
+        <!ELEMENT i (#PCDATA | b | u | smallcaps)*>
+
+        <!--
+          small capitals
+
+                    -->
+        <!ELEMENT smallcaps (#PCDATA | b | u | i)*>

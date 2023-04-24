@@ -1,0 +1,555 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  ipea-demand-receiving-info v1.5    2017  JULY                               *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD IPEA DEMAND RECEIVING INFO 1.5//EN"                    *
+*                                        "ipea-demand-receiving-info-v1-5.dtd" *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/                            *
+*                                         ipea-demand-receiving-info-v1-5.dtd  *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Asahi HASEBE : 01/07/17 incorporated changes from PFC
+..changed version number from v1.4 to v1.5
+..added an attribute "id" to signatory
+Asahi HASEBE : 01/07/14 to update DTD in alignment with the latest PCT Form IPEA401
+..changed version number from v1.3 to v1.4
+..added an attribute 'page-count' to cl-letter. (PFC14/001)
+..added an attribute 'page-count' to cl-copy-amendments-art19. (PFC14/001)
+..added an element named as cl-letter-art19 to ipea-check-list. (PFC14/001)
+..added an element ipea-fee-info and its child elements to ipea-demand-receiving-info. (PFC14/001)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.3
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+HT: 16/12/03 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.2
+..added element 'receipt-after-pct-rule54bis1-a', 'receipt-within-pct-rule54bis1-a', 
+   'receipt-after-pct-rule54bis1-a-excused' to ipea-info
+2003/06/01
+..released version number as v1.0
+********************************************************************************
+
+Attributes for iper
+  lang = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  date-produced = YYYYMMDD e.g, 20011230
+  ro            = Receiving office name, country code ST.3
+
+-->
+<!ELEMENT ipea-demand-receiving-info (ipea , received-at-ipea , ipea-info , ipea-check-list , ipea-fee-info?, signatories?)>
+
+<!ATTLIST ipea-demand-receiving-info  lang          CDATA  #REQUIRED
+                                        dtd-version   CDATA  #IMPLIED
+                                        file          CDATA  #IMPLIED
+                                        date-produced CDATA  #IMPLIED
+                                        ipea          CDATA  #REQUIRED
+                                        status        CDATA  #IMPLIED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Checklist; an additional document is being furnished
+
+-->
+<!ELEMENT cl-other-document (#PCDATA)>
+
+<!ATTLIST cl-other-document  page-count CDATA  #IMPLIED >
+
+<!--
+  Checklist; a letter is being furnished.  See PCT/IPEA/401 box VI 
+
+-->
+<!ELEMENT cl-letter EMPTY>
+
+<!ATTLIST cl-letter  quantity CDATA  #REQUIRED
+                                 page-count CDATA  #IMPLIED >
+
+<!--
+  Checklist; a copy of statement under Article 19 is being furnished
+
+-->
+<!ELEMENT cl-copy-statement-art19 EMPTY>
+
+<!ATTLIST cl-copy-statement-art19  quantity   CDATA  #REQUIRED
+                                     page-count CDATA  #IMPLIED >
+
+<!--
+  Checklist; copy of amendments made under Article 19 is being furnished
+
+-->
+<!ELEMENT cl-copy-amendments-art19 EMPTY>
+
+<!ATTLIST cl-copy-amendments-art19  quantity CDATA  #REQUIRED
+                                     page-count CDATA  #IMPLIED >
+
+<!--
+  Checklist; amendments made under Article 34 are being furnished
+
+-->
+<!ELEMENT cl-amendments-art34 EMPTY>
+
+<!ATTLIST cl-amendments-art34  quantity   CDATA  #REQUIRED
+                                 page-count CDATA  #IMPLIED >
+
+<!--
+  Check-list; a translation of application  is being furnished
+
+-->
+<!ELEMENT cl-translation-of-application-demand EMPTY>
+
+<!ATTLIST cl-translation-of-application-demand  quantity   CDATA  #REQUIRED
+                                                  lang       CDATA  #IMPLIED
+                                                  page-count CDATA  #IMPLIED >
+
+<!--
+  PCT/IPEA/401
+  The date of receipt of the demand is AFTER the expiration of 19 months from the
+  priority date
+
+-->
+<!ELEMENT receipt-after-19month EMPTY>
+
+<!ATTLIST receipt-after-19month  informed   (yes | no )  #IMPLIED >
+
+<!--
+  Signatories
+
+-->
+<!ELEMENT signatories (signatory+)>
+
+
+<!--
+  PCT/RO/101 Box No. X:
+  The signature must be that of the applicant (if there are several applicants, all
+  must sign); however, the signature may be that of the agent, or the common
+  representative, where a separate power of attorney appointing the agent or the
+  common representative, respectively, or a copy of a general power of attorney is
+  already in possession of the receiving Office, is furnished...
+  (PCT Rules 4.1(d), 4.15, and 90)
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+
+-->
+<!ELEMENT signatory (%name_group; , address? , electronic-signature , signatory-capacity?)>
+
+<!ATTLIST signatory
+                  id ID #IMPLIED>
+
+
+<!--
+  The capacity in which the person signs
+
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Checklist of items received with the demand by the International Preliminary
+  Exmination Authority
+
+-->
+<!ELEMENT ipea-check-list (cl-translation-of-application-demand? , cl-amendments-art34? , cl-copy-amendments-art19? , cl-copy-statement-art19? , cl-letter-art19?, cl-letter? , cl-other-document*)>
+
+
+<!--
+  Information relating to the receipt of the demand by the International
+  Preliminary Examination Authority
+
+-->
+<!ELEMENT ipea-info (date-of-actual-receipt , receipt-pct-rule60-1? , (receipt-after-19month | receipt-pct-rule80-5 | receipt-pct-rule82 | receipt-after-pct-rule54bis1-a | receipt-within-pct-rule54bis1-a | receipt-after-pct-rule54bis1-a-excused))>
+
+
+<!--
+  PCT Rule 54bis1-a: Time Limit for Making a Demand
+
+-->
+<!ELEMENT receipt-after-pct-rule54bis1-a-excused EMPTY>
+
+
+<!--
+  PCT Rule 54bis1-a: Time Limit for Making a Demand
+
+-->
+<!ELEMENT receipt-within-pct-rule54bis1-a EMPTY>
+
+
+<!--
+  PCT Rule 54bis1-a: Time Limit for Making a Demand
+
+-->
+<!ELEMENT receipt-after-pct-rule54bis1-a EMPTY>
+
+
+<!--
+  PCT Rule 82: Irregularities in the Mail Service
+
+-->
+<!ELEMENT receipt-pct-rule82 EMPTY>
+
+
+<!--
+  PCT Rule 80.5: Expiration on a Non-Working Day
+    "If the expiration of any period during which any document or fee must reach
+    a national Office or intergovernmental organization falls on a day on which
+    such Office or organization is not open to the public for the purposes of
+    transaction of official business, or on which ordinary mail is not delivered in
+    the locality in which such Office or organization is situated, the period shall
+    expire on the next subsequent business day on which neither of the said two
+    circumstances exists."
+
+-->
+<!ELEMENT receipt-pct-rule80-5 EMPTY>
+
+
+<!--
+  PCT Rule 60.1:  Defects in the Demand
+
+-->
+<!ELEMENT receipt-pct-rule60-1 (date)>
+
+
+<!--
+  Date of actual receipt of the purported international application.
+    (ST.32:B234)
+  The date of receipt will be determined according to the usual principles
+  applicable to the filing of applications on paper, including filing by electronic
+  means (such as by facsimile transmission), that is, based on the date
+  prevailing at the location of the Office at the time when the complete 
+  transmission of the application has been received.
+
+-->
+<!ELEMENT date-of-actual-receipt (date)>
+
+
+<!--
+  Date of receipt by International Preliminary Examination Authority
+
+-->
+<!ELEMENT received-at-ipea (date)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  International Preliminary Examination Authority
+
+-->
+<!ELEMENT ipea (country)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+<!--
+  Checklist; a letter accompanying the amendments under Article 19 is being furnished.  See PCT/IPEA/401 box VI 
+
+-->
+<!ELEMENT cl-letter-art19 EMPTY>
+<!ATTLIST cl-letter-art19  quantity   CDATA  #REQUIRED
+                                 page-count CDATA  #IMPLIED >
+
+<!--
+  Information written in "For International Preliminary Examining Authority use only" 
+  of FEE CALCULATION SHEET - Annex to the Demand (IPEA401)
+
+-->
+<!ELEMENT ipea-fee-info (received-at-ipea, ipea-preliminary-examin-fee-info?, ipea-handling-fee-info?, ipea-amount-total-info?)>
+
+<!--
+  IPEA's note regarding with Preliminary Examination Fee of FEE CALCULATION SHEET of Chapter II Demand.
+
+-->
+<!ELEMENT ipea-preliminary-examin-fee-info (#PCDATA)>
+
+<!--
+  IPEA's note regarding with Handling Fee of FEE CALCULATION SHEET of Chapter II Demand.
+
+-->
+<!ELEMENT ipea-handling-fee-info (#PCDATA)>
+
+<!--
+  IPEA's note regarding with Amount Total of FEE CALCULATION SHEET of Chapter II Demand.
+
+-->
+<!ELEMENT ipea-amount-total-info (#PCDATA)>
+

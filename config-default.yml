@@ -1,0 +1,108 @@
+address-book:
+  enabled: true
+user-management:
+  enabled: true
+invitations-autocomplete:
+  enabled: true
+notification:
+  enabled: true
+fees-config-lookup:
+  enabled: true
+
+# procedure properties for front-end and back-end
+# procedures.[?].category is used to identify the type of procedure because the id can be different for each country
+procedures:
+  NATPAT:
+    id: "NATPAT"
+    label: "submission.NATPAT.title"
+    description: "submission.NATPAT.description"
+    signClient: "eOLFSignatureClient"
+    category: "national-procedure"
+    type: NATIONAL
+    receivingOffice: "NP"
+    enabled: true
+    procedureResources:
+      - "submissionUiSchema"
+      - "submissionValidationSchema"
+      - "attachmentsConfiguration"
+      - "tableConfiguration"
+  PCTRO101:
+    id: "PCTRO101"
+    label: "submission.epct.title"
+    description: "submission.epct.description"
+    signClient: "pctSignatureClient"
+    category: "wipo-procedure"
+    type: INTERNATIONAL
+    enabled: true
+    procedureResources:
+      - "submissionUiSchema"
+      - "submissionValidationSchema"
+      - "attachmentsConfiguration"
+      - "receivingOfficesLanguageConfiguration"
+      - "receivingOfficesConfiguration"
+      - "tableConfiguration"
+  EP1001:
+    id: "EP1001"
+    label: "submission.EP1001.title"
+    description: "submission.EP1001.description"
+    signClient: "pctSignatureClient"
+    category: "epo-procedure"
+    enabled: true
+    procedureResources:
+      - "submissionUiSchema"
+      - "submissionValidationSchema"
+      - "attachmentsConfiguration"
+      - "receivingOfficesLanguageConfiguration"
+      - "receivingOfficesConfiguration"
+      - "tableConfiguration"
+  EPVL:
+    id: "EPVL"
+    label: "submission.epvl.title"
+    description: "submission.epvl.description"
+    signClient: "eOLFSignatureClient"
+    category: "ep-validation-procedure"
+    type: NATIONAL
+    receivingOffice: "EPVL"
+    autofill: true
+    enabled: true
+    procedureResources:
+      - "autofillSubmissionValidationSchema"
+      - "autofillSubmissionUiSchema"
+      - "submissionUiSchema"
+      - "submissionValidationSchema"
+      - "attachmentsConfiguration"
+      - "tableConfiguration"
+  ESCCP:
+    id: "ESCCP"
+    label: "submission.spc.title"
+    description: "submission.spc.description"
+    signClient: "eOLFSignatureClient"
+    category: "spc-procedure"
+    type: NATIONAL
+    receivingOffice: "ES"
+    enabled: true
+    procedureResources:
+      - "submissionUiSchema"
+      - "submissionValidationSchema"
+      - "spcUiSchema"
+      - "spcValidationSchema"
+      - "attachmentsConfiguration"
+      - "tableConfiguration"
+
+# front-end dashboard properties for enabling and sorting procedures within branches
+# dashboardCategories.[?].label is used to group procedures in the dashboard module
+dashboardCategories:
+  - label: "dashboard.category.national-procedures"
+    procedureIds:
+      - ${procedures.NATPAT.id}
+      - ${procedures.EPVL.id}
+      - ${procedures.ESCCP.id}
+  - label: "dashboard.category.international-procedures"
+    procedureIds:
+      - ${procedures.PCTRO101.id}
+  - label: "dashboard.category.european-patent-procedures"
+    procedureIds:
+      - ${procedures.EP1001.id}
+
+loginPage:
+  clientCertificateDomainPrefix: m-

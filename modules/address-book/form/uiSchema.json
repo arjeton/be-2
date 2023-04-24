@@ -1,0 +1,199 @@
+{
+  "ui:field": "FormSectionField",
+  "ui:title": "New Contact Info",
+  "ui:icon": "account_box",
+  "kind": "party",
+  "role": {
+    "ui:widget": "radio"
+  },
+  "personalDetails": {
+    "title": {
+      "ui:options": {
+        "style": {
+          "width": "10rem"
+        }
+      }
+    },
+    "lastName": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "firstName": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "nationality": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    }
+  },
+  "company": {
+    "company": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "department": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    }
+  },
+  "companyDetails": {
+    "company": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "department": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "placeOfBusiness": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      },
+      "ui:help": "Principal place of business is required, but may be provided subsequent to filing"
+    }
+  },
+  "contactDetails": {
+    "residenceAddress": {
+      "streetAddress": {
+        "ui:widget": "textarea",
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      },
+      "poBox": {
+        "ui:options": {
+          "style": {
+            "width": "12rem"
+          }
+        }
+      },
+      "postalCode": {
+        "ui:options": {
+          "style": {
+            "width": "12rem"
+          }
+        }
+      },
+      "city": {
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      },
+      "country": {
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      },
+      "region": {
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      }
+    },
+    "telephone": {
+      "ui:options": {
+        "style": {
+          "width": "12rem"
+        }
+      }
+    },
+    "fax": {
+      "ui:options": {
+        "style": {
+          "width": "12rem"
+        }
+      }
+    },
+    "email": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "correspondenceAddress": {
+      "streetAddress": {
+        "ui:widget": "textarea",
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      },
+      "poBox": {
+        "ui:options": {
+          "style": {
+            "width": "12rem"
+          }
+        }
+      },
+      "postalCode": {
+        "ui:options": {
+          "style": {
+            "width": "12rem"
+          }
+        }
+      },
+      "city": {
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      },
+      "country": {
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      },
+      "region": {
+        "ui:options": {
+          "style": {
+            "width": "27rem"
+          }
+        }
+      }
+    }
+  },
+  "ui:validation": {
+    "pattern": "validation.default.pattern",
+    "maxLength": "validation.default.maxlength",
+    "minLength": "validation.default.minlength",
+    "required": "validation.default.required",
+    "format": "validation.default.pattern"
+  }
+}

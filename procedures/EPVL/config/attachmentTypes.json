@@ -1,0 +1,150 @@
+{
+    "attachmentTypes": [
+        {
+            "type": "TRANSLATION_DESCRIPTION",
+            "systemFileName": "SPECEPO",
+            "docTypeLabel": "SPECEPO",
+            "description": "",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "TRANSLATION_CLAIMS",
+            "systemFileName": "SPECEPO",
+            "docTypeLabel": "SPECEPO",
+            "description": "",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "TRANSLATION_ABSTRACT",
+            "systemFileName": "SPECEPO",
+            "docTypeLabel": "SPECEPO",
+            "description": "",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "TRANSLATION_DRAWINGS",
+            "systemFileName": "SPECEPO",
+            "docTypeLabel": "SPECEPO",
+            "description": "",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "COMBINED",
+            "systemFileName": "SPECEPO",
+            "docTypeLabel": "SPECEPO",
+            "description": "",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "OTHER",
+            "systemFileName": "OTHER",
+            "docTypeLabel": "OTHERPDF",
+            "description": "Assignment documents",
+            "subType": "ADDITIONAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "POWER_OF_ATTORNEY",
+            "systemFileName": "POWATT",
+            "docTypeLabel": "POWATT",
+            "description": "Power of Attorney",
+            "subType": "ADDITIONAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "POWER_OF_REPRESENTATION",
+            "systemFileName": "POWATT",
+            "noSystemFileNameIndexing": true,
+            "docTypeLabel": "POWATT",
+            "description": "Power of representation",
+            "subType": "ADDITIONAL",
+            "needDistinctTypes": true,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "TRANSLATION_EP_PUBLISHED",
+            "systemFileName": "TRANSLEP",
+            "noSystemFileNameIndexing": true,
+            "docTypeLabel": "TRANSLEP",
+            "description": "Translation of an EP published",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "TRANSLATION_EP_SPECIFICATION",
+            "systemFileName": "TRANSLEP",
+            "noSystemFileNameIndexing": true,
+            "docTypeLabel": "TRANSLEP",
+            "description": "Translation of an EP specification",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "TRANSLATION_AMENDED_PATENT",
+            "systemFileName": "TRANSLEP",
+            "noSystemFileNameIndexing": true,
+            "docTypeLabel": "TRANSLEP",
+            "description": "Translation of an amended patent",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "TRANSLATION_LIMITED_PATENT",
+            "systemFileName": "TRANSLEP",
+            "noSystemFileNameIndexing": true,
+            "docTypeLabel": "TRANSLEP",
+            "description": "Translation of a limited patent",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        },
+        {
+            "type": "PRE_CONVERSION",
+            "systemFileName": "OLF-ARCHIVE",
+            "noSystemFileNameIndexing": true,
+            "docTypeLabel": "OLF-ARCHIVE",
+            "description": "Pre conversion file",
+            "subType": "TECHNICAL",
+            "needDistinctTypes": true,
+            "acceptedMimeTypes": ["application/zip", "application/x-zip-compressed"],
+            "acceptedFileExtensions": ["zip"]
+        },
+        {
+            "type": "SPECIFIC_AUTHORISATIONS",
+            "systemFileName": "POWATT",
+            "docTypeLabel": "POWATT",
+            "description": "Specific authorisations",
+            "subType": "ADDITIONAL",
+            "needDistinctTypes": false,
+            "acceptedMimeTypes": ["application/pdf"],
+            "acceptedFileExtensions": ["pdf"]
+        }
+    ]
+}

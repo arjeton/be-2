@@ -1,0 +1,755 @@
+{
+  "basicFilingInfo": {
+    "$ref": "/procedures/common/form/uischema/basic-filing.json/definitions/basicFilingInfo",
+    "showInfoMessage": true,
+    "ui:infoMessage": "basic-filing.info-message",
+    "userReference": {
+      "$ref": "/procedures/common/form/uischema/basic-filing.json/definitions/userReference"
+    },
+    "caseId": {
+      "$ref": "/procedures/common/form/uischema/basic-filing.json/definitions/caseId"
+    },
+    "titleOfInvention": {
+      "$ref": "/procedures/common/form/uischema/basic-filing.json/definitions/titleOfInvention"
+    },
+    "applicationType": {
+      "ui:widget": "radio"
+    },
+    "divisionalNumber": {
+      "ui:validation": {
+        "pattern": "submission.basicfiliginfo.businessrule.divisionalnumber.wrong-format"
+      },
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "divisionalFilingDate": {
+      "ui:widget": "pastDate",
+      "ui:options": {
+        "style": {
+          "width": "13rem"
+        }
+      }
+    },
+    "typeOfSearchReportContainer": {
+      "ui:widget": "radio",
+      "ui:disabled": true,
+      "ui:title": "i18n(basic-filing.type-of-search-report)",
+      "ui:options": {
+        "triggerPostProcess": true,
+        "style": {
+          "width": "100%",
+          "& > label": {
+            "font-weight": "bold",
+            "margin-bottom": "1rem",
+            "margin-top": "1rem"
+          }
+        }
+      }
+    },
+    "fastTrack": {
+      "ui:widget": "checkbox",
+      "ui:disabled": true,
+      "ui:options": {
+        "style": {
+          "& > div": {
+            "margin-top": "-2rem"
+          }
+        }
+      }
+    },
+    "ui:order": [
+      "userReference",
+      "caseId",
+      "titleOfInvention",
+      "applicationType",
+      "*",
+      "typeOfSearchReportContainer",
+      "fastTrack"
+    ],
+    "ui:summary": {
+      "icon": "emoji_objects",
+      "titles": [
+        {
+          "value": "i18n(basic-filing.info)"
+        }
+      ],
+      "entries": [
+        {
+          "title": "i18n(basic-filing.user-reference)",
+          "value": "item(userReference)"
+        },
+        {
+          "title": "i18n(basic-filing.caseId)",
+          "value": "item(caseId)"
+        },
+        {
+          "title": "i18n(basic-filing.title-of-invention-first-language)",
+          "value": "item(tbasic-filing.titleOfInvention)"
+        },
+        {
+          "title": "i18n(basic-filing.applicationType)",
+          "value": "itemNameI18n(applicationType, applicationType)"
+        }
+      ]
+    }
+  },
+  "parties": {
+    "$ref": "/procedures/common/form/uischema/parties.json/definitions/parties",
+    "applicants": {
+      "$ref": "/procedures/common/form/uischema/parties.json/definitions/applicants",
+      "ui:config": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:config-arrayItemsPopupConfig"
+      },
+      "ui:summary": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:summary-applicant"
+      },
+      "ui:summaryItem": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:summaryItem-applicant"
+      },
+      "items": {
+        "ui:variantTitle": "h2",
+        "role": {
+          "$ref": "/procedures/common/form/uischema/widgets.json/definitions/roleWidget"
+        },
+        "personalDetails": {
+          "firstName": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+          },
+          "lastName": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+          },
+          "idNumber": {
+            "ui:tooltip": "i18n(parties.tooltip.identification-number)",
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/smallTextFieldWidget"
+          }
+        },
+        "companyDetails": {
+          "registrationNumber": {
+            "ui:tooltip": "i18n(parties.tooltip.registration-number)",
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+          },
+          "company": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+          }
+        },
+        "contactDetails": {
+          "ui:tooltip": "i18n(parties.tooltip.parties.tooltip.enter-contact-details)",
+          "residenceAddress": {
+            "$ref": "/procedures/common/form/uischema/parties.json/definitions/residenceAddress"
+          },
+          "telephone": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/extraSmallWidth"
+          },
+          "email": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+          },
+          "differentCorrespondenceAddress": {
+            "ui:widget": "hidden"
+          }
+        },
+        "additionalDetails": {
+          "$ref": "/procedures/common/form/uischema/parties.json/definitions/applicantAdditionalDetails"
+        }
+      }
+    },
+    "inventors": {
+      "$ref": "/procedures/common/form/uischema/parties.json/definitions/inventors",
+      "ui:summary": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:summary-fullName"
+      },
+      "ui:summaryItem": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:summary-inventor"
+      },
+      "items": {
+        "ui:variantTitle": "h2",
+        "role": {
+          "ui:widget": "hidden"
+        },
+        "personalDetails": {
+          "title": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/halfMediumWidth"
+          },
+          "firstName": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+          },
+          "lastName": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+          },
+          "nationality": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+          },
+          "identificationNumber": {
+            "ui:tooltip": "i18n(parties.inventor.identification-number.tooltip)",
+            "ui:options": {
+              "style": {
+                "width": "23rem"
+              }
+            },
+            "ui:widget": "typicalText"
+          },
+          "other": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+          }
+        },
+        "contactDetails": {
+          "ui:options": {},
+          "residenceAddress": {
+            "$ref": "/procedures/common/form/uischema/parties.json/definitions/residenceAddress"
+          },
+          "telephone": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/extraSmallWidth"
+          },
+          "email": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+          }
+        },
+        "declarationOfRightsTitle": {
+          "ui:field": "SubtitleField",
+          "ui:tooltip": "parties.declaration-of-rights.tooltip",
+          "ui:variantTitle": "h3",
+          "ui:options": {
+            "style": {
+              "margin-top": "-1rem"
+            }
+          }
+        },
+        "declarationOfRights": {
+          "ui:title": "parties.declaration-of-rights.description",
+          "ui:widget": "radio",
+          "ui:variantTitle": "h3",
+          "ui:options": {
+            "style": {
+              "font-weight": "normal",
+              "margin-top": "-2rem",
+              "& > span > strong": {
+                "font-weight": "normal !important"
+              }
+            }
+          }
+        },
+        "dateOfEntry": {
+          "$ref": "/procedures/common/form/uischema/widgets.json/definitions/pastDateWidget"
+        },
+        "ui:order": [
+          "role",
+          "personalDetails",
+          "isDeceased",
+          "contactDetails",
+          "declarationOfRightsTitle",
+          "declarationOfRights",
+          "dateOfEntry",
+          "isWaiver"
+        ]
+      }
+    },
+    "representatives": {
+      "$ref": "/procedures/common/form/uischema/parties.json/definitions/representatives",
+      "ui:config": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:config-arrayItemsPopupConfig"
+      },
+      "ui:summary": {
+        "titles": [
+          {
+            "case": {
+              "role": "REPRESENTATIVE_LEGAL_ENTITY"
+            },
+            "value": "item(companyDetails.company)"
+          },
+          {
+            "case": {
+              "role": "REPRESENTATIVE_NATURAL_PERSON"
+            },
+            "value": "item(personalDetails.firstName) item(personalDetails.lastName)"
+          }
+        ]
+      },
+      "ui:summaryItem": {
+        "icon": "business_center",
+        "titles": [
+          {
+            "case": {
+              "role": "REPRESENTATIVE_LEGAL_ENTITY"
+            },
+            "value": "item(order). item(companyDetails.company)"
+          },
+          {
+            "case": {
+              "role": "REPRESENTATIVE_NATURAL_PERSON"
+            },
+            "value": "item(order). item(personalDetails.firstName) item(personalDetails.lastName)"
+          }
+        ],
+        "entries": [
+          {
+            "title": "i18n(Type)",
+            "value": "itemI18n(role)"
+          },
+          {
+            "case": {
+              "role": "REPRESENTATIVE_NATURAL_PERSON"
+            },
+            "title": "i18n(parties.first-name)",
+            "value": "item(personalDetails.firstName)"
+          },
+          {
+            "case": {
+              "role": "REPRESENTATIVE_NATURAL_PERSON"
+            },
+            "title": "i18n(parties.last-name)",
+            "value": "item(personalDetails.lastName)"
+          },
+          {
+            "case": {
+              "role": "REPRESENTATIVE_LEGAL_ENTITY"
+            },
+            "title": "i18n(parties.company)",
+            "value": "item(companyDetails.company)"
+          },
+          {
+            "title": "i18n(Address)",
+            "value": "item(contactDetails.residenceAddress.streetAddress) - item(contactDetails.residenceAddress.postalCode) - item(contactDetails.residenceAddress.poBox) - item(contactDetails.residenceAddress.city) - item(contactDetails.residenceAddress.country)"
+          }
+        ]
+      },
+      "items": {
+        "ui:variantTitle": "h2",
+        "role": {
+          "$ref": "/procedures/common/form/uischema/widgets.json/definitions/roleWidget"
+        },
+        "personalDetails": {
+          "registrationNumber": {
+            "ui:tooltip": "i18n(parties.tooltip.registration-number)",
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+          },
+          "firstName": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/mediumWidth"
+          },
+          "lastName": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+          }
+        },
+        "companyDetails": {
+          "registrationNumber": {
+            "ui:tooltip": "i18n(parties.tooltip.registration-number)",
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+          },
+          "company": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/largeTextFieldWidget"
+          }
+        },
+        "contactDetails": {
+          "ui:tooltip": "i18n(parties.tooltip.enter-contact-details)",
+          "residenceAddress": {
+            "$ref": "/procedures/common/form/uischema/parties.json/definitions/residenceAddress"
+          },
+          "telephone": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+          },
+          "differentCorrespondenceAddress": {
+            "ui:widget": "hidden"
+          },
+          "email": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+          }
+        }
+      }
+    },
+    "communicationAddress": {
+      "$ref": "/procedures/common/form/uischema/parties.json/definitions/communicationAddress",
+      "addButton": {
+        "ui:hidden": false
+      },
+      "addContactButton": {
+        "ui:hidden": true
+      },
+      "ui:summary": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:summary-commAddress"
+      },
+      "ui:summaryItem": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/ui:summaryItem-commAddress"
+      },
+      "items": {
+        "$ref": "/procedures/common/form/uischema/parties.json/definitions/communicationAddressItem"
+      }
+    }
+  },
+  "declaration": {
+    "ui:field": "FormSectionField",
+    "ui:title": "i18n(Declarations)",
+    "ui:icon": "messages",
+    "ui:disabled": true,
+    "scrollSection": true,
+    "priorities": {
+      "ui:title": "Priorities",
+      "ui:titleSingular": "i18n(Priority)",
+      "ui:titleSingularAddSection": "Priority",
+      "ui:tooltip": "i18n(declarations.priority.one-or-more-added)",
+      "ui:summary": {
+        "$ref": "/procedures/common/form/uischema/declarations.json/definitions/ui:summary-declaration"
+      },
+      "ui:summaryItem": {
+        "$ref": "/procedures/common/form/uischema/declarations.json/definitions/ui:summaryItem-declaration"
+      },
+      "items": {
+        "officeType": {
+          "ui:options": {
+            "style": {
+              "width": "19rem"
+            }
+          }
+        },
+        "office": {
+          "ui:options": {
+            "style": {
+              "width": "19rem"
+            }
+          }
+        },
+        "applicationKind": {
+          "ui:options": {
+            "style": {
+              "width": "19rem"
+            }
+          }
+        },
+        "applicationNumber": {
+          "ui:options": {
+            "style": {
+              "width": "19rem"
+            }
+          }
+        },
+        "filingDate": {
+          "ui:widget": "pastDate",
+          "ui:options": {
+            "style": {
+              "width": "13rem"
+            }
+          }
+        },
+        "dasCode": {
+          "dasCodeValue": {
+            "ui:options": {
+              "style": {
+                "& > div": {
+                  "margin-top": "-3rem"
+                },
+                "width": "10rem"
+              }
+            },
+            "ui:widget": "uppercaseText"
+          }
+        }
+      }
+    },
+    "exhibitions": {
+      "ui:title": "i18n(declaration.exhibition-priority.title)",
+      "ui:titleSingular": "i18n(declaration-exhibition-priority.singular)",
+      "ui:titleSingularAddSection": "i18n(declaration-exhibition-priority.singular)",
+      "ui:tooltip": "i18n(declaration.exhibition-priority.one-or-more-added)",
+      "ui:summary": {
+        "titles": [
+          {
+            "value": "itemNameI18n(internationalExhibition, internationalExhibition)"
+          }
+        ]
+      },
+      "ui:summaryItem": {
+        "icon": "language",
+        "defaultValue": "-",
+        "titles": [
+          {
+            "value": "item(order). itemNameI18n(internationalExhibition, internationalExhibition)"
+          }
+        ],
+        "entries": [
+          {
+            "title": "i18n(declaration.exhibition-priority.international-exhibition.summary)",
+            "value": "itemNameI18n(internationalExhibition, internationalExhibition)"
+          },
+          {
+            "title": "i18n(declaration.exhibition-priority.international-exhibition-city)",
+            "value": "itemNameI18n(city, internationalExhibitionCities)"
+          },
+          {
+            "title": "i18n(declaration.exhibition-priority.exhibition-date)",
+            "value": "itemShortDate(exhibitionDate)"
+          }
+        ]
+      },
+      "items": {
+        "internationalExhibition": {
+          "ui:options": {
+            "triggerPostProcess": true,
+            "style": {
+              "width": "25rem"
+            }
+          }
+        },
+        "city": {
+          "ui:options": {
+            "style": {
+              "width": "25rem"
+            }
+          }
+        },
+        "exhibitionDate": {
+          "$ref": "/procedures/common/form/uischema/widgets.json/definitions/pastDateWidget"
+        }
+      }
+    }
+  },
+  "seqlBio": {
+    "ui:field": "FormSectionField",
+    "ui:title": "i18n(seqlBio.title)",
+    "ui:icon": "fingerprint",
+    "ui:disabled": true,
+    "scrollSection": true,
+    "seqlAttachments": {
+      "ui:field": "SeqlAttachmentsField",
+      "ui:title": "i18n(seql.attachments.title)",
+      "ui:icon": "attach_file",
+      "ui:variantTitle": "h4"
+    },
+    "biologicalInfos": {
+      "ui:title": "i18n(biologicalInfos.title)",
+      "ui:titleSingular": "i18n(biologicalInfos.material.title)",
+      "ui:tooltip": "i18n(biologicalInfos.title.tooltip.one-or-more-added)",
+      "ui:summary": {
+        "titles": [
+          {
+            "value": "item(bioMaterial.accession)"
+          }
+        ]
+      },
+      "ui:summaryItem": {
+        "icon": "biotech",
+        "titles": [
+          {
+            "value": "item(order). item(bioMaterial.accession)"
+          }
+        ],
+        "entries": [
+          {
+            "title": "i18n(biologicalInfos.accession)",
+            "value": "item(bioMaterial.accession)",
+            "type": "listViewDetail"
+          },
+          {
+            "title": "i18n(biologicalInfos.country)",
+            "value": "itemNameI18n(bioMaterial.country, procedures-common-form-geo.jsonschema-definitions-country)"
+          },
+          {
+            "title": "i18n(biologicalInfos.institution)",
+            "value": "itemNameI18n(bioMaterial.institution, institutionDepositary)"
+          }
+        ]
+      },
+      "items": {
+        "ui:variantTitle": "h2",
+        "bioMaterial": {
+          "ui:tooltip": "i18n(biologicalInfos.material.general.tooltip)",
+          "country": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/extraLargeWidth"
+          },
+          "institution": {
+            "$ref": "/procedures/common/form/uischema/styles.json/definitions/extraLargeWidth"
+          },
+          "accession": {
+            "$ref": "/procedures/common/form/uischema/widgets.json/definitions/textFieldWidget"
+          },
+          "date": {
+            "ui:tooltip": "i18n(biologicalInfos.date.tooltip)",
+            "ui:widget": "pastDate",
+            "ui:options": {
+              "style": {
+                "width": "22.5rem",
+                "& > div > div > div > input": {
+                  "background": "#FFF"
+                }
+              }
+            }
+          },
+          "attachments": {
+            "ui:field": "BioAttachmentsField",
+            "ui:title": "i18n(biologicalInfos.attachments.title)",
+            "ui:tooltip": "i18n(biologicalInfos.attachments.tooltip)",
+            "BIO_MATERIAL": {
+              "types": {
+                "BIO_MATERIAL": "BIO_MATERIAL"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "attachments": {
+    "ui:field": "AttachmentsField",
+    "ui:title": "i18n(attachments.title)",
+    "ui:icon": "attach_file",
+    "ui:disabled": true,
+    "scrollSection": true,
+    "TECHNICAL": {
+      "types": {
+        "DESCRIPTION": "DESCRIPTION",
+        "CLAIMS": "CLAIMS",
+        "ABSTRACT": "ABSTRACT",
+        "DRAWINGS": "DRAWINGS",
+        "COMBINED": "COMBINED"
+      }
+    },
+    "ADDITIONAL": {
+      "types": {
+        "GENERAL": "GENERAL",
+        "SPECIFIC": "SPECIFIC",
+        "ELECTRONIC_PRIORITY": "ELECTRONIC_PRIORITY",
+        "TRANSLATIONS_OF_PRIORITY_DOCUMENTS": "TRANSLATIONS_OF_PRIORITY_DOCUMENTS",
+        "TRANSLATION_OF_TECHNICAL_DOCUMENTS": "TRANSLATION_OF_TECHNICAL_DOCUMENTS",
+        "INVENTOR_WAIVER": "INVENTOR_WAIVER",
+        "EXHIBITION": "EXHIBITION",
+        "INVENTORSHIP": "INVENTORSHIP",
+        "SEARCH_REPORT": "SEARCH_REPORT",
+        "POWER_OF_ATTORNEY": "POWER_OF_ATTORNEY",
+        "PROOF_OF_PAYMENT": "PROOF_OF_PAYMENT",
+        "POWER_OF_REPRESENTATION": "POWER_OF_REPRESENTATION",
+        "OTHER": "OTHER"
+      }
+    },
+    "PAYMENT": {
+      "types": {
+        "PROOF_OF_PAYMENT": "PROOF_OF_PAYMENT"
+      }
+    }
+  },
+  "fees": {
+    "ui:field": "FormSectionField",
+    "ui:title": "i18n(fees.title)",
+    "ui:icon": "euro",
+    "ui:disabled": true,
+    "scrollSection": true,
+    "ui:order": [
+      "sectionInformation",
+      "paymentIntention",
+      "notIntendingToPay",
+      "methodOfPayment",
+      "information",
+      "paymentAttachments",
+      "feesSelection"
+    ],
+    "paymentIntention": {
+      "ui:variantTitle": "h4",
+      "ui:tooltip": "i18n(fees.payment.intention.tooltip)",
+      "intentionSubtitle": {
+        "ui:variantTitle": "h5",
+        "ui:field": "SubtitleField",
+        "ui:options": {
+          "style": {
+            "margin-top": "-2rem",
+            "margin-bottom": "-2rem"
+          }
+        }
+      },
+      "notIntendingToPay": {
+        "ui:widget": "confirmedCheckboxWidget"
+      }
+    },
+    "sectionInformation": {
+      "ui:field": "InformationField",
+      "ui:options": {
+        "style": {
+          "width": "60rem",
+          "margin-bottom": "-1rem"
+        }
+      }
+    },
+    "methodOfPayment": {
+      "ui:widget": "confirmedFeesRadioWidget",
+      "ui:options": {
+        "style": {
+          "margin-top": "-2rem",
+          "margin-bottom": "2rem"
+        }
+      }
+    },
+    "information": {
+      "ui:field": "AlertField"
+    },
+    "paymentAttachments": {
+      "ui:field": "PaymentAttachmentsField",
+      "ui:title": "i18n(fees.payment.attachments.title)",
+      "ui:icon": "attach_file"
+    },
+    "feesSelection": {
+      "ui:field": "FeesSelectionField",
+      "ui:feesTitle": "i18n(fees.selection)",
+      "ui:description": "i18n(feesDescription)",
+      "ui:optional": "i18n(feesOptional)",
+      "ui:data": {
+        "columns": [
+          {
+            "title": "i18n(fees.code)",
+            "type": "checkbox"
+          },
+          {
+            "title": "i18n(fees.description)",
+            "type": "text"
+          },
+          {
+            "title": "i18n(fees.amount)",
+            "type": "price"
+          },
+          {
+            "title": "i18n(fees.discount)",
+            "type": "discount",
+            "tooltip": "fees.discount.tooltip"
+          },
+          {
+            "title": "i18n(fees.quantity)",
+            "type": "quantity"
+          },
+          {
+            "title": "i18n(fees.subtotal)",
+            "type": "subtotal"
+          }
+        ],
+        "values": [
+          {
+            "code": "001",
+            "quantity": 1
+          },
+          {
+            "code": "0011",
+            "quantity": 1
+          },
+          {
+            "code": "002",
+            "quantity": 1
+          },
+          {
+            "code": "003"
+          }
+        ],
+        "currency": "EUR",
+        "currencySymbol": "EUR",
+        "total": "0"
+      }
+    }
+  },
+  "ui:validation": {
+    "pattern": "validation.default.pattern",
+    "maxLength": "validation.default.maxlength",
+    "minLength": "validation.default.minlength",
+    "required": "validation.default.required",
+    "format": "validation.default.pattern"
+  },
+  "ui:actionBar": {
+    "ui:disabled": true
+  },
+  "ui:stylingVariants": {
+    "ui:summaryButton": "primary"
+  }
+}
