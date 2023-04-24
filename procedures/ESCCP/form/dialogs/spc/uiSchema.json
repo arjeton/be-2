@@ -1,0 +1,97 @@
+{
+  "dialog:id": "create-spc",
+  "dialog:businessRulesPrefix": "create-spc",
+  "dialog:title": "i18n(submission.spc.createDialog.title)",
+  "dialog:description": "i18n(submission.spc.createDialog.description)",
+  "dialog:actions": [
+    {
+      "id": "close",
+      "title": "i18n(actions.cancel)",
+      "color": "default",
+      "needsValidation": false
+    },
+    {
+      "id": "saveSubmissionAndRedirect",
+      "title": "i18n(actions.confirm)",
+      "color": "primary",
+      "needsValidation": true
+    }
+  ],
+  "dialog:options": {
+    "style": {
+      "maxWidth": "633px"
+    }
+  },
+  "basicFilingInfo": {
+    "scrollSection": true,
+    "kind": "basic",
+    "ui:field": "FormSectionField",
+    "userReference": {
+      "$ref": "/procedures/common/form/uischema/basic-filing.json/definitions/userReferenceDialog",
+      "disableExistingUserReferenceValidation": true,
+      "ui:options": {
+        "style": {
+          "width": "27rem",
+          "margin-top": "0",
+          "margin-bottom": "0",
+          "& > div > div": {
+            "&:nth-child(1)": {
+              "max-width": "27rem",
+              "& > div": {
+                "width": "27rem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestType": {
+      "titleField": true,
+      "ui:widget": "radio",
+      "ui:tooltip": "i18n(submission.spc.createDialog.request.tooltip)",
+      "ui:options": {
+        "triggerPostProcess": true,
+        "style": {
+          "width": "27rem",
+          "margin-top": "0",
+          "margin-bottom": "0",
+          "& > div > div": {
+            "&:nth-child(1)": {
+              "max-width": "27rem",
+              "& > div": {
+                "width": "27rem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "pediatricExtension": {
+      "titleField": true,
+      "ui:widget": "checkbox",
+      "ui:hidden": true,
+      "ui:options": {
+        "style": {
+          "width": "27rem",
+          "margin-top": "0.5rem",
+          "padding-top": "0",
+          "margin-bottom": "0",
+          "& > div > div": {
+            "&:nth-child(1)": {
+              "max-width": "27rem",
+              "& > div": {
+                "width": "27rem"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "procedure": {
+    "classNames": "hidden"
+  },
+  "ui:actionBar": {
+    "ui:disabled": true
+  }
+}

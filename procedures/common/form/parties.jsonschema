@@ -1,0 +1,700 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "applicant": {
+      "title": "i18n(parties.applicant-information)",
+      "type": "object",
+      "properties": {
+        "role": {
+          "title": "i18n(parties.applicant.select-type)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "APPLICANT_LEGAL_ENTITY",
+            "APPLICANT_NATURAL_PERSON"
+          ],
+          "enumNames": [
+            "i18n(parties.legal-entity)",
+            "i18n(parties.natural-person)"
+          ],
+          "default": "APPLICANT_LEGAL_ENTITY"
+        }
+      },
+      "dependencies": {
+        "role": {
+          "oneOf": [
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "APPLICANT_NATURAL_PERSON"
+                  ]
+                },
+                "personalDetails": {
+                  "$ref": "#/definitions/personalDetails"
+                },
+                "contactDetails": {
+                  "$ref": "#/definitions/contactDetails"
+                },
+                "additionalDetails": {
+                  "title": "i18n(parties.additional-details)",
+                  "type": "object",
+                  "properties": {
+                    "isInventor": {
+                      "title": "i18n(parties.applicant.is-inventor)",
+                      "type": "boolean"
+                    }
+                  },
+                  "dependencies": {
+                    "isInventor": {
+                      "oneOf": [
+                        {
+                          "properties": {
+                            "isInventor": {
+                              "enum": [
+                                true
+                              ]
+                            },
+                            "waiver": {
+                              "title": "i18n(parties.natural-person.waiver)",
+                              "type": "boolean"
+                            }
+                          }
+                        },
+                        {
+                          "properties": {
+                            "isInventor": {
+                              "enum": [
+                                false
+                              ]
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "required": [
+                "personalDetails", "contactDetails", "additionalDetails"
+              ]
+            },
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "APPLICANT_LEGAL_ENTITY"
+                  ]
+                },
+                "companyDetails": {
+                  "$ref": "#/definitions/companyDetails"
+                },
+                "contactDetails": {
+                  "$ref": "#/definitions/contactDetails"
+                }
+              },
+              "required": [
+                "companyDetails", "contactDetails"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "representative": {
+      "title": "i18n(parties.representative.information)",
+      "type": "object",
+      "properties": {
+        "role": {
+          "title": "i18n(parties.representative.select-type)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "REPRESENTATIVE_LEGAL_ENTITY",
+            "REPRESENTATIVE_NATURAL_PERSON"
+          ],
+          "enumNames": [
+            "i18n(parties.representatives.representative.legal-entity)",
+            "i18n(parties.representatives.representative.natural-person)"
+          ],
+          "default": "REPRESENTATIVE_LEGAL_ENTITY"
+        }
+      },
+      "dependencies": {
+        "role": {
+          "oneOf": [
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "REPRESENTATIVE_LEGAL_ENTITY"
+                  ]
+                },
+                "companyDetails": {
+                  "$ref": "#/definitions/companyDetails"
+                },
+                "contactDetails": {
+                  "$ref": "#/definitions/contactDetails"
+                }
+              },
+              "required": [
+                "companyDetails", "contactDetails"
+              ]
+              },
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "REPRESENTATIVE_NATURAL_PERSON"
+                  ]
+                },
+                "personalDetails": {
+                  "$ref": "#/definitions/personalDetailsRepresentatives"
+                },
+                "contactDetails": {
+                  "$ref": "#/definitions/contactDetails"
+                }
+              },
+              "required": [
+                "personalDetails", "contactDetails"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "inventor": {
+      "title": "i18n(parties.inventor.info)",
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "default": "INVENTOR"
+        },
+        "personalDetails": {
+          "title": "i18n(parties.personal-details)",
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "title": "i18n(parties.first-name)",
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 64
+            },
+            "lastName": {
+              "title": "i18n(parties.last-name)",
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "lastName",
+            "firstName"
+          ]
+        },
+        "contactDetails": {
+          "title": "i18n(parties.contact-details)",
+          "type": "object",
+          "properties": {
+            "residenceAddress": {
+              "title": "",
+              "type": "object",
+              "$ref": "#/definitions/addressInventor"
+            }
+          },
+          "required": ["residenceAddress"]
+        },
+        "isWaiver": {
+          "title": "i18n(parties.natural-person.waiver)",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "personalDetails", "contactDetails"
+      ]
+    },
+    "contactPerson": {
+      "title": "i18n(parties.contact-person.information)",
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string",
+          "default": "CONTACT_PERSON"
+        },
+        "personalInformation": {
+          "title": "i18n(parties.personal-information)",
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "title": "i18n(parties.first-name)",
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 64
+            },
+            "lastName": {
+              "title": "i18n(parties.last-name)",
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 64
+            },
+            "representativeCode": {
+              "title": "i18n(parties.representative-code)",
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 64
+            }
+          },
+          "required": [
+            "lastName",
+            "firstName"
+          ]
+        },
+        "contactDetails": {
+          "title": "i18n(parties.contact-details)",
+          "type": "object",
+          "properties": {
+            "residenceAddress": {
+              "title": "",
+              "type": "object",
+              "$ref": "#/definitions/address"
+            },
+            "telephone": {
+              "title": "i18n(parties.telephone) i18n(optional)",
+              "$ref": "/procedures/common/form/field-types.jsonschema/definitions/phone"
+            },
+            "email": {
+              "title": "i18n(parties.email)",
+              "$ref": "/procedures/common/form/field-types.jsonschema/definitions/email"
+            }
+          },
+          "required": [
+            "residenceAddress",
+            "email"
+          ]
+        }
+      }
+    },
+    "personalDetails": {
+      "title": "i18n(parties.personal-details)",
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "title": "i18n(parties.first-name)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 64
+        },
+        "lastName": {
+          "title": "i18n(parties.last-name)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 64
+        },
+        "idNumber": {
+          "title": "i18n(parties.natural-person.identificationNumber) i18n(optional)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 12
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName"
+      ]
+    },
+    "personalDetailsRepresentatives": {
+      "title": "i18n(parties.personal-details)",
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "title": "i18n(parties.first-name)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 64
+        },
+        "lastName": {
+          "title": "i18n(parties.last-name)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 64
+        },
+        "registrationNumber": {
+          "title": "i18n(parties.natural-person.identificationNumber) i18n(optional)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 12
+        }
+      },
+      "required": [
+        "firstName",
+        "lastName"
+      ]
+    },
+    "companyDetails": {
+      "title": "i18n(parties.company-details)",
+      "type": "object",
+      "properties": {
+        "registrationNumber": {
+          "title": "i18n(parties.legal-entity.registration-number) i18n(optional)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 12
+        },
+        "company": {
+          "title": "i18n(parties.company)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 115
+        }
+      },
+      "required": [
+        "company"
+      ]
+    },
+    "contactDetails": {
+      "title": "i18n(parties.contact-details)",
+      "type": "object",
+      "properties": {
+        "residenceAddress": {
+          "title": "",
+          "type": "object",
+          "$ref": "#/definitions/address"
+        },
+        "telephone": {
+          "title": "i18n(parties.telephone) i18n(optional)",
+          "$ref": "/procedures/common/form/field-types.jsonschema/definitions/phone"
+        },
+        "email": {
+          "title": "i18n(parties.email)  i18n(optional)",
+          "$ref": "/procedures/common/form/field-types.jsonschema/definitions/email"
+        },
+        "differentCorrespondenceAddress": {
+          "title": "i18n(parties.correspondence-address.different)",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "required": [
+        "residenceAddress"
+      ]
+    },
+    "title": {
+      "title": "i18n(parties.person.title) i18n(optional)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "MR",
+        "MS"
+      ],
+      "enumNames": [
+        "Mr.",
+        "Ms."
+      ]
+    },
+    "address": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "streetAddress": {
+          "title": "i18n(parties.address)",
+          "maxLength": 590,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "postalCode": {
+          "title": "i18n(parties.postal-code)",
+          "maxLength": 15,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "poBox": {
+          "title": "i18n(parties.PO-box) i18n(optional)",
+          "maxLength": 15,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "city": {
+          "title": "i18n(parties.city)",
+          "maxLength": 64,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country": {
+          "$ref": "/procedures/common/form/geo.jsonschema/definitions/country"
+        }
+      },
+      "dependencies": {
+        "country": {
+          "$ref": "/procedures/common/form/geo.jsonschema/definitions/countryRegion"
+        }
+      },
+      "required": [
+        "streetAddress", "postalCode", "city", "country"
+      ]
+    },
+    "addressInventor": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "country": {
+          "$ref": "/procedures/common/form/geo.jsonschema/definitions/country"
+        },
+        "city": {
+          "title": "i18n(parties.city) i18n(optional)",
+          "maxLength": 64,
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "country"
+      ]
+    },
+    "communicationAddressSection": {
+      "title": "i18n(parties.contact-details)",
+      "type": "object",
+      "properties": {
+        "streetAddress": {
+          "title": "i18n(parties.address)",
+          "maxLength": 590,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "postalCode": {
+          "title": "i18n(parties.postal-code)",
+          "maxLength": 15,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "poBox": {
+          "title": "i18n(parties.PO-box) i18n(optional)",
+          "maxLength": 15,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "city": {
+          "title": "i18n(parties.city)",
+          "maxLength": 64,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country": {
+          "$ref": "/procedures/common/form/geo.jsonschema/definitions/country"
+        },
+        "telephone": {
+          "title": "i18n(parties.telephone) i18n(optional)",
+          "$ref": "/procedures/common/form/field-types.jsonschema/definitions/phone"
+        },
+        "email": {
+          "title": "i18n(parties.email) i18n(optional)",
+          "$ref": "/procedures/common/form/field-types.jsonschema/definitions/email"
+        }
+      },"required": [
+        "streetAddress", "postalCode", "city", "country"
+      ]
+    },
+    "communicationAddress": {
+      "title": "i18n(parties.communication-address-details)",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sequenceNumber": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "coupled": {
+          "title": "i18n(parties.communicationAddress.coupled)",
+          "type": "boolean",
+          "default": true,
+          "config": {
+            "popup": {
+              "enabled": true,
+              "type": "warning",
+              "valueToConfirmChangeTo": true,
+              "titleText": "i18n(parties.communicationAddress.couple.popup.title)",
+              "messageText": "i18n(parties.communicationAddress.couple.popup.msg)",
+              "confirmButtonText": "i18n(parties.communicationAddress.couple.popup.confirm)",
+              "cancelButtonText": "i18n(parties.communicationAddress.couple.popup.cancel)"
+            },
+            "triggerPostProcess": true
+          }
+        },
+        "role": {
+          "title": "i18n(parties.applicant.select-type)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "COMMUNICATION_ADDRESS_NATURAL_PERSON",
+            "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+          ],
+          "enumNames": [
+            "i18n(parties.natural-person)",
+            "i18n(parties.legal-entity)"
+          ],
+          "default": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+        }
+      },
+      "dependencies": {
+        "role": {
+          "oneOf": [
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+                  ]
+                },
+                "firstName": {
+                  "title": "i18n(parties.first-name)",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 64
+                },
+                "lastName": {
+                  "title": "i18n(parties.last-name)",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 64
+                },
+                "correspondenceAddress": {
+                  "$ref": "#/definitions/communicationAddressSection"
+                },
+                "preferredMeansOfNotification": {
+                  "title": "i18n(parties.preferred-means-of-notification)",
+                  "$ref": "#/definitions/preferredMeansOfNotification",
+                  "default": "EMAIL"
+                }
+              },
+              "required": ["firstName", "lastName", "correspondenceAddress", "preferredMeansOfNotification"]
+            },
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+                  ]
+                },
+                "company": {
+                  "title": "i18n(spc.parties.communicationAddress.company)",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 115
+                },
+                "correspondenceAddress": {
+                  "$ref": "#/definitions/communicationAddressSection"
+                },
+                "preferredMeansOfNotification": {
+                  "title": "i18n(parties.preferred-means-of-notification)",
+                  "$ref": "#/definitions/preferredMeansOfNotification",
+                  "default": "EMAIL"
+                }
+              },
+              "required": ["company", "correspondenceAddress", "preferredMeansOfNotification"]
+            }
+          ]
+        }
+      }
+    },
+    "generalAuthorisation": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(\\d{8,9}|)$"
+    },
+    "preferredMeansOfNotification": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "EMAIL",
+        "POST_MAIL"
+      ],
+      "enumNames": [
+        "i18n(enum.preferred-means-of-notification.EMAIL)",
+        "i18n(enum.preferred-means-of-notification.POST_MAIL)"
+      ]
+    }
+  }
+}

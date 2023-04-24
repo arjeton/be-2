@@ -1,0 +1,318 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!--
+********************************************************************************
+*  ex-officio-correction v1.3     2012  JULY                                   *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD EX OFFICIO CORRECTION 1.3//EN"                         *
+*                                             "ex-officio-correction-v1-3.dtd" *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/                            *
+*                                              ex-officio-correction-v1-3.dtd  *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+MO: 01/07/08 incorporated changes from PFCs:
+..changed version number from v1.2 to v1.3
+..added attribute 'email-purpose' to email (PFC08/006)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..implementation of PFC06/001
+HT: 14/12/04 incorporated changes from PFCs:
+..added attribute 'id' to application-reference
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added element 'tel', 'fax', 'email' to authorized-officer
+..added value 'national-office', 'regional-office' to attribute produced-by of root element
+2003/06/01
+..released version number as v1.0
+********************************************************************************
+Ex officio correction data in electronic record copy
+
+-->
+<!ELEMENT ex-officio-correction (application-reference , correction-note+ , authorized-officer?)>
+
+<!ATTLIST ex-officio-correction  lang          CDATA  #REQUIRED
+                                   dtd-version   CDATA  #IMPLIED
+                                   file          CDATA  #IMPLIED
+                                   status        CDATA  #IMPLIED
+                                   date-produced CDATA  #IMPLIED
+                                   produced-by          (applicant | 
+                                                   RO | 
+                                                   ISA | 
+                                                   IPEA | 
+                                                   IB | 
+                                                   DO | 
+                                                   EO | 
+                                                   national-office | 
+                                                   regional-office )  #REQUIRED
+                                   ro            CDATA  #REQUIRED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+	Email address
+
+	Attribute:
+		email-purpose    reason for which email address is included:
+informal     for informal contact only
+general      for any type of communication
+confirmation any type of communication, but formal messages followed up
+             by conventional mailing (to the extent offered)
+main         where applicant desires this address to be used as primary
+             means of contact as a replacement of the use of conventional
+             post (to the extent that an Office offers this)
+		the default value depends on e-mail policies of the relevant Office. 
+		For PCT purposes as at 1 July 2008, no attribute being included is 
+		equivalent to 'informal'
+
+-->
+<!ELEMENT email (#PCDATA)>
+
+<!ATTLIST email  email-purpose   (informal | general | advance | main )  #IMPLIED >
+
+<!--
+  Note of ex-officio correction:
+
+-->
+<!ELEMENT correction-note (original-content , corrected-content , action)>
+
+<!ATTLIST correction-note  location-xpath CDATA  #IMPLIED
+                             sequence       CDATA  #REQUIRED >
+
+<!--
+  Content after ex-officio correction
+
+-->
+<!ELEMENT action EMPTY>
+
+<!ATTLIST action  type-action   (delete | add | replace )  #REQUIRED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Authorized Officer.
+
+-->
+<!ELEMENT authorized-officer (%name_group; , phone? , fax? , email? , electronic-signature?)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  Fax number
+
+-->
+<!ELEMENT fax (#PCDATA)>
+
+
+<!--
+  Telephone number
+
+-->
+<!ELEMENT phone (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Content after ex-officio correction
+
+-->
+<!ELEMENT corrected-content (#PCDATA)>
+
+
+<!--
+  Original content before ex-officio correction
+
+-->
+<!ELEMENT original-content (#PCDATA)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+

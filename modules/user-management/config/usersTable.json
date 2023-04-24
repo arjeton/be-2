@@ -1,0 +1,30 @@
+[
+    {
+        "type": "selectAll",
+        "ariaLabel": "actions.select.all.users",
+        "activeAriaLabel": "messages.all.users.selected"
+    },
+    {
+        "type": "default",
+        "label": "user-management.user-name",
+        "field": "username",
+        "sortId": "filter.username",
+        "filterId": "username",
+        "filterType": "textField"
+    },
+    {
+        "type": "default",
+        "label": "user-management.user-email",
+        "field": "emailAddress",
+        "sortId": "filter.emailAddress",
+        "filterId": "emailAddress",
+        "filterType": "textField"
+    },
+    {
+        "type": "roles"
+    },
+    {
+        "type": "combinedCell",
+        "showOnNonXLDevice": true
+    }
+]

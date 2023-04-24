@@ -1,0 +1,58 @@
+server:
+  port: ${INTEGRATION_CONSUMERS_PORT:3016}
+  servlet:
+    context-path: ${INTEGRATION_CONSUMERS_CONTEXT_PATH:/}
+
+spring:
+  cloud:
+    stream:
+      function:
+        definition: backofficeIntegrationConsumer
+      bindings:
+        backofficeIntegrationConsumer-in-0:
+          destination: sending-bo.topic
+          group: backofficeIntegration.sending.start
+        backofficeIntegration-out-0:
+          destination: notification.topic
+        sendingToEmail-out-0:
+          destination: sending-email.topic
+
+camel:
+  springboot.name: IntegrationConsumers
+  servlet.mapping.context-path: /adapters/*
+
+remote-integration:
+  bo-sftp-service: ${BO_SFTP_SERVICE:sftp://demo@host.docker.internal:8085/fo-filing?password=demo}
+  payment-callback-url: ${PAYMENT_CALLBACK_URL:http://localhost/payment/callback}
+  email-service: ${EMAIL_SERVICE:smtp://smtpmail.internal.epo.org?from=frontoffice@epo.org}
+
+# Route definitions
+producers:
+  route-definitions:
+    - http:
+      api: submissions
+      endpoint: receiver
+      path: annexf-package/producer/
+      file: FtpProducer.java
+      uri: direct:receiver-producer
+
+    - stream:
+      api: submissions
+      endpoint: receiverScs
+      path: annexf-package/producer/
+      file: BrokerFtpProducer.java
+      uri: direct:brokerReceiver-producer
+      consumerUri: ${RABBIT_MQ_URL:rabbitmq:sending-bo.topic?hostname=host.docker.internal&portNumber=5672&exchangeType=topic&routingKey=#&autoDelete=false&queue=sending-bo.topic.backofficeIntegration.sending.start}
+
+    - stream:
+      api: emails
+      endpoint: emailSender
+      path: producer/
+      file: EmailSMTPBrokerProducer.java
+      uri: direct:email-brokerProducer
+      consumerUri: ${SCS_QUEUE_EMAIL:rabbitmq:sending-email.topic?hostname=host.docker.internal&portNumber=5672&exchangeType=topic&routingKey=#&autoDelete=false&queue=sending-email.topic}
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:info}
+    org.apache.camel: debug

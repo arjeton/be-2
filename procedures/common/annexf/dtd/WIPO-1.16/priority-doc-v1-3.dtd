@@ -1,0 +1,473 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  priority-doc v1.3     2017  JULY                                            *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD PRIORITY DOC 1.3//EN" "priority-doc-v1-3.dtd"          *
+********************************************************************************
+* https://www.wipo.int/pct-safe/en/resources/1.15/priority-doc-v1-3.dtd        *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Asahi HASEBE : 01/07/17 incorporated changes from PFC
+..changed version number from v1.2 to v1.3
+..added an attribute "id" to signatory
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..implementation of PFC06/001
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+HT: 14/12/04 incorporated changes from PFCs:
+..added attribute 'id' to application-reference
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added value 'national-office', 'regional-office' to attribute produced-by of root element
+2003/06/01
+..released version number as v1.0
+********************************************************************************
+
+PRIORITY DOCUMENT 
+
+Attributes:
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+  produced-by   = creator of this document
+  date-produced = YYYYMMDD e.g, 20011230  if desired, 12 characters maximum
+
+-->
+<!ELEMENT priority-doc (application-reference , pdoc-info , signatories? , pdoc-body-doc+ , pdoc-certificate-doc*)>
+
+<!ATTLIST priority-doc  lang          CDATA  #REQUIRED
+                          dtd-version   CDATA  #IMPLIED
+                          file          CDATA  #IMPLIED
+                          produced-by          (applicant | 
+                                          RO | 
+                                          ISA | 
+                                          IPEA | 
+                                          IB | 
+                                          DO | 
+                                          EO | 
+                                          national-office | 
+                                          regional-office )  #REQUIRED
+                          date-produced CDATA  #IMPLIED
+                          status        CDATA  #IMPLIED >
+
+<!--
+  Holds certification data of priority document
+		
+-->
+<!ELEMENT pdoc-certificate-doc EMPTY>
+
+<!ATTLIST pdoc-certificate-doc  file      CDATA  #REQUIRED
+                                  lang      CDATA  #IMPLIED
+                                  carriers         (internal-electronic | 
+                                              external-electronic | 
+                                              paper )  #IMPLIED
+                                  file-type        (xml | pdf | txt | tif | zip | jpg )  #REQUIRED
+                                  status    CDATA  #IMPLIED >
+
+<!--
+  Body of the priority document
+
+-->
+<!ELEMENT pdoc-body-doc EMPTY>
+
+<!ATTLIST pdoc-body-doc  file      CDATA  #REQUIRED
+                           lang      CDATA  #IMPLIED
+                           carriers         (internal-electronic | 
+                                       external-electronic | 
+                                       paper )  #IMPLIED
+                           file-type        (xml | pdf | txt | tif | zip | jpg )  #REQUIRED
+                           status    CDATA  #IMPLIED >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+  PCT Rule 17.1:  Obligation to Submit Copy of Earlier
+  National or International Application
+
+-->
+<!ELEMENT pct-rule17-1 EMPTY>
+
+<!ATTLIST pct-rule17-1  compliance   (yes | no )  #REQUIRED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Signatories
+
+-->
+<!ELEMENT signatories (signatory+)>
+
+
+<!--
+  PCT/RO/101 Box No. X:
+  The signature must be that of the applicant (if there are several applicants, all
+  must sign); however, the signature may be that of the agent, or the common
+  representative, where a separate power of attorney appointing the agent or the
+  common representative, respectively, or a copy of a general power of attorney is
+  already in possession of the receiving Office, is furnished...
+  (PCT Rules 4.1(d), 4.15, and 90)
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+
+-->
+<!ELEMENT signatory (%name_group; , address? , electronic-signature , signatory-capacity?)>
+
+<!ATTLIST signatory
+                  id ID #IMPLIED>
+
+
+<!--
+  The capacity in which the person signs
+
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Priority document information
+
+-->
+<!ELEMENT pdoc-info (document-id , (received-at-ro | applicant-requested)? , received-at-ib? , pct-rule17-1?)>
+
+
+<!--
+  International Bureau receipt date
+
+-->
+<!ELEMENT received-at-ib (date)>
+
+
+<!--
+  Date on which applicant requested that RO create and transfer to IB  a priority
+  document
+
+-->
+<!ELEMENT applicant-requested (date)>
+
+
+<!--
+  Receiving Office date of receipt of priority document
+
+-->
+<!ELEMENT received-at-ro (date)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+

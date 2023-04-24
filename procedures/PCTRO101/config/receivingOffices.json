@@ -1,0 +1,16 @@
+{
+  "receivingOffices": [
+    {
+      "itemId": "EP",
+      "itemLabel": "submission.epct.createDialog.RO.EPO"
+    },
+    {
+      "itemId": "IB",
+      "itemLabel": "submission.epct.createDialog.RO.WIPO"
+    },
+    {
+      "itemId": "NP",
+      "itemLabel": "submission.epct.createDialog.RO.NPO"
+    }
+  ]
+}

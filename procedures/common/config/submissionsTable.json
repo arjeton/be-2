@@ -1,0 +1,44 @@
+[
+  {
+    "type": "default",
+    "label": "basic-filing.user-reference",
+    "field": "basicFilingInfo.userReference",
+    "sortId": "filter.userReference",
+    "filterId": "userReference",
+    "filterType": "textField"
+  },
+  {
+    "type": "default",
+    "label": "id",
+    "field": "id",
+    "sortId": "_id",
+    "filterId": "submissionId",
+    "filterType": "textField",
+    "filterCondition" : "equals"
+  },
+  {
+    "type": "default",
+    "label": "procedure",
+    "field": "procedure",
+    "sortId": "filter.procedure",
+    "filterId": "procedure",
+    "filterType": "textField",
+    "filterCondition" : "equals"
+  },
+  {
+    "type": "status",
+    "sortId": "filter.statusOrder",
+    "filterId": "status",
+    "filterType": "status",
+    "filterCondition" : "equals"
+  },
+  {
+    "type": "default",
+    "label": "backOfficeStatus",
+    "field": "backOfficeStatus",
+    "sortId": "backOfficeStatus",
+    "filterId": "backOfficeStatus",
+    "filterType": "textField",
+    "filterCondition" : "equals"
+  }
+]

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="workflows" name="workflows" namespace="http://camunda.org/schema/1.0/dmn" expressionLanguage="groovy" exporter="Camunda Modeler" exporterVersion="5.0.0">
+  <decision id="import-common-decisions" name="import common decisions">
+      <variable id="import-common-decisions-result" name="result" />
+      <literalExpression id="import-common-decisions-expr" expressionLanguage="groovy">
+        <text>
+          [
+            "definitions": ['communication-address-utils-definition']
+          ]
+        </text>
+      </literalExpression>
+    </decision>
+  <decision id="postprocess-migration-event-communication-address" name="Communication Address Migration">
+    <variable id="postprocess-migration-event-communication-address-var" name="result" />
+    <literalExpression id="postprocess-migration-event-communication-address-expr">
+      <text>
+        // the migration happens for DRAFT submissions and applies the following changes:
+        //    - migrates 'manuallyEdited' to 'coupled'
+        //    - fixes 'derivedFrom' for SPC and EPVL
+
+        def migrateCommunicationAddressV1(_submission) {
+          if (_submission.status == 'DRAFT' &amp;&amp; _submission.parties?.communicationAddress) {
+
+            def firstCommunicationAddress = _submission.parties.communicationAddress[0]
+
+            // non migrated submissions do not have the 'coupled' field
+            if (!firstCommunicationAddress.containsKey('coupled')) {
+              def isManuallyEdited = firstCommunicationAddress.manuallyEdited ?: false
+              firstCommunicationAddress.coupled = !isManuallyEdited
+
+              if (firstCommunicationAddress.coupled) {
+                // derive according to the new CA generation logic
+                if (firstConfirmedParty(_submission))
+                  _submission = deriveFromParties(_submission)
+                else
+                  return removeCommunicationAddress(_submission)
+              }
+
+              // remove deprecated 'manuallyEdited' field
+              firstCommunicationAddress = firstCommunicationAddress - ['manuallyEdited': isManuallyEdited]
+              _submission.parties.communicationAddress[0] = firstCommunicationAddress
+            }
+          }
+
+          return _submission
+        }
+
+        if (event == 'event_migration') {
+          result = migrateCommunicationAddressV1(submission)
+        }
+      </text>
+    </literalExpression>
+  </decision>
+</definitions>

@@ -1,0 +1,56 @@
+{
+  "definitions": {
+    "hiddenWidget": {
+      "ui:widget": "hidden",
+      "classNames": "hidden"
+    },
+    "roleWidget": {
+      "ui:widget": "radio",
+      "ui:options": {
+        "style": {
+          "& > label": {
+            "color": "#21252C",
+            "font-weight": "bold"
+          }
+        }
+      }
+    },
+    "categoryWidget": {
+      "ui:tooltip": "i18n(parties.natural-person.category.tooltip)",
+      "ui:widget": "radio",
+      "ui:options": {
+        "style": {
+          "margin-top": "-1rem"
+        }
+      }
+    },
+    "pastDateWidget": {
+      "ui:widget": "pastDate",
+      "ui:options": {
+        "style": {
+          "width": "13rem"
+        }
+      }
+    },
+    "halfTextFieldWidget": {
+      "ui:widget": "typicalText",
+      "$ref": "/procedures/common/form/uischema/styles.json/definitions/halfMediumWidth"
+    },
+    "extraSmallTextFieldWidget": {
+      "ui:widget": "typicalText",
+      "$ref": "/procedures/common/form/uischema/styles.json/definitions/extraSmallWidth"
+    },
+    "smallTextFieldWidget": {
+      "ui:widget": "typicalText",
+      "$ref": "/procedures/common/form/uischema/styles.json/definitions/smallWidth"
+    },
+    "textFieldWidget": {
+      "ui:widget": "typicalText",
+      "$ref": "/procedures/common/form/uischema/styles.json/definitions/mediumWidth"
+    },
+    "largeTextFieldWidget": {
+      "ui:widget": "typicalText",
+      "$ref": "/procedures/common/form/uischema/styles.json/definitions/largeWidth"
+    }
+  }
+}

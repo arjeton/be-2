@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="workflows" name="workflows" namespace="http://camunda.org/schema/1.0/dmn" expressionLanguage="groovy" exporter="Camunda Modeler" exporterVersion="5.0.0">
+  <decision id="import-common-decisions" name="import common decisions">
+    <variable id="import-common-decisions-result" name="result" />
+    <literalExpression id="import-common-decisions-expr" expressionLanguage="groovy">
+      <text>
+        [
+          "definitions": ['communication-address-utils-definition'],
+          "migration": ['postprocess-migration-event-communication-address'],
+          "basic": [ "deletable-check-status"],
+          "parties": [
+                      "uischema-parties-communication-address-info", "uischema-parties-communication-address-error",
+                      "postprocess-parties-update-communication-address", "uischema-parties-communication-address-coupled",
+                      "custom-parties-updated", "workflow-parties-communication-address-required"
+                     ],
+          "fees": [ "createFeeObject-definition" ]
+        ]
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-basicFilingInfo-1" name="Workflow&#10;User reference">
+    <variable id="InformationItem_0wvr6xj" name="result" />
+    <literalExpression id="LiteralExpression_15ge8g6">
+      <text>
+        if(submission?.basicFilingInfo?.userReference == null) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.required"]
+        } else if (!(submission.basicFilingInfo.userReference ==~ /^[\d\w\s\-_\.,"'=&lt;&gt;\(\)\\\/À-ž\u0600-\u06FF]*$/)) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.invalid"]
+        } else if (submission.basicFilingInfo.userReference.length() &gt; 25) {
+          result = [ error: "submission.basicfiliginfo.businessrule.userreference.max-characters"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-1" name="Workflow&#10;Declarations">
+    <variable id="workflow-declaration-variable" name="result" />
+    <literalExpression id="workflow-declaration-expression">
+      <text>
+        // Optional becomes true when no declaration (CONFIRMED or NOT CONFIRMED)
+        if(submission?.declaration == null) {
+       			result = [optional: true]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-2" name="Workflow Declaration being edit">
+    <variable id="workflow-declaration-2-variable" name="result" />
+    <informationRequirement id="InformationRequirement_8y6tj3r">
+      <requiredDecision href="#workflow-declaration-1" />
+    </informationRequirement>
+    <literalExpression id="workflow-declaration-2-expression">
+      <text>
+          if(submission.declaration?.priorities?.any{priority -&gt; priority.state != "CONFIRMED"}) {
+            result = [error: "submission.businessrule.editing-form"]
+          } else if(submission.declaration?.divisionals?.any{divisional -&gt; divisional.state != "CONFIRMED"}) {
+            result = [error: "submission.businessrule.editing-form"]
+          }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-seqlBio-1" name="Workflow&#10;Seql Bio">
+    <variable id="workflow-seqlBio-variable" name="result" />
+    <literalExpression id="workflow-seqlBio-expression">
+      <text>
+        if (submission.attachments?.any{attachment -&gt; attachment?.attachmentType == "SEQ_LIST"}) {
+          result = [optional: false]
+        } else {
+          result = [optional: true]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-seqlBio-2" name="Workflow Seql Bio being edit">
+    <variable id="workflow-seqlBio-2-variable" name="result" />
+    <literalExpression id="workflow-seqlBio-2-expression">
+      <text>
+        if(submission?.seqlBio == null) {
+        result = [optional: true]
+        } else if(submission.seqlBio?.biologicalInfos?.any{bioInfo -&gt; bioInfo.state != "CONFIRMED"}) {
+        result = [error: "submission.businessrule.editing-form"]
+        } else if(submission.seqlBio?.biologicalInfos?.size() &gt; 0) {
+        result = [optional: false]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="workflow-basicFilingInfo-3" name="Workflow&#10;Type of application number">
+        <variable id="workflow-basicFilingInfo-3-variable" name="result" />
+        <informationRequirement id="InformationRequirement_1xrt9hd">
+          <requiredDecision href="#workflow-basicFilingInfo-1" />
+        </informationRequirement>
+        <literalExpression id="workflow-basicFilingInfo-expression-3">
+          <text>
+            def result = [:]
+            if(submission?.basicFilingInfo?.titlesOfInventionContainer?.titleOfInventionFirstLanguage == null) {
+              result = [error: "submission.basicfiliginfo.businessrule.titleofinvention.required"]
+            }
+            if(submission?.basicFilingInfo?.dataProtectionAcceptance == false) {
+              result = [error: "submission.basicfiliginfo.businessrule.gdprAcceptance.required"]
+            }
+            if(submission?.basicFilingInfo?.applicationType == "EUROPEAN_CONVERSION"){
+              if (submission?.basicFilingInfo?.epNumber == null){
+                result = [error: "submission.basicfiliginfo.businessrule.epnumber.empty"]
+              } else if (!(submission?.basicFilingInfo?.epNumber ==~ /^[0-9]{8}\.[0-9]$/)){
+                result = [error: "submission.basicfiliginfo.businessrule.epnumber.wrong-format"]
+              }
+            }
+            if(submission?.basicFilingInfo?.applicationType == "DIVISIONAL"){
+              if (submission?.basicFilingInfo?.divisionalNumber == null){
+                result = [error: "submission.basicfiliginfo.businessrule.divisionalnumber.empty"]
+              } else if (!(submission?.basicFilingInfo?.divisionalNumber ==~ /^[0-9]{1,11}$/)){
+                result = [error: "submission.basicfiliginfo.businessrule.divisionalnumber.wrong-format"]
+              }
+            }
+            if(submission?.basicFilingInfo?.applicationType == "MODALITIES_CHANGE"){
+              if (submission?.basicFilingInfo?.modNumber == null){
+                result = [error: "submission.basicfiliginfo.businessrule.modNumber.empty"]
+              } else if (!(submission?.basicFilingInfo?.modNumber ==~ /^[0-9]{8}\.[0-9]$/)){
+                result = [error: "submission.basicfiliginfo.businessrule.modNumber.wrong-format"]
+              }
+            }
+            return result
+           </text>
+        </literalExpression>
+      </decision>
+      <decision id="workflow-basicFilingInfo-4" name="Workflow&#10;Type of application date">
+            <variable id="workflow-basicFilingInfo-4-variable" name="result" />
+            <informationRequirement id="InformationRequirement_1xrw3hd">
+              <requiredDecision href="#workflow-basicFilingInfo-1" />
+            </informationRequirement>
+            <literalExpression id="workflow-basicFilingInfo-expression-4">
+              <text>
+                def result = [:]
+                if(submission?.basicFilingInfo?.applicationType == "EUROPEAN_CONVERSION"){
+                   if (submission?.basicFilingInfo?.epFilingDate == null){
+                     result = [error: "submission.basicfiliginfo.businessrule.epfilingdate.empty"]
+                  }
+                }
+                if(submission?.basicFilingInfo?.applicationType == "DIVISIONAL"){
+                  if (submission?.basicFilingInfo?.divisionalFilingDate == null){
+                    result = [error: "submission.basicfiliginfo.businessrule.divisionalfilingdate.empty"]
+                  }
+                }
+                if(submission?.basicFilingInfo?.applicationType == "MODALITIES_CHANGE"){
+                  if (submission?.basicFilingInfo?.modFilingDate == null){
+                    result = [error: "submission.basicfiliginfo.businessrule.modNumber.empty"]
+                  }
+                }
+                return result
+              </text>
+            </literalExpression>
+          </decision>
+  <decision id="workflow-parties-1" name="Workflow&#10;Parties At least one party">
+    <variable id="workflow-parties-1-variable" name="result" />
+    <literalExpression id="workflow-parties-1-expression">
+      <text>
+        if(submission.parties == null) {
+          result = [error: "submission.parties.businessrule.required"]
+        } else if(!submission.parties?.applicants?.any{applicant -&gt; applicant.state == "CONFIRMED"}) {
+          result = [error: "submission.parties.businessrule.confirmed-party-required"]
+        } else if(submission.parties?.applicants?.size == 1 &amp;&amp; submission.parties?.applicants?.any{applicant -&gt; applicant.personalDetails?.nationality == "US"} &amp;&amp;
+                  !submission.parties?.representatives?.any{representative -&gt; representative.state == "CONFIRMED"}
+        ) {
+          result = [error: "submission.parties.businessrule.representative.required"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-parties-2" name="Workflow&#10;Multiple correspondence addresses">
+    <variable id="workflow-parties-2-variable" name="result" />
+    <informationRequirement id="InformationRequirement_1v9bl9n">
+      <requiredDecision href="#workflow-parties-1" />
+    </informationRequirement>
+    <literalExpression id="workflow-parties-2-expression">
+      <text>
+        if(submission.parties?.applicants?.findAll{applicant -&gt; applicant.contactDetails?.differentCorrespondenceAddress &amp;&amp; applicant.state == "CONFIRMED"}?.size() &gt; 1) {
+          result = [error: "submission.parties.businessrule.applicant.correspondence-address-singular"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-parties-4" name="Workflow&#10;Party being edit">
+    <variable id="workflow-parties-4-variable" name="result" />
+    <informationRequirement id="InformationRequirement_8u9bl9n">
+      <requiredDecision href="#workflow-parties-1" />
+    </informationRequirement>
+    <literalExpression id="workflow-parties-4-expression">
+      <text>
+        if(submission.parties?.applicants?.any{applicant -&gt; applicant.state != "CONFIRMED"}) {
+            result = [error: "submission.businessrule.editing-form"]
+        } else if(submission.parties?.representatives?.any{representative -&gt; representative.state != "CONFIRMED"}) {
+            result = [error: "submission.businessrule.editing-form"]
+        } else if(submission.parties?.inventors?.any{inventor -&gt; inventor.state != "CONFIRMED"}) {
+            result = [error: "submission.businessrule.editing-form"]
+        } else if(submission.parties?.contactPersons?.any{contactPerson -&gt; contactPerson.state != "CONFIRMED"}) {
+            result = [error: "submission.businessrule.editing-form"]
+        } else if(submission.parties?.communicationAddress?.any{ca -&gt; ca.state != "CONFIRMED"}) {
+            result = [error: "submission.businessrule.editing-form"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-parties-5" name="Workflow&#10;Single Contact Person validation">
+    <variable id="workflow-parties-5-variable" name="result" />
+    <literalExpression id="workflow-parties-5-expression" expressionLanguage="groovy">
+      <text>if(submission.parties?.contactPersons?.size() &gt; 1) {
+          result = [error: "submission.parties.businessrule.contact-persons.only-one-allowed"]
+        }</text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-attachments-1" name="Workflow&#10;Attachments Description">
+    <variable id="workflow-attachments-1-variable" name="result" />
+    <literalExpression id="workflow-attachments-1-expression">
+      <text>
+        def combinedFileHasDescription(submission) {
+          return submission.attachments?.any{attachment -&gt; attachment?.attachmentType == "COMBINED" &amp;&amp; attachment?.combinedFileTypeScopes?.any{scope -&gt; scope?.type == "DESCRIPTION"} };
+        }
+        if(!submission.attachments?.any{attachment -&gt; attachment?.attachmentType == "DESCRIPTION"} &amp;&amp; !combinedFileHasDescription(submission)) {
+          result = [error: "submission.attachments.businessrule.description-type-attachment-needed"]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-hide-form" name="Uischema&#10;Hide form">
+    <variable id="uischema-hide-form-result" name="result" />
+    <literalExpression id="uischema-hide-form-expr" expressionLanguage="groovy">
+      <text>
+        if(submission.id == null) {
+          result = [
+            [ property: "basicFilingInfo.titlesOfInventionContainer", "ui:disabled": true ],
+            [ property: "basicFilingInfo.titlesOfInventionContainer.titleOfInventionFirstLanguage", "ui:disabled": true ],
+            [ property: "basicFilingInfo.titlesOfInventionContainer.titleOfInventionSecondLanguage", "ui:disabled": true ],
+            [ property: "basicFilingInfo.ipcCodes", "ui:disabled": true ],
+            [ property: "basicFilingInfo.fastTrack", "ui:disabled": true ],
+            [ property: "basicFilingInfo.applicationType", "ui:disabled": true ],
+            [ property: "basicFilingInfo.typeOfSearchReportContainer", "ui:disabled": true ],
+            [ property: "basicFilingInfo.other", "ui:disabled": true ],
+            [ property: "basicFilingInfo.fastTrack", "ui:disabled": true ],
+            [ property: "basicFilingInfo.dataProtectionAcceptance", "ui:disabled": true ],
+            [ property: "parties", "ui:disabled": true ],
+            [ property: "declaration", "ui:disabled": true ],
+            [ property: "seqlBio", "ui:disabled": true ],
+            [ property: "attachments", "ui:disabled": true ],
+            [ property: "fees", "ui:disabled": true ],
+          ]
+        } else {
+          result = [
+            [ property: "basicFilingInfo.titlesOfInventionContainer", "ui:disabled": false ],
+            [ property: "basicFilingInfo.titlesOfInventionContainer.titleOfInventionFirstLanguage", "ui:disabled": false ],
+            [ property: "basicFilingInfo.titlesOfInventionContainer.titleOfInventionSecondLanguage", "ui:disabled": false ],
+            [ property: "basicFilingInfo.ipcCodes", "ui:disabled": false ],
+            [ property: "basicFilingInfo.fastTrack", "ui:disabled": false ],
+            [ property: "basicFilingInfo.applicationType", "ui:disabled": false ],
+            [ property: "basicFilingInfo.typeOfSearchReportContainer", "ui:disabled": false ],
+            [ property: "basicFilingInfo.other", "ui:disabled": false ],
+            [ property: "basicFilingInfo.fastTrack", "ui:disabled": false ],
+            [ property: "basicFilingInfo.dataProtectionAcceptance", "ui:disabled": false ],
+            [ property: "parties", "ui:disabled": false ],
+            [ property: "declaration", "ui:disabled": false ],
+            [ property: "seqlBio", "ui:disabled": false ],
+            [ property: "attachments", "ui:disabled": false ],
+            [ property: "fees", "ui:disabled": false ],
+          ]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-correspondence-address" name="Uischema&#10;Correspondence address">
+    <variable id="uischema-correspondence-address-result" name="result" />
+    <literalExpression id="uischema-correspondence-address-expr" expressionLanguage="groovy">
+      <text>
+        if(submission.parties?.representatives){
+          result = [[property: "parties.applicants.items.contactDetails.differentCorrespondenceAddress", "ui:disabled": true]]
+        } else {
+          def currentApplicant = submission.parties?.applicants?.find{a -&gt; a.state != "CONFIRMED"}
+          if(currentApplicant?.sequenceNumber) {
+            if(currentApplicant?.sequenceNumber &gt; 1){
+              result = [[property: "parties.applicants.items.contactDetails.differentCorrespondenceAddress", "ui:disabled": true]]
+            } else {
+              result = [[property: "parties.applicants.items.contactDetails.differentCorrespondenceAddress", "ui:disabled": false]]
+            }
+          } else {
+            def firstApplicant = submission.parties?.applicants?.find{a -&gt; a.sequenceNumber = 1}
+            if(firstApplicant){
+              result = [[property: "parties.applicants.items.contactDetails.differentCorrespondenceAddress", "ui:disabled": true]]
+            }else {
+              result = [[property: "parties.applicants.items.contactDetails.differentCorrespondenceAddress", "ui:disabled": false]]
+            }
+          }
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-correspondence-address-information-first-applicant" name="Uischema&#10;Correspondence address information first applicant">
+    <variable id="uischema-correspondence-address-information-first-applicant-result" name="result" />
+    <literalExpression id="uischema-correspondence-address-information-first-applicant-expr" expressionLanguage="groovy">
+      <text>
+        def firstApplicant = submission.parties?.applicants?.find{a -&gt; a.sequenceNumber = 1}
+        if(firstApplicant){
+          def currentApplicant = submission.parties?.applicants?.find{a -&gt; a.state != "CONFIRMED"}
+          if (currentApplicant &amp;&amp; currentApplicant?.id != firstApplicant.id) {
+            result = [[property: "parties.applicants.items.contactDetails.informationFirstApplicant", "ui:hidden": false]]
+          } else {
+            result = [[property: "parties.applicants.items.contactDetails.informationFirstApplicant", "ui:hidden": true]]
+          }
+        } else {
+        result = [[property: "parties.applicants.items.contactDetails.informationFirstApplicant", "ui:hidden": true]]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-correspondence-address-information-representative" name="Uischema&#10;Correspondence address information first applicant">
+    <variable id="uischema-correspondence-address-information-representative-result" name="result" />
+    <literalExpression id="uischema-correspondence-address-information-representative-expr" expressionLanguage="groovy">
+      <text>
+        def firstApplicant = submission.parties?.applicants?.find{a -&gt; a.sequenceNumber = 1}
+        if(firstApplicant){
+          def currentApplicant = submission.parties?.applicants?.find{a -&gt; a.state != "CONFIRMED"}
+          if (submission.parties?.representatives &amp;&amp; currentApplicant &amp;&amp; currentApplicant?.id == firstApplicant.id) {
+            result = [[property: "parties.applicants.items.contactDetails.informationRepresentative", "ui:hidden": false]]
+          } else {
+            result = [[property: "parties.applicants.items.contactDetails.informationRepresentative", "ui:hidden": true]]
+          }
+        } else {
+          result = [[property: "parties.applicants.items.contactDetails.informationRepresentative", "ui:hidden": true]]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-add-divisional" name="Uischema&#10;Add divisional">
+    <variable id="uischema-add-divisional-result" name="result" />
+    <literalExpression id="uischema-add-divisional-expr" expressionLanguage="groovy">
+      <text>
+        if(submission.declaration?.divisionals?.any{divisional -&gt; divisional?.state == "CONFIRMED"}) {
+          result = [property: "declaration.divisionals", "canAdd": false]
+        } else {
+          result = [property: "declaration.divisionals", "canAdd": true]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="postprocess-submission_declaration_exhibitions_internationalExhibition_change" name="Post process&#10;Exhibitions">
+    <variable id="postprocess-exhibition-result" name="result" />
+    <literalExpression id="postprocess-expr-exhibition" expressionLanguage="groovy">
+      <text>
+        def mapExhibitionCity(internationalExhibition){
+            switch(internationalExhibition){
+                case "MILANO_2019": return "MILANO"
+                case "MILANO_2022": return "MILANO"
+                default: return internationalExhibition
+            }
+        }
+        submission.declaration?.exhibitions?.each {
+          priority -&gt; priority.city = mapExhibitionCity(priority.internationalExhibition)
+        }
+        result = submission
+
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="postprocess" name="Post process&#10;entity">
+    <variable id="postprocess-result" name="result" />
+    <literalExpression id="postprocess-expr" expressionLanguage="groovy">
+      <text>
+        /**
+        * Derive CaseId in basicFilingInfo section
+        */
+        def post_process_caseId(submission) {
+          if(submission?.basicFilingInfo?.caseId == null) {
+            submission.basicFilingInfo?.caseId = submission.sequenceNumber;
+          }
+          return submission;
+        }
+        submission = post_process_caseId(submission);
+
+        /**
+        *  conditional fee recalculation
+        */
+        def post_process_fee(submission, condition, code) {
+          if (condition) {
+            if (submission?.fees == null) {
+              submission?.fees = [:]
+            }
+            submission?.fees?.methodOfPayment = submission?.fees?.paymentIntention?.notIntendingToPay ? "" : submission?.fees?.methodOfPayment;
+
+            def feeAlreadyAdded = submission?.fees?.feesSelection?.selectedFees?.find { f -&gt; f.code == code }
+            if (feeAlreadyAdded == null || !feeAlreadyAdded) {
+              def alreadySelectedFees = submission?.fees?.feesSelection?.selectedFees
+              if (alreadySelectedFees == null || !alreadySelectedFees) {
+                alreadySelectedFees = []
+              }
+              alreadySelectedFees?.add(createFeeObject(code))
+              submission?.fees?.feesSelection = [selectedFees: alreadySelectedFees, applicableDiscounts: submission?.fees?.feesSelection?.applicableDiscounts]
+            }
+          } else {
+            if (submission?.fees != null &amp;&amp; submission?.fees?.feesSelection != null &amp;&amp; submission?.fees?.feesSelection?.selectedFees?.any{f -&gt; f.code == code}) {
+                submission?.fees?.feesSelection.selectedFees = submission?.fees?.feesSelection?.selectedFees?.findAll{f -&gt; f.code != code}
+            }
+          }
+        }
+
+       /**
+        *  Fast track fee post process and reinstatement priority right rules
+        */
+        def process_conditional_fee_recalculation(submission) {
+          post_process_fee(submission, submission?.basicFilingInfo?.fastTrack, "002")
+          post_process_fee(submission, submission?.basicFilingInfo?.typeOfSearchReportContainer == "simpleSearch", "001")
+          post_process_fee(submission, submission?.basicFilingInfo?.typeOfSearchReportContainer == "searchWithOpinion", "0011")
+
+          if (submission?.fees != null &amp;&amp; submission?.fees?.feesSelection != null) {
+            submission.fees.feesSelection.total = submission.fees.feesSelection?.selectedFees.subtotal.sum()
+          }
+          return submission
+        }
+        submission = process_conditional_fee_recalculation(submission);
+
+        /**
+        *  Applicant is also inventor post process rule
+        */
+        def applicant_is_also_inventor(submission) {
+          if (submission.parties == null)
+            submission.parties = [:]
+          if (submission.parties.applicants == null)
+            submission.parties.applicants = []
+          if (submission.parties.inventors == null)
+            submission.parties.inventors = []
+          def maxSequence = submission.parties.inventors.collect { it.sequenceNumber }.max()
+          maxSequence = maxSequence ? maxSequence : 0
+
+          // delete derived inventors for deleted applicants
+          def retainedInventors = submission.parties?.inventors
+            ?.findAll { i -&gt; submission.parties?.applicants?.findAll { a -&gt; a.additionalDetails?.isInventor }.collect { a -&gt; a.id }.contains(i.applicantId) || i.applicantId == null}
+          submission.parties.inventors = retainedInventors
+
+          // sync values from applicants into existing inventors
+          def existingApplicantInventors = submission.parties?.inventors?.collect { i -&gt;
+            if (i.applicantId != null) {
+              def applicant = submission.parties?.applicants?.find { a -&gt; a.id == i.applicantId };
+              if(applicant) {
+                i.personalDetails = applicant.personalDetails;
+                i.company = applicant.company;
+                i.contactDetails = applicant.contactDetails;
+              }
+            }
+            return i;
+          }
+          submission.parties.inventors = existingApplicantInventors
+
+          // add new inventors
+          def applicantInventors = submission.parties?.applicants
+            ?.findAll { a -&gt; !submission.parties?.inventors?.collect { i -&gt; i.applicantId }.contains(a.id) &amp;&amp; a.additionalDetails?.isInventor &amp;&amp; a.state == "CONFIRMED"  &amp;&amp; a.role == "APPLICANT_NATURAL_PERSON"}
+            ?.collect { a -&gt;
+              [
+                id             : UUID.randomUUID().toString(),
+                sequenceNumber : ++maxSequence,
+                role           : 'INVENTOR',
+                state          : "CONFIRMED",
+                applicantId    : a.id,
+                personalDetails: a.personalDetails,
+                company        : a.company,
+                contactDetails : a.contactDetails,
+              ]
+            }
+          submission.parties.inventors.addAll(applicantInventors)
+
+          return submission;
+        }
+        submission = applicant_is_also_inventor(submission)
+
+        result = submission
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-duplicate-company-warning" name="Uischema&#10;Company name duplicated warning">
+    <variable id="uischema-duplicate-company-warning-result" name="result" />
+    <literalExpression id="uischema-duplicate-company-warning-expr" expressionLanguage="groovy">
+      <text>
+        def currentApplicant = submission.parties?.applicants?.find{a -&gt; a.state != "CONFIRMED"}
+        def newMap = [:]
+        if(currentApplicant) {
+          for (applicant in submission.parties?.applicants) {
+            if (applicant.companyDetails?.company?.toLowerCase()?.replaceAll(/ |-/, '') == currentApplicant.companyDetails?.company?.toLowerCase()?.replaceAll(/ |-/, '')
+            &amp;&amp; applicant.state == "CONFIRMED" &amp;&amp; applicant.role == "APPLICANT_LEGAL_ENTITY") {
+              def message = "submission.parties.businessrule.company-applicant-name-collision"
+              newMap = [
+                [ property: "parties.applicants.items.companyDetails.company", "ui:help": message ],
+                [ property: "parties.applicants.items.companyDetails.company", "ui:help:severity": "warning" ],
+              ]
+            }
+          }
+          result = newMap.clone()
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-add-contact-persons" name="UiSchema&#10;Add contact persons button">
+    <variable id="uischema-add-contact-persons-result" name="result" />
+    <literalExpression id="uischema-add-contact-persons-expr" expressionLanguage="groovy">
+      <text>
+        if(!(submission.parties?.contactPersons)) {
+          result = [property: "parties.contactPersons", "canAdd": true]
+        } else {
+          result = [property: "parties.contactPersons", "canAdd": false]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-user-reference" name="Uischema&#10;User reference">
+    <variable id="uischema-user-reference-result" name="result" />
+    <literalExpression id="uischema-user-reference-expr" expressionLanguage="groovy">
+      <text>
+        if (submission.basicFilingInfo?.userReference == null) {
+          result = [[ property: "ui:actionBar", "ui:disabled": true ]]
+        } else if (submission.basicFilingInfo?.userReference?.length() &gt; 25) {
+          result = [[ property: "ui:actionBar", "ui:disabled": true ]]
+        } else if (!(submission.basicFilingInfo?.userReference ==~ /^[\d\w\s\-_\.,"'=&lt;&gt;\(\)\\\/À-ž\u0600-\u06FF]*$/)) {
+          result = [[ property: "ui:actionBar", "ui:disabled": true ]]
+        } else  {
+          result = [[ property: "ui:actionBar", "ui:disabled": false ]]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-fees-1" name="Workflow&#10;Fees 1">
+    <variable id="workflow-fees-1-variable" name="result" />
+    <literalExpression id="workflow-fees-1-expression" expressionLanguage="groovy">
+      <text>
+        if (submission.fees == null || submission.fees.methodOfPayment == null) {
+          result = [ error: "submission.payment.businessrule.method.required"];
+        } else if (submission.fees.methodOfPayment == "depositAccount") {
+            if (submission.fees.accountInformation?.accountNumber == null || 
+                submission.fees.accountInformation?.accountHolder == null) {
+              result = [ error: "submission.payment.businessrule.account-number-and-holder-name-required"];
+            } else if (submission.fees.feesSelection?.selectedFees == null) {
+              result = [ error: "submission.payment.businessrule.deposit-account-fee-selection-required"];
+            }
+        } else if (submission.fees.methodOfPayment == "indicateLater"
+            &amp;&amp; submission.fees.feesSelection?.selectedFees != null) {
+          result = [ error: "submission.payment.businessrule.indicate-later-no-fee-selection-allowed"];
+        } else if (submission.fees.methodOfPayment == "bankTransfer"
+            &amp;&amp; submission.fees.feesSelection?.selectedFees == null) {
+          result = [ error: "submission.payment.businessrule.bank-transfer-fee-selection-required"];
+        } else if (submission.fees.methodOfPayment == "creditCard"
+            &amp;&amp; submission.fees.feesSelection?.selectedFees == null) {
+          result = [ error: "submission.payment.businessrule.credit-card-fee-selection-required"];
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-declaration-priorities" name="Workflow&#10;Declarations: Unique Priorities">
+    <variable id="uischema-declaration-priorities-result" name="result" />
+    <literalExpression id="uischema-declaration-priorities-expr" expressionLanguage="groovy">
+      <text>
+      if (submission.declaration?.priorities?.groupBy{[applicationNumber: it.applicationNumber]}.any{ it.value.size() &gt; 1}) {
+        result = [
+            [ property: "declaration.priorities.confirmButton", "ui:disabled": true],
+            [ property: "declaration.priorities.items.applicationNumber", "ui:help": "submission.priorities.items.applicationNumber.unique" ],
+            [ property: "declaration.priorities.items.applicationNumber", "ui:help:severity": "warning" ],
+        ]
+      } else if(submission.declaration?.priorities?.groupBy{[applicationNumber: it.applicationNumber]}.any{ it.value.size() == 1}) {
+        result = [
+            [ property: "declaration.priorities.confirmButton", "ui:disabled": false],
+            [ property: "declaration.priorities.items.applicationNumber", "ui:help": "" ],
+            [ property: "declaration.priorities.items.applicationNumber", "ui:help:severity": "" ],
+        ]
+      }
+    </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-seqlBio-bioMaterials" name="Workflow&#10;Unique bioMaterial">
+    <variable id="uischema-seqlBio-bioMaterials-result" name="result" />
+    <literalExpression id="uischema-seqlBio-bioMaterials-expr" expressionLanguage="groovy">
+      <text>
+        if (submission.seqlBio?.biologicalInfos?.groupBy{[accession: it.bioMaterial?.accession]}.any{ it.value.size() &gt; 1}) {
+          result = [
+              [ property: "seqlBio.biologicalInfos.confirmButton", "ui:disabled": true],
+              [ property: "seqlBio.biologicalInfos.items.bioMaterial.accession", "ui:help": "biologicalInfos.items.accession.unique" ],
+              [ property: "seqlBio.biologicalInfos.items.bioMaterial.accession", "ui:help:severity": "warning" ],
+          ]
+        } else if(submission.seqlBio?.biologicalInfos?.groupBy{[accession: it.bioMaterial?.accession]}.any{ it.value.size() == 1}) {
+          result = [
+              [ property: "seqlBio.biologicalInfos.confirmButton", "ui:disabled": false],
+              [ property: "seqlBio.biologicalInfos.items.bioMaterial.accession", "ui:help": "" ],
+              [ property: "seqlBio.biologicalInfos.items.bioMaterial.accession", "ui:help:severity": "" ],
+          ]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-declaration-3" name="Workflow&#10;Declarations: Exhibition date">
+    <variable id="workflow-declaration-3-variable" name="result" />
+    <literalExpression id="workflow-declaration-3-expression" expressionLanguage="groovy">
+      <text>
+        import java.time.LocalDate
+
+        def isXMonthsOlderThanOtherParsedDate(numberOfMonths, date, otherParsedDate) {
+          if(date == null || otherParsedDate == null)
+            return false
+          LocalDate parsedDate = LocalDate.parse(date)
+          return parsedDate &lt; otherParsedDate.minusMonths(numberOfMonths)
+        }
+
+        def isXMonthsOlder(numberOfMonths, date) {
+          if(date == null)
+            return false
+          LocalDate parsedDate = LocalDate.parse(date)
+          return parsedDate &lt; LocalDate.now().minusMonths(numberOfMonths)
+        }
+
+        def getOldestPriorityDate() {
+            priorityDates = submission.declaration?.priorities?.findAll{it.filingDate != null}.collect{LocalDate.parse(it.filingDate)}
+            if(!priorityDates.isEmpty()) {
+              return priorityDates.min()
+            } else {
+              return null
+            }
+        }
+
+        oldestPriorityDate = getOldestPriorityDate()
+        minNumberOfMonths = 6
+
+        def isNotValidExhibitionDateWithPriority = submission.declaration?.exhibitions.any{exhibition -&gt;
+            isXMonthsOlderThanOtherParsedDate(minNumberOfMonths, exhibition.exhibitionDate, oldestPriorityDate)
+        }
+        def isNotValidExhibitionDateNoPriority = submission.declaration?.exhibitions.any{exhibition -&gt;
+            oldestPriorityDate == null &amp;&amp;
+            isXMonthsOlder(minNumberOfMonths, exhibition.exhibitionDate)
+        }
+
+        if (isNotValidExhibitionDateWithPriority) {
+            result = [ error: "submission.declaration.businessrule.exhibition.date-earlier-priority" ]
+        } else if(isNotValidExhibitionDateNoPriority) {
+            result = [ error: "submission.declaration.businessrule.exhibition.date-earlier" ]
+        } else {
+            result = [:]
+        }
+    </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-add-declaration-exhibitions" name="UiSchema&#10;Add exhibition button">
+    <variable id="uischema-add-declaration-exhibitions-result" name="result" />
+      <literalExpression id="uischema-add-declaration-exhibitions-expr" expressionLanguage="groovy">
+        <text>
+            if(submission.declaration?.exhibitions?.size() &lt; 2){
+              result = [property: "declaration.exhibitions", "canAdd": true]
+            } else {
+              result = [property: "declaration.exhibitions", "canAdd": false]
+            }
+        </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-fees-2" name="Workflow Fees&#10;already paid required attachment&#10;">
+        <variable id="InformationItem_06nmxu3" name="result" />
+        <literalExpression id="LiteralExpression_10zw093" expressionLanguage="groovy">
+          <text>// for already paid, at least one proof of payment is required
+      if(submission.fees != null &amp;&amp; submission?.fees?.methodOfPayment == "alreadyPaid") {
+         if(!submission.attachments?.any{attachment -&gt; attachment?.attachmentType == "PROOF_OF_PAYMENT"}) {
+           result = [error: "submission.attachments.payment.needed"]
+         }
+         }</text>
+      </literalExpression>
+    </decision>
+    <decision id="postprocess-clear-fees-already-paid-attachments" name="Post process&#10;Clear already paid attachments on other method selected">
+      <variable id="postprocess-clear-fees-already-paid-attachments-var" name="result" />
+      <literalExpression id="postprocess-clear-fees-already-paid-attachments-expr" expressionLanguage="groovy">
+        <text>
+          // remove already paid attachments when method of payment is changed to another
+          if (event == "submission_fees_methodOfPayment_change") {
+          if (submission?.fees?.methodOfPayment != "alreadyPaid" &amp;&amp;
+          submission?.attachments?.any{attachment -> attachment?.attachmentType == "PROOF_OF_PAYMENT"}) {
+          submission.attachments = submission.attachments.grep { it["attachmentType"] != "PROOF_OF_PAYMENT"}
+        }
+        result = submission
+        }
+      </text>
+    </literalExpression>
+  </decision>
+
+  <decision id="uischema-payment-already-paid-attached" name="uischema Already paid attachment available">
+    <variable id="uischema-payment-already-paid-attached-variable" name="result" />
+    <literalExpression id="uischema-payment-already-paid-attached-expr" expressionLanguage="groovy">
+      <text>
+        // this uiSchema rule works together with the custom ConfirmedFeesRadioWidget
+        // that checks for this condition to be true in order to display a confirmation pop-up on value change
+        if (submission?.attachments?.any{attachment -> attachment?.attachmentType == "PROOF_OF_PAYMENT"}) {
+        result = [[property: "fees.methodOfPayment", "ui:logic":"requireConfirmation"]]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="workflow-fees-selected" name="Workflow&#10;Check fees are selected">
+    <variable id="workflow-fees-selected-variable" name="result" />
+    <informationRequirement id="InformationRequirement_fees_selected">
+      <requiredDecision href="#workflow-fees-1" />
+    </informationRequirement>
+    <literalExpression id="workflow-fees-selected-expression" expressionLanguage="groovy">
+      <text>
+        if (!submission?.fees?.paymentIntention?.notIntendingToPay) {
+          if ((submission?.fees?.feesSelection != null &amp;&amp;
+               submission.fees?.feesSelection?.selectedFees == null) ||
+               submission.fees?.feesSelection == null) {
+            result = [ error: "submission.payment.businessrule.fee-selection-required"]
+          }
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="uischema-payment-intention-disable-fees" name="uischema Payment Intention disable fees">
+    <variable id="uischema-payment-intention-disable-fees-variable" name="result" />
+    <literalExpression id="uischema-first-applicant-confirm-expr" expressionLanguage="groovy">
+      <text>
+        if(submission?.fees?.paymentIntention?.notIntendingToPay) {
+          result = [[property: "fees.methodOfPayment", "ui:hidden":true],
+                    [property: "fees.feesSelection", "ui:hidden":true],
+                    [property: "fees.paymentAttachments", "ui:hidden":true]]
+        }
+      </text>
+    </literalExpression>
+  </decision>
+  <textAnnotation id="TextAnnotation_0lyyo1k">
+    <text>BASIC FILING</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_1ae22po">
+    <text>PARTY</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_1u1dhcn">
+    <text>ATTACHMENTS</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_1hk0ln8">
+    <text>BIOSQL</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_0bz1l3h">
+    <text>DECLARATIONS</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_18z44rm">
+    <text>FEES</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_19decmg">
+    <text>SUBMISSION</text>
+  </textAnnotation>
+  <textAnnotation id="TextAnnotation_1vmaotv">
+    <text>Rules to follow on DMN file updates:
+1. Do not add rules without visual representation
+2. Add each rule on the line that corresponds to its form section
+3. Maintain the following ordering for the type of rules per line: WORKFLOW, UISCHEMA, POSTPROCESS
+4. Follow the naming conventions: first word with the type of rule, then a suggestive title for the rule content
+5. Follow the id conventions: type or rule-section-any differentiator</text>
+  </textAnnotation>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram id="DMNDiagram_0ngddr9">
+      <dmndi:DMNShape id="DMNShape_12y036l" dmnElementRef="workflow-attachments-1">
+        <dc:Bounds height="80" width="180" x="300" y="1040" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_12y789" dmnElementRef="workflow-fees-1">
+        <dc:Bounds height="80" width="180" x="300" y="1150" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1byllma" dmnElementRef="workflow-basicFilingInfo-1">
+        <dc:Bounds height="80" width="180" x="310" y="430" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_3bce32t" dmnElementRef="workflow-declaration-1">
+        <dc:Bounds height="80" width="180" x="300" y="800" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_3bce32x" dmnElementRef="workflow-declaration-3">
+        <dc:Bounds height="80" width="180" x="780" y="800" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_3bcd32t" dmnElementRef="workflow-seqlBio-1">
+        <dc:Bounds height="80" width="180" x="770" y="930" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_3bcd32z" dmnElementRef="workflow-seqlBio-2">
+        <dc:Bounds height="80" width="180" x="300" y="930" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc79v" dmnElementRef="workflow-parties-1">
+        <dc:Bounds height="80" width="180" x="310" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc78v" dmnElementRef="workflow-parties-2">
+        <dc:Bounds height="80" width="180" x="550" y="680" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc76v" dmnElementRef="workflow-parties-3">
+        <dc:Bounds height="80" width="180" x="550" y="570" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc77v" dmnElementRef="workflow-parties-4">
+        <dc:Bounds height="80" width="180" x="780" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc81v" dmnElementRef="uischema-hide-form">
+        <dc:Bounds height="80" width="180" x="780" y="290" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc82v" dmnElementRef="uischema-correspondence-address">
+        <dc:Bounds height="80" width="180" x="2360" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc82x" dmnElementRef="uischema-correspondence-address-information-first-applicant">
+        <dc:Bounds height="80" width="180" x="1250" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc82z" dmnElementRef="uischema-correspondence-address-information-representative">
+        <dc:Bounds height="80" width="180" x="1470" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc83v" dmnElementRef="uischema-add-divisional">
+        <dc:Bounds height="80" width="180" x="780" y="800" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc84v" dmnElementRef="uischema-add-employee">
+        <dc:Bounds height="80" width="180" x="1930" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc85v" dmnElementRef="uischema-inventor-deceased">
+        <dc:Bounds height="80" width="180" x="2140" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc86v" dmnElementRef="postprocess">
+        <dc:Bounds height="80" width="180" x="560" y="290" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc11v" dmnElementRef="postprocess-submission_declaration_exhibitions_internationalExhibition_change">
+        <dc:Bounds height="80" width="180" x="310" y="290" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc87v" dmnElementRef="uischema-duplicate-company-warning">
+        <dc:Bounds height="80" width="180" x="1700" y="640" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc88v" dmnElementRef="uischema-user-reference">
+        <dc:Bounds height="80" width="180" x="780" y="430" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13wc99v" dmnElementRef="deletable-check-status">
+        <dc:Bounds height="80" width="180" x="310" y="290" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_13we10v" dmnElementRef="uischema-seqlBio-bioMaterials">
+        <dc:Bounds height="80" width="180" x="550" y="930" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0rpcz3v" dmnElementRef="InformationRequirement_0qeg3i8">
+        <di:waypoint x="490" y="680" />
+        <di:waypoint x="530" y="610" />
+        <di:waypoint x="550" y="610" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1odimep" dmnElementRef="InformationRequirement_1v9bl9n">
+        <di:waypoint x="490" y="680" />
+        <di:waypoint x="530" y="720" />
+        <di:waypoint x="550" y="720" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1parco7" dmnElementRef="uischema-declaration-priorities">
+        <dc:Bounds height="80" width="180" x="550" y="800" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1mq20qu" dmnElementRef="TextAnnotation_0lyyo1k">
+        <dc:Bounds height="25" width="105" x="167" y="457" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1onjezy" dmnElementRef="TextAnnotation_1ae22po">
+        <dc:Bounds height="20" width="103" x="167" y="670" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1p41z0w" dmnElementRef="TextAnnotation_1u1dhcn">
+        <dc:Bounds height="20" width="105" x="166" y="1070" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0vjoabl" dmnElementRef="TextAnnotation_1hk0ln8">
+        <dc:Bounds height="20" width="100" x="169" y="960" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0ss05gw" dmnElementRef="TextAnnotation_0bz1l3h">
+        <dc:Bounds height="20" width="110" x="170" y="830" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0uxc46t" dmnElementRef="TextAnnotation_18z44rm">
+        <dc:Bounds height="20" width="100" x="169" y="1180" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1mybk09" dmnElementRef="TextAnnotation_19decmg">
+        <dc:Bounds height="30" width="120" x="159" y="315" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0eta2g6" dmnElementRef="TextAnnotation_1vmaotv">
+        <dc:Bounds height="120" width="870" x="295" y="80" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0cnkyrp" dmnElementRef="Decision_0dhqw21">
+        <dc:Bounds height="80" width="180" x="1020" y="800" />
+      </dmndi:DMNShape>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

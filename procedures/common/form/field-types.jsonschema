@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "notBlank": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(?!\\s*$).+"
+    },
+    "positiveNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "percentageNumber": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "percentageNumberWith2Decimals": {
+      "type": "number",
+      "minimum": 0.01,
+      "maximum": 100,
+      "multipleOf":  0.01,
+      "$comment": "(^100([.,]0{1,2})?)$|(^\\d{1,2}([.,]\\d{1,2})?)$"
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "email",
+      "maxLength": 64
+    },
+    "phone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(?:\\+\\d{1,3})?(?:[() -]?\\d){6,}$",
+      "maxLength": 25
+    },
+    "notIntendingToPay": {
+      "title": "i18n(fees.payment.notIntendingToPay)",
+      "type": "boolean",
+      "default": false,
+      "config": {
+        "popup": {
+          "enabled": true,
+          "type": "warning",
+          "valueToConfirmChangeTo": true,
+          "titleText": "i18n(fees.payment.notIntendingToPay.popup.title)",
+          "messageText": "i18n(fees.payment.notIntendingToPay.popup.msg)",
+          "confirmButtonText": "i18n(fees.payment.notIntendingToPay.popup.confirm)",
+          "cancelButtonText": "i18n(fees.payment.notIntendingToPay.popup.cancel)"
+        },
+        "triggerPostProcess": true
+      }
+    },
+    "methodOfPayment": {
+      "title": "i18n(fees.payment-method.select)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "payOnline",
+        "alreadyPaid"
+      ],
+      "enumNames": [
+        "i18n(fees.pay.online)",
+        "i18n(fees.already.paid)"
+      ],
+      "config": {
+        "popup": {
+          "enabled": true,
+          "type": "warning",
+          "valueToConfirmChangeFrom": "alreadyPaid",
+          "titleText": "i18n(fees.payment.switchedFromAlreadyPaid.popup.title)",
+          "messageText": "i18n(fees.payment.switchedFromAlreadyPaid.popup.msg)",
+          "confirmButtonText": "i18n(fees.payment.switchedFromAlreadyPaid.popup.confirm)",
+          "cancelButtonText": "i18n(fees.payment.switchedFromAlreadyPaid.popup.cancel)"
+        },
+        "triggerPostProcess": true
+      },
+      "default": "payOnline"
+    }
+  }
+}

@@ -1,0 +1,142 @@
+server:
+  port: ${SUBMISSION_SERVICE_PORT:3001}
+  servlet:
+    context-path: ${SUBMISSION_SERVICE_CONTEXT_PATH:/npefiling-api}
+
+spring:
+  data:
+    mongodb:
+      uri: ${DB_URL:mongodb://admin:admin@host.docker.internal:28018/submission?authSource=admin}
+  cloud:
+    stream:
+      function:
+        definition: updatedSubmissionConsumer;filingHistoryLogConsumer
+      bindings:
+        sendSigningAndPackingMessage-out-0:
+          destination: signing.topic
+        sendExternalFilingMessage-out-0:
+          destination: sending.topic
+        sendInternalFilingMessage-out-0:
+          destination: filing.topic
+        sendPackageGenerationMessage-out-0:
+          destination: package.topic
+        sendDeleteByGroupIdMessage-out-0:
+          destination: storage.topic
+        sendingToBackOffice-out-0:
+          destination: sending-bo.topic
+        updatedSubmissionConsumer-in-0:
+          destination: update.topic
+          group: submission.updates.receive
+        filingHistoryLogConsumer-in-0:
+          destination: update.filing.topic
+          group: submission.filing.updateLogs
+  security:
+    oauth2:
+      client:
+        registration:
+          base-service-web-client:
+            client-id: ${OAUTH_CLIENT_ID:submission-service}
+            client-secret: ${OAUTH_CLIENT_SECRET:9ba9d3e8-8893-4986-83ab-420725b2758a}
+            authorization-grant-type: client_credentials
+            scope: profile
+
+attachment-tag: ${ATTACHMENT_TAG:attachment}
+
+# 3 autosave minutes + 10 seconds (offset)
+submission:
+  unlock-seconds-timer: ${UNLOCK_SECONDS_TIMER:190}
+  fee:
+    cache-eviction-ms: ${FEES_CACHE_EVICTION_RATE:86400000}
+  sequenceIdGenerator:
+    spelExpression: "T(java.lang.String).format('%010d', sequence)"
+
+ops:
+  oauth:
+    base-url: ${OPS_OAUTH_BASE_URL:https://ops.epo.org/3.2/auth}
+    token-endpoint: /accesstoken
+    client-id: ${OPS_OAUTH_CLIENT_ID:y7Krgn0PaZCTpDhCru2JRIizweDEz00M}
+    client-secret: ${OPS_OAUTH_CLIENT_SECRET:PwMpfjpKzeVRMptX}
+    grant-type: client_credentials
+    scope: profile
+  client:
+    max-retries: 3
+
+client:
+  timeout-in-ms: ${CLIENT_TIMEOUT:200000}
+  max-retries: 3
+  proxy-enabled: ${PROXY_ENABLED:false}
+  oauth:
+    base-url: ${FO_IAM_BASE_URL:http://host.docker.internal:8081/auth/realms/front-office-public/protocol/openid-connect}
+    token-endpoint: /token
+    client-id: ${OAUTH_CLIENT_ID:submission-service}
+    client-secret: ${OAUTH_CLIENT_SECRET:9ba9d3e8-8893-4986-83ab-420725b2758a}
+    grant-type: client_credentials
+    scope: profile
+  proxy:
+    host: ${PROXY_HOST:proxy.internal.epo.org}
+    nonProxyHosts: ${NON_PROXY_HOSTS:proxy.internal.epo.org}
+    port: ${PROXY_PORT:8080}
+    username: ${PROXY_USERNAME:user}
+    password: ${PROXY_PASSWORD:pwd}
+
+epvl:
+  autofill:
+    preSearchApplicationNumberTransformation: ^&EP
+    popupFields:
+      All:
+        - label: draft.epvl.titleOfInvention
+          imported: "no"
+          mapping: submission.basicFilingInfo.titleOfInvention
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/invention-title[@lang='%lang%']
+        - label: draft.epvl.application-number
+          imported: "yes"
+          mapping: submission.basicFilingInfo.applicationNumberContainer.applicationNumber
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/application-reference/document-id[country[text()='EP']]/doc-number
+          beanFormatter: checkDigit
+        - label: draft.epvl.publication-number
+          regExp: ^&EP
+          imported: "yes"
+          mapping: submission.basicFilingInfo.applicationNumberContainer.publicationNumber
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/publication-reference/document-id[country[text()='EP']]/doc-number
+        - label: draft.epvl.fillingDate
+          regExp: ^(\d{4})(\d{1,2})(\d{1,2})&$1-$2-$3
+          imported: "no"
+          mapping: submission.basicFilingInfo.fillingDate
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/application-reference/document-id[country[text()='EP']]/date
+      A1:
+        - label: basic-filing.application-publication-date
+          regExp: ^(\d{4})(\d{1,2})(\d{1,2})&$1-$2-$3
+          imported: "yes"
+          mapping: submission.basicFilingInfo.applicationPublicationDate
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/publication-reference/document-id[country[text()='EP'] and (kind[text()='A1'] or kind[text()='A2'])]/date
+      B1:
+        - label: basic-filing.grant-date
+          regExp: ^(\d{4})(\d{1,2})(\d{1,2})&$1-$2-$3
+          imported: "yes"
+          mapping: submission.basicFilingInfo.grantDate
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/publication-reference/document-id[country[text()='EP'] and kind[text()='B1']]/date
+      B2:
+        - label: basic-filing.amended-date
+          regExp: ^(\d{4})(\d{1,2})(\d{1,2})&$1-$2-$3
+          imported: "yes"
+          mapping: submission.basicFilingInfo.amendedDate
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/publication-reference/document-id[country[text()='EP'] and kind[text()='B2']]/date
+      B3:
+        - label: basic-filing.limited-date
+          regExp: ^(\d{4})(\d{1,2})(\d{1,2})&$1-$2-$3
+          imported: "yes"
+          mapping: submission.basicFilingInfo.limitedDate
+          xPath: world-patent-data/register-search/register-documents/register-document/bibliographic-data/publication-reference/document-id[country[text()='EP'] and kind[text()='B3']]/date
+
+# Support dynamic filter definition mechanism
+dynamic-filter-processor:
+  enabled: true
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:info}
+    org.epo.npefiling.*: ${ROOT_LOGGING_LEVEL:info}
+    org.epo.npefiling.jsonschema.*: ${SCHEMA_LOGGING_LEVEL:debug}
+    org.epo.npefiling.rules.camunda.*: ${RULES_LOGGING_LEVEL:info}
+    org.springframework.data.mongodb.core.MongoTemplate: ${DB_LOGGING_LEVEL:info}
+

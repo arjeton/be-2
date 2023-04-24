@@ -1,0 +1,101 @@
+h1 {
+  font-size: 24px;
+}
+
+h1 {
+  font-size: 22px;
+}
+
+table {
+  width: 100%;
+}
+
+img {
+  width:100%;
+  max-width:37.5rem;
+}
+
+.title {
+  margin-top: 2.5rem;
+}
+
+.title h2 {
+  text-align: center;
+}
+
+.application td {
+  padding-right: 2rem;
+}
+
+.application .table-type {
+  text-align: right;
+}
+
+.application .table-value {
+  text-align: left;
+}
+
+.inventor {
+  margin-top: 1.25rem;
+}
+
+.inventor table {
+  border-collapse: collapse;
+}
+
+.inventor td {
+  font-size: 1rem;
+}
+
+.inventor .table-type{
+  font-size: 0.725rem;
+  width: 40%;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+}
+
+.inventor .table-value{
+  font-size: 0.725rem;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  border-top: 1px solid black;
+}
+
+.inventor .table-type p{
+  padding-right: 0.5rem;
+  text-align: right;
+}
+
+.inventor .table-empty {
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  width: 5%;
+}
+
+.signature {
+  margin-top: 1.25rem;
+}
+
+.signature th{
+  padding-bottom: 2rem;
+}
+
+.signature th {
+  text-align: left;
+}
+
+.signature .table-type {
+  text-align: left;
+  width: 40%;
+}
+
+.signature .table-value {
+  text-align: left;
+}
+
+footer {
+  margin-top: 3rem;
+}

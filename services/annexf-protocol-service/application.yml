@@ -1,0 +1,98 @@
+server:
+  port: ${ANNEXF_PROTOCOL_SERVICE_PORT:3011}
+  servlet:
+    context-path: ${ANNEXF_PROTOCOL_SERVICE_CONTEXT_PATH:/annexf-protocol}
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    stream:
+      function:
+        definition: eolfFilingConsumer
+      bindings:
+        eolfFilingConsumer-in-0:
+          destination: sending.topic
+          group: annexf-protocol.sending.start
+        sendUpdatedSubmissionMessage-out-0:
+          destination: update.topic
+  security:
+    oauth2:
+      client:
+        registration:
+          base-service-web-client:
+            client-id: ${OAUTH_CLIENT_ID:annexfprotocol-service}
+            client-secret: ${OAUTH_CLIENT_SECRET:78af26ed-1338-4d82-86b2-855b315dc8fb}
+            authorization-grant-type: client_credentials
+            scope: profile
+  
+security:
+  multitenancy: false
+
+file-management:
+  max-attempts: ${FILE_MAX_ATTEMPTS:3}
+  sleep-timeout-seconds: ${FILE_TIMEOUT:2}
+  temp-folder: ${TEMP_PATH:/tmp/eolf}
+
+protocol:
+  max-division-size-bytes: ${MAX_DIVISION_SIZE:1000000}
+  max-protocol-retries: ${MAX_PROTOCOL_RETRIES:60}
+  max-http-retries: ${MAX_HTTP_RETRIES:3}
+  sleep-time-ms: ${SLEEP_TIME_MS:2000}
+
+receiver-servers:
+  sleep-timeout-seconds: ${EOLF_SERVER_TIMEOUT:2}
+  receiver-server-properties:
+    -
+      type: NP
+      url: ${NP_EOLF_SERVER_URL:https://fo-eolf-nonprod.internal.epo.org/fo-eolf/receiver-test-lt/prod/fo-eolf/receiver/EP/}
+      http-version: ${NP_EOLF_SERVER_HTTP_VERSION:HTTP_1_1}
+      keystore-impl: ${NP_KEYSTORE_IMPL:PKCS12}
+      certificate-passwd: ${NP_CERTIFICATE_PASSWD:epoline99791}
+      certificate-name: ${NP_CERTIFICATE_NAME:TCStestuser99791.p12}
+      server-certificate: ${NP_SERVER_CERTIFICATE:}
+      proxy-enabled: ${NP_PROXY_ENABLED:false}
+    -
+      type: ES
+      url: ${ES_EOLF_SERVER_URL:https://fo-eolf-nonprod.internal.epo.org/fo-eolf/receiver-test-lt/prod/fo-eolf/receiver/ES/}
+      http-version: ${EP_EOLF_SERVER_HTTP_VERSION:HTTP_1_1}
+      keystore-impl: ${EP_KEYSTORE_IMPL:PKCS12}
+      certificate-passwd: ${EP_CERTIFICATE_PASSWD:epoline99791}
+      certificate-name: ${EP_CERTIFICATE_NAME:TCStestuser99791.p12}
+      server-certificate: ${EP_SERVER_CERTIFICATE:}
+      proxy-enabled: ${EP_PROXY_ENABLED:false}
+    -
+      type: EPVL
+      url: ${EPVL_EOLF_SERVER_URL:https://fo-eolf-nonprod.internal.epo.org/fo-eolf/receiver-test-se/prod/fo-eolf/receiver/}
+      http-version: ${EPVL_EOLF_SERVER_HTTP_VERSION:HTTP_1_1}
+      keystore-impl: ${EPVL_KEYSTORE_IMPL:PKCS12}
+      certificate-passwd: ${EPVL_CERTIFICATE_PASSWD:epoline99791}
+      certificate-name: ${EPVL_CERTIFICATE_NAME:TCStestuser99791.p12}
+      server-certificate: ${EPVL_SERVER_CERTIFICATE:}
+      proxy-enabled: ${EPVL_PROXY_ENABLED:false}
+    -
+      type: IB
+      url: ${IB_EOLF_SERVER_URL:https://roib-pctsafe-demo.wipo.int/receiver/olfReceiver}
+      http-version: ${IB_EOLF_SERVER_HTTP_VERSION:HTTP_1_1}
+      keystore-impl: ${IB_KEYSTORE_IMPL:PKCS12}
+      certificate-passwd: ${IB_CERTIFICATE_PASSWD:faoDoM57AVWq}
+      certificate-name: ${IB_CERTIFICATE_NAME:WipoCert20210830.p12}
+      server-certificate: ${IB_SERVER_CERTIFICATE:}
+      proxy-enabled: ${IB_PROXY_ENABLED:true}
+    -
+      type: EP
+      url: ${EP_EOLF_SERVER_URL:https://fo-eolf-nonprod.internal.epo.org/fo-eolf/receiver-test-lt/prod/fo-eolf/receiver/EP/}
+      http-version: ${EP_EOLF_SERVER_HTTP_VERSION:HTTP_1_1}
+      keystore-impl: ${EP_KEYSTORE_IMPL:PKCS12}
+      certificate-passwd: ${EP_CERTIFICATE_PASSWD:epoline99791}
+      certificate-name: ${EP_CERTIFICATE_NAME:TCStestuser99791.p12}
+      server-certificate: ${EP_SERVER_CERTIFICATE:}
+      proxy-enabled: ${EP_PROXY_ENABLED:false}
+
+proxy:
+  host: ${PROXY_HOST:proxylb.internal.epo.org}
+  port: ${PROXY_PORT:8080}
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:info}

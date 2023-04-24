@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!--
+********************************************************************************
+*  application-receipt-list v1.2     2012  JULY                                *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD APPLICATION RECEIPT LIST 1.2//EN"                      *
+                                           "application-receipt-list-v1-2.dtd" *
+********************************************************************************
+*  http://www.wipo.int/pct-safe/epct/schemaDocs/1.15/                          *
+*                                           application-receipt-list-v1-2.dtd  *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO:  Yukako SHIBA; yukako.shiba@wipo.int                                 *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..implementation of PFC06/001
+HT: 14/12/04 incorporated changes from PFCs:
+..added attribute 'id' to application-reference
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added element 'dtext' to application-receipt-list
+2003/06/01
+..released version number as v1.0
+********************************************************************************
+
+Root element, application-receipt-list
+
+Attributes:
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+  date-produced = date the file was produced
+
+-->
+<!ELEMENT application-receipt-list (receiver , receipt-list , dtext*)>
+
+<!ATTLIST application-receipt-list  dtd-version   CDATA  #IMPLIED
+                                      file          CDATA  #IMPLIED
+                                      date-produced CDATA  #IMPLIED
+                                      status        CDATA  #IMPLIED >
+
+<!--
+  Details of receipt(s)
+
+-->
+<!ELEMENT receipt-info (document-code , file-reference-id? , receipt-number , appeal-reference? , application-reference* , number-of-annexation , result-code , wad-message-digest)>
+
+<!ATTLIST receipt-info  date        CDATA  #REQUIRED
+                          kind-of-law CDATA  #IMPLIED >
+
+<!ELEMENT result-code (#PCDATA)>
+
+<!ATTLIST result-code  amount CDATA  #REQUIRED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Reference to an appealed application
+
+-->
+<!ELEMENT appeal-reference (doc-number , date?)>
+
+<!ATTLIST appeal-reference  appeal-type CDATA  #REQUIRED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Descriptive text
+
+-->
+<!ELEMENT dtext (#PCDATA)>
+
+
+<!ELEMENT receipt-list (receipt-info+)>
+
+
+<!--
+  Wrapped Application Documents message digest
+
+-->
+<!ELEMENT wad-message-digest (#PCDATA)>
+
+
+<!ELEMENT number-of-annexation (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Receipt number
+
+-->
+<!ELEMENT receipt-number (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+
+<!--
+  For reference to non-PCT document from national office;
+  code defined by national office
+
+-->
+<!ELEMENT document-code (#PCDATA)>
+
+
+<!--
+  Those who receive the dispatch list
+
+-->
+<!ELEMENT receiver (%name_group;)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+

@@ -1,0 +1,58 @@
+server:
+  port: ${ADMIN_SERVICE_PORT:3018}
+  servlet:
+    context-path: ${ADMIN_SERVICE_CONTEXT_PATH:/admin-api}
+
+spring:
+  cloud:
+    stream:
+      function:
+        definition: taskResultConsumer
+      bindings:
+        taskResultConsumer-in-0:
+          destination: quartz.result.topic
+          group: admin.quarz.result
+        quartzTaskMessage-out-0:
+          destination: quarz.task.topic
+  datasource:
+    url: ${SQL_DB_URL:jdbc:mysql://host.docker.internal:3306/}${ADMIN_SERVICE_DB:admindb}
+    username: ${ADMIN_SERVICE_DB_USER:adminuser}
+    password: ${ADMIN_SERVICE_DB_PASSWORD:adminuser}
+    driver-class-name: ${ADMIN_SERVICE_DB_DRIVER:com.mysql.cj.jdbc.Driver}
+    hikari:
+      maximum-pool-size: 5
+  liquibase:
+    changelog: classpath:/db/db-changelog-master.xml
+  jpa:
+    properties:
+      hibernate:
+        jdbc.lob.non_contextual_creation: true
+        temp.use_jdbc_metadata_defaults: false
+        jdbc.batch_size: 1000
+        dialect: ${ADMIN_SERVICE_DB_DIALECT:org.hibernate.dialect.MySQL5InnoDBDialect}
+  quartz:
+    job-store-type: jdbc
+    jdbc.initialize-schema: never
+    properties.org.quartz:
+      jobStore:
+        misfireThreshold: 1000
+        class: org.springframework.scheduling.quartz.LocalDataSourceJobStore
+        driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+        useProperties: true
+        tablePrefix: QRTZ_
+      threadPool:
+        class: org.quartz.simpl.SimpleThreadPool
+        threadCount: 5
+        threadPriority: 5
+
+security:
+  multitenancy: false
+
+admin:
+  oauth:
+    base-url: ${FO_IAM_BASE_URL:http://host.docker.internal:8081/auth/realms/front-office-public/protocol/openid-connect}
+    token-endpoint: /token
+    client-id: ${ADMIN_OAUTH_CLIENT_ID:admin-service}
+    client-secret: ${ADMIN_OAUTH_CLIENT_SECRET:7wDuaGU8Bnm9VeT37vL7ZVhO0dXGnPtD}
+    grant-type: client_credentials
+    scope: profile

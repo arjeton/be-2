@@ -1,0 +1,67 @@
+{
+  "$comment": "File for standard width definitions used by the frontend",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "width23rem":{
+      "width": "23rem"
+    },
+    "width24rem":{
+      "$comment": "Some fields have a weird padding issue and we must add 1 extra rem to offset them to the right width",
+      "width": "24rem"
+    },
+    "width47rem":{
+      "width": "47rem"
+    },
+    "maxWidth23rem":{
+      "max-width": "23rem"
+    },
+    "maxWidth24rem":{
+      "$comment": "Some fields have a weird padding issue and we must add 1 extra rem to offset them to the right width",
+      "max-width": "24rem"
+    },
+    "halfMediumWidth": {
+      "ui:options": {
+        "style": {
+          "width": "10rem"
+        }
+      }
+    },
+    "extraSmallWidth": {
+      "ui:options": {
+        "style": {
+          "width": "13rem"
+        }
+      }
+    },
+    "smallWidth": {
+      "ui:options": {
+        "style": {
+          "width": "18rem"
+        }
+      }
+    },
+    "mediumWidth": {
+      "ui:options": {
+        "style": {
+          "width": "20rem"
+        }
+      }
+    },
+    "largeWidth": {
+      "ui:options": {
+        "style": {
+          "width": "27rem"
+        }
+      }
+    },
+    "extraLargeWidth": {
+      "ui:options": {
+        "style": {
+          "width": "37rem"
+        }
+      }
+    }
+  }
+}
+

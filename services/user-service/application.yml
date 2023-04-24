@@ -1,0 +1,37 @@
+server:
+  port: ${USER_MANAGEMENT_SERVICE_PORT:3017}
+  servlet:
+    context-path: ${USER_MANAGEMENT_SERVICE_CONTEXT_PATH:/user-api}
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  data:
+    mongodb:
+      uri: ${DB_URL:mongodb://admin:admin@host.docker.internal:28018/user_service?authSource=admin}
+  cloud:
+    stream:
+      function:
+        definition: emailConsumer
+      bindings:
+        sendingToEmail-out-0:
+          destination: sending-email.topic
+
+security:
+  multitenancy: false
+
+remote-integration:
+  email-invitation-url: ${EMAIL_INVITATION_URL:https://localhost/user/automatic-registration}
+  email-invitation-subject: ${EMAIL_INVITATION_SUBJECT:"Welcome to Front Office"}
+
+oauth:
+  base-url: ${FO_IAM_BASE_URL:http://host.docker.internal:7000/auth/}
+  token-endpoint: /token
+  client-id: ${OAUTH_CLIENT_ID:user-service}
+  client-secret: ${OAUTH_CLIENT_SECRET:GbKka3btHkBZccAQJrb0eri2AEoz4Gol}
+  grant-type: client_credentials
+  scope: profile
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:info}

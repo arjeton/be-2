@@ -1,0 +1,436 @@
+@font-face {
+  font-family: "Open Sans";
+  src: url("../fonts/OpenSans-Regular.ttf?mediaType=octet_stream");
+}
+
+@font-face {
+  font-family: "Open Sans";
+  src: url("../fonts/OpenSans-Bold.ttf?mediaType=octet_stream");
+  font-weight: bold;
+}
+
+* {
+  padding: 0;
+}
+
+body {
+  margin: 0px;
+  margin-top: -70px;
+  font-family: "Open Sans", sans-serif;
+  font-style: normal;
+  color: #21252C;
+}
+
+h1 {
+  font-family: "Open Sans", sans-serif;
+  font-size: 32px;
+  font-weight: bold;
+  color: #21252C;
+  margin-top: 0px;
+}
+
+h2 {
+  font-family: "Open Sans", sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 30px;
+  color: #21252C;
+  margin-top: 0px;
+}
+
+h3 {
+  font-family: "Open Sans", sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 23px;
+  color: #21252C;
+  margin-top: 0px;
+}
+
+h4 {
+  font-family: "Open Sans", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 23px;
+  color: #21252C;
+  margin-top: 0px;
+}
+
+p {
+  font-size: 16px;
+}
+
+.headerDivider {
+  border-bottom: 2px solid #dfe5e9;
+  margin-top: -25px;
+}
+
+.footerDivider {
+  border-top: 2px solid #dfe5e9;
+  margin-top: -8px;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  font-size: 16px;
+  padding-top: 1px;
+  padding-bottom: 2px;
+  color: #21252C;
+}
+
+.label-light {
+  font-weight: 200;
+}
+
+.title {
+  padding-left: 80px;
+  padding-top: 80px;
+  height: 70px;
+}
+
+title-two-lines {
+  margin-left: 150px;
+  border-left: 1px solid #dfe5e9;
+  padding-left: 50px;
+  padding-top: 45px;
+  height: 70px;
+}
+
+.verticalSeparator {
+  background-color:  #dfe5e9;
+  height: 80px;
+  width: 1px;
+}
+
+.logo {
+  margin-top: 70px;
+  height: 120px;
+  width: 160px;
+}
+
+.input {
+  background-color: #e6eaec;
+  border: none;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 16px;
+  padding: 8px;
+  margin-bottom: 10px;
+  min-height: 16px;
+  width: 450px;
+  color: #21252C;
+}
+
+.input-medium {
+  width: 200px;
+}
+
+.input-tiny {
+  width: 70px;
+}
+
+.input-item {
+  display: inline-block;
+  margin-right: 100px;
+}
+
+.input-item-float {
+  float: left;
+  display: inline;
+  margin-right: 100px;
+}
+
+.clear-float {
+  clear: both;
+}
+
+.input-item-close {
+  display: inline-block;
+  margin-right: 30px;
+}
+.input-item-radio {
+  display: inline-block;
+  margin-right: 8px;
+  margin-top: 8px;
+  border: 3px solid blue;
+}
+.one-line {
+  display: inline-block;
+}
+ .radio-button {
+  display: block;
+  border: 3px solid blue;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+ }
+
+.input-item .input {
+  margin-right: 10px;
+}
+
+.checkbox {
+  background: #3F577B;
+  border-color: #2E4C7C;
+  border-radius: 6px;
+  border-style: solid;
+  display: inline-block;
+  height: 16px;
+  position: relative;
+  vertical-align: top;
+  width: 16px;
+}
+
+.checkbox::before {
+  border-color: white;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  content: '';
+  display: block;
+  height: 11px;
+  left: 5px;
+  position: absolute;
+  top: 0px;
+  transform: rotate(45deg);
+  width: 5px;
+}
+
+.unselectedCheckbox {
+  background: #BFC6CF;
+  border: 1px solid #404955;
+  border-radius: 4px;
+  display: inline-block;
+  height: 16px;
+  position: relative;
+  vertical-align: top;
+  width: 16px;
+}
+
+.checkboxLabel {
+  display: inline-block;
+  font-size: 16px;
+  padding-left: 5px;
+  padding-bottom: 3px;
+  width: 450px;
+  color: #21252C;
+}
+
+.textarea {
+  padding: 8px;
+  display: table-cell;
+  border: none;
+  background-color: #e6eaec;
+  width: 450px;
+  max-width: 450px;
+  font-size: 14px;
+  border-radius: 4px;
+  min-height: 50px;
+  margin-bottom: 10px;
+  vertical-align: middle;
+  color: #21252C;
+}
+
+table {
+  width: 1018px;
+  border-spacing: 0;
+}
+
+.bioAttachmentsTable {
+  width: 1018px;
+  border-spacing: 0;
+  margin-left: -45px;
+}
+
+table thead tr th {
+  background-color: #404955;
+  border-right: solid #d5dbdf 1px;
+  color: #ffffff;
+  padding: 10px 20px;
+  text-align: left;
+}
+
+table thead tr th:first-child {
+  border-top-left-radius: 8px;
+}
+
+table thead tr th:last-child {
+  border-top-right-radius: 8px;
+}
+
+table tbody tr td {
+  border: solid #d5dbdf 1px;
+  padding: 10px 20px;
+}
+
+table tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+  border-left: solid #d5dbdf 1px;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #F6F7F8;
+}
+
+table tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+.attachmentsTable table tbody tr td:first-child {
+  width: 160px;
+}
+
+.attachmentsTable table tbody tr td:nth-child(2) {
+  width: 160px;
+}
+
+.attachmentsTable table tbody tr td:nth-child(3) {
+  width: 260px;
+}
+
+.attachmentsTable table tbody tr td:nth-child(4) {
+  width: 80px;
+}
+
+.attachmentsTable table tbody tr td:nth-child(5) {
+  width: 150px;
+}
+
+.tableCellBottomRight {
+  border-left: none;
+  text-align: right;
+}
+
+.tableCellRight {
+  text-align: right;
+}
+
+.date-of-receipt input {
+  width: 170px;
+}
+
+.signatureLabel {
+  padding-bottom: 15px;
+  vertical-align: top;
+  width: 250px;
+}
+
+.signatureImage {
+  width: 375px;
+}
+
+@page {
+  @bottom-right {
+    content: element(footer-right);
+  }
+}
+
+@page {
+  @bottom-left {
+    content: element(footer-left);
+  }
+}
+
+
+#page-number:before {
+  content: counter(page);
+}
+
+#page-count:before {
+  content: counter(pages);
+}
+
+.note {
+  display: block;
+  float: right;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.reference {
+  border: 1px solid #2B3B4F;
+  border-radius: 6px;
+  padding: 0px 4px;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2B3B4F;
+  margin: 0px 0px;
+}
+
+.numWrapper{
+  position: relative;
+}
+
+.numReference{
+  position: absolute;
+  left: -40px;
+  top: 10px;
+  border: 1px solid #2B3B4F;
+  border-radius: 6px;
+  padding: 0px 4px;
+  display: inline-block;
+  font-weight: bold;
+  font-size: 16px;
+  color: #2B3B4F;
+  margin: 0px 0px;
+}
+
+.referenceCell {
+  padding-right: 10px;
+  padding-top: 0px;
+  text-align: right;
+  vertical-align: top;
+  width: 35px;
+}
+
+.adminTableCell {
+  padding-left: 45px;
+}
+
+.logoCell {
+  text-align: right;
+  vertical-align: top;
+  width: 100px;
+}
+
+.divider {
+  height: 10px;
+}
+
+.sectionDivider {
+  height: 60px;
+}
+
+.sectionDivider-small {
+  height: 20px;
+}
+
+.subSectionDivider {
+  height: 25px;
+}
+
+.content {
+  border: none;
+}
+
+#footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#footer-right {
+  position: running(footer-right);
+  text-align: right;
+}
+#footer-left {
+  position: running(footer-left);
+  text-align: left;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}

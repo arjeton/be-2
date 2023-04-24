@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="workflows" name="workflows" namespace="http://camunda.org/schema/1.0/dmn" expressionLanguage="groovy" exporter="Camunda Modeler" exporterVersion="5.0.0">
+  <decision id="deletable-check-status" name="Check status before deleting">
+    <variable id="deletable-check-status-variable" name="result" />
+    <literalExpression id="deletable-check-status-expression">
+      <text>
+        def result = [:]
+        def roles = authentication?.authorities.collect { it.getAuthority() } ?: []
+
+        // QA team is going to use this role to create test submissions that must be deleted
+        if ('ROLE_OFFICE_ADMIN' in roles) return result
+
+        // admins can do whatever they want
+        if ('ROLE_END_USER_ADMIN' in roles &amp;&amp; submission.status != 'SENT') return result
+
+        switch (submission.status) {
+          case 'DRAFT':
+            if ('ROLE_DRAFTER' !in roles) result = [error: "submission.businessrule.delete"]
+            break
+          case 'READY_TO_SIGN':
+            if ('ROLE_SIGNER' !in roles) result = [error: "submission.businessrule.delete"]
+            break
+          case 'SIGNED':
+            if ('ROLE_SENDER' !in roles) result = [error: "submission.businessrule.delete"]
+            break
+          default:
+            // denying everything by default
+            result = [error: "submission.businessrule.delete"]
+        }
+        return result
+      </text>
+    </literalExpression>
+  </decision>
+  <decision id="isCheckDigitCorrect-definition" name="isCheckDigitCorrect">
+    <variable id="isCheckDigitCorrect-var" name="result" />
+    <literalExpression id="literalExpression-isCheckDigitCorrect">
+      <text>
+        def isCheckDigitCorrect(applicationNumber) {
+          def applicationNumberDigits = applicationNumber[0..(applicationNumber.length() - 3)]
+          def applicationNumberControl = applicationNumber[(applicationNumber.length() - 1)]
+          def multipliedApplicationNumberDigits = (applicationNumberDigits[0].toInteger()) * 1
+          def applicationNumberDigitsLength = (applicationNumberDigits.length() -1)
+
+          for (int i in 1..applicationNumberDigitsLength) {
+            if (i % 2 == 0) {
+              multipliedApplicationNumberDigits = multipliedApplicationNumberDigits.toString().concat(((applicationNumberDigits[i].toInteger()) * 1).toString())
+            } else {
+              multipliedApplicationNumberDigits = multipliedApplicationNumberDigits.toString().concat(((applicationNumberDigits[i].toInteger()) * 2).toString())
+            }
+          }
+          def sumOfDigits = 0
+
+          for (int i in 0..(multipliedApplicationNumberDigits.length() - 1)) {
+            sumOfDigits = multipliedApplicationNumberDigits[i].toInteger() + sumOfDigits
+          }
+
+          def sumOfDigitsString = sumOfDigits.toString()
+          def checkDigit = 0
+
+          def lastDigit = (sumOfDigitsString[sumOfDigitsString.length() - 1]).toInteger()
+          if (lastDigit &gt; 0) {
+            checkDigit = 10 - lastDigit
+          }
+
+          if (applicationNumberControl == checkDigit.toString()) {
+            return true
+          } else {
+            return false
+          }
+        }
+      </text>
+    </literalExpression>
+  </decision>
+
+</definitions>

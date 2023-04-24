@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://epo.org/submission.schema.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "title": "i18n(user.management.organization-info.name)",
+      "type": [
+        "string"
+      ],
+      "maxLength": 200
+    },
+    "description": {
+      "title": "i18n(DESCRIPTION)",
+      "type": [
+        "string"
+      ],
+      "maxLength": 255
+    },
+    "accentColor": {
+      "title": "i18n(accent-color.title)",
+      "type": [
+        "string"
+      ],
+      "enum": [
+        "#8AC4FF",
+        "#F1A3BB",
+        "#AEDCC0",
+        "#FFB373",
+        "#F6C452",
+        "#BFC6CF"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "description",
+    "accentColor"
+  ]
+}

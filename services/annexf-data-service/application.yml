@@ -1,0 +1,46 @@
+server:
+  port: ${ANNEXF_DATA_SERVICE_PORT:3010}
+  servlet:
+    context-path: ${ANNEXF_DATA_SERVICE_CONTEXT_PATH:/annexf-data}
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    stream:
+      function:
+        definition: signSubmissionConsumer;internalFilingConsumer;packageSubmissionConsumer
+      bindings:
+        signSubmissionConsumer-in-0:
+          destination: signing.topic
+          group: annexf-data.signing.start
+        internalFilingConsumer-in-0:
+          destination: filing.topic
+          group: annexf-data.internalFiling.start
+        packageSubmissionConsumer-in-0:
+          destination: package.topic
+          group: annexf-data.packaging.start
+        sendUpdatedSubmissionMessage-out-0:
+          destination: update.topic
+        sendLogEventMessage-out-0:
+          destination: update.filing.topic
+  security:
+    oauth2:
+      client:
+        registration:
+          base-service-web-client:
+            client-id: ${OAUTH_CLIENT_ID:annexfdata-service}
+            client-secret: ${OAUTH_CLIENT_SECRET:9ba9d3e8-8893-4986-83ab-420725b2758a}
+            authorization-grant-type: client_credentials
+            scope: profile
+
+security:
+  multitenancy: false
+
+logging:
+  level:
+    org.epo.itc.frontoffice.*: ${ROOT_LOGGING_LEVEL:info}
+    com.openhtmltopdf.exception: error
+    org.apache.fontbox: error
+
+validator.prevents.filing.tokens: Prevents filing, Blockiert Einreichung, Empêche le dépôt, Impede o depósito, 无法提交, 出願不可, 출원이 안 됨, Запрещает подачу заявки, Presentación imposible, يمنع الإيداع

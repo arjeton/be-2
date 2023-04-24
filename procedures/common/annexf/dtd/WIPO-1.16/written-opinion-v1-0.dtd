@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!--WRITTEN OPINION
+
+This construction is intended to capture all communications from an examiner to
+an applicant concerning an application typically referred as written opinions
+or examination reports. The DTD could also cover minutes of telephone
+conversation or other formal meetings with the applicant.
+
+Contacts:
+
+WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  
+
+For details about PCT Annex F and about all Annex F DTDs see:
+http://www.wipo.int/pct-safe/en/resources/ and for PFCs see:
+http://www.wipo.int/efiling_standard/en
+
+### Version 1.0 ###
+
+ - Added <clasification-national> to <application-info>
+ - Updated child elements and attributes under <citation> 
+
+### Version 0.96 ###
+
+- ADDED
+ <iprp-rectifications-not-authorized> to <iprp-annexes-sheet>
+
+### Version 0.95 ###
+
+- ADDED
+ "@form-version" to <written-opinion>
+
+### Version 0.94 ###
+
+- ADDED
+* Added "@status" and "@office" to <written-opinion>
+
+### Version 0.93 ###
+
+- ADDED
+* <top-up-search-carried-out> and <no-top-up-search-carried-out> to <application-documents>
+   in order to update the DTD in align with PCT C.1400.
+
+### Version 0.9 ###
+
+Simplified non-establishment-of-opinion
+
+### Version 0.7 ###
+
+- MODIFIED
+  * introduced info-dtd
+  * rendered modular to ST.36/Ann F by introducing written-opinion-components
+
+### Version 0.6 ###
+
+- MODIFIED
+* written-opinion-admin brought in-line with info.dtd (PCT Forms discussions)
+Only with needed tags for opinions
+* additional-info: cardinality of p to +
+
+- ADDED
+* office-admin in communication-info
+* attributes id and level to heading
+
+- REMOVED
+* invention-to-be-selected-by-applicant
+In first communication the examiner may defer a detailed reasoning until the
+applicant has indicated on which invention he wishes the procedure to be based
+on.
+Intended for future use in PCT/ISA/206
+EPO/JPO/WIPO : to be added in country specific implementation
+<!ELEMENT invention-to-be-selected-by-applicant EMPTY >
+* invention-title
+* date-of-actual-receipt
+-->
+
+<!--
+*******************************************************************************
+SECTION WRITTEN-OPINION DTD
+This section contains the tags specific to the written opinion.
+*******************************************************************************
+
+written-opinion
+Root element for the written opinion.
+The doc-page element has been included to capture communications that
+would not be produced in XML.
+It suggested to have all paragraphs numbered consecutively as they appear.
+
+Attributes:
+
+id
+This uniquely identifies each communication. Its usage is required in a
+file wrapper but not for the transmittal of a single opinion.<br/>
+Recommended values: wo-01, wo-02, ...
+
+num
+Sequence number.
+
+lang
+Language of the present written opinion. Use two letter code (ST.3)
+
+dtd-version
+Version of the DTD used for drafting the file, e.g. written-opinion-v1-0.dtd.
+
+procedure
+Code of the procedure, suggested value: country code
+
+phase
+Phase during which the opinion is issued, e.g.: search, examination,
+opposition, appeal, ...
+
+opinion-type
+Type of report, e.g.: woisa, iper, examination report (exre), ...
+
+status
+Status of WOSA, e.g. new, corrected.
+
+office
+Code of an office who made WOSA, e.g. EP, CN, JP, etc
+
+
+form-version
+form version number.  e.g. "201501"
+...............................................................................
+The following attributes are used extensively accross the DTD and are addressed
+once here (specific examples may be provided for each element using these.
+
+id
+Unique identifier, must be unique in each XML instance.
+It is suggested to use a tree approach wherein the id of child element is the
+id of the parent element further completed by the corresponding id.
+
+idref or idrefs
+Cross-reference to an element or elements within the XML instance by means of
+their ids.
+
+gidref or gidrefs
+Cross-reference to an element or elements outside the XML instance by means of
+their of a global identifier of said elements.
+
+legal-basis and legal-source
+Paragraph, article or rule in a legal source relavant for the element.
+Suggest values:
+Articles : a(followed by the legal number format up to the desired level)
+Rules : r(followed by the legal number format up to the desired level)
+Paragraphs: use by the legal number format up to the desired level
+
+The legal source should be identified by its commonly agreed accronym (e.g.
+patent cooperation treaty - PCT, european patent convention - EPC, ...)
+in lower case followed by its version (either a sequence number or a date in
+the format YYYY[MM[DD]]).
+
+Examples:
+Article 19(1) of the PCT (modified October 3, 2001)
+legal-basis="a19(1)" legal-source="pct-20011003"
+
+Rule 86(2) EPC 2000
+legal-basis="r86(2)" legal-source="epc-2000"
+
+!!! place root element first for viewers
+-->
+<!ELEMENT written-opinion  (written-opinion-admin,(doc-page+ | (heading*,p+)+ | (
+               written-opinion-request+,conclusion?)),citations?,
+               annexed-documents?) >
+
+<!ATTLIST written-opinion
+               id  ID    #IMPLIED 
+               num  CDATA    #IMPLIED 
+               lang  CDATA    #IMPLIED 
+               dtd-version  CDATA    #IMPLIED 
+               procedure  CDATA    #REQUIRED 
+               phase  CDATA    #REQUIRED 
+               opinion-type  CDATA    #REQUIRED
+               status  (new | corrected) 'new'
+               office CDATA   #IMPLIED 
+               form-version  CDATA    #IMPLIED >
+
+<!-- INCLUDE PARENT DTDs -->
+<!ENTITY % written-opinion-components PUBLIC "-//WIPO//WRITTEN OPINION COMP 0.5//EN" "written-opinion-components-v1-0.dtd">
+%written-opinion-components;
+
+

@@ -1,0 +1,647 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , middle-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">
+
+<!ENTITY % address_group "((address-1? , address-2? , address-3? , address-4? , address-5? , mailcode? , pobox? , room? , address-floor? , building? , street? , city? , county? , state? , postcode? , country) | text)">
+
+<!--
+********************************************************************************
+*  fee-sheet-chapter2 v1.5     2019  APRIL                                     *
+********************************************************************************
+*  PUBLIC "-//WIPO//DTD FEE SHEET CHAPTER2 1.5//EN"                            *
+*                                           "fee-sheet-chapter2-v1-5.dtd"      *
+********************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/fee-sheet-chapter2-v1-5.dtd *
+********************************************************************************
+* contacts:                                                                    *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                                  *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+Yuya USHIDA : 01/04/19 incorporated changes from PFC
+..changed version number from v1.4 to v1.5
+..added element 'reimbursement-deposit-account' to fee-sheet-chapter2
+Asahi HASEBE : 01/07/17 incorporated changes from PFC
+..changed version number from v1.3 to v1.4
+..added an attribute "id" to signatory
+.. corrected typos in comments
+SY: 01/04/10 incorporated changes from PFC
+..changed version number from v1.2 to v1.3
+..added element 'credit-card' to payment-mode (PFC09/007)
+MO: 01/01/07 incorporated changes from PFCs:
+..changed version number from v1.1 to v1.2
+..implementation of PFC06/001
+..added element 'address-4' to address (PFC06/005)
+..added element 'address-5' to address (PFC06/005)
+HT: 14/12/04 incorporated changes from PFCs:
+..changed attribute he, wi of doc-page from 'NMTOKEN' to 'CDATA'
+..added element 'later-payment' to payment-mode
+..added attribute 'ocr' to doc-page
+..added attribute 'id' to application-reference
+HT: 20/07/04 incorporated changes from PFCs:
+..changed version number from v1.0 to v1.1
+..added value 'national-office', 'regional-office' to attribute produced-by of root element
+2003/06/01
+..released version number as v1.0
+********************************************************************************
+
+Fee calculation sheet annex to the PCT request (root element) 
+Attributes:
+  lang          = language of application - use ISO639 language code
+  dtd-version   = dtd version number
+  file          = filename of the whole application
+  status        = status of the application; values: new = new application
+  date-produced = YYYYMMDD e.g, 20011230  if desired, 12 characters maximum
+  ro            = Receiving office name, country code ST.3          
+  produced-by   = creator of this document
+
+-->
+<!ELEMENT fee-sheet-chapter2 ((application-reference? , file-reference-id? , applicant-name , further-applicant? , currency , preliminary-examin-fee , handling-fee , amount-total , payment-mode , deposit-account-ipea? , reimbursement-deposit-account*) | doc-page+)>
+
+<!ATTLIST fee-sheet-chapter2  lang          CDATA  #REQUIRED
+                                dtd-version   CDATA  #IMPLIED
+                                file          CDATA  #IMPLIED
+                                produced-by          (applicant | 
+                                                RO | 
+                                                ISA | 
+                                                IPEA | 
+                                                IB | 
+                                                DO | 
+                                                EO | 
+                                                national-office | 
+                                                regional-office )  #REQUIRED
+                                date-produced CDATA  #IMPLIED
+                                ipea          CDATA  #REQUIRED
+                                status        CDATA  #IMPLIED >
+
+<!--
+  doc-page - DOCument or PAGE
+
+  This is primarily to be used when data for the whole or major sections of an
+  application are in image format OR other formats such as pdf.
+
+  Page range attributes are given when required
+    pp  - page range
+    ppf - first page 
+    ppl - last page (for pdf).
+  The 'img' may also be used for complete pages, e.g. in drawings 
+
+  Recommended id = docp0001, docp0002, etc.
+  Attributes "he" and "wi" mean height and width. 
+
+
+-->
+<!ELEMENT doc-page EMPTY>
+
+<!ATTLIST doc-page  id          ID     #IMPLIED
+                      he          CDATA  #REQUIRED
+                      wi          CDATA  #REQUIRED
+                      type               (jpg | pdf | tif )  #REQUIRED
+                      alt         CDATA  #IMPLIED
+                      pp          CDATA  #IMPLIED
+                      ppf         CDATA  #IMPLIED
+                      ppl         CDATA  #IMPLIED
+                      file        CDATA  #REQUIRED
+                      ocr         CDATA  #IMPLIED
+                      color              (color | bw )  #IMPLIED
+                      orientation        (portrait | landscape )  'portrait' >
+
+<!--
+  A signature represented by electronic means
+
+-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+
+<!ATTLIST electronic-signature  date         CDATA  #REQUIRED
+                                  place-signed CDATA  #IMPLIED >
+
+<!--
+  A TIFF image of a signature
+
+-->
+<!ELEMENT fax-image EMPTY>
+
+<!ATTLIST fax-image  file CDATA  #REQUIRED >
+
+<!--
+  Credit card used as payment method
+
+-->
+<!ELEMENT credit-card EMPTY>
+
+<!ATTLIST credit-card  number      CDATA  #REQUIRED
+                         expires     CDATA  #REQUIRED
+                         name        CDATA  #IMPLIED
+                         postal-code CDATA  #IMPLIED >
+
+<!--
+  Application reference information: application number, country
+    (INID 21, ST.32:B210)
+
+-->
+<!ELEMENT application-reference (document-id)>
+
+<!ATTLIST application-reference  id        ID     #IMPLIED
+                                   appl-type CDATA  #IMPLIED >
+
+<!--
+  Document identification refers to patents (and patent applications) only.
+  See WIPO ST.14
+
+-->
+<!ELEMENT document-id (country , doc-number , kind? , name? , date?)>
+
+<!ATTLIST document-id  lang CDATA  #IMPLIED >
+
+<!--
+  Name:
+  If no distinction or detail can be given.
+  Also to be used for: personal (natural person) and corporate (legal entity) names
+
+-->
+<!ELEMENT name (#PCDATA)>
+
+<!ATTLIST name  name-type   (legal | natural )  #IMPLIED >
+
+<!--
+  Authorization to charge or credit deposit account
+
+-->
+<!ELEMENT deposit-account-ipea (authorization-ipea , ipea , account-no , date , %name_group; , signatories?)>
+
+
+<!--
+  Deposit account number
+
+-->
+<!ELEMENT account-no (#PCDATA)>
+
+<!--
+    Instruction to reimburse to a deposit account  
+-->
+
+<!ELEMENT reimbursement-deposit-account (ip-office, account-no, date, %name_group;)>
+
+<!--
+  IP Office code (ST.3 country code, including the regional authorities)
+
+-->
+<!ELEMENT ip-office (#PCDATA)>
+
+<!--
+  Signatories
+
+-->
+<!ELEMENT signatories (signatory+)>
+
+
+<!--
+  PCT/RO/101 Box No. X:
+  The signature must be that of the applicant (if there are several applicants, all
+  must sign); however, the signature may be that of the agent, or the common
+  representative, where a separate power of attorney appointing the agent or the
+  common representative, respectively, or a copy of a general power of attorney is
+  already in possession of the receiving Office, is furnished...
+  (PCT Rules 4.1(d), 4.15, and 90)
+
+  Indicate the capacity of the signer with 'signatory-capacity'
+
+-->
+<!ELEMENT signatory (%name_group; , address? , electronic-signature , signatory-capacity?)>
+
+<!ATTLIST signatory
+                  id ID #IMPLIED>
+
+
+<!--
+  The capacity in which the person signs
+
+-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+
+
+<!--
+  A PKI / PKCS #7 digital signature data type
+
+-->
+<!ELEMENT enhanced-signature (pkcs7)>
+
+
+<!--
+  PKCS7 digital signature 
+
+-->
+<!ELEMENT pkcs7 EMPTY>
+
+
+<!--
+  A non-PKI electronic signature
+
+-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+
+
+<!--
+  A simple 'signature';
+  e.g., clicking a button labeled 'accept' or 'I agree'
+
+-->
+<!ELEMENT click-wrap EMPTY>
+
+
+<!--
+  A simple text string is to be used as the basic electronic signature;
+  e.g., John Doe  <text-string>/jd/</text-string>
+
+-->
+<!ELEMENT text-string (#PCDATA)>
+
+
+<!--
+  Address components:
+  Address formats differ from country to country
+  If no structure possible use text
+
+-->
+<!ELEMENT address (%address_group;)>
+
+
+<!--
+  If no structure is possible, enter text (without markup)
+
+-->
+<!ELEMENT text (#PCDATA)>
+
+
+<!--
+  Postal code or zip code
+
+-->
+<!ELEMENT postcode (#PCDATA)>
+
+
+<!--
+  Region of country; e.g., state, province, etc.
+
+-->
+<!ELEMENT state (#PCDATA)>
+
+
+<!--
+  County, parish, department, etc (mainly UK, USA)
+
+-->
+<!ELEMENT county (#PCDATA)>
+
+
+<!--
+  City or town name
+
+-->
+<!ELEMENT city (#PCDATA)>
+
+
+<!--
+  Street may contain house number or name
+
+-->
+<!ELEMENT street (#PCDATA)>
+
+
+<!--
+  Building information in address; e.g., Hoffman building
+
+-->
+<!ELEMENT building (#PCDATA)>
+
+
+<!--
+  Address floor; e.g., 10th
+
+-->
+<!ELEMENT address-floor (#PCDATA)>
+
+
+<!--
+  Address room; e.g., Room 55B
+
+-->
+<!ELEMENT room (#PCDATA)>
+
+
+<!--
+  Post Office Box number
+
+-->
+<!ELEMENT pobox (#PCDATA)>
+
+
+<!--
+  Organizational mail code
+
+-->
+<!ELEMENT mailcode (#PCDATA)>
+
+
+<!--
+  Address, fifth line
+
+-->
+<!ELEMENT address-5 (#PCDATA)>
+
+
+<!--
+  Address, fourth line
+
+-->
+<!ELEMENT address-4 (#PCDATA)>
+
+
+<!--
+  Address, third line
+
+-->
+<!ELEMENT address-3 (#PCDATA)>
+
+
+<!--
+  Address, second line
+
+-->
+<!ELEMENT address-2 (#PCDATA)>
+
+
+<!--
+  Address, first line
+
+-->
+<!ELEMENT address-1 (#PCDATA)>
+
+
+<!--
+  International Preliminary Examination Authority
+
+-->
+<!ELEMENT ipea (country)>
+
+
+<!--
+  Authorization for International Preliminary Examining Authority to charge or
+  credit deposit account
+
+-->
+<!ELEMENT authorization-ipea (total-fee? , deficiency-credit?)>
+
+
+<!--
+  Authorization to charge any deficiency or credit any overpayment
+
+-->
+<!ELEMENT deficiency-credit EMPTY>
+
+
+<!--
+  Authorization to charge the total fees indicated above
+
+-->
+<!ELEMENT total-fee EMPTY>
+
+
+<!--
+  The total amount due for each fee group;
+  e.g., search fees, transmittal fees, etc.
+
+-->
+<!ELEMENT amount-total (#PCDATA)>
+
+
+<!--
+  Accrues to the International Bureau for carrying out various tasks,
+  e.g., translation of international preliminary examination report
+  (Rule 57.1)
+
+-->
+<!ELEMENT handling-fee (amount-each , payment-mode)>
+
+
+<!--
+  Preliminary examination fee  (Rule 58.1)
+
+-->
+<!ELEMENT preliminary-examin-fee (amount-each , payment-mode)>
+
+
+<!--
+  Mode of payment
+
+-->
+<!ELEMENT payment-mode (charge | postal-order | cash | coupons | cheque | bank-draft | stamps | other | later-payment | credit-card)>
+
+
+<!--
+  Authorization to later payment
+
+-->
+<!ELEMENT later-payment EMPTY>
+
+
+<!--
+  Other method by which prior art was disclosed to the public
+
+-->
+<!ELEMENT other (#PCDATA)>
+
+
+<!--
+  Revenue stamps  used as mode of payment
+
+-->
+<!ELEMENT stamps EMPTY>
+
+
+<!--
+  Bank draft to be used as mode of payment
+
+-->
+<!ELEMENT bank-draft EMPTY>
+
+
+<!--
+  Cheque used as payment method
+
+-->
+<!ELEMENT cheque EMPTY>
+
+
+<!--
+  Coupons used as mode of payment
+
+-->
+<!ELEMENT coupons EMPTY>
+
+
+<!--
+  Cash used as payment method
+
+-->
+<!ELEMENT cash EMPTY>
+
+
+<!--
+  Postal money order used as mode of payment
+
+-->
+<!ELEMENT postal-order EMPTY>
+
+
+<!--
+  Authorization to charge deposit account
+
+-->
+<!ELEMENT charge EMPTY>
+
+
+<!--
+  The amount of each of the fees
+
+-->
+<!ELEMENT amount-each (#PCDATA)>
+
+
+<!--
+  Type of currency for payment
+
+-->
+<!ELEMENT currency (#PCDATA)>
+
+
+<!--
+  The presence of this element indicates that there is more than one applicant.
+    (ST.32:B512/B522)
+
+-->
+<!ELEMENT further-applicant EMPTY>
+
+
+<!--
+  The name of the applicant (without address information)
+    (ST.32:B711)
+
+-->
+<!ELEMENT applicant-name (%name_group;)>
+
+
+<!--
+  Registered number
+
+-->
+<!ELEMENT registered-number (#PCDATA)>
+
+
+<!--
+  Synonym
+
+-->
+<!ELEMENT synonym (#PCDATA)>
+
+
+<!--
+  Department, division, section, etc. name
+
+-->
+<!ELEMENT department (#PCDATA)>
+
+
+<!--
+  Organisation name or company name
+
+-->
+<!ELEMENT orgname (#PCDATA)>
+
+
+<!--
+  Role; e.g., President, Chairman, etc.
+
+-->
+<!ELEMENT role (#PCDATA)>
+
+
+<!--
+  SDOBI : Individual id
+
+-->
+<!ELEMENT iid (#PCDATA)>
+
+
+<!--
+  Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.)
+
+-->
+<!ELEMENT suffix (#PCDATA)>
+
+
+<!--
+  Middle name(s) or initial(s)
+
+-->
+<!ELEMENT middle-name (#PCDATA)>
+
+
+<!--
+  First or given name(s), initial(s)
+
+-->
+<!ELEMENT first-name (#PCDATA)>
+
+
+<!--
+  Last, family, surname
+
+-->
+<!ELEMENT last-name (#PCDATA)>
+
+
+<!--
+  Title: e.g., Mr., Mrs., Dr. etc
+
+-->
+<!ELEMENT prefix (#PCDATA)>
+
+
+<!--
+  Applicant's or agent's file reference, if desired, 12 characters maximum
+
+-->
+<!ELEMENT file-reference-id (#PCDATA)>
+
+
+<!--
+  Date: components of a date.  Format: YYYYMMDD
+
+-->
+<!ELEMENT date (#PCDATA)>
+
+
+<!--
+  Document kind code; e.g., A1
+    (INID 13, ST.32:B130)
+
+-->
+<!ELEMENT kind (#PCDATA)>
+
+
+<!--
+  The number of the referenced patent (or application) document
+
+-->
+<!ELEMENT doc-number (#PCDATA)>
+
+
+<!--
+  Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc.
+  Also includes EP, WO
+
+-->
+<!ELEMENT country (#PCDATA)>
+
+

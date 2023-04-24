@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<!--
+********************************************************************************
+* fee-payment-data v1.4 2017 October  
+* fee-payment-data v1.3 2009 October                                                *
+********************************************************************************
+* PUBLIC "-//WIPO//DTD FEE PAYMENT DATA 1.4/EN" "fee-payment-data.dtd"        *
+********************************************************************************
+* contacts:                                                                    *
+* WIPO:Peter WARING;  peter.waring@wipo.int                                    *
+* WIPO: Murray LEACH;  murray.leach@wipo.int                                 *
+********************************************************************************
+* revision history                                                             *
+********************************************************************************
+PW: 31/10/17
+..  changed version number from v1.3 to v1.4
+..  added comments in relation to usage for Netting in the comments section 
+..  added search-fee-data
+..  added supplementary-search-fee-data
+.. did not add further elements proposed to hold full data for netting balance of payments (i.e. send and return credits at the IA level)
+PW: 1/10/09
+.. RETAINED version number from v1.3
+.. Revision to add Netting capability
+PW: 26/10/09
+.. RETAINED version number from v1.3
+.. COMMENTS UPDATED ONLY
+PW: 17/06/08
+.. changed version number from v1.2 to v1.3
+.. added 5: Reduction-type attribute to fee-payment-data 
+.. corrected spelling of additional (from additional)
+PW: 16/04/08
+.. changed version number from v1.1 to v1.2
+.. added 5: Reduction for Electronic Filing with image based request form 
+HT: 01/11/04
+..changed version number from v1.0 to v1.1
+..added attribute 'ro-receiving-date', 'international-filing-date' to fee-pay
+April 2004
+..released version number as v1.0
+********************************************************************************
+-->
+<!--
+INTENDED TRANSMISSION FREQUENCY
+A fee-payment-data XML file is expected to be transmitted at the same time as a payment is made to the International Bureau and its total value must correspond to the value of the actual payment.
+
+Most offices transmit one payment and one file per month.  Any corrections to amounts previously transmitted for IAs are shown as records in subsequent transmissions, noting that each fee-payment breakdown file should always indicate a the same total amount as the value of the actual transmitted payment. This ensures that the total value for the breakdowns is consistent with the total value for actual payments while allowing corrections to be made to the data for each IA to ensure that at the IA level the values are also correct.
+FOR NETTING....
+The XML file is intended to correspond to payment values adjusted by the netting team based on a separate credit management system
+a more complete DTD was proposed aiming to cover the IA level payments and credits used in the Netting process, but this was declined
+-->
+<!--
+FILE NAMING
+The naming convention preferred is one that is consistent in structure with the Minimal specification for the transfer of documents to the international Bureau, 
+The required naming is as follows; 
+RO-IB-yyyymmdd-fpay-nnnnn-en.xml where
+	RO is the ST.3 code for the sending office 
+	IB is the ST.3 code for the destination office (will always be IB)
+	yyyymmdd is the date of transfer
+	fpay is a fixed string identifying the type of transfer
+	nnnnn is the sequence number (may be reset annually)
+	en is the language code (always en as currency codes always expressed in English).
+The file is expected to be transferred as an uncompressed xml file to the PCT-EDI 'upload' directory.
+
+Example file name sequence (using RO Australia as the example sending office):
+AU-IB-20090127-fpay-00001-en.xml
+	AU-IB-20090224-fpay-00002-en.xml
+AU-IB-20090325-fpay-00003-en.xml
+FOR NETTING
+File nameing will start with two Office codes one of which must be IB  (e.g. EP-IB or IB-AU) , noting that it does not support AU-EP as IB is the Hub.
+-->
+<!--
+HEADER COMENTS
+Comments are required in the XML header to aid manual identification of files because automatic matching of fee-payment-breakdown instances to actual bank transfers received at WIPO is not possible; this task is done manually. These comments, inserted immediately after the DOCTYPE entry, should be formatted as in the following example of a bank transfer from EPO to WIPO of  4553000 Euros sent on May 1st 2004, with the bank transfer comment 'APRIL 2004':
+-->
+<!-- EPO transferred to WIPO  --> 
+<!--bank-transfer-total 4553000 --> 
+<!--bank-transfer-date 20040501 -->
+<!--bank-transfer-currency EUR -->  
+<!--bank-transfer-comment APRIL 2004 -->
+<!--
+Attributes of fee-payment-data:
+  dtd-version = dtd version number
+  file = filename containg the XML instance
+  status = status of the file ( n - new, c - correction (or replacement))
+  country = Receiving office code (ST.3)
+  date-produced = YYYYMMDD e.g, 20011230
+  total-handling-fee = the total value of all handling fees transmitted in the 
+  reduction-type = flag to advise how fee reductions have been applied to the payment values (integrated or separate )
+There are two possibilities for the implementation of fee reductions namely 'integrated' or 'separate'. The default is 'separate' where a separate fee-reduction element is used to indicate the value of the reduction from the IA. The alternate is 'integrated' where the value of the reduction is integrated into the value of the other fee elements for the IA. This choice is denoted in the value of the optional attribute of fee-payment-data.
+-->
+<!ELEMENT fee-payment-data (fee-pay+)>
+
+<!ATTLIST fee-payment-data  dtd-version        CDATA  #IMPLIED
+                              file               CDATA  #IMPLIED
+                              status             CDATA  #IMPLIED
+                              country            CDATA  #REQUIRED
+                              date-produced      CDATA  #REQUIRED
+                              total-handling-fee CDATA  #IMPLIED
+                              reduction-type      (integrated | separate )  #IMPLIED 
+                              transmitting-office  CDATA #IMPLIED
+                              recipient-office  CDATA #IMPLIED>
+                              
+<!ELEMENT fee-pay (international-fee-data? , 
+                               handling-fee-data?,
+                               search-fee-data?, 
+                               supplemantary-search-fee-data?, 
+                               fee-total*)>
+<!--
+Attributes of fee-pay:
+  ia-number =      The International Application Number (IA) (e.g. FR2004/001234)
+  ro-receiving-date = The date of reception of the IA  (YYYYMMDD e.g, 20011230)
+  international-filing-date =  The international filing date of the IA (YYYYMMDD e.g, 20011230)
+  applicant-name = The applicant name for the IA (e.g. John SMITH)
+  pay-date =       The date the applicant paid the RO (YYYYMMDD e.g, 20011230)
+  currency =       The ISO three letter code for the currency of payment (e.g. JPY)
+  status =         set to replacement in the case the file is a replacement for an earlier transmission.
+-->
+<!ATTLIST fee-pay ia-number                 CDATA  #REQUIRED>
+
+<!ATTLIST fee-pay ro-receiving-date         CDATA  #REQUIRED>
+
+<!ATTLIST fee-pay international-filing-date CDATA  #IMPLIED>
+
+<!ATTLIST fee-pay applicant-name            CDATA  #IMPLIED>
+
+<!ATTLIST fee-pay pay-date                  CDATA  #REQUIRED>
+
+<!ATTLIST fee-pay currency                  CDATA  #IMPLIED>
+
+<!ATTLIST fee-pay status                    CDATA  #IMPLIED>
+
+<!--
+International fee
+-->
+<!--
+ATTRIBUTES OF FOLLOWING ELEMEMTS
+	currency      :  kind of currency (ISO 3 letter code)
+	amount        :  value amount of the fee element.
+-->
+
+<!ELEMENT international-fee-data (basic-fee-data , designation-fee-data? , fee-reduction-data*)>
+
+<!ATTLIST international-fee-data  currency CDATA  #IMPLIED
+                                    amount   CDATA  #REQUIRED >
+<!ELEMENT basic-fee-data (base-fee , supplement-fee? , additional-fee?)?>
+
+<!ATTLIST basic-fee-data  amount CDATA  #REQUIRED >
+<!ELEMENT base-fee EMPTY>
+
+<!ATTLIST base-fee  amount CDATA  #REQUIRED >
+<!ELEMENT supplement-fee EMPTY>
+
+<!ATTLIST supplement-fee  amount CDATA  #REQUIRED >
+<!ELEMENT additional-fee EMPTY>
+
+<!ATTLIST additional-fee  amount CDATA  #REQUIRED >
+<!ELEMENT designation-fee-data EMPTY>
+
+<!ATTLIST designation-fee-data  amount CDATA  #REQUIRED >
+
+<!ELEMENT fee-reduction-data EMPTY>
+<!--
+kind-of-reduction
+1: Reduction for EASY filing
+2: Reduction for Electronic filing (image)
+3: Reduction for Electronic filing (full)
+4: Reduction for developing country
+5: Reduction for Electronic Filing with image based request form
+the following reduction kinds are for search and supplementary search reductions
+A: Individual applicant 
+B: University
+C: Language
+D: Small Entity
+E: Micro Entity
+F: Reduced search collection 
+O: Other
+-->
+<!ATTLIST fee-reduction-data amount         CDATA  #REQUIRED
+                    kind-reduction  (1 | 2 | 3 | 4 | 5 | A | B | C | D | E | F | O)  #IMPLIED
+                    other-reduction-kind CDATA  #IMPLIED>
+
+<!ELEMENT handling-fee-data EMPTY>
+
+<!ATTLIST handling-fee-data  currency CDATA  #IMPLIED
+               amount   CDATA  #REQUIRED  >
+
+
+<!-- new -->    
+<!-- note all payments in the RO prescribed currency, not in the fixed currency for the ISA
+       IB will convert currency according to mappings held in the IB's bibadmin currency converter
+-->
+
+<!ELEMENT search-fee-data (basic-fee-data, fee-reduction-data*)>
+<!ATTLIST search-fee-data  currency CDATA  #IMPLIED
+                               amount   CDATA  #REQUIRED 
+                               office CDATA #REQUIRED 
+                               ro-fee-code CDATA  #IMPLIED
+                               isa-fee-code CDATA  #IMPLIED>
+
+<!ELEMENT supplemantary-search-fee-data (basic-fee-data , fee-reduction-data*)>
+<!ATTLIST supplemantary-search-fee-data  currency CDATA  #IMPLIED
+                               amount   CDATA  #REQUIRED 
+                               office CDATA #REQUIRED  
+                               ro-fee-code CDATA  #IMPLIED
+                               sisa-fee-code CDATA  #IMPLIED>
+
+<!-- end-new -->  
+<!--
+the total amount of all fees. Note that more than one grand total amount
+may be permitted, as there may be multiple currencies in which payment is due.
+-->
+<!ELEMENT fee-total EMPTY>
+
+<!ATTLIST fee-total  currency CDATA  #IMPLIED
+                       amount   CDATA  #REQUIRED >

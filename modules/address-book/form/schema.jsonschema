@@ -1,0 +1,2287 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://epo.org/submission.schema.json",
+  "definitions": {
+    "not-blank": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(?!\\s*$).+"
+    },
+    "country": {
+      "title": "Country",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "AF",
+        "AX",
+        "AL",
+        "DZ",
+        "AS",
+        "AD",
+        "AO",
+        "AI",
+        "AG",
+        "AR",
+        "AM",
+        "AW",
+        "AU",
+        "AT",
+        "AZ",
+        "BS",
+        "BH",
+        "BD",
+        "BB",
+        "BY",
+        "BE",
+        "BZ",
+        "BJ",
+        "BM",
+        "BT",
+        "BO",
+        "BA",
+        "BW",
+        "BR",
+        "IO",
+        "VG",
+        "BN",
+        "BG",
+        "BF",
+        "BI",
+        "KH",
+        "CM",
+        "CA",
+        "CV",
+        "KY",
+        "CF",
+        "TD",
+        "CL",
+        "CN",
+        "CX",
+        "CC",
+        "CO",
+        "KM",
+        "CD",
+        "CG",
+        "CK",
+        "CR",
+        "HR",
+        "CU",
+        "CW",
+        "CY",
+        "CZ",
+        "DK",
+        "DJ",
+        "DM",
+        "DO",
+        "TL",
+        "EC",
+        "EG",
+        "SV",
+        "GQ",
+        "ER",
+        "EE",
+        "ET",
+        "FO",
+        "FK",
+        "FJ",
+        "FI",
+        "FR",
+        "GF",
+        "PF",
+        "TF",
+        "GA",
+        "GM",
+        "GE",
+        "DE",
+        "GH",
+        "GI",
+        "GR",
+        "GL",
+        "GD",
+        "GP",
+        "GU",
+        "GT",
+        "GG",
+        "GN",
+        "GW",
+        "GY",
+        "HT",
+        "VA",
+        "HN",
+        "HK",
+        "HU",
+        "IS",
+        "IN",
+        "ID",
+        "IR",
+        "IQ",
+        "IE",
+        "IM",
+        "IL",
+        "IT",
+        "CI",
+        "KZ",
+        "KE",
+        "KI",
+        "KW",
+        "KG",
+        "LA",
+        "LV",
+        "LB",
+        "LS",
+        "LR",
+        "LY",
+        "LI",
+        "LT",
+        "LU",
+        "MO",
+        "MG",
+        "MW",
+        "MY",
+        "MV",
+        "ML",
+        "MT",
+        "MH",
+        "MQ",
+        "MR",
+        "MU",
+        "YT",
+        "MX",
+        "FM",
+        "MD",
+        "MC",
+        "MN",
+        "ME",
+        "MS",
+        "MA",
+        "MZ",
+        "MM",
+        "NA",
+        "NR",
+        "NP",
+        "NL",
+        "NC",
+        "NZ",
+        "NI",
+        "NE",
+        "NG",
+        "NU",
+        "NF",
+        "KP",
+        "MK",
+        "MP",
+        "NO",
+        "OM",
+        "PK",
+        "PW",
+        "PS",
+        "PA",
+        "PG",
+        "PY",
+        "PE",
+        "PH",
+        "PN",
+        "PL",
+        "PT",
+        "PR",
+        "QA",
+        "RE",
+        "RO",
+        "RU",
+        "RW",
+        "BL",
+        "SH",
+        "KN",
+        "LC",
+        "MF",
+        "PM",
+        "VC",
+        "WS",
+        "SM",
+        "ST",
+        "SA",
+        "SN",
+        "RS",
+        "SC",
+        "SL",
+        "SG",
+        "SX",
+        "SK",
+        "SI",
+        "SB",
+        "SO",
+        "ZA",
+        "GS",
+        "KR",
+        "SS",
+        "ES",
+        "LK",
+        "SD",
+        "SR",
+        "SJ",
+        "SZ",
+        "SE",
+        "CH",
+        "SY",
+        "TW",
+        "TJ",
+        "TZ",
+        "TH",
+        "TG",
+        "TK",
+        "TO",
+        "TT",
+        "TN",
+        "TR",
+        "TM",
+        "TC",
+        "TV",
+        "UG",
+        "UA",
+        "AE",
+        "GB",
+        "US",
+        "VI",
+        "UY",
+        "UZ",
+        "VU",
+        "VE",
+        "VN",
+        "WF",
+        "EH",
+        "YE",
+        "ZM",
+        "ZW"
+      ],
+      "enumNames": [
+        "i18n(Afghanistan)",
+        "i18n(Aland Islands)",
+        "i18n(Albania)",
+        "i18n(Algeria)",
+        "i18n(American Samoa)",
+        "i18n(Andorra)",
+        "i18n(Angola)",
+        "i18n(Anguilla)",
+        "i18n(Antigua and Barbuda)",
+        "i18n(Argentina)",
+        "i18n(Armenia)",
+        "i18n(Aruba)",
+        "i18n(Australia)",
+        "i18n(Austria)",
+        "i18n(Azerbaijan)",
+        "i18n(Bahamas)",
+        "i18n(Bahrain)",
+        "i18n(Bangladesh)",
+        "i18n(Barbados)",
+        "i18n(Belarus)",
+        "i18n(Belgium)",
+        "i18n(Belize)",
+        "i18n(Benin)",
+        "i18n(Bermuda)",
+        "i18n(Bhutan)",
+        "i18n(Bolivia)",
+        "i18n(Bosnia-Hercegovina)",
+        "i18n(Botswana)",
+        "i18n(Brazil)",
+        "i18n(British Indian Ocean Territory)",
+        "i18n(British Virgin Islands)",
+        "i18n(Brunei Darussalam)",
+        "i18n(Bulgaria)",
+        "i18n(Burkina Faso)",
+        "i18n(Burundi)",
+        "i18n(Cambodia)",
+        "i18n(Cameroon)",
+        "i18n(Canada)",
+        "i18n(Cape Verde)",
+        "i18n(Cayman Islands)",
+        "i18n(Central African Republic)",
+        "i18n(Chad)",
+        "i18n(Chile)",
+        "i18n(China)",
+        "i18n(Christmas Island)",
+        "i18n(Cocos (Keeling) Islands)",
+        "i18n(Colombia)",
+        "i18n(Comoros)",
+        "i18n(Congo (Democratic Republic of - Kinshasa))",
+        "i18n(Congo (Republic of the - Brazzaville))",
+        "i18n(Cook Islands)",
+        "i18n(Costa Rica)",
+        "i18n(Croatia)",
+        "i18n(Cuba)",
+        "i18n(Curacao)",
+        "i18n(Cyprus)",
+        "i18n(Czech Republic)",
+        "i18n(Denmark)",
+        "i18n(Djibouti)",
+        "i18n(Dominica)",
+        "i18n(Dominican Republic)",
+        "i18n(East Timor)",
+        "i18n(Ecuador)",
+        "i18n(Egypt)",
+        "i18n(El Salvador)",
+        "i18n(Equatorial Guinea)",
+        "i18n(Eritrea)",
+        "i18n(Estonia)",
+        "i18n(Ethiopia)",
+        "i18n(Faeroe Islands)",
+        "i18n(Falkland Islands)",
+        "i18n(Fiji)",
+        "i18n(Finland)",
+        "i18n(France)",
+        "i18n(French Guiana)",
+        "i18n(French Polynesia)",
+        "i18n(French Southern Territories)",
+        "i18n(Gabon)",
+        "i18n(Gambia)",
+        "i18n(Georgia)",
+        "i18n(Germany)",
+        "i18n(Ghana)",
+        "i18n(Gibraltar)",
+        "i18n(Greece)",
+        "i18n(Greenland)",
+        "i18n(Grenada)",
+        "i18n(Guadeloupe)",
+        "i18n(Guam)",
+        "i18n(Guatemala)",
+        "i18n(Guernsey)",
+        "i18n(Guinea)",
+        "i18n(Guinea-Bissau)",
+        "i18n(Guyana)",
+        "i18n(Haiti)",
+        "i18n(Holy See)",
+        "i18n(Honduras)",
+        "i18n(Hong Kong)",
+        "i18n(Hungary)",
+        "i18n(Iceland)",
+        "i18n(India)",
+        "i18n(Indonesia)",
+        "i18n(Iran)",
+        "i18n(Iraq)",
+        "i18n(Ireland)",
+        "i18n(Isle of Man)",
+        "i18n(Israel)",
+        "i18n(Italy)",
+        "i18n(Ivory Coast)",
+        "i18n(Kazakhstan)",
+        "i18n(Kenya)",
+        "i18n(Kiribati)",
+        "i18n(Kuwait)",
+        "i18n(Kyrgyzstan)",
+        "i18n(Laos)",
+        "i18n(Latvia)",
+        "i18n(Lebanon)",
+        "i18n(Lesotho)",
+        "i18n(Liberia)",
+        "i18n(Libya)",
+        "i18n(Liechtenstein)",
+        "i18n(Lithuania)",
+        "i18n(Luxembourg)",
+        "i18n(Macao)",
+        "i18n(Madagascar)",
+        "i18n(Malawi)",
+        "i18n(Malaysia)",
+        "i18n(Maldives)",
+        "i18n(Mali)",
+        "i18n(Malta)",
+        "i18n(Marshall Islands)",
+        "i18n(Martinique)",
+        "i18n(Mauritania)",
+        "i18n(Mauritius)",
+        "i18n(Mayotte)",
+        "i18n(Mexico)",
+        "i18n(Micronesia)",
+        "i18n(Moldova)",
+        "i18n(Monaco)",
+        "i18n(Mongolia)",
+        "i18n(Montenegro)",
+        "i18n(Montserrat)",
+        "i18n(Morocco)",
+        "i18n(Mozambique)",
+        "i18n(Myanmar)",
+        "i18n(Namibia)",
+        "i18n(Nauru)",
+        "i18n(Nepal)",
+        "i18n(Netherlands)",
+        "i18n(New Caledonia)",
+        "i18n(New Zealand)",
+        "i18n(Nicaragua)",
+        "i18n(Niger)",
+        "i18n(Nigeria)",
+        "i18n(Niue)",
+        "i18n(Norfolk Island)",
+        "i18n(North Korea)",
+        "i18n(North Macedonia)",
+        "i18n(Northern Mariana Islands)",
+        "i18n(Norway)",
+        "i18n(Oman)",
+        "i18n(Pakistan)",
+        "i18n(Palau)",
+        "i18n(Palestinian Authority)",
+        "i18n(Panama)",
+        "i18n(Papua New Guinea)",
+        "i18n(Paraguay)",
+        "i18n(Peru)",
+        "i18n(Philippines)",
+        "i18n(Pitcairn Islands)",
+        "i18n(Poland)",
+        "i18n(Portugal)",
+        "i18n(Puerto Rico)",
+        "i18n(Qatar)",
+        "i18n(Reunion)",
+        "i18n(Romania)",
+        "i18n(Russia)",
+        "i18n(Rwanda)",
+        "i18n(Saint-Barthelemy)",
+        "i18n(Saint Helena)",
+        "i18n(Saint Kitts and Nevis)",
+        "i18n(Saint Lucia)",
+        "i18n(Saint-Martin)",
+        "i18n(Saint Pierre and Miquelon)",
+        "i18n(Saint Vincent and the Grenadines)",
+        "i18n(Samoa)",
+        "i18n(San Marino)",
+        "i18n(Sao Tome and Principe)",
+        "i18n(Saudi Arabia)",
+        "i18n(Senegal)",
+        "i18n(Serbia)",
+        "i18n(Seychelles)",
+        "i18n(Sierra Leone)",
+        "i18n(Singapore)",
+        "i18n(Sint Maarten)",
+        "i18n(Slovakia)",
+        "i18n(Slovenia)",
+        "i18n(Solomon Islands)",
+        "i18n(Somalia)",
+        "i18n(South Africa)",
+        "i18n(South Georgia and the South Sandwich Islands)",
+        "i18n(South Korea)",
+        "i18n(South Sudan)",
+        "i18n(Spain)",
+        "i18n(Sri Lanka)",
+        "i18n(Sudan)",
+        "i18n(Suriname)",
+        "i18n(Svalbard and Jan Mayen Islands)",
+        "i18n(Swaziland)",
+        "i18n(Sweden)",
+        "i18n(Switzerland)",
+        "i18n(Syria)",
+        "i18n(Taiwan)",
+        "i18n(Tajikistan)",
+        "i18n(Tanzania)",
+        "i18n(Thailand)",
+        "i18n(Togo)",
+        "i18n(Tokelau)",
+        "i18n(Tonga)",
+        "i18n(Trinidad and Tobago)",
+        "i18n(Tunisia)",
+        "i18n(Turkey)",
+        "i18n(Turkmenistan)",
+        "i18n(Turks and Caicos Islands)",
+        "i18n(Tuvalu)",
+        "i18n(Uganda)",
+        "i18n(Ukraine)",
+        "i18n(United Arab Emirates)",
+        "i18n(United Kingdom)",
+        "i18n(Unites States of America)",
+        "i18n(United States Virgin Islands)",
+        "i18n(Uruguay)",
+        "i18n(Uzbekistan)",
+        "i18n(Vanuatu)",
+        "i18n(Venezuela)",
+        "i18n(Vietnam)",
+        "i18n(Wallis and Futuna)",
+        "i18n(Western Sahara)",
+        "i18n(Yemen)",
+        "i18n(Zambia)",
+        "i18n(Zimbabwe)"
+      ]
+    },
+    "region": {
+      "AR": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "AR1",
+          "AR2",
+          "AR3",
+          "AR4",
+          "AR5",
+          "AR6",
+          "AR7",
+          "AR8",
+          "AR9",
+          "AR10",
+          "AR11",
+          "AR12",
+          "AR13",
+          "AR14",
+          "AR15",
+          "AR16",
+          "AR17",
+          "AR18",
+          "AR19",
+          "AR20",
+          "AR21",
+          "AR22",
+          "AR23",
+          "AR24"
+        ],
+        "enumNames": [
+          "Buenos Aires",
+          "Catamarca",
+          "Chaco",
+          "Chubut",
+          "Córdoba",
+          "Corrientes",
+          "Distrito Federal",
+          "Entre Ríos",
+          "Formosa",
+          "Jujuy",
+          "La Pampa",
+          "La Rioja",
+          "Mendoza",
+          "Misiones",
+          "Neuquén",
+          "Río Negro",
+          "Salta",
+          "San Juan",
+          "San Luis",
+          "Santa Cruz",
+          "Santa Fe",
+          "Santiago del Estero",
+          "Tierra del Fuego",
+          "Tucumán"
+        ]
+      },
+      "AU": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "State",
+        "enum": [
+          "AU1",
+          "AU2",
+          "AU3",
+          "AU4",
+          "AU5",
+          "AU6",
+          "AU7",
+          "AU8",
+          "AU9"
+        ],
+        "enumNames": [
+          "Australian Antarctic Territory",
+          "Australian Capital Territory",
+          "New South Wales",
+          "Northern Territory",
+          "Queensland",
+          "South Australia",
+          "Tasmania",
+          "Victoria",
+          "Western Australia"
+        ]
+      },
+      "AT": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "AT1",
+          "AT2",
+          "AT3",
+          "AT4",
+          "AT5",
+          "AT6",
+          "AT7",
+          "AT8",
+          "AT9"
+        ],
+        "enumNames": [
+          "Burgenland",
+          "Kärnten",
+          "Niederösterreich",
+          "Oberösterreich",
+          "Salzburg",
+          "Steiermark",
+          "Tirol",
+          "Vorarlberg",
+          "Wien"
+        ]
+      },
+      "BE": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "BE1",
+          "BE2",
+          "BE3",
+          "BE4",
+          "BE5",
+          "BE6",
+          "BE7",
+          "BE8",
+          "BE9",
+          "BE10"
+        ],
+        "enumNames": [
+          "Antwerpen",
+          "Brabant Wallon",
+          "Hainaut",
+          "Liège",
+          "Limburg",
+          "Luxembourg",
+          "Namur",
+          "East Flanders",
+          "Vlaams Brabant",
+          "West Vlaanderen"
+        ]
+      },
+      "BR": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "State",
+        "enum": [
+          "AC",
+          "AL",
+          "AP",
+          "AM",
+          "BA",
+          "CE",
+          "DF",
+          "ES",
+          "GO",
+          "MA",
+          "MT",
+          "MS",
+          "MG",
+          "PA",
+          "PB",
+          "PR",
+          "PE",
+          "PI",
+          "RJ",
+          "RN",
+          "RS",
+          "RO",
+          "RR",
+          "SC",
+          "SP",
+          "SE",
+          "TO"
+        ],
+        "enumNames": [
+          "Acre",
+          "Alagoas",
+          "Amapá",
+          "Amazonas",
+          "Bahia",
+          "Ceará",
+          "Distrito Federal",
+          "Espírito Santo",
+          "Goiás",
+          "Maranhão",
+          "Mato Grosso",
+          "Mato Grosso do Sul",
+          "Minas Gerais",
+          "Pará",
+          "Paraíba",
+          "Paraná",
+          "Pernambuco",
+          "Piauí",
+          "Rio de Janeiro",
+          "Rio Grande do Norte",
+          "Rio Grande do Sul",
+          "Rondônia",
+          "Rorâima",
+          "Santa Catarina",
+          "São Paulo",
+          "Sergipe",
+          "Tocantins"
+        ]
+      },
+      "BG": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "BG1",
+          "BG2",
+          "BG3",
+          "BG4",
+          "BG5",
+          "BG6",
+          "BG7",
+          "BG8",
+          "BG9",
+          "BG10",
+          "BG11",
+          "BG12",
+          "BG13",
+          "BG14",
+          "BG15",
+          "BG16",
+          "BG17",
+          "BG18",
+          "BG19",
+          "BG20",
+          "BG21",
+          "BG22",
+          "BG23",
+          "BG24",
+          "BG25",
+          "BG26",
+          "BG27",
+          "BG28"
+        ],
+        "enumNames": [
+          "Blagoevgrad",
+          "Burgas",
+          "Dobrich",
+          "Gabrovo",
+          "Khaskovo",
+          "Kurdzhali",
+          "Kyustendil",
+          "Lovech",
+          "Montana",
+          "Pazardzhik",
+          "Pernik",
+          "Pleven",
+          "Plovdiv",
+          "Razgrad",
+          "Ruse",
+          "Shumen",
+          "Silistra",
+          "Sliven",
+          "Smolyan",
+          "Sofiya",
+          "Sofiya-Grad",
+          "Stara Zagora",
+          "Turgovishte",
+          "Varna",
+          "Veliko Turnovo",
+          "Vidin",
+          "Vratsa",
+          "Yambol"
+        ]
+      },
+      "CA": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "CA1",
+          "CA2",
+          "CA3",
+          "CA4",
+          "CA5",
+          "CA6",
+          "CA7",
+          "CA8",
+          "CA9",
+          "CA10",
+          "CA11",
+          "CA12",
+          "CA13"
+        ],
+        "enumNames": [
+          "Alberta",
+          "British Columbia",
+          "Manitoba",
+          "New Brunswick",
+          "Newfoundland and Labrador",
+          "Northwest Territories",
+          "Nova Scotia",
+          "Nunavut",
+          "Ontario",
+          "Prince Edward Island",
+          "Québec",
+          "Saskatchewan",
+          "Yukon External"
+        ]
+      },
+      "CN": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "CN1",
+          "CN2",
+          "CN3",
+          "CN4",
+          "CN5",
+          "CN6",
+          "CN7",
+          "CN8",
+          "CN9",
+          "CN10",
+          "CN11",
+          "CN12",
+          "CN13",
+          "CN14",
+          "CN15",
+          "CN16",
+          "CN17",
+          "CN18",
+          "CN19",
+          "CN20",
+          "CN21",
+          "CN22",
+          "CN23",
+          "CN24",
+          "CN25",
+          "CN26",
+          "CN27",
+          "CN28",
+          "CN29",
+          "CN30",
+          "CN31"
+        ],
+        "enumNames": [
+          "Anhui",
+          "Beijing",
+          "Chongqing",
+          "Fujian",
+          "Gansu",
+          "Guangdong",
+          "Guangxi",
+          "Guizhou",
+          "Hainan",
+          "Hebei",
+          "Heilongjiang",
+          "Henan",
+          "Hubei",
+          "Hunan",
+          "Jiangsu",
+          "Jiangxi",
+          "Jilin",
+          "Liaoning",
+          "Nei Mongol",
+          "Ningxia",
+          "Qinghai",
+          "Shaanxi",
+          "Shandong",
+          "Shanghai",
+          "Shanxi",
+          "Sichuan",
+          "Tianjin",
+          "Xinjiang",
+          "Xizang",
+          "Yunnan",
+          "Zhejiang"
+        ]
+      },
+      "HR": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "HR1",
+          "HR2",
+          "HR3",
+          "HR4",
+          "HR5",
+          "HR6",
+          "HR7",
+          "HR8",
+          "HR9",
+          "HR10",
+          "HR11",
+          "HR12",
+          "HR13",
+          "HR14",
+          "HR15",
+          "HR16",
+          "HR17",
+          "HR18",
+          "HR19",
+          "HR20",
+          "HR21"
+        ],
+        "enumNames": [
+          "Bjelovarsko-Bilogorska",
+          "Brodsko-Posavska",
+          "Dubrovacko-Neretvanska Županija",
+          "Istarska Županija",
+          "Karlovačka Županija",
+          "Koprivničko-Križevačka Županija",
+          "Krapinsko-Zagorska Županija",
+          "Ličko-Senjska Županija",
+          "Meðimurska Županija",
+          "Osječko-Baranjska Županija",
+          "Požeško-Slavonska Županija",
+          "Primorsko-Goranska Županija",
+          "Šibensko-Kninska Županija",
+          "Sisačko-Moslavačka Županija",
+          "Splitsko-Dalmatinska Županija",
+          "Varaždinska Županija",
+          "Virovitičko-Podravska Županija",
+          "Vukovarsko-Srijemska Županija",
+          "Zadarska Županija",
+          "Zagrebačka (Zagreb)",
+          "Zagrebačka Županija"
+        ]
+      },
+      "CZ": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "CZ1",
+          "CZ2",
+          "CZ3",
+          "CZ4",
+          "CZ5",
+          "CZ6",
+          "CZ7",
+          "CZ8",
+          "CZ9",
+          "CZ10",
+          "CZ11",
+          "CZ12",
+          "CZ13",
+          "CZ14"
+        ],
+        "enumNames": [
+          "Jihočeský kraj",
+          "Jihomoravský kraj",
+          "Karlovarský kraj",
+          "Královéhradecký kraj",
+          "Liberecký kraj",
+          "Moravskoslezský kraj",
+          "Olomoucký kraj",
+          "Pardubický kraj",
+          "Plzeňský kraj",
+          "Praha, hlavníměsto",
+          "Středočeský kraj",
+          "Ústecký kraj",
+          "Kraj Vysočina",
+          "Zlínský kraj"
+        ]
+      },
+      "DE": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "DE1",
+          "DE2",
+          "DE3",
+          "DE4",
+          "DE5",
+          "DE6",
+          "DE7",
+          "DE8"
+        ],
+        "enumNames": [
+          "Baden-Württemberg",
+          "Bayern",
+          "Berlin",
+          "Brandenburg",
+          "Bremen",
+          "Hamburg",
+          "Hessen",
+          "Mecklenburg-Vorpommern",
+          "Niedersachsen",
+          "Nordrhein-Westfalen",
+          "Rheinland-Pfalz",
+          "Saarland",
+          "Sachsen",
+          "Sachsen-Anhalt",
+          "Schleswig-Holstein",
+          "Thüringen"
+        ]
+      },
+      "DK": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "DK1",
+          "DK2",
+          "DK3",
+          "DK4",
+          "DK5"
+        ],
+        "enumNames": [
+          "Hovedstaden",
+          "Midtjylland",
+          "Nordjylland",
+          "Sjælland",
+          "Syddanmark"
+        ]
+      },
+      "EE": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "EE1",
+          "EE2",
+          "EE3",
+          "EE4",
+          "EE5",
+          "EE6",
+          "EE7",
+          "EE8",
+          "EE9",
+          "EE10",
+          "EE11",
+          "EE12",
+          "EE13",
+          "EE14",
+          "EE15"
+        ],
+        "enumNames": [
+          "Harjumaa",
+          "Hiiumaa",
+          "Ida-Virumaa",
+          "Järvamaa",
+          "Jõgevamaa",
+          "Läänemaa",
+          "Lääne-Virumaa",
+          "Pärnumaa",
+          "Põlvamaa",
+          "Raplamaa",
+          "Saaremaa",
+          "Tartumaa",
+          "Valgamaa",
+          "Viljandimaa",
+          "Võrumaa"
+        ]
+      },
+      "FI": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "FI1",
+          "FI2",
+          "FI3",
+          "FI4",
+          "FI5",
+          "FI6",
+          "FI7",
+          "FI8",
+          "FI9",
+          "FI10",
+          "FI11",
+          "FI12",
+          "FI13",
+          "FI14",
+          "FI15",
+          "FI16",
+          "FI17",
+          "FI18"
+        ],
+        "enumNames": [
+          "Etelä-Karjala",
+          "Etelä-Pohjanmaa",
+          "Etelä-Savo",
+          "Kainuu",
+          "Kanta-Häme",
+          "Keski-Pohjanmaa",
+          "Keski-Suomi",
+          "Kymenlaakso",
+          "Lappi",
+          "Päijät-Häme",
+          "Pirkanmaa",
+          "Ostrobothnia Pohjanmaa",
+          "Pohjois-Pohjanmaa",
+          "Pohjois-Savo",
+          "Pohjois-Karjala",
+          "Satakunta",
+          "Uusimaa",
+          "Varsinais-Suomi"
+        ]
+      },
+      "FR": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "FR1",
+          "FR2",
+          "FR3",
+          "FR4",
+          "FR5",
+          "FR6",
+          "FR7",
+          "FR8",
+          "FR9",
+          "FR10",
+          "FR11",
+          "FR12",
+          "FR13",
+          "FR14",
+          "FR15",
+          "FR16",
+          "FR17",
+          "FR18"
+        ],
+        "enumNames": [
+          "Grand Est",
+          "Nouvelle-Aquitaine",
+          "Auvergne-Rhône-Alpes",
+          "Bourgogne-Franche-Comté",
+          "Bretagne",
+          "Centre-Val de Loire",
+          "Corse",
+          "Ile-de-France",
+          "Occitanie",
+          "Hauts-de-France",
+          "Normandie",
+          "Pays de la Loire",
+          "Provence - Alpes - Côte-d’Azur"
+        ]
+      },
+      "GB": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "EN",
+          "WL",
+          "ST",
+          "NI",
+          "CD"
+        ],
+        "enumNames": [
+          "England",
+          "Wales",
+          "Scotland",
+          "Northern Ireland",
+          "Crown Dependent"
+        ]
+      },
+      "GR": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "GR1",
+          "GR2",
+          "GR3",
+          "GR4",
+          "GR5",
+          "GR6",
+          "GR7"
+        ],
+        "enumNames": [
+          "Aegean",
+          "Attica",
+          "Crete",
+          "Epirus and Western Macedonia",
+          "Macedonia and Thrace",
+          "Mount Athos",
+          "Peloponnese, Western Greece and the Ionian Islands",
+          "Thessaly and Central Greece"
+        ]
+      },
+      "HU": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "HR1",
+          "HR2",
+          "HR3",
+          "HR4",
+          "HR5",
+          "HR6",
+          "HR7",
+          "HR8",
+          "HR9",
+          "HR10",
+          "HR11",
+          "HR12",
+          "HR13",
+          "HR14",
+          "HR15",
+          "HR16",
+          "HR17",
+          "HR18",
+          "HR19",
+          "HR20",
+          "HR21"
+        ],
+        "enumNames": [
+          "Bács-Kiskun",
+          "Baranya",
+          "Békés",
+          "Borsod-Abaúj-Zemplén",
+          "Budapest",
+          "Csongrád-Csanád",
+          "Fejér",
+          "Győr-Moson-Sopron",
+          "Hajdú-Bihar",
+          "Heves",
+          "Jász-Nagykun-Szolnok",
+          "Komárom-Esztergom",
+          "Nógrád",
+          "Pest",
+          "Somogy",
+          "Szabolcs-Szatmár-Bereg",
+          "Szekszárd",
+          "Tolna",
+          "Vas",
+          "Veszprém",
+          "Zala"
+        ]
+      },
+      "IL": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "IL1",
+          "IL2",
+          "IL3",
+          "IL4",
+          "IL5",
+          "IL6"
+        ],
+        "enumNames": [
+          "Central",
+          "Haifa",
+          "Jerusalem",
+          "Northern",
+          "Southern",
+          "Tel Aviv"
+        ]
+      },
+      "IE": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "IE1",
+          "IE2",
+          "IE3",
+          "IE4"
+        ],
+        "enumNames": [
+          "Connaught",
+          "Leinster",
+          "Munster",
+          "Ulster"
+        ]
+      },
+      "IT": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "IT1",
+          "IT2",
+          "IT3",
+          "IT4",
+          "IT5",
+          "IT6",
+          "IT7",
+          "IT8",
+          "IT9",
+          "IT10",
+          "IT11",
+          "IT12",
+          "IT13",
+          "IT14",
+          "IT15",
+          "IT16",
+          "IT17",
+          "IT18",
+          "IT19",
+          "IT20",
+          "IT21"
+        ],
+        "enumNames": [
+          "Abruzzo",
+          "Basilicata",
+          "Calabria",
+          "Campania",
+          "Emilia-Romagna",
+          "Lazio",
+          "Liguria",
+          "Lombardia",
+          "Marche",
+          "Molise",
+          "Piemonte",
+          "Puglia",
+          "Sardegna",
+          "Sicilia",
+          "Toscana",
+          "Trentino-Alto Adige",
+          "Umbria",
+          "Valle D’Aosta",
+          "Veneto"
+        ]
+      },
+      "JP": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "JP1",
+          "JP2",
+          "JP3",
+          "JP4",
+          "JP5",
+          "JP6",
+          "JP7",
+          "JP8",
+          "JP9",
+          "JP10",
+          "JP11",
+          "JP12",
+          "JP13",
+          "JP14",
+          "JP15",
+          "JP16",
+          "JP17",
+          "JP18",
+          "JP19",
+          "JP20",
+          "JP21",
+          "JP22",
+          "JP23",
+          "JP24",
+          "JP25",
+          "JP26",
+          "JP27",
+          "JP28",
+          "JP29",
+          "JP30",
+          "JP31",
+          "JP32",
+          "JP33",
+          "JP34",
+          "JP35",
+          "JP36",
+          "JP37",
+          "JP38",
+          "JP39",
+          "JP40",
+          "JP41",
+          "JP42",
+          "JP43",
+          "JP44",
+          "JP45",
+          "JP46",
+          "JP47"
+        ],
+        "enumNames": [
+          "Aichi",
+          "Akita",
+          "Aomori",
+          "Chiba",
+          "Ehime",
+          "Fukui",
+          "Fukuoka",
+          "Fukushima",
+          "Gifu",
+          "Gunma",
+          "Hiroshima",
+          "Hokkaido",
+          "Hyogo",
+          "Ibaraki",
+          "Ishikawa",
+          "Iwate",
+          "Kagawa",
+          "Kagoshima",
+          "Kanagawa",
+          "Kochi",
+          "Kumamoto",
+          "Kyoto",
+          "Mie",
+          "Miyagi",
+          "Miyazaki",
+          "Nagano",
+          "Nagasaki",
+          "Nara",
+          "Niigata",
+          "Oita",
+          "Okayama",
+          "Okinawa",
+          "Osaka",
+          "Saga",
+          "Saitama",
+          "Shiga",
+          "Shimane",
+          "Shizuoka",
+          "Tochigi",
+          "Tokushima",
+          "Tokyo",
+          "Tottori",
+          "Toyama",
+          "Wakayama",
+          "Yamagata",
+          "Yamaguchi",
+          "Yamanashi"
+        ]
+      },
+      "NL": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "NL1",
+          "NL2",
+          "NL3",
+          "NL4",
+          "NL5",
+          "NL6",
+          "NL7",
+          "NL8",
+          "NL9",
+          "NL10",
+          "NL11",
+          "NL12"
+        ],
+        "enumNames": [
+          "Drenthe",
+          "Flevoland",
+          "Fryslân",
+          "Gelderland",
+          "Groningen",
+          "Limburg",
+          "Noord Brabant",
+          "Noord Holland",
+          "Overijssel",
+          "Utrecht",
+          "Zeeland",
+          "Zuid Holland"
+        ]
+      },
+      "NO": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "NO1",
+          "NO2",
+          "NO3",
+          "NO4",
+          "NO5",
+          "NO6",
+          "NO7",
+          "NO8",
+          "NO9",
+          "NO10",
+          "NO11"
+        ],
+        "enumNames": [
+          "Agder",
+          "Innlandet",
+          "Møre og Romsdal",
+          "Nordlandm",
+          "Oslo",
+          "Rogaland",
+          "Troms og Finnmark",
+          "Trøndelag",
+          "Vestfold og Telemark",
+          "Vestland",
+          "Viken"
+        ]
+      },
+      "LT": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "County",
+        "enum": [
+          "LT1",
+          "LT2",
+          "LT3",
+          "LT4",
+          "LT5",
+          "LT6",
+          "LT7",
+          "LT8",
+          "LT9",
+          "LT10"
+        ],
+        "enumNames": [
+          "Alytaus",
+          "Kauno",
+          "Klaipėdos",
+          "Marijampolės",
+          "Panevėžio",
+          "Šiaulių",
+          "Tauragės",
+          "Telšių",
+          "Utenos",
+          "Vilniaus"
+        ]
+      },
+      "PL": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Province",
+        "enum": [
+          "PL1",
+          "PL2",
+          "PL3",
+          "PL4",
+          "PL5",
+          "PL6",
+          "PL7",
+          "PL8",
+          "PL9",
+          "PL10",
+          "PL11",
+          "PL12",
+          "PL13",
+          "PL14",
+          "PL15",
+          "PL16"
+        ],
+        "enumNames": [
+          "Dolnoślạskie",
+          "Kujawsko-Pomorskie",
+          "Lubelskie",
+          "Lubuskie",
+          "Łódzkie",
+          "Małopolskie",
+          "Mazowieckie",
+          "Opolskie",
+          "Podkarpackie",
+          "Podlaskie",
+          "Pomorskie",
+          "Ślạskie",
+          "Świętokrzyskie",
+          "Warmińsko-Mazurskie",
+          "Wielkopolskie",
+          "Zachodniopomorskie"
+        ]
+      },
+      "PT": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Province",
+        "enum": [
+          "PT1",
+          "PT2",
+          "PT3",
+          "PT4",
+          "PT5",
+          "PT6",
+          "PT7",
+          "PT8",
+          "PT9",
+          "PT10",
+          "PT11",
+          "PT12",
+          "PT13",
+          "PT14",
+          "PT15",
+          "PT16",
+          "PT17",
+          "PT18"
+        ],
+        "enumNames": [
+          "Aveiro",
+          "Beja",
+          "Braga",
+          "Bragança",
+          "Castelo Branco",
+          "Coimbra",
+          "Évora",
+          "Faro",
+          "Guarda",
+          "Leiria",
+          "Lisboa",
+          "Portalegre",
+          "Porto",
+          "Santarém",
+          "Setúbal",
+          "Viana do Castelo",
+          "Vila Real",
+          "Viseu"
+        ]
+      },
+      "RS": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "RS1",
+          "RS2",
+          "RS3",
+          "RS4",
+          "RS5",
+          "RS6",
+          "RS7",
+          "RS8",
+          "RS9",
+          "RS10",
+          "RS11",
+          "RS12",
+          "RS13",
+          "RS14",
+          "RS15",
+          "RS16",
+          "RS17",
+          "RS18",
+          "RS19",
+          "RS20",
+          "RS21",
+          "RS22",
+          "RS23",
+          "RS24",
+          "RS25",
+          "RS26"
+        ],
+        "enumNames": [
+          "Beograd",
+          "Bor",
+          "Braničevo",
+          "Central Banat",
+          "Danube",
+          "Jablanica",
+          "Kolubara",
+          "Mačva",
+          "Morava",
+          "Nišava",
+          "North Bačka",
+          "North Banat",
+          "Pčinja",
+          "Pećki",
+          "Pirot",
+          "Pomoravlje",
+          "Rasina",
+          "Raška",
+          "South Bačka",
+          "South Banat",
+          "Srem",
+          "Šumadija",
+          "Toplica",
+          "West Bačka",
+          "Zaječar",
+          "Zlatibor"
+        ]
+      },
+      "SK": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "Region",
+        "enum": [
+          "RS1",
+          "RS2",
+          "RS3",
+          "RS4",
+          "RS5",
+          "RS6",
+          "RS7",
+          "RS8"
+        ],
+        "enumNames": [
+          "Banskobystrický",
+          "Bratislavský",
+          "Košický",
+          "Nitriansky",
+          "Prešovský",
+          "Trenčiansky",
+          "Trnavský",
+          "Žilinský"
+        ]
+      },
+      "SE": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "County",
+        "enum": [
+          "SE1",
+          "SE2",
+          "SE3",
+          "SE4",
+          "SE5",
+          "SE6",
+          "SE7",
+          "SE8",
+          "SE9",
+          "SE10",
+          "SE11",
+          "SE12",
+          "SE13",
+          "SE14",
+          "SE15",
+          "SE16",
+          "SE17",
+          "SE18",
+          "SE19",
+          "SE20",
+          "SE21"
+        ],
+        "enumNames": [
+          "Blekinge Län",
+          "Dalanas",
+          "Gävleborgs Län",
+          "Gotlands Län",
+          "Hallands Län",
+          "Jämtlands Län",
+          "Jönköpings Län",
+          "Kalmar Län",
+          "Kronobergs Län",
+          "Norbottens Län",
+          "Örebro Län",
+          "Östergötlands",
+          "Skåne",
+          "Södermanlands Län",
+          "Stockholms Län",
+          "Uppsala Län",
+          "Värmlands Län",
+          "Västerbottens Län",
+          "Västernorrlands Län",
+          "Västra Götelands",
+          "Västmanlands Län"
+        ]
+      },
+      "US": {
+        "type": [
+          "string",
+          "null"
+        ],
+        "title": "State",
+        "enum": [
+          "US1",
+          "US2",
+          "US3",
+          "US4",
+          "US5",
+          "US6",
+          "US7",
+          "US8",
+          "US9",
+          "US10",
+          "US11",
+          "US12",
+          "US13",
+          "US14",
+          "SE15",
+          "US16",
+          "US17",
+          "US18",
+          "US19",
+          "US20",
+          "US21",
+          "US12",
+          "SE13",
+          "US14",
+          "SU15",
+          "US16",
+          "US27",
+          "US28",
+          "US29",
+          "US30",
+          "US31",
+          "US32",
+          "US33",
+          "US34",
+          "US35",
+          "US36",
+          "US37",
+          "US38",
+          "US39",
+          "US40",
+          "US41",
+          "US42",
+          "US43",
+          "US44",
+          "US45",
+          "US46",
+          "US47",
+          "US48",
+          "US49",
+          "US50"
+        ],
+        "enumNames": [
+          "Alabama",
+          "Alaska",
+          "Arizona",
+          "Arkansas",
+          "California",
+          "Colorado",
+          "Connecticut",
+          "Delaware",
+          "Florida",
+          "Georgia",
+          "Hawaii",
+          "Idaho",
+          "Illinois",
+          "Indiana",
+          "Iowa",
+          "Kansas",
+          "Kentucky",
+          "Louisiana",
+          "Maine",
+          "Maryland",
+          "Massachusetts",
+          "Michigan",
+          "Minnesota",
+          "Mississippi",
+          "Missouri",
+          "Montana",
+          "Nebraska",
+          "Nevada",
+          "New Hampshire",
+          "New Jersey",
+          "New Mexico",
+          "New York",
+          "North Carolina",
+          "North Dakota",
+          "Ohio",
+          "Oklahoma",
+          "Oregon",
+          "Pennsylvania",
+          "Rhode Island",
+          "South Carolina",
+          "South Dakota",
+          "Tennessee",
+          "Texas",
+          "Utah",
+          "Vermont",
+          "Virginia",
+          "Washington",
+          "West Virginia",
+          "Wisconsin",
+          "Wyoming"
+        ]
+      }
+    },
+    "title": {
+      "title": "Title",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "MR",
+        "MS"
+      ],
+      "enumNames": [
+        "Mr.",
+        "Ms."
+      ]
+    },
+    "phone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^(?:\\+\\d{1,3})?(?:[() -]?\\d){6,}$",
+      "maxLength": 25
+    },
+    "address": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "streetAddress": {
+          "title": "i18n(parties.address)",
+          "maxLength": 590,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "poBox": {
+          "title": "i18n(parties.PO-box)",
+          "maxLength": 15,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "postalCode": {
+          "title": "i18n(parties.postal-code)",
+          "maxLength": 15,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "city": {
+          "title": "i18n(parties.city)",
+          "maxLength": 64,
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "country": {
+          "title": "i18n(parties.country)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "DE",
+            "NL",
+            "GB"
+          ],
+          "enumNames": [
+            "Germany",
+            "Netherland",
+            "United Kingdom"
+          ]
+        }
+      },
+      "dependencies": {
+        "country": {
+          "oneOf": [
+            {
+              "properties": {
+                "country": {
+                  "enum": [
+                    "DE"
+                  ]
+                },
+                "region": {
+                  "$ref": "#/definitions/region/DE"
+                }
+              }
+            },
+            {
+              "properties": {
+                "country": {
+                  "enum": [
+                    "NL"
+                  ]
+                },
+                "region": {
+                  "$ref": "#/definitions/region/NL"
+                }
+              }
+            },
+            {
+              "properties": {
+                "country": {
+                  "enum": [
+                    "GB"
+                  ]
+                },
+                "region": {
+                  "$ref": "#/definitions/region/GB"
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "role": {
+      "title": "Select type",
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "NATURAL_PERSON",
+        "LEGAL_ENTITY"
+      ],
+      "enumNames": [
+        "Natural person",
+        "Legal entity"
+      ],
+      "default": "NATURAL_PERSON"
+    }
+  },
+  "dependencies": {
+    "role": {
+      "oneOf": [
+        {
+          "properties": {
+            "role": {
+              "enum": [
+                "NATURAL_PERSON"
+              ]
+            },
+            "personalDetails": {
+              "title": "Personal details",
+              "type": "object",
+              "properties": {
+                "title": {
+                  "$ref": "#/definitions/title"
+                },
+                "lastName": {
+                  "title": "Last name",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 64
+                },
+                "firstName": {
+                  "title": "First name",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 64
+                },
+                "nationality": {
+                  "title": "Nationality",
+                  "$ref": "#/definitions/country"
+                }
+              },
+              "required": [
+                "lastName",
+                "firstName"
+              ]
+            },
+            "company": {
+              "title": "Company details",
+              "type": "object",
+              "properties": {
+                "company": {
+                  "title": "Company",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 115
+                },
+                "department": {
+                  "title": "Department",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 64
+                }
+              }
+            },
+            "contactDetails": {
+              "title": "Contact details",
+              "type": "object",
+              "properties": {
+                "residenceAddress": {
+                  "title": "",
+                  "$ref": "#/definitions/address"
+                },
+                "telephone": {
+                  "title": "Telephone",
+                  "$ref": "#/definitions/phone"
+                },
+                "fax": {
+                  "title": "Fax",
+                  "$ref": "#/definitions/phone"
+                },
+                "email": {
+                  "title": "Email",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "email",
+                  "maxLength": 64
+                },
+                "differentCorrespondenceAddress": {
+                  "title": "Different correspondence address",
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "dependencies": {
+                "differentCorrespondenceAddress": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "differentCorrespondenceAddress": {
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "correspondenceAddress": {
+                          "title": "",
+                          "$ref": "#/definitions/address"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "differentCorrespondenceAddress": {
+                          "enum": [
+                            false
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "required": [
+            "personalDetails"
+          ]
+        },
+        {
+          "properties": {
+            "role": {
+              "enum": [
+                "LEGAL_ENTITY"
+              ]
+            },
+            "companyDetails": {
+              "title": "Company Details",
+              "type": "object",
+              "properties": {
+                "company": {
+                  "title": "Company",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 115
+                },
+                "department": {
+                  "title": "Department",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 64
+                },
+                "placeOfBusiness": {
+                  "$ref": "#/definitions/country",
+                  "title": "i18n(Principal place of business)"
+                }
+              },
+              "required": [
+                "company"
+              ]
+            },
+            "contactDetails": {
+              "title": "Contact Details",
+              "type": "object",
+              "properties": {
+                "residenceAddress": {
+                  "title": "",
+                  "$ref": "#/definitions/address"
+                },
+                "telephone": {
+                  "title": "Telephone",
+                  "$ref": "#/definitions/phone"
+                },
+                "fax": {
+                  "title": "Fax",
+                  "$ref": "#/definitions/phone"
+                },
+                "email": {
+                  "title": "Email",
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "format": "email",
+                  "maxLength": 64
+                },
+                "differentCorrespondenceAddress": {
+                  "title": "Different correspondence address",
+                  "type": "boolean",
+                  "default": false
+                }
+              },
+              "dependencies": {
+                "differentCorrespondenceAddress": {
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "differentCorrespondenceAddress": {
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "correspondenceAddress": {
+                          "title": "",
+                          "$ref": "#/definitions/address"
+                        }
+                      }
+                    },
+                    {
+                      "properties": {
+                        "differentCorrespondenceAddress": {
+                          "enum": [
+                            false
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,348 @@
+= Communication Address
+
+[WARNING]
+This is a copy/paste of the LT documentation and should be updated after the configuration gets ported and adapted to core from LT.
+
+== Business case
+
+The *Communication Address* represents one special subsection of the *Party section* inside the Submission form that should generally contain, as it name suggests, the contact information of one of the parties that should be used for communication purposes with the EPO. For most of the cases, the data of this section should be a copy of the contact details of one of the defined Parties, but there might be exceptions when extra specific information has to be defined or small updates (that to not apply to the original party information) are needed. Also, the Communication Address needs to adhere to a very clear set of rules that each country defines, so the validation step has to enforce that correct data gets collected, bothering the user as little as possible.
+
+Based on the previous mentions, the idea of supporting automatic generation and maintenance occurred. Adding support for such a process brings together with it some extra prerequisites from the UX perspective:
+
+****
+* the automatic handling has to be transparent, so that the user can understand if his actions over the Parties would determine updates on the Communication Address
+* users should be able to opt out easily from the automatic handling whenever they want to maintain the Communication Address manually
+* users should be able to opt in easily to automatic handling and understand the consequences of doing this, in regard to the data they have manually maintained up to that point
+****
+
+[frame=none, grid=none]
+|===
+| |
+|image:ca/ca-form-np.png[Communication Address form]
+|image:ca/ca-form-le.png[Communication Address form]
+|image:ca/ca-item.png[Communication Address form]
+|image:ca/ca-summary.png[Communication Address form]
+|===
+
+
+== Technical introduction
+
+In order to cover all these business requirements, the core code was extended to support extra functionality like:
+
+* *the possibility to configure form arrays to use confirmation dialogs on specific operations* +
+e.g.: When an applicant used as a source for the Communication Address gets edited, a dialog is displayed asking the user to acknowledge that his changes performed on that applicant might automatically update the communication address.
++
+[NOTE]
+_The RJSF `FormEntitiesArrayTemplate` control and hook was customized to allow all the array actions to trigger a confirmation dialog (adding, deleting, editing, reordering, canceling or submitting a form entity)._
+
+* *the possibility to run a Camunda decision to  check if the user action would need* to have a confirmation dialog displayed +
+e.g.: Editing an Applicant that is not the source of the Communication Address should not trigger the display of a confirmation dialog, as opposed to editing the Applicant that is the actual source.
++
+.Custom Camunda rule
+[example]
++
+[NOTE]
+_A new type of Camunda decision was introduced via the `CustomRuleService`
+that supports the possibility to run a very generic decision with a map input and map result_
+
+== Configuration
+
+The steps needed for configuration depend whether this is the first procedure that is setup for a country or not. Obviously, the common resources need to be setup only once per country, so subsequent procedures would not need this effort. +
+The configuration requires adding or updating definitions to the following resources:
+
+....
+- /common
+        address.jsonschema
+        parties.jsonschema
+        definitions.dmn
+        migration.dmn
+        parties.dmn
+- /procedure
+        uiSchema.json
+        businessRules.dmn
+- /locales
+        each resource.json
+....
+{empty} +
+
+=== Address definitions
+For a new country, the  `address.jsonschema` has to be added to the `/common/form`. This file contains definitions for the Communication Address components like: _all the address fields, the title field of the summary item card (natural person / legal entity variants)_.
+
+
+
+=== Parties Jsonschema definition
+There are 2 steps for adding the jsonschema definition to the Parties:
+
+. adding the array definition to the Parties object properties definition (referencing the array item defined in the root definitions)
++
+[source, json]
+----
+"communicationAddress": {
+  "title": "i18n(parties.communicationAddress)",
+  "type": "array",
+  "items": {
+    "$ref": "#/definitions/communicationAddress"
+  }
+----
+. adding the array item definition of type object to the root definitions
++
+[source,json]
+----
+include::example$parties.jsonschema[lines=583..671]
+----
++
+The item definition is mainly a wrapper over the `correspondenceAddress` object that depends on the `role` enumeration field with some added technical fields:
++
+* `id`: GUID generated with Camunda code as item identifier
+* `state`: has the value *CONFIRMED* when the party is not being edited
+* `sequenceNumber`: 1 based index used representing the order of the item within the array
+* `coupled`: a boolean flag that indicates if the Communication Address is being filled automatically
+
+The `coupled` field needs to be configured to *show a confirmation dialog when its value is switched to true* to warn the user that his data might be overwritten.
+
+Also, the `triggerPostProcess` is set to *true* so that the Communication Address get derived again after the checkbox gets checked. This is done within the rule `*postprocess-parties-update-communication-address*`.
+
+[NOTE]
+The configuration of the `coupled` field has to be done in the *jsonschema* because the boolean definitions do not use *uischema*.
+
+{empty} +
+
+
+=== Procedure `uischema` definition
+Each procedure then needs a set of *uischema* updates (_as for now there is no common uischema definition_).
+
+. Adding the `communicationAddress` uischema entry:
++
+[source, json]
+----
+"communicationAddress": {
+  "kind": "party",
+  "ui:title": "i18n(parties.communicationAddress)",
+  "ui:titleSingular": "i18n(parties.communicationAddress.add)",
+  "ui:tooltip": "i18n(parties.tooltip.communicationAddress)",
+  "showInfoMessage": true,
+  "showErrorMessage": false,
+  "ui:infoMessage": "parties.info.communicationAddress",
+  "ui:errorMessage": "parties.error.communicationAddress",
+  "ui:hideAddButton": true,
+  "ui:hideAddAddressBookButton": true,
+  "ui:hideDeleteButton": true,
+  "addButton": {
+	"ui:hidden": false
+  },
+  "addContactButton": {
+	"ui:hidden": true
+  },
+  "ui:summary": {
+	"titles": [
+	  {
+		"title": "Address",
+		"value": "item(correspondenceAddress.streetAddress) - item(correspondenceAddress.postalCode) - item(correspondenceAddress.poBox) - item(correspondenceAddress.city)"
+	  }
+	]
+  },
+  "ui:summaryItem": {
+	"icon": "markunread",
+	"titles": [
+	  {
+		"case": {
+		  "role": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+		},
+		"value": "item(correspondenceAddress.firstName) item(correspondenceAddress.lastName)"
+	  },
+	  {
+		"case": {
+		  "role": "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+		},
+		"value": "item(correspondenceAddress.company)"
+	  }
+	],
+	"entries": [
+	  {
+		"case": {
+		  "role": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+		},
+		"title": "i18n(parties.name)",
+		"value": "item(correspondenceAddress.firstName) item(correspondenceAddress.lastName)"
+	  },
+	  ...
+	  {
+		"case": {
+		  "role": "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+		},
+		"title": "i18n(parties.communicationAddress.company)",
+		"value": "item(correspondenceAddress.company)"
+	  },
+	  ...
+	]
+  },
+  "items": {
+	"id": {
+	  "ui:widget": "hidden",
+	  "classNames": "hidden"
+	},
+	"state": {
+	  "ui:widget": "hidden",
+	  "classNames": "hidden"
+	},
+	"sequenceNumber": {
+	  "ui:widget": "hidden",
+	  "classNames": "hidden"
+	},
+	"coupled": {
+	  "ui:widget": "confirmedCheckboxWidget"
+	},
+	"role": {
+	  "ui:widget": "radio"
+	},
+	"correspondenceAddress": {
+	  "ui:options": {
+		"style": {
+		  "& > div > div": {
+			"&:nth-child(4), &:nth-child(5)": {
+			  "max-width": "14rem"
+			}
+		  }
+		}
+	  },
+	  "firstName": {
+		"ui:options": {
+		  "style": {
+			"width": "27rem"
+		  }
+		},
+		"ui:widget": "typicalText"
+	  },
+	  "lastName": {
+		"ui:options": {
+		  "style": {
+			"width": "27rem"
+		  }
+		},
+		"ui:widget": "typicalText"
+	  },
+	  "company": {
+		"ui:options": {
+		  "style": {
+			"width": "27rem"
+		  }
+		},
+		"ui:widget": "typicalText"
+	  },
+	  "streetAddress": {
+		"ui:widget": "typicalTextArea",
+		"ui:options": {
+		  "style": {
+			"width": "27rem"
+		  }
+		}
+	  },
+	  ...
+	}
+  }
+}
+----
++
+This definition has some noteworthy aspects:
+
+** `showInfoMessage` is `true` so that an info message section informs the user that a Communication Address will be generated once a Party will be defined
+** `showErrorMessage` defaults to `false`, but can be enabled in the Camunda rules in order to display error messages specifically for the situations when the generated Communication Address does not fulfil critical business requirements (_like having a home country address for example_)
+** the *Add* button is hidden with the `true` value on `ui:hideAddButton` on the item card (as only one address has to defined)
+** the *Delete* button is hidden with the `true` value on `ui:hideDeleteButton` on the item card (once generated, the Communication Address cannot be manually removed)
+** the `ui:summary` entry defines the value of the entry visible inside *the Parties Summary section card*
+** the `ui:summaryItem` entry defines the icon, title and key value properties that appear on *the item summary card*
+** inside `items` all the field ui properties are defined, mainly the hidden technical fields, then the rest of the fields that have the associated widget +
+*_a special note for the `coupled` field that uses the `confirmedCheckboxWidget` in order to be able to request user confirmation when switching the autofill to on_
+
+. For all the other parties *the confirmation alert dialog configuration* has to be added following the following logic:
++
+For all the Party types that do not interfere with the Communication Address (like the Inventors), the `ui:config` property has to be set with fixed warning messages for the considered array operations (mainly for *delete*) as in the example below:
++
+[source, json]
+----
+  "ui:config": {
+    "popup": {
+      "enabled": true,
+      "type": "warning",
+      "operationTypes": "delete",
+      "titleText": "i18n(messages.are-you-sure)",
+      "messageText": "i18n(messages.confirmation.party.delete)",
+      "confirmButtonText": "i18n(parties.update.default.popup.confirm)",
+      "cancelButtonText": "i18n(parties.update.default.popup.cancel)"
+    }
+  }
+----
++
+*_This will apply the configured texts on a confirmation alert dialog for the configured `operationTypes`._
++
+For all the Party types that represent potential data source for the Communication Address, we have to add a configuration that uses custom texts and points to a *custom Camunda rule* whose purpose is to define whether the party array operation (adding, editing, etc) should trigger the dialog display. +
+The rule defines when the dialog is needed and returns the *text resources* for the affirmative case or `null` otherwise.
++
+[source, json]
+----
+  "ui:config": {
+    "popup": {
+      "enabled": true,
+      "type": "warning",
+      "useCustomTexts": true,
+      "customRuleName": "custom-parties-updated"
+    }
+  }
+----
+{empty} +
+
+
+=== Camunda Common Definitions
+Inside the `/custom/rules/definitions.dmn` one decision should be created with all the Communication Address utility function definitions. Here is the list of the currently defined ones:
+
+* `firstConfirmedApplicant`: extracts from the input submission the first *applicant* with the state *CONFIRMED*
+* `firstConfirmedRepresentative`: extracts from the input submission the first *representative* with the state *CONFIRMED*
+* `firstConfirmedParty`: uses the previous two to extract the first representative if it exists or the firs applicant otherwise
+* `hasCommunicationAddress`: checks if the input submission has a communication address item within the Parties
+* `removeCommunicationAddress`: empties the communicationAddress array
+* `shouldProcessCommunicationAddress`: checks the input `event` name to see if it should trigger the derivation of the Communication Address
+* `isCommunicationAddressCoupled`: true if the Communication Address item exists and has the coupled flag set
+* `getCommAddressSourcePartyId`: returns the `derivedFrom` value or null if there is no Communication Address
+* `deriveFromParties`: derives the data from the existing parties and adds it to the input submission
+
+{empty} +
+
+
+=== Migration of existing Communication Addresses
+The migration decision is responsible to update existing DRAFT submissions that were handled with the former logic based on the `manuallyEdited` field. This is a `postprocess` rule that uses the specifically created event called `migrationEvent` triggered on each opening of a submission. +
+{empty} +
+_Do not forget to import the needed common decisions within the `import-common-decisions` rule._
+[NOTE]
+Use this decision only for the countries that need migration.
+{empty} +
+
+
+=== Camunda common Parties decisions
+This DMN file contains most of the Communication Address logic, having all types of decisions:
+
+* *uischema*: decisions that display form markers with warnings or errors
+* *workflow*: decisions that display workflow errors based on the country requirements
+* *postprocess*: decisions that update the coupled Communication Address when related Parties change
+* *custom*: a single decision responsible to deliver the adequate confirmation dialog message for party item operations (when needed)
+
+Details on each common rule:
+
+. `uischema-parties-communication-address-info`: displays the info caption when no Communication Address exists
+. `uischema-parties-communication-address-error`: displays the error caption when there is a Communication Address, but its country does not match the home country
+. `uischema-parties-communication-address-coupled`: disables the fields that should not be editable when coupled
+. `workflow-parties-emailAndTelephoneAreRequiredCa`: creates error messages for the required fields that have no values
+. `workflow-parties-requiredAddress`: creates an error message if there is no CONFIRMED Communication Address
+. `postprocess-parties-update-communication-address`: updates (or removes) the Communication Address after Party updates when coupled
+. `custom-parties-updated`: decision that handles Party item operations and decides whether a confirmation dialog should be displayed based on the event type, and based on the id(s) of the touched items. +
+The code here should handle all the relevant array events when the user should be warned about a potential impact on the Communication Address. For the event / ids that have no impact, the code should return `null`, otherwise a specific message for the given event should be returned.
+
+{empty} +
+
+
+=== Procedure business rules
+The procedure business rules should not have generally specific needs. All that is needed is to add the references to the needed common rules described above: of type `definitions`, `migration` and `parties`.
+
+{empty} +
+
+=== Locale resources
+For each defined locale the following entries have to be added:

@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+* ***************************************************************************
+Swedish EP Tranlsation Request  2009 JANUARY
+Based on WIPO Request v1.3 2005 JANUARY
+ ****************************************************************************
+Contacts:                                                      			       
+B Dickman		
+***************************************************************************** 
+Version: v0.1
+Date: 12 January 2009
+*****************************************************************************
+Revision history
+*****************************************************************************
+Version 0.2: January 2009
+
+
+***************************************************************************** 
+-->
+<!--  ENTITIES:  -->
+<!--<!ENTITY % name_group "((name | (prefix? , (last-name | orgname) , first-name? , suffix? , iid? , role? , orgname? , department? , synonym*)) , registered-number?)">-->
+<!ENTITY % name_group "(((prefix? , (last-name | orgname) , first-name? , suffix? , iid? , role? , orgname? , department? , synonym*) | name) , registered-number?)">
+<!ENTITY % address_group "((street , postcode ,mailcode? , city, country) | text)">
+<!ENTITY % rep_type " rep-type (agent | attorney | common-representative ) #REQUIRED">
+<!ENTITY % se_boolean "(true  | false)">
+<!ENTITY % page_count " page-count CDATA #IMPLIED">
+<!ENTITY % base_attributes " lang CDATA #REQUIRED dtd-version CDATA #IMPLIED file CDATA #IMPLIED status CDATA #IMPLIED">
+<!ENTITY % date_produced " date-produced CDATA #IMPLIED">
+<!ENTITY % produced_by " produced-by (applicant | RO | ISA | IPEA | IB | DO | EO | national-office | regional-office ) #REQUIRED">
+<!ENTITY % ro " ro CDATA #REQUIRED">
+<!-- root element for se-request-->
+<!ELEMENT se-ep-request ((file-reference-id?, request-petition, invention-title*, parties, search-authority?, declarations?, se-check-list?, figure-to-publish?, language-of-filing?, signatories?, dtext?, office-specific-data?) | doc-page+)>
+<!ATTLIST se-ep-request
+	%base_attributes; 
+	%date_produced; 
+	%ro; 
+	%produced_by; 
+>
+<!-- Applicant's or agent's file reference, if desired, 12 characters maximum-->
+<!ELEMENT file-reference-id (#PCDATA)>
+<!-- The request petition -->
+<!ELEMENT request-petition (#PCDATA)>
+<!-- Title of the Invention: (INID 54, ST.32:B540/B542) -->
+<!ELEMENT invention-title (#PCDATA | b | i | u | sup | sub)*>
+<!ATTLIST invention-title
+	id ID #IMPLIED
+	lang CDATA #IMPLIED
+>
+<!-- PARTIES PAGE APPLICANTS, INVENTOR(S),AGENTs ADDRESS FOR CORRESPONDENCE -->
+<!ELEMENT parties (applicants, agents?, inventors?, correspondence-address?)>
+<!-- Applicant information: -->
+<!ELEMENT applicants (applicant*)>
+<!ELEMENT applicant (addressbook+, nationality, residence, us-rights*)>
+<!ATTLIST applicant
+	sequence CDATA #REQUIRED
+	app-type (applicant | applicant-inventor) #REQUIRED
+	designation (all | all-except-us | us-only | as-indicated) #IMPLIED
+>
+<!-- Agents-->
+<!ELEMENT agents (agent*)>
+<!ELEMENT agent (addressbook, se-pow-att?, se-number-general-power-of-attorney?)>
+<!ATTLIST agent
+	sequence CDATA #REQUIRED
+	%rep_type; 
+>
+<!ELEMENT se-pow-att EMPTY>
+<!ATTLIST se-pow-att
+	se-ch-pow-att %se_boolean; #REQUIRED
+>
+<!ELEMENT se-number-general-power-of-attorney EMPTY>
+<!ATTLIST se-number-general-power-of-attorney
+	se-ch-gen-pow-att %se_boolean; #REQUIRED
+	se-number-general-power-of-attorney CDATA #REQUIRED
+>
+<!-- Inventors-->
+<!ELEMENT inventors (inventor*)>
+<!ELEMENT inventor (addressbook+)>
+<!ATTLIST inventor
+	sequence CDATA #REQUIRED
+	designation (all | all-except-us | us-only | as-indicated) #IMPLIED
+>
+<!ELEMENT correspondence-address (addressbook+)>
+<!-- ADDRESSBOOK GROUP: -->
+<!ELEMENT addressbook ((%name_group;, address, phone*, email*, organisation-number, url*, ead*, dtext?) | text)>
+<!ATTLIST addressbook
+	lang CDATA #IMPLIED
+>
+<!ELEMENT address (%address_group;)>
+<!ELEMENT last-name (#PCDATA)>
+<!ELEMENT first-name (#PCDATA)>
+<!ELEMENT street (#PCDATA)>
+<!ELEMENT phone (#PCDATA)>
+<!ELEMENT email (#PCDATA)>
+<!ELEMENT organisation-number (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT ead (#PCDATA)>
+<!ELEMENT dtext (#PCDATA)>
+<!-- Priority Claim (INID 30, ST.32:B300)-->
+
+<!--International Searching Authority-->
+<!ELEMENT search-authority (isa, earlier-search-request?)>
+<!-- DECLARATIONS -->
+<!ELEMENT declarations (declaration1?, declaration2?, declaration3?, declaration4?, declaration5?)>
+<!-- Check list of included  documents-->
+<!ELEMENT se-check-list (cl-request?, cl-description?, cl-claims?, cl-abstract?, cl-drawings?, cl-fee-calculation?, cl-abstract-figures?, cl-other-document*)>
+<!-- Figure of the drawings which should accompany the abstract-->
+<!ELEMENT figure-to-publish (fig-number+)>
+<!-- Filing language, ISO639 language code, e.g, en,de,ja, etc. (INID 25, ST.32:B250)-->
+<!ELEMENT language-of-filing (#PCDATA)>
+<!-- Signatories-->
+<!ELEMENT signatories (signatory+)>
+<!-- The signature must be that of the applicant (if there are several applicants, all must sign); however, the signature may be that of the agent, or the common representative, 
+where a separate power of attorney appointing the agent or the common representative, respectively, or a copy of a general power of attorney is already in possession of the 
+receiving Office, is furnished. Indicate the capacity of the signer with 'signatory-capacity'-->
+<!ELEMENT signatory (%name_group;, address?, electronic-signature, signatory-capacity?)>
+<!-- The capacity in which the person signs-->
+<!ELEMENT signatory-capacity (#PCDATA)>
+<!-- A PKI / PKCS #7 digital signature data type-->
+<!ELEMENT enhanced-signature (pkcs7)>
+<!-- PKCS7 digital signature -->
+<!ELEMENT pkcs7 EMPTY>
+<!-- A non-PKI electronic signature-->
+<!ELEMENT basic-signature (fax-image | text-string | click-wrap)>
+<!-- A simple 'signature'; e.g., clicking a button labeled 'accept' or 'I agree'-->
+<!ELEMENT click-wrap EMPTY>
+<!-- A simple text string is to be used as the basic electronic signature; e.g., John Doe 
+<text-string>/jd/</text-string>-->
+<!ELEMENT text-string (#PCDATA)>
+<!-- A signature represented by electronic means-->
+<!ELEMENT electronic-signature (basic-signature | enhanced-signature)>
+<!ATTLIST electronic-signature
+	date CDATA #REQUIRED
+	place-signed CDATA #IMPLIED
+>
+<!-- A TIFF image of a signature-->
+<!ELEMENT fax-image EMPTY>
+<!ATTLIST fax-image
+	file CDATA #REQUIRED
+>
+<!--Office-specific elements -->
+<!ELEMENT office-specific-data (past-record?, remarks?)>
+<!ATTLIST office-specific-data
+	office CDATA #REQUIRED
+	office-dtd CDATA #REQUIRED
+	file CDATA #REQUIRED
+	id CDATA #IMPLIED
+	lang CDATA #IMPLIED
+	status CDATA #IMPLIED
+>
+
+<!ELEMENT deposit-account-number (#PCDATA)>
+<!ELEMENT past-record (ep-application, translation-type)>
+
+<!--Details about translated EP patent-->
+<!ELEMENT ep-application (application-number, publication-number, grant-date)>
+<!ATTLIST ep-application
+	lang CDATA #REQUIRED
+>
+
+<!ELEMENT application-number (#PCDATA)>
+
+<!ELEMENT publication-number (#PCDATA)>
+
+<!ELEMENT grant-date (#PCDATA)>
+
+<!ELEMENT translation-type (european-patent| correction-amendment |se-section-88)?>
+
+<!ELEMENT european-patent EMPTY>
+
+<!ELEMENT correction-amendment EMPTY>
+<!ATTLIST correction-amendment
+	type CDATA #REQUIRED
+	published CDATA #REQUIRED
+>
+
+<!ELEMENT se-section-88 EMPTY>
+
+<!ELEMENT remarks (remark*)>
+<!ELEMENT remark (Author?, Subject?, Text?)>
+<!ATTLIST remark
+	seqno CDATA #REQUIRED
+	date CDATA #IMPLIED
+	rem-type (remark | private-remark) #IMPLIED
+	rem-kind (appl | nat-office | EPO) #IMPLIED
+>
+<!--Remark author-->
+<!ELEMENT Author (#PCDATA)>
+<!--Remark subject-->
+<!ELEMENT Subject (#PCDATA)>
+<!--Remark text-->
+<!ELEMENT Text (#PCDATA)>
+
+<!ELEMENT doc-page EMPTY>
+<!ATTLIST doc-page
+	id ID #IMPLIED
+	he NMTOKEN #REQUIRED
+	wi NMTOKEN #REQUIRED
+	type (jpg | pdf | tif) #REQUIRED
+	alt CDATA #IMPLIED
+	pp CDATA #IMPLIED
+	ppf CDATA #IMPLIED
+	ppl CDATA #IMPLIED
+	file CDATA #REQUIRED
+	color (color | bw) #IMPLIED
+	orientation (portrait | landscape) "portrait"
+>
+<!--checklist; the request-->
+<!ELEMENT cl-request EMPTY>
+<!ATTLIST cl-request
+	%page_count; 
+>
+<!--checklist; a description -->
+<!ELEMENT cl-description EMPTY>
+<!ATTLIST cl-description
+	%page_count; 
+	ppf CDATA #IMPLIED
+	ppl CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+	lang CDATA #IMPLIED
+>
+<!--checklist; claims -->
+<!ELEMENT cl-claims EMPTY>
+<!ATTLIST cl-claims
+	%page_count; 
+	number-of-claims CDATA #IMPLIED
+	ppf CDATA #IMPLIED
+	ppl CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+	lang CDATA #IMPLIED
+>
+<!--checklist; the abstract-->
+<!ELEMENT cl-abstract EMPTY>
+<!ATTLIST cl-abstract
+	%page_count; 
+	figures-publshed CDATA #IMPLIED
+	ppf CDATA #IMPLIED
+	ppl CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+	lang CDATA #IMPLIED
+>
+<!--checklist; drawings-->
+<!ELEMENT cl-drawings EMPTY>
+<!ATTLIST cl-drawings
+	%page_count; 
+	ppf CDATA #IMPLIED
+	ppl CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+	lang CDATA #IMPLIED
+>
+<!-- checklist; a fee calculation sheet -->
+<!ELEMENT cl-fee-calculation EMPTY>
+
+<!-- Additional check list items:-->
+<!ELEMENT cl-abstract-figures EMPTY>
+<!ATTLIST cl-abstract-figures
+	quantity CDATA #IMPLIED
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+<!--checklist; an additional document is being furnished -->
+<!ELEMENT cl-other-document (#PCDATA)>
+<!ATTLIST cl-other-document
+	%page_count; 
+	applicant-file-name CDATA #IMPLIED
+	eolf-file-name CDATA #IMPLIED
+>
+<!-- Declaration as to non-prejudical disclosures or exceptions to lack of novelty (Rules 4.17(v) and 51bis.1(a)(v))-->
+<!ELEMENT declaration5 EMPTY>
+<!ATTLIST declaration5
+	quantity CDATA #REQUIRED
+>
+<!-- Declaration of inventorship (Rules 4.17(iv) and 51bis.1(a)(iv)) for the purposes of the designation of the United States of America-->
+<!ELEMENT declaration4 EMPTY>
+<!ATTLIST declaration4
+	quantity CDATA #REQUIRED
+>
+<!-- Declaration as applicant's entitlement, as at the international filing date, to claim the priority of the earlier application, 
+where the applicant is not the applicant who filed the earlier application or where the applicant's name has changed since the
+filing of the earlier application (Rules 4.17(iii) and 51bis.1(a)(iii))-->
+<!ELEMENT declaration3 EMPTY>
+<!ATTLIST declaration3
+	quantity CDATA #REQUIRED
+>
+<!-- Declaration as applicant's entitlement, as at the international filing date, to apply for and be granted a patent (Rules 4.17(ii) and 51bis.1(a)(ii)),
+ in a case where the declaration under Rule 4.17(iv) is not appropriate-->
+<!ELEMENT declaration2 EMPTY>
+<!ATTLIST declaration2
+	quantity CDATA #REQUIRED
+>
+<!-- Declaration as to the identity of the inventor (Rules 4.17(i) and 51bis.1(a)(i))-->
+<!ELEMENT declaration1 EMPTY>
+<!ATTLIST declaration1
+	quantity CDATA #REQUIRED
+>
+<!-- Document identification refers to patents (and patent applications) only. See WIPO ST.14-->
+<!ELEMENT document-id (country, doc-number, kind?, name?, date?)>
+<!ATTLIST document-id
+	lang CDATA #IMPLIED
+>
+<!-- This person is successor to the rights of an inventor who is deceased, insane, or legally incapacitated, for the purposes of the designation of the United States of America-->
+<!ELEMENT us-rights (#PCDATA)>
+<!ATTLIST us-rights
+	to-dead-inventor CDATA #REQUIRED
+	kind (heir | heiress | executor | executrix | estate | legal-representative | administrator | administratrix | legal-representatives | heirs | executors | legal-heirs) #REQUIRED
+>
+<!-- Name: If no distinction or detail can be given. Also to be used for: personal (natural person) and corporate (legal entity) names-->
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name
+	name-type (legal | natural) #IMPLIED
+>
+<!-- Underscore: style - single is default-->
+<!ELEMENT u (#PCDATA | b | i | smallcaps)*>
+<!ATTLIST u
+	style (single | double | dash | dots) "single"
+>
+<!-- PCT/RO/101 Box IX: the number of the figure which should accompany the abstract. (ST.32:B598)-->
+<!ELEMENT fig-number (#PCDATA)>
+<!-- Sequential identification of priority documents. PCT/RO/101 Box VI.-->
+<!ELEMENT sequence-number (#PCDATA)>
+<!-- Reference number of general power of attorney.-->
+<!ELEMENT ref-number (#PCDATA)>
+<!-- Request to use results of earlier search; reference to that search-->
+<!ELEMENT earlier-search-request (document-id+)>
+<!-- International Search Authority; international search to be carried out by-->
+<!ELEMENT isa (country)>
+<!-- The priority document is attached to the application-->
+<!ELEMENT priority-doc-attached EMPTY>
+<!-- The receiving office is requested to prepare and transmit to the IB a certified copy of the earlier application-->
+<!ELEMENT priority-doc-requested EMPTY>
+<!-- Where the earlier application is an ARIPO application,indicate at least one country party to the PARIS convention for the protection of industrial property or one 
+member of the WTO for which that earlier application was filed. -->
+<!ELEMENT office-of-filing ((region, country?) | country)>
+<!-- Designation Of States 
+<!ELEMENT designation-of-states (designation-pct, (precautionary-designation-statement?, exclusion-from-designation?))>
+ -->
+<!-- Rule 4.9(b),(c) In addition to the designations made above [i.e, designation-of states], the applicant also makes under Rule 4.9(b) all other designations which 
+would be permitted under the PCT except any designation(s) indicated in the Supplemental Box [i.e., exclusion-from-designation] as being excluded form the scope 
+of this statement. The applicant declares that those additional designations are subject to confirmation and that any designation which is not confirmed before the 
+expiration of 15 months from the priority date is to be regarded as withdrawn by the applicant at the expiration of that time limit.
+<!ELEMENT precautionary-designation-statement (#PCDATA)>
+-->
+<!-- State(s) excluded from precautionary designations under Rule 4.9(b)
+<!ELEMENT exclusion-from-designation (regional*, national?)>
+-->
+<!-- The Contracting States in which protection is desired (Rules 4.1(a)(iv) and 4.9(a))
+<!ELEMENT designation-pct (regional*, national?, new-designation-country*)>
+-->
+<!-- New PCT member country states (e.g., not yet published in WIPO ST.3, joined after PCT electronic filing software published)
+<!ELEMENT new-designation-country (#PCDATA)>
+-->
+<!-- The States for which protection or exclusion (depending upon context) is desired
+<!ELEMENT national (country, protection-request*)+>
+-->
+<!-- Regional (as opposed to national) protection being sought 
+<!ELEMENT regional (region, (country, protection-request*)+, any-other-state?)>
+-->
+<!-- Any other state in which protection is being sought
+<!ELEMENT any-other-state EMPTY>
+-->
+<!-- Protection request for the designated office.
+<!ELEMENT protection-request (kind-of-protection, document-id?)>
+-->
+<!-- Date: components of a date. Format: YYYYMMDD-->
+<!ELEMENT date (#PCDATA)>
+<!-- Document kind code; e.g., A1 (INID 13, ST.32:B130)-->
+<!ELEMENT kind (#PCDATA)>
+<!-- The number of the referenced patent (or application) document-->
+<!ELEMENT doc-number (#PCDATA)>
+<!-- Kind of protection; e.g., patent, utility model
+<!ELEMENT kind-of-protection (#PCDATA)>
+-->
+<!-- Information regarding Agents or common representatives-->
+<!-- The region for which protection or exclusion (depending upon context) is desired.-->
+<!ELEMENT region (country)>
+<!-- Country of residence-->
+<!ELEMENT residence (country)>
+<!-- Country of nationality-->
+<!ELEMENT nationality (country)>
+<!-- If no structure is possible, enter text (without markup)-->
+<!ELEMENT text (#PCDATA)>
+<!-- Country: use ST.3 country code; e.g. DE, FR, GB, NL, etc. Also includes EP, WO-->
+<!ELEMENT country (#PCDATA)>
+<!-- Postal code or zip code-->
+<!ELEMENT postcode (#PCDATA)>
+<!-- Region of country; e.g., state, province, etc.
+<!ELEMENT state (#PCDATA)>
+-->
+<!-- County, parish, department, etc (mainly UK, USA)
+<!ELEMENT county (#PCDATA)>
+-->
+<!-- City or town name-->
+<!ELEMENT city (#PCDATA)>
+<!-- Post Office Box number
+<!ELEMENT pobox (#PCDATA)>
+-->
+<!-- Organizational mail code-->
+<!ELEMENT mailcode (#PCDATA)>
+<!-- Registered number-->
+<!ELEMENT registered-number (#PCDATA)>
+<!-- Synonym-->
+<!ELEMENT synonym (#PCDATA)>
+<!-- Department, division, section, etc. name-->
+<!ELEMENT department (#PCDATA)>
+<!-- Organisation name or company name-->
+<!ELEMENT orgname (#PCDATA)>
+<!-- Role; e.g., President, Chairman, etc.-->
+<!ELEMENT role (#PCDATA)>
+<!-- Individual id-->
+<!ELEMENT iid (#PCDATA)>
+<!-- Name suffix (e.g., II, Jr., Dip., Ing., BA, etc.) -->
+<!ELEMENT suffix (#PCDATA)>
+<!-- Title: e.g., Mr., Mrs., Dr. etc-->
+<!ELEMENT prefix (#PCDATA)>
+<!-- Subscripted text-->
+<!ELEMENT sub (#PCDATA | b | u | i | sup2 | sub2)*>
+<!-- Superscripted text-->
+<!ELEMENT sup (#PCDATA | b | u | i | sup2 | sub2)*>
+<!-- Subscripted text-->
+<!ELEMENT sub2 (#PCDATA | b | u | i)*>
+<!-- Superscripted text-->
+<!ELEMENT sup2 (#PCDATA | b | u | i)*>
+<!-- Bold formatting for text-->
+<!ELEMENT b (#PCDATA | i | u | smallcaps)*>
+<!-- Italic formatting for text-->
+<!ELEMENT i (#PCDATA | b | u | smallcaps)*>
+<!-- Small capitals-->
+<!ELEMENT smallcaps (#PCDATA | b | u | i)*>

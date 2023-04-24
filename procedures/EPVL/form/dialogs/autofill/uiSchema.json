@@ -1,0 +1,117 @@
+{
+  "basicFilingInfo": {
+    "scrollSection": true,
+    "kind": "basic",
+    "ui:field": "FormSectionField",
+    "ui:icon": "assignment",
+    "ui:order": [
+      "userReference",
+      "typeOfProtection",
+      "definitiveProtectionSelection",
+      "applicationNumberContainer"
+    ],
+    "userReference": {
+      "$ref": "/procedures/common/form/uischema/basic-filing.json/definitions/userReferenceDialog",
+      "ui:options": {
+        "style": {
+          "width": "27rem",
+          "& > div > div": {
+            "&:nth-child(1)": {
+              "max-width": "18rem",
+              "& > div": {
+                "width": "18rem"
+              }
+            }
+          }
+        }
+      }
+    },
+    "typeOfProtection": {
+      "ui:widget": "radio",
+      "ui:title": "i18n(basic-filing.type-of-protection)",
+      "ui:options": {
+        "style": {
+          "max-width": "20rem",
+          "& > label": {
+            "color": "#21252C",
+            "font-weight": "bold",
+            "margin-bottom": "1rem",
+            "margin-top": "1rem"
+          }
+        }
+      }
+    },
+    "definitiveProtectionSelection": {
+      "case": {
+        "typeOfProtection": "definitive",
+        "ui:disabled": true
+      },
+      "ui:options": {
+        "style": {
+          "width": "20rem"
+        }
+      }
+    },
+    "applicationNumberContainer": {
+      "kind": "basic",
+      "ui:field": "FormSectionField",
+      "ui:variantDescription": "body1",
+      "ui:validation": {
+        "pattern": "validation.applicationNumberContainer.epvl.required"
+      },
+      "ui:options": {
+        "style": {
+          "& > div": {
+            "margin-bottom": 0
+          },
+          "& > div > div > div": {
+            "&:nth-child(1)": {
+              "max-width": "20rem"
+            },
+            "&:nth-child(2)": {
+              "max-width": "2rem"
+            },
+            "&:nth-child(3)": {
+              "& > div > div > div": {
+                "width": "20rem"
+              },
+              "max-width": "20rem"
+            }
+          }
+        }
+      },
+      "description": {
+        "ui:field": "DescriptionField"
+      },
+      "applicationNumber": {
+        "ui:options": {
+          "style": {
+            "& .MuiInputBase-input": {
+              "letter-spacing": "2px"
+            }
+          }
+        }
+      },
+      "or": {
+        "ui:field": "DescriptionField",
+        "ui:options": {
+          "style": {}
+        }
+      },
+      "publicationNumber": {
+        "ui:widget": "publicationNumberWidget",
+        "ui:button-hidden": true
+      }
+    }
+  },
+  "ui:validation": {
+    "pattern": "validation.default.pattern",
+    "maxLength": "validation.default.maxlength",
+    "minLength": "validation.default.minlength",
+    "required": "validation.default.required",
+    "format": "validation.default.pattern"
+  },
+  "ui:actionBar": {
+    "ui:disabled": true
+  }
+}

@@ -1,0 +1,359 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://epo.org/EP_VAL/public/schema.jsonschema",
+  "type": "object",
+  "properties": {
+    "basicFilingInfo": {
+      "type": "object",
+      "title": "i18n(basic-filing.info)",
+      "description": "i18n(basic_filing_info.description)",
+      "properties": {
+        "userReference": {
+          "title": "i18n(basic-filing.user-reference)",
+          "$ref": "/procedures/common/form/basic-filing.jsonschema/definitions/userReference"
+        },
+        "caseId": {
+         "type": "string",
+          "title": "i18n(basic-filing.caseId)"
+        },
+        "typeOfProtection": {
+          "title": "i18n(basic-filing.type-of-protection)",
+          "$ref": "/procedures/common/form/basic-filing.jsonschema/definitions/typeOfProtection"
+        },
+        "definitiveProtectionSelection": {
+          "title": "i18n(basic-filing.definitiveProtectionSelection)",
+           "$ref": "/procedures/common/form/basic-filing.jsonschema/definitions/definitiveProtectionSelection"
+        },
+        "applicationNumberContainer": {
+          "type": "object",
+          "title": "",
+          "properties": {
+            "applicationNumber": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "title": "i18n(draft.epvl.application-number)",
+              "maxLength": 10
+            },
+            "publicationNumber": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "title": "i18n(draft.epvl.publication-number)",
+              "maxLength": 9
+            }
+          },
+          "required": [
+            "applicationNumber",
+            "publicationNumber"
+          ]
+        },
+        "language": {
+          "title": "i18n(basic-filing.procedural-language)",
+           "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "EN",
+            "DE",
+            "FR"
+          ],
+          "enumNames": [
+            "i18n(basic-filing.english)",
+            "i18n(basic-filing.german)",
+            "i18n(basic-filing.french)"
+          ],
+          "default": null
+        },
+        "titleOfInvention": {
+          "title": "i18n(basic-filing.title-of-invention)",
+          "$ref": "/procedures/common/form/basic-filing.jsonschema/definitions/titleOfInvention"
+        },
+        "gdprAcceptance": {
+          "config": {
+            "type": "label-with-anchor-new-tab",
+            "i18nKey": "basic-filing.gdpr-accepted",
+            "href": "http://www.oepm.es/es/protecciondatosInvenciones_Tramites_SEDE.html",
+            "triggerPostProcess": true
+          },
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "dependencies": {
+        "typeOfProtection": {
+          "oneOf": [
+            {
+              "properties": {
+                "typeOfProtection": {
+                  "enum": [
+                    "provisional"
+                  ]
+                },
+                "applicationPublicationDate": {
+                  "title": "i18n(basic-filing.application-publication-date) *",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "typeOfProtection": {
+                  "enum": [
+                    "definitive"
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "definitiveProtectionSelection": {
+          "oneOf": [
+            {
+              "properties": {
+                "definitiveProtectionSelection": {
+                  "enum": ["B1"]
+                },
+                "grantDate": {
+                  "title": "i18n(basic-filing.grant-date) *",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "definitiveProtectionSelection": {
+                  "enum": ["B2"]
+                },
+                "amendedDate": {
+                  "title": "i18n(basic-filing.amended-date) *",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "definitiveProtectionSelection": {
+                  "enum": ["B3"]
+                },
+                "limitedDate": {
+                  "title": "i18n(basic-filing.limited-date) *",
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "userReference",
+        "caseId",
+        "typeOfProtection",
+        "titleOfInvention",
+        "gdprAcceptance"
+      ]
+    },
+    "parties": {
+      "title": "Parties",
+      "type": "object",
+      "properties": {
+        "applicants": {
+          "title": "i18n(parties.applicants)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/applicant"
+          }
+        },
+        "representatives": {
+          "title": "i18n(parties.representatives)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/representative"
+          }
+        },
+        "communicationAddress": {
+          "title": "i18n(spc.parties.communicationAddress)",
+          "type": "array",
+          "items": {
+            "$ref": "/procedures/common/form/parties.jsonschema/definitions/communicationAddress"
+          }
+        }
+      }
+    },
+    "attachments": {
+      "title": "i18n(attachments.title)",
+      "type": [
+        "array",
+        "null"
+      ],
+      "items": {
+        "type": "object"
+      }
+    },
+    "fees": {
+      "type": "object",
+      "properties": {
+        "sectionInformation": {
+                "type": "null",
+                "text": "i18n(fees.section.information)"
+              },
+        "methodOfPayment": {
+          "title": "i18n(fees.payment-method.select)",
+          "$ref": "#/definitions/methodOfPayment"
+        },
+        "feesSelection": {
+          "title": "i18n(fees.selection)",
+          "type": "object",
+          "properties": {
+            "selectedFees": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "enum": [
+                      "004",
+                      "005"
+                    ]
+                  },
+                  "price": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+                  },
+                  "discount": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/percentageNumber"
+                  },
+                  "subtotal": {
+                    "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+                  }
+                }
+              }
+            },
+            "total": {
+              "$ref": "/procedures/common/form/field-types.jsonschema/definitions/positiveNumber"
+            },
+            "currency": {
+              "enum": [
+                "SEK"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "methodOfPayment"
+      ],
+      "dependencies": {
+        "methodOfPayment": {
+          "oneOf": [
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "depositAccount"
+                  ]
+                },
+                "accountInformation": {
+                  "title": "",
+                  "type": [
+                    "object",
+                    "null"
+                  ],
+                  "properties": {
+                    "accountNumber": {
+                      "title": "i18n(fees.depositAccountLabel)",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "accountHolder": {
+                      "title": "i18n(fees.accountHolder)",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "accountNumber",
+                    "accountHolder"
+                  ]
+                }
+              }
+            },
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "bankTransfer"
+                  ]
+                },
+                "information": {
+                  "type": "null",
+                  "text": "i18n(fees.bankTransferInfo)"
+                }
+              }
+            },
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "creditCard"
+                  ]
+                },
+                "information": {
+                  "type": "null",
+                  "text": "i18n(fees.creditCardInfo)"
+                }
+              }
+            },
+            {
+              "properties": {
+                "methodOfPayment": {
+                  "enum": [
+                    "indicateLater"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "definitions": {
+    "methodOfPayment": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "depositAccount",
+        "bankTransfer",
+        "creditCard",
+        "indicateLater"
+      ],
+      "enumNames": [
+        "i18n(fees.deposit.account)",
+        "i18n(fees.bank.transfer)",
+        "i18n(fees.credit.card)",
+        "i18n(fees.indicate.later)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+* se-fee-sheet v0.1  16 October 2006 					  *
+*************************************************************************
+* 
+*************************************************************************
+* contact: *
+* Peter Enoksson *
+*************************************************************************
+CHANGE HISTORY
+*************************************************************************
+* 
+*************************************************************************
+-->
+<!ELEMENT se-ep-fee-sheet ((file-reference-id?, date, fees, amount-grand-total, payment-mode?) | doc-page+)>
+<!--Attributes for template-fee-sheet
+lang = language of application - use ISO639 language code
+dtd-version = dtd version number
+file = filename of the whole application
+status = status of the application;
+values: n = new application
+produced-by = creator of this document
+date-produced = dd/mm/yyyy e.g, , 12 characters maximum
+ro = Receiving office name, country code ST.3
+-->
+<!ATTLIST se-ep-fee-sheet
+	lang CDATA #REQUIRED
+	dtd-version CDATA #IMPLIED
+	file CDATA #IMPLIED
+	status CDATA #IMPLIED
+	produced-by CDATA #REQUIRED
+	date-produced CDATA #IMPLIED
+	ro CDATA #FIXED "SE"
+>
+<!--Applicant's or agent's file reference -->
+<!ELEMENT file-reference-id (#PCDATA)>
+<!--Fees for applications filed to TEST-->
+<!ELEMENT fees (fee+)>
+<!--Filing Fee for a TEST  application -->
+<!ELEMENT fee (fee-each, amount-total)>
+<!ATTLIST fee
+	fee-code CDATA #REQUIRED
+	fee-description CDATA #REQUIRED
+	count CDATA #REQUIRED
+	to-pay (yes | no) #REQUIRED
+>
+<!-- Total amount due for each fee type.-->
+<!ELEMENT amount-total (#PCDATA)>
+<!-- Total amount due for all  fees to pay-->
+<!ELEMENT amount-grand-total (#PCDATA)>
+<!ATTLIST amount-grand-total
+	currency CDATA #FIXED "SEK"
+>
+<!-- Date from which current fee schedule was effective: Format: dd/mm/yyyy-->
+<!ELEMENT date (#PCDATA)>
+<!--The amount of each of the fees-->
+<!ELEMENT fee-each (#PCDATA)>
+<!--Modes of payment (credit and debit card payments not yet accepted but included in DTD for future use -->
+<!ELEMENT payment-mode (deposit-account, other)>
+<!--PAYMENT METHODS -->
+
+
+<!--deposit-account as payment method-->
+<!ELEMENT deposit-account (dep-account-no)>
+<!ATTLIST deposit-account
+	currency CDATA #FIXED "SEK"
+	pay-with (yes | no) #REQUIRED
+>
+<!--dep-account-no as payment method-->
+<!ELEMENT dep-account-no (#PCDATA)>
+
+<!--deposit-account as payment method-->
+<!ELEMENT other EMPTY>
+<!ATTLIST other
+	currency CDATA #FIXED "SEK"
+	pay-with (yes | no) #REQUIRED
+>
+
+<!--doc-page - DOCument or PAGE
+This is primarily to be used when data for the whole or major sections of an application are in image format
+OR other formats such as pdf. Page range attributes are given when required pp- page range ppf - first page
+ppl - last page (for pdf). The 'img' may also be used for complete pages, eg. in drawings
+Recommended id = docp01, docp02, etc.
+-->
+<!ELEMENT doc-page EMPTY>
+<!ATTLIST doc-page
+	id ID #IMPLIED
+	he NMTOKEN #REQUIRED
+	wi NMTOKEN #REQUIRED
+	type CDATA #REQUIRED
+	alt CDATA #IMPLIED
+	pp CDATA #IMPLIED
+	ppf CDATA #IMPLIED
+	ppl CDATA #IMPLIED
+	file CDATA #REQUIRED
+	color CDATA #IMPLIED
+	orientation (lanscape | portrait) "portrait"
+>

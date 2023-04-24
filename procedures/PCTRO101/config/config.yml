@@ -1,0 +1,87 @@
+annexF:
+  blob:
+    request-pdf:
+      name: "ep-request.pdf"
+      pdfOverview: true
+  filing:
+    result-filing:
+      dtd: "result-filing.dtd"
+      name: "result-filing.xml"
+      path: "procedures/common/annexf/dtd/result-filing.dtd"
+      version: "1.0"
+      xslt: "procedures/common/annexf/xslt/result-filing.xslt"
+      annexFDocumentName: "APPMERGEXML"
+    submission-transfer:
+      dtd: "submission_transfer.dtd"
+      name: "submission_transfer.xml"
+      path: "procedures/common/annexf/dtd/submission_transfer.dtd"
+      version: "2.01"
+      xslt: "procedures/common/annexf/xslt/submission-transfer-xml.xslt"
+  header:
+    header:
+      dtd: "pkgheader-v1-4.dtd"
+      name: "pkgheader.xml"
+      path: "procedures/common/annexf/dtd/WIPO-1.16/pkgheader-v1-4.dtd"
+      version: "1.4"
+      xslt: "procedures/common/annexf/xslt/package-header-xml-v1-4.xslt"
+  payment:
+  receipt:
+    receipt:
+      dtd: "xmit-receipt-v1-4.dtd"
+      name: "xmit-receipt.xml"
+      path: "procedures/common/annexf/dtd/WIPO-1.16/xmit-receipt-v1-4.dtd"
+      version: "1.4"
+      xslt: "procedures/common/annexf/xslt/xmit-receipt-xml-v1-4.xslt"
+      annexFDocumentName: "RECXML"
+    receipt-pdf:
+      name: "receipt.pdf"
+      xslt: "PCTRO101/annexf/xslt/receipt-pdf.xslt"
+      annexFDocumentName: "RECPDF"
+      template: "html"
+      customDpi: 2800
+
+header:
+  receiving-office: "IB"
+  language: "en"
+  ip-type: "patent"
+  form-type: "PCTRO101"
+  software-name: "ITC Front Office"
+  software-version: ""
+
+receipt:
+  status: "new"
+  name-type: "legal"
+  name: "To be defined - This will have to change soon"
+
+wad:
+  submission-transfer:
+    epo-line-id: "0"
+    original-submission-id: "0"
+    receiving-office-initial: "FO"
+    state-code: "0"
+    state-ts: "00000000"
+    additional-data-count: "5"
+  result-filing:
+    status: "new"
+    applnr-origin: "generated"
+    filing-mode: "online"
+    request-entity-name: "ep-request"
+    initial-ro: "FO"
+    timezone: "CET"
+    designation: "as-indicated"
+    waiver: ""
+    renunciation: ""
+    inv-rights-date: ""
+    authorisation-code: "1"
+    olf-status-id: "0"
+    olf-status: "Ok"
+
+numbering:
+  prefix: "PCT"
+  template: "%s/%s%04d/%06d"
+  generator: "pctNumberGenerator"
+  sequence: "international_sequence"
+
+internal-filing:
+  enabled: false
+  send-to-backend: false

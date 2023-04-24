@@ -1,0 +1,34 @@
+[
+  {
+    "type": "selectAll",
+    "ariaLabel": "actions.select.all.contacts",
+    "activeAriaLabel": "messages.all.contacts.selected"
+  },
+  {
+    "type": "default",
+    "label": "Type",
+    "sortId": "type",
+    "field": "partyType"
+  },
+  {
+    "type": "default",
+    "label": "name.company",
+    "sortId": "name",
+    "field": "company",
+    "filterId": "name",
+    "filterType": "textField"
+  },
+  {
+    "type": "default",
+    "label": "country.place-of-business",
+    "sortId": "country",
+    "field": "country"
+  },
+  {
+    "type": "combinedCell",
+    "showOnNonXLDevice": false
+  },
+  {
+    "type": "actionCell"
+  }
+]

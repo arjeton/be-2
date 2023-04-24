@@ -1,0 +1,78 @@
+<!--
+***************************************************************************
+* validation-log v0.1 2003 FEBRUARY                                       *
+***************************************************************************
+* PUBLIC "-//WIPO//DTD validation-log 0.1//EN" "validation-log.dtd"       *
+***************************************************************************
+*  https://www.wipo.int/pct-safe/en/resources/1.15/validation-log-v0-1.dtd*
+***************************************************************************
+* contacts:                                                               *
+*   WIPO: Yukako SHIBA; yukako.shiba@wipo.int                             *
+***************************************************************************
+
+Attributes for validation-log
+	file-reference-id = applicant or agent's reference, if any
+	lang = language of application - use ISO639 language code
+	dtd-version = dtd version number
+	file = filename of the whole application
+	status = status of the application;
+	ro     = Receiving Office name, country code ST.3
+	produced-by = creator of this document
+	document-type = the document type validated (e.g, request, demand)
+
+Validation log and remarks capture for PCT-SAFE applications.
+
+Note: use <?software_name ?> and <?software_version ?> PI's for data capture
+(as in other WIPO ePCT products)
+-->
+
+<!ELEMENT validation-log  (validations*,remark*) >
+
+<!ATTLIST validation-log
+               file-reference-id  CDATA    #IMPLIED 
+               lang  CDATA    #REQUIRED 
+               dtd-version  CDATA    #IMPLIED 
+               file  CDATA    #IMPLIED 
+               status  CDATA    #IMPLIED 
+               date-produced  CDATA    #IMPLIED 
+               ro  CDATA    #REQUIRED 
+               produced-by (applicant | RO | ISA | IPEA | IB | DO | EO)  
+                #REQUIRED 
+               document-type  CDATA    #REQUIRED  >
+
+<!ELEMENT validations  (validation-area,status,software-message) >
+
+<!--The portion of the document that triggered the validation message;
+e.g., 'request', 'names', 'contents', etc.
+
+Attribute:
+box = the box number of the form that the error message relates to;
+'box' will hold the location indicator.
+
+Example:
+========
+(markup)
+<validation-area box="13-2-1">Request</validation-area>
+(display)
+_____________________________________________________________________
+13-2-1 | Validation Message | Green?
+       | Request            | The title of the invention should
+       |                    | preferably be entered in capital
+       |                    | letters. Please verify.
+_______|____________________|_______________________________________
+
+-->
+<!ELEMENT validation-area  (#PCDATA) >
+
+<!ATTLIST validation-area
+               box  CDATA    #IMPLIED  >
+
+<!--status of validation;
+e.g., 'warning', 'error'; 'green', 'yellow', 'red', etc.-->
+<!ELEMENT status  (#PCDATA) >
+
+<!ELEMENT software-message  (#PCDATA) >
+
+<!--remark from applicant-->
+<!ELEMENT remark  (#PCDATA) >
+

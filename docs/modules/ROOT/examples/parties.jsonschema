@@ -1,0 +1,717 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "parties": {
+      "title": "Parties",
+      "type": "object",
+      "properties": {
+        "sectionInformation": {
+          "type": "null",
+          "text": "i18n(parties.section.information)"
+        },
+        "applicants": {
+          "$ref": "#/definitions/applicants"
+        },
+        "representatives": {
+         "$ref": "#/definitions/representatives"
+        },
+        "communicationAddress": {
+          "title": "i18n(parties.communicationAddress)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/communicationAddress"
+          }
+        }
+      }
+    },
+    "applicants": {
+      "title": "i18n(parties.applicants)",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/applicant"
+      }
+    },
+    "applicant": {
+      "title": "i18n(parties.applicant-information)",
+      "type": "object",
+      "properties": {
+        "role": {
+          "title": "i18n(parties.applicant.select-type)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "APPLICANT_LEGAL_ENTITY",
+            "APPLICANT_NATURAL_PERSON"
+          ],
+          "enumNames": [
+            "i18n(parties.legal-entity)",
+            "i18n(parties.natural-person)"
+          ],
+          "config": {
+            "resetsFieldIds": [
+              "personalDetails_firstName",
+              "personalDetails_lastName",
+              "companyDetails_company",
+              "companyDetails_registrationCode",
+              "companyDetails_country",
+              "personalDetails_nationality",
+              "isInventor",
+              "personalDetails_personalCode",
+              "contactDetails_residenceAddress_streetAddress",
+              "contactDetails_residenceAddress_postalCode",
+              "contactDetails_residenceAddress_poBox",
+              "contactDetails_residenceAddress_city",
+              "contactDetails_residenceAddress_country",
+              "contactDetails_telephone",
+              "contactDetails_email"
+            ]
+          },
+          "default": "APPLICANT_LEGAL_ENTITY"
+        }
+      },
+      "dependencies": {
+        "role": {
+          "oneOf": [
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "APPLICANT_NATURAL_PERSON"
+                  ]
+                },
+                "personalDetails": {
+                  "title": "i18n(parties.personal-details)",
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "title": "i18n(parties.first-name)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/name"
+                    },
+                    "lastName": {
+                      "title": "i18n(parties.last-name)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/name"
+                    },
+                    "nationality": {
+                      "title": "i18n(parties.nationality)",
+                      "$ref": "#/definitions/country"
+                    },
+                    "personalCode": {
+                      "title": "i18n(parties.personal-code)",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "$ref": "#/definitions/personalCode",
+                  "required": [
+                    "lastName",
+                    "firstName",
+                    "nationality"
+                  ]
+                },
+                "contactDetails": {
+                  "title": "i18n(parties.contact-details)",
+                  "type": "object",
+                  "properties": {
+                    "residenceAddress": {
+                      "title": "",
+                      "type": "object",
+                      "properties": {
+                        "streetAddress": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/streetAddress"
+                        },
+                        "postalCode": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/postalCode"
+                        },
+                        "poBox": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/poBox"
+                        },
+                        "city": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/city"
+                        },
+                        "country": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/country"
+                        }
+                      },
+                      "required": [
+                        "streetAddress",
+                        "postalCode",
+                        "country",
+                        "city"
+                      ]
+                    },
+                    "telephone": {
+                      "title": "i18n(parties.telephone)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/phone"
+                    },
+                    "email": {
+                      "title": "i18n(parties.email)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/email"
+                    }
+                  }
+                }
+              },
+              "required": [
+                "personalDetails"
+              ]
+            },
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "APPLICANT_LEGAL_ENTITY"
+                  ]
+                },
+                "companyDetails": {
+                  "title": "i18n(parties.company-details)",
+                  "type": "object",
+                  "properties": {
+                    "registrationCode": {
+                      "title": "i18n(parties.applicant.registration-code)",
+                      "type": [
+                        "string"
+                      ]
+                    },
+                    "country": {
+                      "$ref": "/procedures/common/form/address.jsonschema/definitions/country",
+                      "config": {
+                        "resetsFieldIds": [
+                          "companyDetails_registrationCode"
+                        ],
+                        "orderBy": {
+                          "field": "label"
+                        }
+                      }
+                    },
+                    "company": {
+                      "title": "i18n(parties.company)",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 115
+                    }
+                  },
+                  "required": [
+                    "company",
+                    "country",
+                    "registrationCode"
+                  ]
+                },
+                "contactDetails": {
+                  "title": "i18n(parties.contact-details)",
+                  "type": "object",
+                  "properties": {
+                    "residenceAddress": {
+                      "title": "",
+                      "type": "object",
+                      "properties": {
+                        "streetAddress": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/streetAddress"
+                        },
+                        "postalCode": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/postalCode"
+                        },
+                        "poBox": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/poBox"
+                        },
+                        "city": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/city"
+                        }
+                      },
+                      "required": [
+                        "streetAddress",
+                        "postalCode",
+                        "city"
+                      ]
+                    },
+                    "telephone": {
+                      "title": "i18n(parties.telephone)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/phone"
+                    },
+                    "email": {
+                      "title": "i18n(parties.email)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/email"
+                    }
+                  }
+                }
+              },
+              "if": {
+                "properties": {
+                  "companyDetails": {
+                    "properties": {
+                      "country": {
+                        "not": {
+                          "const": "LT"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "then": {
+                "properties": {
+                  "companyDetails": {
+                    "properties": {
+                      "registrationCode": {
+                        "maxLength": 25
+                      }
+                    },
+                    "required": [
+                      "company"
+                    ]
+                  }
+                }
+              },
+              "else": {
+                "properties": {
+                  "companyDetails": {
+                    "properties": {
+                      "registrationCode": {
+                        "pattern": "^\\s*(?:[0-9]{9})$"
+                      }
+                    },
+                    "required": [
+                      "company",
+                      "registrationCode"
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "representatives": {
+      "title": "i18n(parties.representatives)",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/representative"
+      }
+    },
+    "representative": {
+      "title": "i18n(parties.representative.information)",
+      "ui:titleSingular": "i18n(parties.representative.information)",
+      "ui:titleSingularAddSection": "i18n(parties.representative.information)",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sequenceNumber": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "role": {
+          "title": "i18n(parties.representative.select-type)",
+          "type": "string",
+          "oneOf": [
+            {
+              "title": "i18n(PATENT_ATTORNEY)",
+              "type": "string",
+              "enum": [
+                "PATENT_ATTORNEY"
+              ]
+            },
+            {
+              "title": "i18n(REPRESENTATIVE_EMPLOYEE)",
+              "type": "string",
+              "enum": [
+                "REPRESENTATIVE_EMPLOYEE"
+              ]
+            }
+          ],
+          "config": {
+            "resetsFieldIds": [
+              "personalDetails_firstName",
+              "personalDetails_lastName",
+              "companyDetails_company",
+              "companyDetails_authorisationCode",
+              "personalDetails_registrationCode",
+              "personalDetails_nationality",
+              "personalDetails_personalCode",
+              "contactDetails_residenceAddress_streetAddress",
+              "contactDetails_residenceAddress_postalCode",
+              "contactDetails_residenceAddress_poBox",
+              "contactDetails_residenceAddress_city",
+              "contactDetails_residenceAddress_country",
+              "contactDetails_telephone",
+              "contactDetails_email"
+            ]
+          },
+          "default": "PATENT_ATTORNEY"
+        }
+      },
+      "dependencies": {
+        "role": {
+          "oneOf": [
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "PATENT_ATTORNEY"
+                  ]
+                },
+                "personalDetails": {
+                  "title": "i18n(parties.personal-details)",
+                  "type": "object",
+                  "properties": {
+                    "registrationCode": {
+                      "title": "i18n(parties.patent-attorney.registration-code)",
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "title": "i18n(parties.first-name)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/name",
+                      "readOnly": true
+                    },
+                    "lastName": {
+                      "title": "i18n(parties.last-name)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/name",
+                      "readOnly": true
+                    },
+                    "nationality": {
+                      "title": "i18n(parties.nationality)",
+                      "$ref": "/procedures/common/form/address.jsonschema/definitions/country",
+                      "readOnly": true
+                    }
+                  },
+                  "required": [
+                    "lastName",
+                    "firstName",
+                    "nationality",
+                    "registrationCode"
+                  ]
+                },
+                "companyDetails": {
+                  "title": "i18n(parties.company-details)",
+                  "type": "object",
+                  "properties": {
+                    "company": {
+                      "title": "i18n(parties.company.optional)",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 115,
+                      "readOnly": true
+                    },
+                    "authorisationCode": {
+                      "$ref": "/procedures/common/form/parties.jsonschema/definitions/authorisationCode"
+                    }
+                  }
+                },
+                "contactDetails": {
+                  "title": "i18n(parties.contact-details)",
+                  "type": "object",
+                  "properties": {
+                    "residenceAddress": {
+                      "title": "",
+                      "type": "object",
+                      "properties": {
+                        "streetAddress": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/streetAddress",
+                          "readOnly": true
+                        },
+                        "postalCode": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/postalCode",
+                          "readOnly": true
+                        },
+                        "poBox": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/poBox"
+                        },
+                        "city": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/city",
+                          "readOnly": true
+                        },
+                        "country": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/country",
+                          "readOnly": true
+                        }
+                      },
+                      "required": [
+                        "streetAddress",
+                        "postalCode",
+                        "country",
+                        "city"
+                      ]
+                    },
+                    "telephone": {
+                      "title": "i18n(parties.telephone)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/phone"
+                    },
+                    "email": {
+                      "title": "i18n(parties.email)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/email"
+                    }
+                  },
+                  "required": [
+                    "email",
+                    "residenceAddress"
+                  ]
+                }
+              },
+              "required": [
+                "personalDetails",
+                "contactDetails"
+              ]
+            },
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "REPRESENTATIVE_EMPLOYEE"
+                  ]
+                },
+                "personalDetails": {
+                  "title": "i18n(parties.personal-details)",
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "title": "i18n(parties.first-name)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/name"
+                    },
+                    "lastName": {
+                      "title": "i18n(parties.last-name)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/name"
+                    },
+                    "nationality": {
+                      "title": "i18n(parties.nationality.optional)",
+                      "$ref": "/procedures/common/form/address.jsonschema/definitions/country"
+                    },
+                    "personalCode": {
+                      "title": "i18n(parties.personal-code)",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "$ref": "#/definitions/personalCode",
+                  "required": [
+                    "lastName",
+                    "firstName",
+                    "nationality"
+                  ]
+                },
+                "companyDetails": {
+                  "title": "i18n(parties.company-details)",
+                  "type": "object",
+                  "properties": {
+                    "company": {
+                      "title": "i18n(parties.company)",
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 115
+                    },
+                    "authorisationCode": {
+                      "$ref": "/procedures/common/form/parties.jsonschema/definitions/authorisationCode"
+                    }
+                  },
+                  "required": [
+                    "company"
+                  ]
+                },
+                "contactDetails": {
+                  "title": "i18n(parties.contact-details)",
+                  "type": "object",
+                  "properties": {
+                    "residenceAddress": {
+                      "title": "",
+                      "type": "object",
+                      "properties": {
+                        "streetAddress": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/streetAddress"
+                        },
+                        "postalCode": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/postalCode"
+                        },
+                        "poBox": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/poBox"
+                        },
+                        "city": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/city"
+                        },
+                        "country": {
+                          "$ref": "/procedures/common/form/address.jsonschema/definitions/country"
+                        }
+                      },
+                      "required": [
+                        "streetAddress",
+                        "postalCode",
+                        "country",
+                        "city"
+                      ]
+                    },
+                    "telephone": {
+                      "title": "i18n(parties.telephone)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/phone"
+                    },
+                    "email": {
+                      "title": "i18n(parties.email)",
+                      "$ref": "/procedures/common/form/field-types.jsonschema/definitions/email"
+                    }
+                  },
+                  "required": [
+                    "email"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "communicationAddress": {
+      "title": "i18n(parties.contact-details)",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "state": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sequenceNumber": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "coupled": {
+          "title": "i18n(parties.communicationAddress.coupled)",
+          "type": "boolean",
+          "default": true,
+          "config": {
+            "popup": {
+              "enabled": true,
+              "type": "warning",
+              "valueToConfirmChangeTo": true,
+              "titleText": "i18n(parties.communicationAddress.couple.popup.title)",
+              "messageText": "i18n(parties.communicationAddress.couple.popup.msg)",
+              "confirmButtonText": "i18n(parties.communicationAddress.couple.popup.confirm)",
+              "cancelButtonText": "i18n(parties.communicationAddress.couple.popup.cancel)"
+            },
+            "triggerPostProcess": true
+          }
+        },
+        "role": {
+          "title": "i18n(parties.applicant.select-type)",
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "COMMUNICATION_ADDRESS_NATURAL_PERSON",
+            "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+          ],
+          "enumNames": [
+            "i18n(parties.natural-person)",
+            "i18n(parties.legal-entity)"
+          ],
+          "default": "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+        }
+      },
+      "dependencies": {
+        "role": {
+          "oneOf": [
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+                  ]
+                },
+                "correspondenceAddress": {
+                  "title": "",
+                  "$ref": "/procedures/common/form/address.jsonschema/definitions/communicationAddressSection"
+                }
+              }
+            },
+            {
+              "properties": {
+                "role": {
+                  "enum": [
+                    "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+                  ]
+                },
+                "correspondenceAddress": {
+                  "title": "",
+                  "$ref": "/procedures/common/form/address.jsonschema/definitions/companyCommunicationAddressSection"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "authorisationCode": {
+      "title": "i18n(parties.authorisation-code)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^\\d(?:\\.?\\d)*$",
+      "maxLength": 8
+    },
+    "personalCode": {
+      "if": {
+        "properties": {
+          "nationality": {
+            "not": {
+              "const": "LT"
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "personalCode": {
+            "maxLength": 25
+          }
+        },
+        "required": [
+          "lastName",
+          "firstName",
+          "nationality"
+        ]
+      },
+      "else": {
+        "properties": {
+          "personalCode": {
+            "pattern": "^\\s*(?:[0-9]{11})$"
+          }
+        },
+        "required": [
+          "lastName",
+          "firstName",
+          "nationality"
+        ]
+      }
+    }
+  }
+}

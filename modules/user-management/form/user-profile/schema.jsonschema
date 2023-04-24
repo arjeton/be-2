@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://epo.org/submission.schema.json",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "title": "i18n(user-management.first-name)",
+      "type": [
+        "string",
+         "null"
+      ],
+      "maxLength": 255,
+      "readOnly": true
+    },
+    "lastName": {
+      "title": "i18n(user-management.last-name)",
+      "type": [
+        "string",
+         "null"
+      ],
+      "maxLength": 255,
+      "readOnly": true
+    },
+    "emailAddress": {
+      "title": "i18n(user-management.user-email)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "email",
+      "maxLength": 255
+    },
+    "username": {
+      "title": "i18n(user-management.user-name-profile)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-zA-Z0-9 .@\\-]*$",
+      "maxLength": 32
+    },
+    "initials": {
+      "title": "i18n(user-management.user-initials)",
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "[A-Z]{2}",
+      "maxLength": 2
+    }
+  },
+  "required": [
+    "firstName",
+    "lastName",
+    "email",
+    "username",
+    "initials"
+  ]
+}

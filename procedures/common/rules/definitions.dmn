@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="workflows" name="workflows" namespace="http://camunda.org/schema/1.0/dmn" expressionLanguage="groovy" exporter="Camunda Modeler" exporterVersion="5.0.0">
+
+  <!--Communication address definitions-->
+  <decision id="communication-address-utils-definition" name="commAddressUtils">
+    <variable id="variable-communication-address-utils-definition" name="result" />
+    <literalExpression id="literalExpression-communication-address-utils-definition">
+      <text>
+
+        def firstConfirmedApplicant(submission) {
+          return submission.parties?.applicants?.find(applicant -&gt; applicant.state == "CONFIRMED")
+        }
+
+        def firstConfirmedRepresentative(submission) {
+          return submission.parties?.representatives?.find(representative -&gt; representative.state == "CONFIRMED")
+        }
+
+        def firstConfirmedParty(submission) {
+          return firstConfirmedRepresentative(submission) ?: firstConfirmedApplicant(submission);
+        }
+
+        def hasCommunicationAddress(submission) {
+          return submission?.parties?.communicationAddress != null &amp;&amp; submission?.parties?.communicationAddress[0] != null;
+        }
+
+        def removeCommunicationAddress(submission) {
+          submission?.parties?.communicationAddress = []
+          return submission
+        }
+
+        // returns true if the event should trigger the processing of the communication address
+        def shouldProcessCommunicationAddress(event) {
+          def partyItemEvents = Arrays.asList("applicants_submit", "applicants_delete", "applicants_order",
+              "representatives_submit", "representatives_delete", "representatives_reorder");
+
+          def couplingEvent = "submission_parties_communicationAddress_0_coupled_change";
+
+          return partyItemEvents.contains(event) || couplingEvent == event;
+        }
+
+        // checks if the comm address is coupled with the parties
+        def isCommunicationAddressCoupled(submission) {
+          if (submission?.parties?.communicationAddress &amp;&amp; submission?.parties?.communicationAddress[0] != null){
+            return submission?.parties?.communicationAddress[0].coupled
+          }
+          return true;
+        }
+
+        // gets the derivedFrom id of the source party (null for decoupled CA)
+        def getCommAddressSourcePartyId(submission) {
+          if (submission?.parties?.communicationAddress &amp;&amp; submission?.parties?.communicationAddress[0] != null){
+            return submission?.parties?.communicationAddress[0].derivedFrom
+          }
+          return null;
+        }
+
+        // copies the communication address from the eligible party on the submission
+        def deriveFromParties(submission) {
+          def party = firstConfirmedParty(submission)
+
+          if (party == null) return null;
+
+          if (submission?.parties?.communicationAddress == null) {
+            submission.parties.communicationAddress = []
+            submission.parties.communicationAddress[0] = [:]
+          }
+
+          def ca = submission?.parties?.communicationAddress[0]
+          ca.id = UUID.randomUUID()
+          ca.sequenceNumber = 1
+          ca.state = party.state
+          ca.derivedFrom = party.id
+
+          // for applicant NP or representative NP -> COMMUNICATION_ADDRESS_NATURAL_PERSON
+          ca.role = (party?.role == "APPLICANT_LEGAL_ENTITY" || party?.role == "AGENT_LEGAL_ENTITY" || party?.role == "REPRESENTATIVE_LEGAL_ENTITY") ? "COMMUNICATION_ADDRESS_LEGAL_ENTITY"
+            : "COMMUNICATION_ADDRESS_NATURAL_PERSON"
+
+          if (ca.correspondenceAddress == null) {
+            ca.correspondenceAddress = [:]
+          }
+
+          if (party.personalDetails != null) {
+            ca.firstName = party.personalDetails.firstName
+            ca.lastName = party.personalDetails.lastName
+          }
+
+          if (party.companyDetails != null) {
+            ca.company = party.companyDetails.company
+          }
+
+          if (party.contactDetails != null &amp;&amp; party.contactDetails.residenceAddress != null) {
+            ca.correspondenceAddress.email = party.contactDetails.email
+            ca.correspondenceAddress.telephone = party.contactDetails.telephone
+            ca.correspondenceAddress.streetAddress = party.contactDetails.residenceAddress.streetAddress
+            ca.correspondenceAddress.postalCode = party.contactDetails.residenceAddress.postalCode
+            ca.correspondenceAddress.poBox = party.contactDetails.residenceAddress.poBox
+            ca.correspondenceAddress.city = party.contactDetails.residenceAddress.city
+            ca.correspondenceAddress.country = party.contactDetails.residenceAddress.country
+          }
+
+          return submission
+        }
+
+        def validateCommunicationAddress(submission){
+          if (submission.parties?.communicationAddress?.any{
+            ca -&gt; (communicationAddress?.state != "CONFIRMED" ||
+              ca.preferredMeansOfNotification == null ||
+              ca.correspondenceAddress?.city == null  ||
+              ca.correspondenceAddress?.postalCode == null ||
+              ca.correspondenceAddress?.country == null ||
+              ca.correspondenceAddress?.streetAddress == null)
+          }) {
+            return false
+          }
+          return true
+        }
+
+      </text>
+    </literalExpression>
+  </decision>
+
+</definitions>

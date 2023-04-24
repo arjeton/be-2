@@ -1,0 +1,50 @@
+def isPr
+pipeline {
+  agent {
+    kubernetes {
+      inheritFrom 'jenkins-agent17'
+      defaultContainer 'tools' 
+    }
+  }
+  options {
+    ansiColor('xterm')
+    disableConcurrentBuilds()
+  }
+  environment {
+     GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+     SHORT_COMMIT = "${GIT_COMMIT[0..6]}"
+     PROJECT = "${JOB_NAME.split('/')[1]}"
+     BRANCH=GIT_BRANCH.replaceAll(/\//,'')
+     GOOGLE_APPLICATION_CREDENTIALS='/workspace/key.json'
+     FO_CONFIGURATION_VERSION="${GIT_BRANCH}"
+     FO_CONFIGURATION_LOCATION=".."
+     FO_CONFIGURATION_TESTS_PROFILE='gcp'
+     ENABLE_TESTS_UNSYNCRONIZED_TRANSLATIONS='true'
+  }
+  stages {
+    stage('Init') {
+      steps {
+        script {
+          if (env.GIT_BRANCH ==~ /^PR-.*/ ) {
+            isPr=true
+          } else { isPr = false }
+        }
+      }
+    }
+    stage('MavenTests') {
+      when {
+        expression {
+            return isPr;
+        }
+      }
+      steps {
+        script {
+          dir('fo-configuration-tests'){
+            git branch: 'develop', changelog: false, credentialsId: 'itc-fo-gh-creds', url: 'https://git.epo.org/it-cooperation/fo-configuration-tests'
+            sh "yarn install && yarn run test"
+          }
+        }
+      }
+    }
+  }
+}
