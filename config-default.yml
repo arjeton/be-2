@@ -8,7 +8,7 @@ notification:
   enabled: true
 fees-config-lookup:
   enabled: true
-
+# testing creation of repos
 # procedure properties for front-end and back-end
 # procedures.[?].category is used to identify the type of procedure because the id can be different for each country
 procedures:
